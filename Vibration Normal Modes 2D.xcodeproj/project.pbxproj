@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		07DA13491559113E00FCF6F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13481559113E00FCF6F8 /* main.cpp */; };
 		07DA134B1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07DA134A1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 */; };
+		07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13511559115100FCF6F8 /* GLUT.framework */; };
+		07DA13541559115A00FCF6F8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13531559115A00FCF6F8 /* OpenGL.framework */; };
+		07DA135D1559119500FCF6F8 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13571559119500FCF6F8 /* MyOpenGL.cpp */; };
+		07DA135E1559119500FCF6F8 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13591559119500FCF6F8 /* SolveEDP.cpp */; };
+		07DA135F1559119500FCF6F8 /* Vectorial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA135B1559119500FCF6F8 /* Vectorial.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +33,14 @@
 		07DA13441559113E00FCF6F8 /* Vibration Normal Modes 2D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Vibration Normal Modes 2D"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07DA13481559113E00FCF6F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		07DA134A1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Vibration_Normal_Modes_2D.1; sourceTree = "<group>"; };
+		07DA13511559115100FCF6F8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		07DA13531559115A00FCF6F8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		07DA13571559119500FCF6F8 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
+		07DA13581559119500FCF6F8 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
+		07DA13591559119500FCF6F8 /* SolveEDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolveEDP.cpp; sourceTree = "<group>"; };
+		07DA135A1559119500FCF6F8 /* SolveEDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolveEDP.h; sourceTree = "<group>"; };
+		07DA135B1559119500FCF6F8 /* Vectorial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vectorial.cpp; sourceTree = "<group>"; };
+		07DA135C1559119500FCF6F8 /* Vectorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vectorial.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07DA13541559115A00FCF6F8 /* OpenGL.framework in Frameworks */,
+				07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -45,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				07DA13471559113E00FCF6F8 /* Vibration Normal Modes 2D */,
+				07DA13551559116000FCF6F8 /* Frameworks */,
 				07DA13451559113E00FCF6F8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -61,9 +77,32 @@
 			isa = PBXGroup;
 			children = (
 				07DA13481559113E00FCF6F8 /* main.cpp */,
+				07DA13561559117500FCF6F8 /* Functions */,
 				07DA134A1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 */,
 			);
 			path = "Vibration Normal Modes 2D";
+			sourceTree = "<group>";
+		};
+		07DA13551559116000FCF6F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				07DA13531559115A00FCF6F8 /* OpenGL.framework */,
+				07DA13511559115100FCF6F8 /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		07DA13561559117500FCF6F8 /* Functions */ = {
+			isa = PBXGroup;
+			children = (
+				07DA13581559119500FCF6F8 /* MyOpenGL.h */,
+				07DA13571559119500FCF6F8 /* MyOpenGL.cpp */,
+				07DA135A1559119500FCF6F8 /* SolveEDP.h */,
+				07DA13591559119500FCF6F8 /* SolveEDP.cpp */,
+				07DA135C1559119500FCF6F8 /* Vectorial.h */,
+				07DA135B1559119500FCF6F8 /* Vectorial.cpp */,
+			);
+			name = Functions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -92,7 +131,7 @@
 		07DA133B1559113E00FCF6F8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0610;
 				ORGANIZATIONNAME = NEPTUNO;
 			};
 			buildConfigurationList = 07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "Vibration Normal Modes 2D" */;
@@ -118,6 +157,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				07DA13491559113E00FCF6F8 /* main.cpp in Sources */,
+				07DA135D1559119500FCF6F8 /* MyOpenGL.cpp in Sources */,
+				07DA135E1559119500FCF6F8 /* SolveEDP.cpp in Sources */,
+				07DA135F1559119500FCF6F8 /* Vectorial.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,10 +170,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -144,7 +192,9 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -156,17 +206,25 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -176,14 +234,20 @@
 		07DA134F1559113E00FCF6F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
 		07DA13501559113E00FCF6F8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -206,6 +270,7 @@
 				07DA13501559113E00FCF6F8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
