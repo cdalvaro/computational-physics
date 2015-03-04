@@ -1,4 +1,5 @@
-# Numerical-EDPs
+# Numerical PDEs
+
 This program contains some examples for solving wave functions numerically.
 It also contains other methods to solve Laplace's and Poisson's equations, it can compute eigenvalues and eigenvectors for matrices, also it can solve systems of equations.
 
