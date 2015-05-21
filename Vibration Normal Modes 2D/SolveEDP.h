@@ -41,7 +41,7 @@
 #include <cmath>
 #include <fstream>
 
-#import "Vectorial.cpp"
+#include "Vectorial.h"
 
 typedef double EDP_T;
 #define vectorEDP_T vector<EDP_T>

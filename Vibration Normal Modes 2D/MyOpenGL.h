@@ -8,10 +8,7 @@
 
 #pragma once
 
-#include <OpenGL/OpenGL.h>
-#include <GLUT/glut.h>
-
-#import "Vectorial.cpp"
+#include "Vectorial.h"
 
 #define OpenGL_Class OpenGL::MyOpenGL_Class
 #define ColorMap_Class OpenGL::ColorMap

@@ -7,6 +7,15 @@
 //
 
 #include "MyOpenGL.h"
+#include "Vectorial.cpp"
+
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#include <GLUT/glut.h>
+#elif __unix__
+#include <GL/gl.h>
+#include <GL/glut.h>
+#endif
 
 OpenGL_Class myOpenGL;
 bool initOpenGL = false;
@@ -37,7 +46,7 @@ void OpenGL_Class::setData(vector<double> &x, vector<double> &y, unsigned char s
     myOpenGL._vX = x;
     myOpenGL._vY = y;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -54,7 +63,7 @@ void OpenGL_Class::setData(vector<double> &x, vector<double> &y, vector<double> 
     myOpenGL._vY = y;
     myOpenGL._vZ = z;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -71,7 +80,7 @@ void OpenGL_Class::setData(vector<double> &x, vector<double> &y, matrix<double> 
     myOpenGL._vY = y;
     myOpenGL._mZ = z;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -96,7 +105,7 @@ void OpenGL_Class::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
     myOpenGL._zoomX = eyeInitPosX = eyePosX = zoomX;
     myOpenGL._zoomY = eyeInitPosY = eyePosY = zoomY;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | WN_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -113,7 +122,7 @@ void OpenGL_Class::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned cha
     myOpenGL._zoomY = eyeInitPosY = eyePosY = zoomY;
     myOpenGL._zoomZ = eyeInitPosZ = eyePosZ = zoomZ;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | WN_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -130,7 +139,7 @@ void OpenGL_Class::setAxisDirection(float rotX, float rotY, float rotZ, unsigned
     myOpenGL._rotY = rotY;
     myOpenGL._rotZ = rotZ;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Zoom_D | WN_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -151,7 +160,7 @@ void OpenGL_Class::setStepTime(float dt_milli, unsigned char setDefault)
         myOpenGL._plots_calc = (int)ceil(1/(dt_milli*1E4));
     }
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -167,7 +176,7 @@ void OpenGL_Class::setWindowSize(float Width, float Height, unsigned char setDef
     myOpenGL._W = Width;
     myOpenGL._H = Height;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | Update_D);
         defaultSettings = true;
     }
@@ -182,7 +191,7 @@ void OpenGL_Class::setUpdateData(void updateData(), unsigned char setDefault)
 {
     myOpenGL._updateData = updateData;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D);
         defaultSettings = true;
     }
@@ -197,7 +206,7 @@ void OpenGL_Class::setWindowName(string windowName, unsigned char setDefault)
 {
     myOpenGL._windowName = windowName;
     
-    if (!defaultSettings and (setDefault& SetDefault) != 0) {
+    if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | dt_D | WSize_D | Update_D);
         defaultSettings = true;
     }
@@ -210,22 +219,22 @@ void OpenGL_Class::setWindowName(string windowName)
 
 void OpenGL_Class::setDefaultParameters(unsigned char params)
 {
-    if ((params& Zoom_D) != 0 and !defaultSettings)
+    if ((params& Zoom_D) != 0 && !defaultSettings)
         setZoomsD(1.0, 1.0, 1.0, 0);
     
-    if ((params& Rot_D) != 0 and !defaultSettings)
+    if ((params& Rot_D) != 0 && !defaultSettings)
         setAxisDirection(0.0, 0.0, 0.0, 0);
     
-    if ((params& WN_D) != 0 and !defaultSettings)
+    if ((params& WN_D) != 0 && !defaultSettings)
         setWindowName("OpenGL Plot", 0);
     
-    if ((params& dt_D) != 0 and !defaultSettings)
+    if ((params& dt_D) != 0 && !defaultSettings)
         setStepTime(9.1E-4, 0);
     
-    if ((params& WSize_D) != 0 and !defaultSettings)
+    if ((params& WSize_D) != 0 && !defaultSettings)
         setWindowSize(800, 800, 0);
     
-    if ((params& Update_D) != 0 and !defaultSettings)
+    if ((params& Update_D) != 0 && !defaultSettings)
         setUpdateData(upPlot, 0);
     
     defaultSettings = true;

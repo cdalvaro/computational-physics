@@ -9,6 +9,8 @@
 
 #include "Vectorial.h"
 
+#include <typeinfo>
+
 
 const int tolMax = 1000;
 const double preDef = 1E-04;
@@ -287,7 +289,7 @@ vectorT::duplicate(T range)
 {
     for (int i=0; i<n; i++) {
         for (int j=0; j<n; j++) {
-            if (i != j and (v[j] >= v[i]*(1.0-range) and v[j] <= v[i]*(1.0+range)))
+            if (i != j && (v[j] >= v[i]*(1.0-range) && v[j] <= v[i]*(1.0+range)))
                 return true;
         }
     }
@@ -568,7 +570,7 @@ operator>>(istream& in, vectorT& V)
     V.reSize(n);
     for (int j=0; j<n; j++) {
         num = "";
-        while (c[k] != ',' and (c[k] != '\n' and c[k] != '\r')) {
+        while (c[k] != ',' && (c[k] != '\n' && c[k] != '\r')) {
             num += c[k];
             k++;
             if (k == cDim)
@@ -673,11 +675,11 @@ round(const vectorT& V)
     vectorT tmp(V.dim());
     tmp.zero();
     for (int i=0; i<V.dim(); i++) {
-        if (V(i) >= 0 and V(i)-floor(V(i)) < 0.5)
+        if (V(i) >= 0 && V(i)-floor(V(i)) < 0.5)
             tmp(i) = (int)floor(V(i));
-        else if (V(i) >= 0 and V(i)-floor(V(i)) >= 0.5)
+        else if (V(i) >= 0 && V(i)-floor(V(i)) >= 0.5)
             tmp(i) = (int)ceil(V(i));
-        else if (V(i) < 0 and V(i)-floor(V(i)) >= 0.5)
+        else if (V(i) < 0 && V(i)-floor(V(i)) >= 0.5)
             tmp(i) = (int)ceil(V(i));
         else
             tmp(i) = (int)floor(V(i));
@@ -973,7 +975,7 @@ matrixT::setRowV(int _i, const vectorT& V)
 MAT_TEMPLATE inline void
 matrixT::setMatrix(int _i, int _j, const matrixT& M)
 {
-    if (n < M.n+_i and m < M.m+_j)
+    if (n < M.n+_i && m < M.m+_j)
         for (int i=_i; i<n; i++) {
             for (int j=_j; j<m; j++) {
                 a[i*m + j] = M.a[(i-_i)*M.m + (j-_j)];
@@ -1262,7 +1264,7 @@ matrixT::duplicate(T range)
 {
     for (int k=0; k<size; k++) {
         for (int p=0; p<size; p++) {
-            if (k != p and (a[p] >= a[k]*(1.0-range) and a[p] <= a[k]*(1.0+range)))
+            if (k != p && (a[p] >= a[k]*(1.0-range) && a[p] <= a[k]*(1.0+range)))
                 return true;
         }
     }
@@ -1639,14 +1641,14 @@ matrixT::eigenVectors(int maxIte, unsigned char opt)
         Ainv = (* this) - identity(n,n)*eVas(i)*(1.0+fact);
         Ainv = Ainv^(-1);
         
-        while ((eVa < eVas(i)*(1.0-fact) || eVa > eVas(i)*(1.0+fact)) and k < maxIte) {
+        while ((eVa < eVas(i)*(1.0-fact) || eVa > eVas(i)*(1.0+fact)) && k < maxIte) {
             eVe = Ainv * eVe;
             maxS = eVe.maxAbs_sig();
             eVa = 1/maxS + eVas(i)*(1.0+fact);
             eVe /= maxS;
             k++;
             
-            if ((eVa < eVas(i)*(1.0-fact) || eVa > eVas(i)*(1.0+fact)) and k == maxIte) {
+            if ((eVa < eVas(i)*(1.0-fact) || eVa > eVas(i)*(1.0+fact)) && k == maxIte) {
                 eVe.ones();
                 eVe(i) *= 2.0;
                 eVa = (T)eVas(i)+1.0;
@@ -1654,7 +1656,7 @@ matrixT::eigenVectors(int maxIte, unsigned char opt)
                 Ainv = (* this) - identity(n,n)*eVas(i)*(1.0+fact);
                 Ainv = Ainv^(-1);
                 
-                while (1/eVa != eVas(i) and k < maxIte) {
+                while (1/eVa != eVas(i) && k < maxIte) {
                     eVe = Ainv * eVe;
                     maxS = eVe.maxAbs_sig();
                     eVa = 1/maxS + eVas(i)*(1.0+fact);
@@ -1702,14 +1704,14 @@ matrixT::eigenVector(T eigenValue, int maxIte, unsigned char opt)
     Ainv = (* this) - identity(n,n)*eigenValue*(1.0+fact);
     Ainv = Ainv^(-1);
     
-    while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) and k < maxIte) {
+    while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < maxIte) {
         eVe = Ainv * eVe;
         maxS = eVe.maxAbs_sig();
         eVa = 1/maxS + eigenValue*(1.0+fact);
         eVe /= maxS;
         k++;
         
-        if ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) and k == maxIte) {
+        if ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k == maxIte) {
             eVe.ones();
             eVe(0) *= 2.0;
             eVa = eigenValue+1.0;
@@ -1717,7 +1719,7 @@ matrixT::eigenVector(T eigenValue, int maxIte, unsigned char opt)
             Ainv = (* this) - identity(n,n)*eigenValue*(1.0+fact);
             Ainv = Ainv^(-1);
             
-            while (1/eVa != eigenValue and k < maxIte) {
+            while (1/eVa != eigenValue && k < maxIte) {
                 eVe = Ainv * eVe;
                 maxS = eVe.maxAbs_sig();
                 eVa = 1/maxS + eigenValue*(1.0+fact);
@@ -1764,7 +1766,7 @@ matrixT::eigenValues(int maxIte, T factor, unsigned char opt)
     diagOld.zero();
     A = (* this);
     
-    while (cota > err and k<maxIte) {
+    while (cota > err && k<maxIte) {
         Q = A.QR(QRmatrix);
         Q||R;
         diagOld = A.getDiagonal();
@@ -2064,7 +2066,7 @@ operator>>(istream& in, matrixT& M)
         getline(in, c);
         cc += c;
         for (int i=0; i<c.size(); i++)
-            if (fRow and c[i] == ',')
+            if (fRow && c[i] == ',')
                 m++;
         fRow = false;
         n++;
@@ -2075,7 +2077,7 @@ operator>>(istream& in, matrixT& M)
         endR = cc.find("\r", endR+1);
         for (int j=0; j<m; j++) {
             num = "";
-            while (cc[k] != ',' and k < endR) {
+            while (cc[k] != ',' && k < endR) {
                 num += cc[k];
                 k++;
             }
@@ -2087,7 +2089,7 @@ operator>>(istream& in, matrixT& M)
     
     for (int j=0; j<m; j++) {
         num = "";
-        while (cc[k] != ',' and (cc[k] != '\r' and cc[k] != '\n')) {
+        while (cc[k] != ',' && (cc[k] != '\r' && cc[k] != '\n')) {
             num += cc[k];
             k++;
             if (k == cc.size())

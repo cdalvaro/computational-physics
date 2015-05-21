@@ -89,7 +89,7 @@ int main(int argc, const char * argv[])
     //  1. normalModes
     //  2. chladni
     //  3. diffraction
-    model = diffraction;
+    model = normalModes;
     
     //  ELIGE UN EJEMPLO
     //  1. normalModes: 1 - 5
@@ -126,7 +126,7 @@ int main(int argc, const char * argv[])
             }
             
             //  Plot
-            MyOpenGL_Class::setWindowName("Modos de vibración");
+            MyOpenGL_Class::setWindowName("Vibration Modes");
             MyOpenGL_Class::setStepTime(membrane.dt);
             MyOpenGL_Class::setUpdateData(calcSol);
             plot(vX, vY, cI, Shading | Axis_On, argc, argv);
@@ -154,7 +154,7 @@ int main(int argc, const char * argv[])
             }
             
             //  Plot
-            MyOpenGL_Class::setWindowName("Figuras de Chladni");
+            MyOpenGL_Class::setWindowName("Chladni Patterns");
             MyOpenGL_Class::setStepTime(membrane.dt);
             MyOpenGL_Class::setUpdateData(calcSol);
             plot(vX, vY, cI, Shading, argc, argv);
@@ -197,7 +197,7 @@ int main(int argc, const char * argv[])
             }
             
             //  Plot
-            MyOpenGL_Class::setWindowName("Difracción");
+            MyOpenGL_Class::setWindowName("Diffraction");
             MyOpenGL_Class::setStepTime(membrane.dt);
             MyOpenGL_Class::setUpdateData(calcSol);
             plot(vX, vY, cI, Shading, argc, argv);
@@ -1050,7 +1050,7 @@ matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)      
     matrix<double> tmp = zero<double>(cI.rows(), cI.columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
-            if (i >= 0 and i < cI.rows() and j >= 0 and j < cI.columns())
+            if (i >= 0 && i < cI.rows() && j >= 0 && j < cI.columns())
                 tmp(i,j) = strenght;
         }
     }
@@ -1063,7 +1063,7 @@ matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double stre
     matrix<double> tmp = zero<double>(cId.rows(), cId.columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
-            if (i >= 0 and i < cId.rows() and j >= 0 and j < cId.columns()) {
+            if (i >= 0 && i < cId.rows() && j >= 0 && j < cId.columns()) {
                 tmp(i,j) = strenght*sin((membrane.time+membrane.dt)*freq);
                 fixedPoints(i,j) = true;
             }
