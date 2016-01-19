@@ -10,6 +10,7 @@
 #include "Vectorial.cpp"
 
 #include <sys/stat.h>
+#include <thread>
 
 
 int tolDef = 1E+05;     //  Número máximo de iteraciones por defecto.
@@ -519,12 +520,44 @@ matrixEDP_T EDP::solveWAVE(unsigned char bc, unsigned char opt, vectorEDP_T &x, 
                     sol(i,0) = cI(i,0) + dt*cId(i,0) + Q2D(x(0),y(i))*dt*dt/2.0*((cI(i+1,0)-2.0*cI(i,0)+cI(i-1,0))/(dy*dy) + (2.0*cI(i,1)-2.0*dx*BCL(x(0),y(i))-2.0*cI(i,0))/(dx*dx));
             }
         
-        for (int i=1; i<n-1; i++) {
-            for (int j=1; j<m-1; j++) {
-                if (!fixed(i,j))
-                    sol(i,j) = cI(i,j) + dt*cId(i,j) + Q2D(x(j),y(i))*dt*dt/2.0*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx));
+        //  Parallel
+        size_t nCores = std::thread::hardware_concurrency();
+        std::thread *workers = new std::thread[nCores];
+        
+        int start = 1;
+        int elements = (n-1) / nCores;
+        int end = elements;
+        
+        for (int i = 0; i < nCores; i++) {
+            if (i == nCores-1) {
+                end += (n-1) % nCores;
             }
+            
+            workers[i] = std::thread([start, end, this, n, m, fixed, &sol, cI, cId, x, y, dx, dy]() {
+                for (int i=start; i<end; i++) {
+                    for (int j=1; j<m-1; j++) {
+                        if (!fixed(i,j))
+                            sol(i,j) = cI(i,j) + dt*cId(i,j) + Q2D(x(j),y(i))*dt*dt/2.0*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx));
+                    }
+                }
+            });
+            
+            start = end;
+            end = start + elements;
+            
         }
+        
+        for (int i=0; i<nCores; i++) {
+            workers[i].join();
+        }
+        
+//        //  Linear
+//        for (int i=1; i<n-1; i++) {
+//            for (int j=1; j<m-1; j++) {
+//                if (!fixed(i,j))
+//                    sol(i,j) = cI(i,j) + dt*cId(i,j) + Q2D(x(j),y(i))*dt*dt/2.0*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx));
+//            }
+//        }
         
         if ((bc& BCR_df) != 0)  //  Condición en el borde derecho de la membrana
             for (int i=1; i<n-1; i++) {
@@ -563,13 +596,44 @@ matrixEDP_T EDP::solveWAVE(unsigned char bc, unsigned char opt, vectorEDP_T &x, 
                     sol(i,0) = 2.0*cI(i,0) + dt*dt*Q2D(x(0),y(i))*((cI(i+1,0)-2.0*cI(i,0)+cI(i-1,0))/(dy*dy) + (2.0*cI(i,1)-2.0*dx*BCL(x(0),y(i))-2.0*cI(i,0))/(dx*dx)) - old2D(i,0);
             }
         
+        //  Parallel
+        size_t nCores = std::thread::hardware_concurrency();
+        std::thread *workers = new std::thread[nCores];
         
-        for (int i=1; i<n-1; i++) {
-            for (int j=1; j<m-1; j++) {
-                if (!fixed(i,j))
-                    sol(i,j) = 2.0*cI(i,j) + dt*dt*Q2D(x(j),y(i))*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx)) - old2D(i,j);
+        int start = 1;
+        int elements = (n-1) / nCores;
+        int end = elements;
+        
+        for (int i = 0; i < nCores; i++) {
+            if (i == nCores-1) {
+                end += (n-1) % nCores;
             }
+            
+            workers[i] = std::thread([start, end, this, n, m, fixed, &sol, cI, cId, x, y, dx, dy]() {
+                for (int i=start; i<end; i++) {
+                    for (int j=1; j<m-1; j++) {
+                        if (!fixed(i,j))
+                            sol(i,j) = 2.0*cI(i,j) + dt*dt*Q2D(x(j),y(i))*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx)) - old2D(i,j);
+                    }
+                }
+            });
+            
+            start = end;
+            end = start + elements;
+            
         }
+        
+        for (int i=0; i<nCores; i++) {
+            workers[i].join();
+        }
+        
+//        //  Linear
+//        for (int i=1; i<n-1; i++) {
+//            for (int j=1; j<m-1; j++) {
+//                if (!fixed(i,j))
+//                    sol(i,j) = 2.0*cI(i,j) + dt*dt*Q2D(x(j),y(i))*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx)) - old2D(i,j);
+//            }
+//        }
         
         
         if ((bc& BCR_df) != 0)  //  Condición en el borde derecho de la membrana

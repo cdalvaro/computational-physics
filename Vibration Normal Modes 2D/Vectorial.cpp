@@ -584,23 +584,23 @@ operator>>(istream& in, vectorT& V)
 MAT_TEMPLATE inline ostream&
 operator<<(ostream& out, const vectorT& V)
 {
-    if (out == cout) {
-        out.precision(6);
-        out << "[" << V(0);
-        if (V.dim() > 1) {
-            for (int i=1; i<V.dim(); i++) {
-                out << ", " << V(i); 
-            }
-        }
-        out << "]\n";
-    } else {
-        out << V(0);
-        if (V.dim() > 1) {
-            for (int i=1; i<V.dim(); i++) {
-                out << "," << V(i); 
-            }
-        }
-    }
+//    if (out == cout) {
+//        out.precision(6);
+//        out << "[" << V(0);
+//        if (V.dim() > 1) {
+//            for (int i=1; i<V.dim(); i++) {
+//                out << ", " << V(i); 
+//            }
+//        }
+//        out << "]\n";
+//    } else {
+//        out << V(0);
+//        if (V.dim() > 1) {
+//            for (int i=1; i<V.dim(); i++) {
+//                out << "," << V(i); 
+//            }
+//        }
+//    }
     return out;
 }
 
@@ -2103,50 +2103,50 @@ operator>>(istream& in, matrixT& M)
 MAT_TEMPLATE inline ostream&
 operator<<(ostream& out, const matrixT& M)
 {
-    if (out == cout) {
-        out.width();
-        out << fixed;
-        out.fill(' ');
-        out.precision(6);
-        if (M.rows() == 1 && M.columns() == 1) {
-            out << M(0) << endl;
-        } else if (M.rows() == 1) {
-            out << "[" << M(0);
-            for (int j=1; j<M.columns(); j++) {
-                out << "\t" << M(j); 
-            }
-            out << "]\n";
-        } else {
-            out << "⎡" << M(0);
-            for (int j=1; j<M.columns(); j++) {
-                out << right << "\t" << M(j);
-            }
-            out.width();
-            out << "\t⎤\n";
-            for (int i=1; i<M.rows()-1; i++) {
-                out << "⎢" << M(i*M.columns());
-                for (int j=1; j<M.columns(); j++) {
-                    out << "\t" << M(i*M.columns() + j);
-                }
-                out << "\t⎥\n";
-            }
-            out << "⎣" << M((M.rows()-1)*M.columns());
-            for (int j=1; j<M.columns(); j++) {
-                out << "\t" << M((M.rows()-1)*M.columns() + j);
-            }
-            out << "\t⎦\n";
-        }
-        out.precision();
-    } else {
-        for (int i=0; i<M.rows(); i++) {
-            for (int j=0; j<M.columns()-1; j++) {
-                out << M(i*M.columns() + j) << ",";
-            }
-            out << M(i*M.columns() + (M.columns()-1));
-            if (i != M.rows()-1)
-                out << endl; 
-        }
-    }
+//    if (out == cout) {
+//        out.width();
+//        out << fixed;
+//        out.fill(' ');
+//        out.precision(6);
+//        if (M.rows() == 1 && M.columns() == 1) {
+//            out << M(0) << endl;
+//        } else if (M.rows() == 1) {
+//            out << "[" << M(0);
+//            for (int j=1; j<M.columns(); j++) {
+//                out << "\t" << M(j); 
+//            }
+//            out << "]\n";
+//        } else {
+//            out << "⎡" << M(0);
+//            for (int j=1; j<M.columns(); j++) {
+//                out << right << "\t" << M(j);
+//            }
+//            out.width();
+//            out << "\t⎤\n";
+//            for (int i=1; i<M.rows()-1; i++) {
+//                out << "⎢" << M(i*M.columns());
+//                for (int j=1; j<M.columns(); j++) {
+//                    out << "\t" << M(i*M.columns() + j);
+//                }
+//                out << "\t⎥\n";
+//            }
+//            out << "⎣" << M((M.rows()-1)*M.columns());
+//            for (int j=1; j<M.columns(); j++) {
+//                out << "\t" << M((M.rows()-1)*M.columns() + j);
+//            }
+//            out << "\t⎦\n";
+//        }
+//        out.precision();
+//    } else {
+//        for (int i=0; i<M.rows(); i++) {
+//            for (int j=0; j<M.columns()-1; j++) {
+//                out << M(i*M.columns() + j) << ",";
+//            }
+//            out << M(i*M.columns() + (M.columns()-1));
+//            if (i != M.rows()-1)
+//                out << endl; 
+//        }
+//    }
     return out;
 }
 
