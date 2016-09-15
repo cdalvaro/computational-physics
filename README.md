@@ -1,6 +1,8 @@
+[![build status](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/badges/master/build.svg)](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/commits/master)
+[![coverage report](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/badges/master/coverage.svg)](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/commits/master)
 # Numerical PDEs
 
-This program contains some examples for solving wave functions numerically.
+This program contains some examples for solving wave functions numerically.  
 It also contains other methods to solve Laplace's and Poisson's equations, it can compute eigenvalues and eigenvectors for matrices, also it can solve systems of equations.
 
 This project uses a custom matrix class to perform all the operations as well as an OpenGL class to plot the results in real time.
