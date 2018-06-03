@@ -13,8 +13,7 @@
 #include "MyOpenGL.h"
 #include "SolveEDP.h"
 
-using namespace std;
-using namespace OpenGL;
+using namespace CDA;
 
 
 //  Ejemplos
@@ -53,14 +52,14 @@ void calcSol();
 
 
 //  Función pulso y función sinusoidal
-matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght);
-matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double strenght, double freq);
+Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght);
+Matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double strenght, double freq);
 
 
 //  Variables compartidas
-matrix<double> cI, cId, sinu;
-matrix<bool> fixedPoints;
-vector<double> vX, vY;
+Matrix<double> cI, cId, sinu;
+Matrix<bool> fixedPoints;
+Vector<double> vX, vY;
 int sPosX, sPosY, sRangeX, sRangeY;
 double Ten, P, Lx, Ly, dt, freqSignal, sForce;
 double const PI = acos(-1.0);
@@ -70,17 +69,17 @@ EDP membrane;
 
 int main(int argc, const char * argv[])
 {
-    cout << endl;
-    cout << "   Computación Avanzada\n";
-    cout << "   Carlos David Álvaro Yunta\n";
-    cout << "   Proyecto - Ecuación de ondas y cálculo de autovalores/autovectores\n\n";
+    std::cout << std::endl;
+    std::cout << "   Computación Avanzada\n";
+    std::cout << "   Carlos David Álvaro Yunta\n";
+    std::cout << "   Proyecto - Ecuación de ondas y cálculo de autovalores/autovectores\n\n";
     
     
     //  Parámetros de la ecuación de ondas: tiempo inicial, valor de c², condiciones de contorno, directorio con autovalores ya calculados
     membrane.time = 0.0;
     membrane.Q2D = QQ;
     membrane.BCT = membrane.BCL = membrane.BCR = membrane.BCB = BC;
-    const string home = getenv("HOME");
+    const std::string home = getenv("HOME");
     membrane.pathEDP = home + "/Desktop/Eigen Values/";
     int example;
     
@@ -89,11 +88,11 @@ int main(int argc, const char * argv[])
     //  1. normalModes
     //  2. chladni
     //  3. diffraction
-    model = diffraction;
+    model = normalModes;
     
     //  ELIGE UN EJEMPLO
     //  1. normalModes: 1 - 5
-    example = 3;
+    example = 2;
     
     
     switch (model) {
@@ -126,10 +125,10 @@ int main(int argc, const char * argv[])
             }
             
             //  Plot
-            MyOpenGL_Class::setWindowName("Vibration Modes");
-            MyOpenGL_Class::setStepTime(membrane.dt);
-            MyOpenGL_Class::setUpdateData(calcSol);
-            plot(vX, vY, cI, Shading | Axis_On, argc, argv);
+            OpenGL::Plot::setWindowName("Vibration Modes");
+            OpenGL::Plot::setStepTime(membrane.dt);
+            OpenGL::Plot::setUpdateData(calcSol);
+            OpenGL::plot(vX, vY, cI, Shading | Axis_On, argc, argv);
             
             break;
             
@@ -154,10 +153,10 @@ int main(int argc, const char * argv[])
             }
             
             //  Plot
-            MyOpenGL_Class::setWindowName("Chladni Patterns");
-            MyOpenGL_Class::setStepTime(membrane.dt);
-            MyOpenGL_Class::setUpdateData(calcSol);
-            plot(vX, vY, cI, Shading, argc, argv);
+            OpenGL::Plot::setWindowName("Chladni Patterns");
+            OpenGL::Plot::setStepTime(membrane.dt);
+            OpenGL::Plot::setUpdateData(calcSol);
+            OpenGL::plot(vX, vY, cI, Shading, argc, argv);
             break;
             
         case diffraction:
@@ -197,10 +196,10 @@ int main(int argc, const char * argv[])
             }
             
             //  Plot
-            MyOpenGL_Class::setWindowName("Diffraction");
-            MyOpenGL_Class::setStepTime(membrane.dt);
-            MyOpenGL_Class::setUpdateData(calcSol);
-            plot(vX, vY, cI, Shading, argc, argv);
+            OpenGL::Plot::setWindowName("Diffraction");
+            OpenGL::Plot::setStepTime(membrane.dt);
+            OpenGL::Plot::setUpdateData(calcSol);
+            OpenGL::plot(vX, vY, cI, Shading, argc, argv);
             break;
             
         default:
@@ -232,16 +231,16 @@ void vibration_modes_A()                    //  Bordes fijos
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -267,16 +266,16 @@ void vibration_modes_B()                    //  Bordes libres
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -302,16 +301,16 @@ void vibration_modes_C()                    //  Composición de modos (bordes fi
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -338,16 +337,16 @@ void vibration_modes_D()                    //  Composición de modos (bordes li
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -374,16 +373,16 @@ void pulse()                                //  Pulsos aplicados sobre la membra
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -414,16 +413,16 @@ void chladni_patterns_A()                   //  Figuras de Chladni
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -439,9 +438,9 @@ void chladni_patterns_A()                   //  Figuras de Chladni
     sRangeX = 2;
     sRangeY = 2;
     sForce = 0.005;
-    freqSignal = (double)sqrt((double)QQ(vX(0),vY(0))*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
+    freqSignal = (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
 }
 
 void chladni_patterns_B()                   //  Figuras de Chladni
@@ -460,16 +459,16 @@ void chladni_patterns_B()                   //  Figuras de Chladni
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -485,13 +484,13 @@ void chladni_patterns_B()                   //  Figuras de Chladni
     sRangeX = 2;
     sRangeY = 2;
     sForce = 0.005;
-    freqSignal = (double)sqrt((double)QQ(vX(0),vY(0))*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
+    freqSignal = (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
     mx = 4;             //  Modo X
     my = 6;             //  Modo Y
-    freqSignal += (double)sqrt((double)QQ(vX(0),vY(0))*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
+    freqSignal += (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
 }
 
 void chladni_patterns_C()                   //  Figuras de Chladni
@@ -510,16 +509,16 @@ void chladni_patterns_C()                   //  Figuras de Chladni
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -535,9 +534,9 @@ void chladni_patterns_C()                   //  Figuras de Chladni
     sRangeX = 2;
     sRangeY = 2;
     sForce = 0.005;
-    freqSignal = (double)sqrt((double)QQ(vX(0),vY(0))*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
+    freqSignal = (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
 }
 
 
@@ -558,16 +557,16 @@ void single_slit_A()                        //  Una rendija de anchura pequeña
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -602,10 +601,10 @@ void single_slit_A()                        //  Una rendija de anchura pequeña
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 25.0;          //  Frecuencia de oscilación de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 void single_slit_B()                        //  Una rendija de anchura grande
@@ -624,16 +623,16 @@ void single_slit_B()                        //  Una rendija de anchura grande
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -664,10 +663,10 @@ void single_slit_B()                        //  Una rendija de anchura grande
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 void double_slit()                          //  Doble rendija
@@ -686,16 +685,16 @@ void double_slit()                          //  Doble rendija
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -735,10 +734,10 @@ void double_slit()                          //  Doble rendija
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 void cylinder()                             //  Cilindro
@@ -757,16 +756,16 @@ void cylinder()                             //  Cilindro
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -800,10 +799,10 @@ void cylinder()                             //  Cilindro
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 void single_slit_circular_wave()            //  Una rendija de anchura con ondas circulares
@@ -822,16 +821,16 @@ void single_slit_circular_wave()            //  Una rendija de anchura con ondas
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -866,10 +865,10 @@ void single_slit_circular_wave()            //  Una rendija de anchura con ondas
     sRangeY = 2;                //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 void double_slit_circular_wave()            //  Doble rendija con ondas circulares
@@ -888,16 +887,16 @@ void double_slit_circular_wave()            //  Doble rendija con ondas circular
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -937,10 +936,10 @@ void double_slit_circular_wave()            //  Doble rendija con ondas circular
     sRangeY = 2;                //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 void cylinder_circular_wave()               //  Cilindro con onda circular
@@ -959,16 +958,16 @@ void cylinder_circular_wave()               //  Cilindro con onda circular
     int n = Ly/dy + 1;
     int m = Lx/dx + 1;
     
-    vX = zero<double>(m);
-    vY = zero<double>(n);
-    cI = zero<double>(n,m);
-    cId = zero<double>(n,m);
-    fixedPoints = zero<bool>(n,m);
+    vX = Vector<double>::Zero(m);
+    vY = Vector<double>::Zero(n);
+    cI = CDA::zero<double>(n,m);
+    cId = CDA::zero<double>(n,m);
+    fixedPoints = CDA::zero<bool>(n,m);
     
     for (int i=0; i<n; i++)
-        vY(i) = i*dy;
+        vY[i] = i*dy;
     for (int j=0; j<m; j++)
-        vX(j) = j*dx;
+        vX[j] = j*dx;
     
     
     //  CONDICIONES DE CONTORNO
@@ -1002,10 +1001,10 @@ void cylinder_circular_wave()               //  Cilindro con onda circular
     sRangeY = 2;                //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = zero<double>(n, m);
+    sinu = CDA::zero<double>(n, m);
     
     //  PARA EL PLOT
-    ColorMap::colormap = JET_FIXED;
+    OpenGL::ColorMap::colormap = JET_FIXED;
 }
 
 
@@ -1036,18 +1035,18 @@ void calcSol()                              //  Calcula los nuevos valores de la
     cI = membrane.solveWave(BConditions, vX, vY, cI, cId, fixedPoints);
     
     if (membrane.dt != dt) {
-        MyOpenGL_Class::setStepTime(membrane.dt);
+        OpenGL::Plot::setStepTime(membrane.dt);
         dt = membrane.dt;
     }
     
-    MyOpenGL_Class::setData(vX, vY, cI, 0);
+    OpenGL::Plot::setData(vX, vY, cI, 0);
 }
 
 
 //  FUNCIÓN PULSO Y FUNCIÓN SINUSOIDAL
-matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)                              //  Función pulso
+Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)                              //  Función pulso
 {
-    matrix<double> tmp = zero<double>(cI.rows(), cI.columns());
+    Matrix<double> tmp = CDA::zero<double>(cI.rows(), cI.columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
             if (i >= 0 && i < cI.rows() && j >= 0 && j < cI.columns())
@@ -1058,9 +1057,9 @@ matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)      
     return tmp;
 }
 
-matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double strenght, double freq)      //  Fuerza sinusoidal
+Matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double strenght, double freq)      //  Fuerza sinusoidal
 {
-    matrix<double> tmp = zero<double>(cId.rows(), cId.columns());
+    Matrix<double> tmp = CDA::zero<double>(cId.rows(), cId.columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
             if (i >= 0 && i < cId.rows() && j >= 0 && j < cId.columns()) {

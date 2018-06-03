@@ -1,0 +1,8 @@
+# Git ignore file
+
+*.DS_Store
+
+*.xcodeproj/**/xcuserdata/
+
+build/
+

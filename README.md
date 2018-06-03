@@ -1,5 +1,4 @@
 [![build status](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/badges/master/build.svg)](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/commits/master)
-[![coverage report](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/badges/master/coverage.svg)](https://gitlab.cdalvaro.com/cdalvaro/VibrationNormalModes2D/commits/master)
 # Numerical PDEs
 
 This program contains some examples for solving wave functions numerically.  

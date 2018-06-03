@@ -1,0 +1,7 @@
+language: c++
+os:
+    - osx
+
+script:
+    - xcodebuild clean build analyze -project 'Vibration Normal Modes 2D.xcodeproj
+

@@ -17,7 +17,10 @@
 #include <GL/glut.h>
 #endif
 
-OpenGL_Class myOpenGL;
+using namespace CDA;
+
+OpenGL::Plot OpenGL_Plot;
+
 bool initOpenGL = false;
 bool defaultSettings = false;
 int plot_number = 1;
@@ -33,18 +36,18 @@ void upPlot()
 
 
 //  OPENGL - CLASS
-//  Init MyOpenGL_Class
-void OpenGL_Class::initRendering()
+//  Init OpenGL::Plot
+void OpenGL::Plot::initRendering()
 {
     glEnable(GL_DEPTH_TEST);
 }
 
 
 //  Set data
-void OpenGL_Class::setData(vector<double> &x, vector<double> &y, unsigned char setDefault)
+void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, unsigned char setDefault)
 {
-    myOpenGL._vX = x;
-    myOpenGL._vY = y;
+    OpenGL_Plot._vX = x;
+    OpenGL_Plot._vY = y;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D | Update_D);
@@ -52,16 +55,16 @@ void OpenGL_Class::setData(vector<double> &x, vector<double> &y, unsigned char s
     }
 }
 
-void OpenGL_Class::setData(vector<double> &x, vector<double> &y)
+void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y)
 {
     setData(x, y, SetDefault);
 }
 
-void OpenGL_Class::setData(vector<double> &x, vector<double> &y, vector<double> &z, unsigned char setDefault)
+void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char setDefault)
 {
-    myOpenGL._vX = x;
-    myOpenGL._vY = y;
-    myOpenGL._vZ = z;
+    OpenGL_Plot._vX = x;
+    OpenGL_Plot._vY = y;
+    OpenGL_Plot._vZ = z;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D | Update_D);
@@ -69,16 +72,16 @@ void OpenGL_Class::setData(vector<double> &x, vector<double> &y, vector<double> 
     }
 }
 
-void OpenGL_Class::setData(vector<double> &x, vector<double> &y, vector<double> &z)
+void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z)
 {
     setData(x, y, z, SetDefault);
 }
 
-void OpenGL_Class::setData(vector<double> &x, vector<double> &y, matrix<double> &z, unsigned char setDefault)
+void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char setDefault)
 {
-    myOpenGL._vX = x;
-    myOpenGL._vY = y;
-    myOpenGL._mZ = z;
+    OpenGL_Plot._vX = x;
+    OpenGL_Plot._vY = y;
+    OpenGL_Plot._mZ = z;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D | Update_D);
@@ -86,24 +89,24 @@ void OpenGL_Class::setData(vector<double> &x, vector<double> &y, matrix<double> 
     }
 }
 
-void OpenGL_Class::setData(vector<double> &x, vector<double> &y, matrix<double> &z)
+void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z)
 {
     setData(x, y, z, SetDefault);
 }
 
 
 //  Set ajustments
-void OpenGL_Class::setColors(float red, float green, float blue)
+void OpenGL::Plot::setColors(float red, float green, float blue)
 {
-    myOpenGL._red = red;
-    myOpenGL._green = green;
-    myOpenGL._blue = blue;
+    OpenGL_Plot._red = red;
+    OpenGL_Plot._green = green;
+    OpenGL_Plot._blue = blue;
 }
 
-void OpenGL_Class::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
+void OpenGL::Plot::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
 {
-    myOpenGL._zoomX = eyeInitPosX = eyePosX = zoomX;
-    myOpenGL._zoomY = eyeInitPosY = eyePosY = zoomY;
+    OpenGL_Plot._zoomX = eyeInitPosX = eyePosX = zoomX;
+    OpenGL_Plot._zoomY = eyeInitPosY = eyePosY = zoomY;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | WN_D | dt_D | WSize_D | Update_D);
@@ -111,16 +114,16 @@ void OpenGL_Class::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
     }
 }
 
-void OpenGL_Class::setZooms(float zoomX, float zoomY)
+void OpenGL::Plot::setZooms(float zoomX, float zoomY)
 {
     setZoomsD(zoomX, zoomY, SetDefault);
 }
 
-void OpenGL_Class::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned char setDefault)
+void OpenGL::Plot::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned char setDefault)
 {
-    myOpenGL._zoomX = eyeInitPosX = eyePosX = zoomX;
-    myOpenGL._zoomY = eyeInitPosY = eyePosY = zoomY;
-    myOpenGL._zoomZ = eyeInitPosZ = eyePosZ = zoomZ;
+    OpenGL_Plot._zoomX = eyeInitPosX = eyePosX = zoomX;
+    OpenGL_Plot._zoomY = eyeInitPosY = eyePosY = zoomY;
+    OpenGL_Plot._zoomZ = eyeInitPosZ = eyePosZ = zoomZ;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | WN_D | dt_D | WSize_D | Update_D);
@@ -128,16 +131,16 @@ void OpenGL_Class::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned cha
     }
 }
 
-void OpenGL_Class::setZooms(float zoomX, float zoomY, float zoomZ)
+void OpenGL::Plot::setZooms(float zoomX, float zoomY, float zoomZ)
 {
     setZoomsD(zoomX, zoomY, zoomZ, SetDefault);
 }
 
-void OpenGL_Class::setAxisDirection(float rotX, float rotY, float rotZ, unsigned char setDefault)
+void OpenGL::Plot::setAxisDirection(float rotX, float rotY, float rotZ, unsigned char setDefault)
 {
-    myOpenGL._rotX = rotX;
-    myOpenGL._rotY = rotY;
-    myOpenGL._rotZ = rotZ;
+    OpenGL_Plot._rotX = rotX;
+    OpenGL_Plot._rotY = rotY;
+    OpenGL_Plot._rotZ = rotZ;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Zoom_D | WN_D | dt_D | WSize_D | Update_D);
@@ -145,19 +148,19 @@ void OpenGL_Class::setAxisDirection(float rotX, float rotY, float rotZ, unsigned
     }
 }
 
-void OpenGL_Class::setAxisDirection(float rotX, float rotY, float rotZ)
+void OpenGL::Plot::setAxisDirection(float rotX, float rotY, float rotZ)
 {
     setAxisDirection(rotX, rotY, rotZ, SetDefault);
 }
 
-void OpenGL_Class::setStepTime(float dt_milli, unsigned char setDefault)
+void OpenGL::Plot::setStepTime(float dt_milli, unsigned char setDefault)
 {
     if (dt_milli >= 1E-4) {
-        myOpenGL._dt = (int)ceil(dt_milli*1E4);
-        myOpenGL._plots_calc = (int)1;
+        OpenGL_Plot._dt = (int)ceil(dt_milli*1E4);
+        OpenGL_Plot._plots_calc = (int)1;
     } else {
-        myOpenGL._dt = (int)1;
-        myOpenGL._plots_calc = (int)ceil(1/(dt_milli*1E4));
+        OpenGL_Plot._dt = (int)1;
+        OpenGL_Plot._plots_calc = (int)ceil(1/(dt_milli*1E4));
     }
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
@@ -166,15 +169,15 @@ void OpenGL_Class::setStepTime(float dt_milli, unsigned char setDefault)
     }
 }
 
-void OpenGL_Class::setStepTime(float dt_milli)
+void OpenGL::Plot::setStepTime(float dt_milli)
 {
     setStepTime(dt_milli, SetDefault);
 }
 
-void OpenGL_Class::setWindowSize(float Width, float Height, unsigned char setDefault)
+void OpenGL::Plot::setWindowSize(float Width, float Height, unsigned char setDefault)
 {
-    myOpenGL._W = Width;
-    myOpenGL._H = Height;
+    OpenGL_Plot._W = Width;
+    OpenGL_Plot._H = Height;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | Update_D);
@@ -182,14 +185,14 @@ void OpenGL_Class::setWindowSize(float Width, float Height, unsigned char setDef
     }
 }
 
-void OpenGL_Class::setWindowSize(float Width, float Height)
+void OpenGL::Plot::setWindowSize(float Width, float Height)
 {
     setWindowSize(Width, Height, SetDefault);
 }
 
-void OpenGL_Class::setUpdateData(void updateData(), unsigned char setDefault)
+void OpenGL::Plot::setUpdateData(void updateData(), unsigned char setDefault)
 {
-    myOpenGL._updateData = updateData;
+    OpenGL_Plot._updateData = updateData;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | WN_D | dt_D | WSize_D);
@@ -197,14 +200,14 @@ void OpenGL_Class::setUpdateData(void updateData(), unsigned char setDefault)
     }
 }
 
-void OpenGL_Class::setUpdateData(void updateData())
+void OpenGL::Plot::setUpdateData(void updateData())
 {
     setUpdateData(updateData, SetDefault);
 }
 
-void OpenGL_Class::setWindowName(string windowName, unsigned char setDefault)
+void OpenGL::Plot::setWindowName(std::string windowName, unsigned char setDefault)
 {
-    myOpenGL._windowName = windowName;
+    OpenGL_Plot._windowName = windowName;
     
     if (!defaultSettings && (setDefault& SetDefault) != 0) {
         setDefaultParameters(Rot_D | Zoom_D | dt_D | WSize_D | Update_D);
@@ -212,12 +215,12 @@ void OpenGL_Class::setWindowName(string windowName, unsigned char setDefault)
     }
 }
 
-void OpenGL_Class::setWindowName(string windowName)
+void OpenGL::Plot::setWindowName(std::string windowName)
 {
     setWindowName(windowName, SetDefault);
 }
 
-void OpenGL_Class::setDefaultParameters(unsigned char params)
+void OpenGL::Plot::setDefaultParameters(unsigned char params)
 {
     if ((params& Zoom_D) != 0 && !defaultSettings)
         setZoomsD(1.0, 1.0, 1.0, 0);
@@ -242,41 +245,41 @@ void OpenGL_Class::setDefaultParameters(unsigned char params)
 
 
 //  Plot functions
-void OpenGL_Class::reshape2D(int Width, int Height)
+void OpenGL::Plot::reshape2D(int Width, int Height)
 {
     glViewport (0, 0, (GLsizei)Width, (GLsizei)Height);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     gluPerspective (90, (GLfloat)Width / (GLfloat)Height, -100.0, 10000.0);
-    myOpenGL._W = Width;
-    myOpenGL._H = Height;
+    OpenGL_Plot._W = Width;
+    OpenGL_Plot._H = Height;
     glMatrixMode (GL_MODELVIEW);
 }
 
-void OpenGL_Class::reshape3D(int Width, int Height)
+void OpenGL::Plot::reshape3D(int Width, int Height)
 {
     glViewport (0, 0, (GLsizei)Width, (GLsizei)Height);
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity ();
     gluPerspective(45.0f, Width/Height, 0.1f, 100.0f);
-    myOpenGL._W = Width;
-    myOpenGL._H = Height;
+    OpenGL_Plot._W = Width;
+    OpenGL_Plot._H = Height;
     glMatrixMode (GL_MODELVIEW);
 }
 
-void OpenGL_Class::refreshCameraPosition(int value)
+void OpenGL::Plot::refreshCameraPosition(int value)
 {
     if ((pKeys &UP) != 0)
-        myOpenGL._rotX += dAng;
+        OpenGL_Plot._rotX += dAng;
     
     if ((pKeys &DOWN) != 0)
-        myOpenGL._rotX -= dAng;
+        OpenGL_Plot._rotX -= dAng;
     
     if ((pKeys &LEFT) != 0)
-        myOpenGL._rotY -= dAng;
+        OpenGL_Plot._rotY -= dAng;
     
     if ((pKeys &RIGHT) != 0)
-        myOpenGL._rotY += dAng;
+        OpenGL_Plot._rotY += dAng;
     
     if ((pKeys &Z_in) != 0) {
         eyePosX -= eyePosX*dZoom;
@@ -292,12 +295,12 @@ void OpenGL_Class::refreshCameraPosition(int value)
         zoom += zoom*dZoom;
     }
     
-    glutTimerFunc(myOpenGL._plots_calc, refreshCameraPosition, 2);
+    glutTimerFunc(OpenGL_Plot._plots_calc, refreshCameraPosition, 2);
 }
 
 
 //  2D functions
-void OpenGL_Class::display2D()
+void OpenGL::Plot::display2D()
 {
     glClearColor (1.0, 1.0, 1.0, 1.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -309,8 +312,8 @@ void OpenGL_Class::display2D()
     
     glPushMatrix();
 	
-    myOpenGL.plotAxes2D();
-    myOpenGL.drawSolution2D();
+    OpenGL_Plot.plotAxes2D();
+    OpenGL_Plot.drawSolution2D();
     
     glFlush();
     glutSwapBuffers();
@@ -318,89 +321,89 @@ void OpenGL_Class::display2D()
     initOpenGL = true;
 }
 
-void OpenGL_Class::drawSolution2D()
+void OpenGL::Plot::drawSolution2D()
 {
-    myOpenGL._vMax = myOpenGL._vY.max();
-    myOpenGL._vMin = myOpenGL._vY.min();
+    OpenGL_Plot._vMax = OpenGL_Plot._vY.MaximumElement();
+    OpenGL_Plot._vMin = OpenGL_Plot._vY.MinimumElement();
     
     float adjX, adjY;
-    adjX = myOpenGL._cX - myOpenGL._left_right;
-    //adjY = myOpenGL._cY - myOpenGL._up_down;
-    adjY = - myOpenGL._up_down;
+    adjX = OpenGL_Plot._cX - OpenGL_Plot._left_right;
+    //adjY = OpenGL_Plot._cY - OpenGL_Plot._up_down;
+    adjY = - OpenGL_Plot._up_down;
     
-    if ((myOpenGL._options& Lines) != 0) {
+    if ((OpenGL_Plot._options& Lines) != 0) {
         glLineWidth(1.0);
         glBegin(GL_LINE_STRIP);
-    } else if ((myOpenGL._options& Points) != 0) {
+    } else if ((OpenGL_Plot._options& Points) != 0) {
         glBegin(GL_POINTS);
     } else {
         glLineWidth(1.0);
         glBegin(GL_LINE_STRIP);
     }
     
-    for (int i=0; i<myOpenGL._vX.dim(); i++) {
-        ColorMap::setColor(myOpenGL._vY(i), myOpenGL._vMin, myOpenGL._vMax);
-        glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-        glVertex2f((myOpenGL._vX(i) - adjX)*myOpenGL._zoomX, (myOpenGL._vY(i) - adjY)*myOpenGL._zoomY);
+    for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+        ColorMap::setColor(OpenGL_Plot._vY[i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+        glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+        glVertex2f((OpenGL_Plot._vX[i] - adjX)*OpenGL_Plot._zoomX, (OpenGL_Plot._vY[i] - adjY)*OpenGL_Plot._zoomY);
     }
     
     glEnd();
 }
 
-void OpenGL_Class::timerFunction2D(int value)
+void OpenGL::Plot::timerFunction2D(int value)
 {
-    myOpenGL._updateData();
+    OpenGL_Plot._updateData();
     
-    if (myOpenGL._plots_calc > 1) {
-        if (plot_number%myOpenGL._plots_calc == 0){
+    if (OpenGL_Plot._plots_calc > 1) {
+        if (plot_number%OpenGL_Plot._plots_calc == 0){
             plot_number = (int)0;
-            myOpenGL.display2D();
+            OpenGL_Plot.display2D();
         }
     } else
-        myOpenGL.display2D();
+        OpenGL_Plot.display2D();
     
     glutPostRedisplay();
-    glutTimerFunc(myOpenGL._dt, timerFunction2D, 0);
+    glutTimerFunc(OpenGL_Plot._dt, timerFunction2D, 0);
 }
 
-void OpenGL_Class::plotAxes2D()
+void OpenGL::Plot::plotAxes2D()
 {
-    const float tmpXmax = myOpenGL._vX.max(), tmpYmax = myOpenGL._vY.max();
-    const float tmpLimXmax = myOpenGL._limXmax, tmpLimYmax = myOpenGL._limYmax;
+    const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement();
+    const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax;
     
-    const float tmpXmin = myOpenGL._vX.min(), tmpYmin = myOpenGL._vY.min();
-    const float tmpLimXmin = myOpenGL._limXmin, tmpLimYmin = myOpenGL._limYmin;
+    const float tmpXmin = OpenGL_Plot._vX.MinimumElement(), tmpYmin = OpenGL_Plot._vY.MinimumElement();
+    const float tmpLimXmin = OpenGL_Plot._limXmin, tmpLimYmin = OpenGL_Plot._limYmin;
     
-    myOpenGL._limXmax = max(tmpXmax, tmpLimXmax);
-    myOpenGL._limYmax = max(tmpYmax, tmpLimYmax);
+    OpenGL_Plot._limXmax = std::max(tmpXmax, tmpLimXmax);
+    OpenGL_Plot._limYmax = std::max(tmpYmax, tmpLimYmax);
     
-    myOpenGL._limXmin = min(tmpXmin, tmpLimXmin);
-    myOpenGL._limYmin = min(tmpYmin, tmpLimYmin);
+    OpenGL_Plot._limXmin = std::min(tmpXmin, tmpLimXmin);
+    OpenGL_Plot._limYmin = std::min(tmpYmin, tmpLimYmin);
     
     float compX, compY;
-    compX = myOpenGL._cX - myOpenGL._left_right;
-    //compY = myOpenGL._cY - myOpenGL._up_down;
-    compY = - myOpenGL._up_down;
+    compX = OpenGL_Plot._cX - OpenGL_Plot._left_right;
+    //compY = OpenGL_Plot._cY - OpenGL_Plot._up_down;
+    compY = - OpenGL_Plot._up_down;
     
     glLineWidth(1.0);
     glBegin(GL_LINES);
     glColor3f(0.0, 0.0, 0.0);
-    glVertex2f((myOpenGL._limXmin*0.01 - compX)*myOpenGL._zoomX, -compY*myOpenGL._zoomY);
-    glVertex2f((myOpenGL._limXmax*1.01 - compX)*myOpenGL._zoomX, -compY*myOpenGL._zoomY);
-    glVertex2f(-compX*myOpenGL._zoomX, (myOpenGL._limYmin*1.01 - compY)*myOpenGL._zoomY);
-    glVertex2f(-compX*myOpenGL._zoomX, (myOpenGL._limYmax*1.01 - compY)*myOpenGL._zoomY);
+    glVertex2f((OpenGL_Plot._limXmin*0.01 - compX)*OpenGL_Plot._zoomX, -compY*OpenGL_Plot._zoomY);
+    glVertex2f((OpenGL_Plot._limXmax*1.01 - compX)*OpenGL_Plot._zoomX, -compY*OpenGL_Plot._zoomY);
+    glVertex2f(-compX*OpenGL_Plot._zoomX, (OpenGL_Plot._limYmin*1.01 - compY)*OpenGL_Plot._zoomY);
+    glVertex2f(-compX*OpenGL_Plot._zoomX, (OpenGL_Plot._limYmax*1.01 - compY)*OpenGL_Plot._zoomY);
     glEnd();
 }
 
-void OpenGL_Class::center2D()
+void OpenGL::Plot::center2D()
 {
-    myOpenGL._cX = (myOpenGL._vX.max() - myOpenGL._vX.min())/2.0;
-    myOpenGL._cY = (myOpenGL._vY.max() - myOpenGL._vY.min())/2.0;
+    OpenGL_Plot._cX = (OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
+    OpenGL_Plot._cY = (OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
 }
 
 
 //  3D functions
-void OpenGL_Class::display3D()
+void OpenGL::Plot::display3D()
 {
     glClearColor (1.0f, 1.0f, 1.0f, 1.0f);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -408,20 +411,20 @@ void OpenGL_Class::display3D()
     glLoadIdentity();
     
     if (initOpenGL != true)
-        myOpenGL.center3D();
+        OpenGL_Plot.center3D();
     
     gluLookAt(eyePosX, eyePosZ, eyePosY,
               0.0f, 0.0f, 0.0f,
               0.0f, 1.0f, 0.0f);
     
-    glRotatef(myOpenGL._rotX, -1.0f, 0.0f, 1.0f);
-    glRotatef(myOpenGL._rotY, 0.0f, 1.0f, 0.0f);
+    glRotatef(OpenGL_Plot._rotX, -1.0f, 0.0f, 1.0f);
+    glRotatef(OpenGL_Plot._rotY, 0.0f, 1.0f, 0.0f);
     glPushMatrix();
 	
-    if ((myOpenGL._options &Axis_On) != 0)
-        myOpenGL.plotAxes3D();
+    if ((OpenGL_Plot._options &Axis_On) != 0)
+        OpenGL_Plot.plotAxes3D();
     
-    myOpenGL.drawSolution3D();
+    OpenGL_Plot.drawSolution3D();
     
     glFlush();
     glutSwapBuffers();
@@ -429,76 +432,76 @@ void OpenGL_Class::display3D()
     initOpenGL = true;
 }
 
-void OpenGL_Class::drawSolution3D()
+void OpenGL::Plot::drawSolution3D()
 {
-    myOpenGL._vMax = myOpenGL._mZ.max();
-    myOpenGL._vMin = myOpenGL._mZ.min();
+    OpenGL_Plot._vMax = OpenGL_Plot._mZ.max();
+    OpenGL_Plot._vMin = OpenGL_Plot._mZ.min();
     
     float adjX, adjY, adjZ;
-    adjX = -myOpenGL._cX;
-    adjY = myOpenGL._left_right - myOpenGL._cY;
-    adjZ = myOpenGL._up_down;
-    //adjZ = myOpenGL._up_down - myOpenGL._cZ;
+    adjX = -OpenGL_Plot._cX;
+    adjY = OpenGL_Plot._left_right - OpenGL_Plot._cY;
+    adjZ = OpenGL_Plot._up_down;
+    //adjZ = OpenGL_Plot._up_down - OpenGL_Plot._cZ;
     
-    if ((myOpenGL._options &Lines) != 0) {
-        for (int i=0; i<myOpenGL._vY.dim(); i++) {
+    if ((OpenGL_Plot._options &Lines) != 0) {
+        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<myOpenGL._vX.dim(); j++) {
-                ColorMap::setColor(myOpenGL._mZ(i,j), myOpenGL._vMin, myOpenGL._vMax);
-                glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(j) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(i,j) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(i) + adjY));
+            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+                ColorMap::setColor(OpenGL_Plot._mZ(i,j), OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+                glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(i,j) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
             }
             glEnd();
         }
         
-        for (int i=0; i<myOpenGL._vX.dim(); i++) {
+        for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<myOpenGL._vY.dim(); j++) {
-                ColorMap::setColor(myOpenGL._mZ(j,i), myOpenGL._vMin, myOpenGL._vMax);
-                glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(i) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(j,i) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(j) + adjY));
+            for (int j=0; j<OpenGL_Plot._vY.Size(); j++) {
+                ColorMap::setColor(OpenGL_Plot._mZ(j,i), OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+                glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[i] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(j,i) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[j] + adjY));
             }
             glEnd();
         }
-    } else if ((myOpenGL._options &Shading) != 0) {
-        for (int i=0; i<myOpenGL._vY.dim()-1; i++) {
+    } else if ((OpenGL_Plot._options &Shading) != 0) {
+        for (int i=0; i<OpenGL_Plot._vY.Size()-1; i++) {
             glBegin(GL_TRIANGLE_STRIP);
-            for (int j=0; j<myOpenGL._vX.dim(); j++) {
-                ColorMap::setColor(myOpenGL._mZ(i,j), myOpenGL._vMin, myOpenGL._vMax);
-                glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(j) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(i,j) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(i) + adjY));
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(j) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(i+1,j) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(i+1) + adjY));
+            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+                ColorMap::setColor(OpenGL_Plot._mZ(i,j), OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+                glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(i,j) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(i+1,j) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i+1] + adjY));
             }
             glEnd();
         }
-    } else if ((myOpenGL._options &Points) != 0) {
-        for (int i=0; i<myOpenGL._vY.dim(); i++) {
+    } else if ((OpenGL_Plot._options &Points) != 0) {
+        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
             glBegin(GL_POINTS);
             glPointSize(5.0f);
-            for (int j=0; j<myOpenGL._vX.dim(); j++) {
-                ColorMap::setColor(myOpenGL._mZ(i,j), myOpenGL._vMin, myOpenGL._vMax);
-                glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(j) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(i,j) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(i) + adjY));
+            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+                ColorMap::setColor(OpenGL_Plot._mZ(i,j), OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+                glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(i,j) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
             }
             glEnd();
         }
     } else {
-        for (int i=0; i<myOpenGL._vY.dim(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<myOpenGL._vX.dim(); j++) {
-                ColorMap::setColor(myOpenGL._mZ(i,j), myOpenGL._vMin, myOpenGL._vMax);
-                glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(j) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(i,j) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(i) + adjY));
+            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+                ColorMap::setColor(OpenGL_Plot._mZ(i,j), OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+                glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(i,j) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
             }
             glEnd();
         }
         
-        for (int i=0; i<myOpenGL._vX.dim(); i++) {
+        for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<myOpenGL._vY.dim(); j++) {
-                ColorMap::setColor(myOpenGL._mZ(j,i), myOpenGL._vMin, myOpenGL._vMax);
-                glColor3f(myOpenGL._red, myOpenGL._green, myOpenGL._blue);
-                glVertex3f(myOpenGL._zoomX*(myOpenGL._vX(i) + adjX), myOpenGL._zoomZ*(myOpenGL._mZ(j,i) + adjZ), myOpenGL._zoomY*(myOpenGL._vY(j) + adjY));
+            for (int j=0; j<OpenGL_Plot._vY.Size(); j++) {
+                ColorMap::setColor(OpenGL_Plot._mZ(j,i), OpenGL_Plot._vMin, OpenGL_Plot._vMax);
+                glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
+                glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[i] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ(j,i) + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[j] + adjY));
             }
             glEnd();
         }
@@ -506,78 +509,78 @@ void OpenGL_Class::drawSolution3D()
     
 }
 
-void OpenGL_Class::timerFunction3D(int value)
+void OpenGL::Plot::timerFunction3D(int value)
 {
-    myOpenGL._updateData();
+    OpenGL_Plot._updateData();
     
-    if (myOpenGL._plots_calc > 1) {
-        if (plot_number%myOpenGL._plots_calc == 0){
+    if (OpenGL_Plot._plots_calc > 1) {
+        if (plot_number%OpenGL_Plot._plots_calc == 0){
             plot_number = (int)0;
-            myOpenGL.display3D();
+            OpenGL_Plot.display3D();
         }
     } else
-        myOpenGL.display3D();
+        OpenGL_Plot.display3D();
     
     glutPostRedisplay();
-    glutTimerFunc(myOpenGL._dt, timerFunction3D, 1);
+    glutTimerFunc(OpenGL_Plot._dt, timerFunction3D, 1);
     plot_number++;
 }
 
-void OpenGL_Class::plotAxes3D()
+void OpenGL::Plot::plotAxes3D()
 {
-    const float tmpXmax = myOpenGL._vX.max(), tmpYmax = myOpenGL._vY.max(), tmpZmax = myOpenGL._mZ.max();
-    const float tmpLimXmax = myOpenGL._limXmax, tmpLimYmax = myOpenGL._limYmax, tmpLimZmax = myOpenGL._limZmax;
+    const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement(), tmpZmax = OpenGL_Plot._mZ.max();
+    const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax, tmpLimZmax = OpenGL_Plot._limZmax;
     
-    const float tmpXmin = myOpenGL._vX.min(), tmpYmin = myOpenGL._vY.min(), tmpZmin = myOpenGL._mZ.min();
-    const float tmpLimXmin = myOpenGL._limXmin, tmpLimYmin = myOpenGL._limYmin, tmpLimZmin = myOpenGL._limZmin;
+    const float tmpXmin = OpenGL_Plot._vX.MinimumElement(), tmpYmin = OpenGL_Plot._vY.MinimumElement(), tmpZmin = OpenGL_Plot._mZ.min();
+    const float tmpLimXmin = OpenGL_Plot._limXmin, tmpLimYmin = OpenGL_Plot._limYmin, tmpLimZmin = OpenGL_Plot._limZmin;
     
-    myOpenGL._limXmax = max(tmpXmax, tmpLimXmax);
-    myOpenGL._limYmax = max(tmpYmax, tmpLimYmax);
-    myOpenGL._limZmax = max(tmpZmax, tmpLimZmax);
+    OpenGL_Plot._limXmax = std::max(tmpXmax, tmpLimXmax);
+    OpenGL_Plot._limYmax = std::max(tmpYmax, tmpLimYmax);
+    OpenGL_Plot._limZmax = std::max(tmpZmax, tmpLimZmax);
     
-    myOpenGL._limXmin = min(tmpXmin, tmpLimXmin);
-    myOpenGL._limYmin = min(tmpYmin, tmpLimYmin);
-    myOpenGL._limZmin = min(tmpZmin, tmpLimZmin);
+    OpenGL_Plot._limXmin = std::min(tmpXmin, tmpLimXmin);
+    OpenGL_Plot._limYmin = std::min(tmpYmin, tmpLimYmin);
+    OpenGL_Plot._limZmin = std::min(tmpZmin, tmpLimZmin);
     
     float compX, compY, compZ;
-    compX = myOpenGL._cX;
-    compY = myOpenGL._cY - myOpenGL._left_right;
-    compZ = -myOpenGL._up_down;
-    //compZ = myOpenGL._cZ - myOpenGL._up_down;
+    compX = OpenGL_Plot._cX;
+    compY = OpenGL_Plot._cY - OpenGL_Plot._left_right;
+    compZ = -OpenGL_Plot._up_down;
+    //compZ = OpenGL_Plot._cZ - OpenGL_Plot._up_down;
     
     glLineWidth(1.3);
     glBegin(GL_LINES);
     glColor3f(0.0, 0.0, 0.0);
-    glVertex3f(-compX*myOpenGL._zoomX, -compZ*myOpenGL._zoomZ, (myOpenGL._limYmin*1.01-compY)*myOpenGL._zoomY);
-    glVertex3f(-compX*myOpenGL._zoomX, -compZ*myOpenGL._zoomZ, (myOpenGL._limYmax*1.01-compY)*myOpenGL._zoomY);
-    glVertex3f(-compX*myOpenGL._zoomX, (myOpenGL._limZmin*1.01-compZ)*myOpenGL._zoomZ, -compY*myOpenGL._zoomY);
-    glVertex3f(-compX*myOpenGL._zoomX, (myOpenGL._limZmax*1.01-compZ)*myOpenGL._zoomZ, -compY*myOpenGL._zoomY);
-    glVertex3f((myOpenGL._limXmin*1.01-compX)*myOpenGL._zoomX, -compZ*myOpenGL._zoomZ, -compY*myOpenGL._zoomY);
-    glVertex3f((myOpenGL._limXmax*1.01-compX)*myOpenGL._zoomX, -compZ*myOpenGL._zoomZ, -compY*myOpenGL._zoomY);
+    glVertex3f(-compX*OpenGL_Plot._zoomX, -compZ*OpenGL_Plot._zoomZ, (OpenGL_Plot._limYmin*1.01-compY)*OpenGL_Plot._zoomY);
+    glVertex3f(-compX*OpenGL_Plot._zoomX, -compZ*OpenGL_Plot._zoomZ, (OpenGL_Plot._limYmax*1.01-compY)*OpenGL_Plot._zoomY);
+    glVertex3f(-compX*OpenGL_Plot._zoomX, (OpenGL_Plot._limZmin*1.01-compZ)*OpenGL_Plot._zoomZ, -compY*OpenGL_Plot._zoomY);
+    glVertex3f(-compX*OpenGL_Plot._zoomX, (OpenGL_Plot._limZmax*1.01-compZ)*OpenGL_Plot._zoomZ, -compY*OpenGL_Plot._zoomY);
+    glVertex3f((OpenGL_Plot._limXmin*1.01-compX)*OpenGL_Plot._zoomX, -compZ*OpenGL_Plot._zoomZ, -compY*OpenGL_Plot._zoomY);
+    glVertex3f((OpenGL_Plot._limXmax*1.01-compX)*OpenGL_Plot._zoomX, -compZ*OpenGL_Plot._zoomZ, -compY*OpenGL_Plot._zoomY);
     glEnd();
 }
 
-void OpenGL_Class::center3D()
+void OpenGL::Plot::center3D()
 {
-    if (myOpenGL._vX.max() >= -myOpenGL._vX.min())
-        myOpenGL._cX = (myOpenGL._vX.max() - myOpenGL._vX.min())/2.0;
+    if (OpenGL_Plot._vX.MaximumElement() >= -OpenGL_Plot._vX.MinimumElement())
+        OpenGL_Plot._cX = (OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
     else
-        myOpenGL._cX = -(myOpenGL._vX.max() - myOpenGL._vX.min())/2.0;
+        OpenGL_Plot._cX = -(OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
     
-    if (myOpenGL._vY.max() >= -myOpenGL._vY.min())
-        myOpenGL._cY = (myOpenGL._vY.max() - myOpenGL._vY.min())/2.0;
+    if (OpenGL_Plot._vY.MaximumElement() >= -OpenGL_Plot._vY.MinimumElement())
+        OpenGL_Plot._cY = (OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
     else
-        myOpenGL._cY = -(myOpenGL._vY.max() - myOpenGL._vY.min())/2.0;
+        OpenGL_Plot._cY = -(OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
     
-    if (myOpenGL._mZ.max() >= -myOpenGL._mZ.min())
-        myOpenGL._cZ = (myOpenGL._mZ.max() - myOpenGL._mZ.min())/2.0;
+    if (OpenGL_Plot._mZ.max() >= -OpenGL_Plot._mZ.min())
+        OpenGL_Plot._cZ = (OpenGL_Plot._mZ.max() - OpenGL_Plot._mZ.min())/2.0;
     else
-        myOpenGL._cZ = -(myOpenGL._mZ.max() - myOpenGL._mZ.min())/2.0;
+        OpenGL_Plot._cZ = -(OpenGL_Plot._mZ.max() - OpenGL_Plot._mZ.min())/2.0;
 }
 
 
 //  Keyboard and mouse functions
-void OpenGL_Class::handleKeyPress(unsigned char key, int x, int y)
+void OpenGL::Plot::handleKeyPress(unsigned char key, int x, int y)
 {
     switch(key)
     {
@@ -594,63 +597,63 @@ void OpenGL_Class::handleKeyPress(unsigned char key, int x, int y)
             break;
             
         case 'a':
-            myOpenGL._left_right -= dPos;
+            OpenGL_Plot._left_right -= dPos;
             break;
             
         case 'd':
-            myOpenGL._left_right += dPos;
+            OpenGL_Plot._left_right += dPos;
             break;
             
         case 'w':
-            myOpenGL._up_down += dPos;
+            OpenGL_Plot._up_down += dPos;
             break;
             
         case 's':
-            myOpenGL._up_down -= dPos;
+            OpenGL_Plot._up_down -= dPos;
             break;
             
         case 'l':
-            myOpenGL._options &= ~Points;
-            myOpenGL._options &= ~Shading;
-            myOpenGL._options |= Lines;
+            OpenGL_Plot._options &= ~Points;
+            OpenGL_Plot._options &= ~Shading;
+            OpenGL_Plot._options |= Lines;
             break;
             
         case 'k':
-            myOpenGL._options &= ~Points;
-            myOpenGL._options &= ~Lines;
-            myOpenGL._options |= Shading;
+            OpenGL_Plot._options &= ~Points;
+            OpenGL_Plot._options &= ~Lines;
+            OpenGL_Plot._options |= Shading;
             break;
             
         case 'j':
-            myOpenGL._options &= ~Lines;
-            myOpenGL._options &= ~Shading;
-            myOpenGL._options |= Points;
+            OpenGL_Plot._options &= ~Lines;
+            OpenGL_Plot._options &= ~Shading;
+            OpenGL_Plot._options |= Points;
             break;
             
         case 'p':
-            eyePosX = (float)(myOpenGL._vX(myOpenGL._vX.dim()-1)-myOpenGL._vX(0))/2;
+            eyePosX = (float)(OpenGL_Plot._vX[OpenGL_Plot._vX.Size()-1]-OpenGL_Plot._vX[0])/2;
             eyePosZ = 1.0f;
-            eyePosY = (float)(myOpenGL._vY(myOpenGL._vX.dim()-1)-myOpenGL._vX(0))/2;
-            myOpenGL._rotX = -35;
-            myOpenGL._rotY = -45;
+            eyePosY = (float)(OpenGL_Plot._vY[OpenGL_Plot._vX.Size()-1]-OpenGL_Plot._vX[0])/2;
+            OpenGL_Plot._rotX = -35;
+            OpenGL_Plot._rotY = -45;
             break;
             
         case '0':
-            myOpenGL._left_right = 0.0f;
-            myOpenGL._up_down = 0.0f;
-            myOpenGL._rotX = 0.0f;
-            myOpenGL._rotY = 0.0f;
-            myOpenGL._rotZ = 0.0f;
+            OpenGL_Plot._left_right = 0.0f;
+            OpenGL_Plot._up_down = 0.0f;
+            OpenGL_Plot._rotX = 0.0f;
+            OpenGL_Plot._rotY = 0.0f;
+            OpenGL_Plot._rotZ = 0.0f;
             eyePosX = eyeInitPosX;
             eyePosY = eyeInitPosY;
             eyePosZ = eyeInitPosZ;
             break;
             
         case 'm':
-            if ((myOpenGL._options &Axis_On) != 0)
-                myOpenGL._options &= ~Axis_On;
+            if ((OpenGL_Plot._options &Axis_On) != 0)
+                OpenGL_Plot._options &= ~Axis_On;
             else
-                myOpenGL._options |= Axis_On;
+                OpenGL_Plot._options |= Axis_On;
             break;
             
         case '1':
@@ -683,7 +686,7 @@ void OpenGL_Class::handleKeyPress(unsigned char key, int x, int y)
     }
 }
 
-void OpenGL_Class::handleKeyRelease(unsigned char key, int x, int y)
+void OpenGL::Plot::handleKeyRelease(unsigned char key, int x, int y)
 {
     switch (key) {
         case '+':
@@ -696,7 +699,7 @@ void OpenGL_Class::handleKeyRelease(unsigned char key, int x, int y)
     }
 }
 
-void OpenGL_Class::handleSpecialKeyPress(int key, int x, int y)
+void OpenGL::Plot::handleSpecialKeyPress(int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_UP:
@@ -717,7 +720,7 @@ void OpenGL_Class::handleSpecialKeyPress(int key, int x, int y)
     }
 }
 
-void OpenGL_Class::handleSpecialKeyReleased(int key, int x, int y)
+void OpenGL::Plot::handleSpecialKeyReleased(int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_UP:
@@ -740,12 +743,12 @@ void OpenGL_Class::handleSpecialKeyReleased(int key, int x, int y)
 
 
 //  COLORMAP - CLASS
-float ColorMap_Class::red = 1.0;
-float ColorMap_Class::green = 1.0;
-float ColorMap_Class::blue = 1.0;
-unsigned char ColorMap_Class::colormap = JET;
+float OpenGL::ColorMap::red = 1.0;
+float OpenGL::ColorMap::green = 1.0;
+float OpenGL::ColorMap::blue = 1.0;
+unsigned char OpenGL::ColorMap::colormap = JET;
 
-void ColorMap_Class::Jet(float value, float min, float max)
+void OpenGL::ColorMap::Jet(float value, float min, float max)
 {
     red = green = blue = 1.0;
     float dv;
@@ -775,10 +778,10 @@ void ColorMap_Class::Jet(float value, float min, float max)
         blue = 0.0;
     }
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::Hot_to_Cold(float value, float min, float max)
+void OpenGL::ColorMap::Hot_to_Cold(float value, float min, float max)
 {
     red = green = blue = 1.0;
     float dv;
@@ -803,10 +806,10 @@ void ColorMap_Class::Hot_to_Cold(float value, float min, float max)
         blue = 0.0;
     }
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::Cool(float value, float min, float max)
+void OpenGL::ColorMap::Cool(float value, float min, float max)
 {
     float dv;
     
@@ -820,10 +823,10 @@ void ColorMap_Class::Cool(float value, float min, float max)
     green = 1.0 + (min - value)/dv;
     blue = 1.0;
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::Winter(float value, float min, float max)
+void OpenGL::ColorMap::Winter(float value, float min, float max)
 {
     float dv;
     
@@ -837,10 +840,10 @@ void ColorMap_Class::Winter(float value, float min, float max)
     green = (value - min)/dv;
     blue = 1.0 + 0.5*(min - value)/dv;
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::Hot(float value, float min, float max)
+void OpenGL::ColorMap::Hot(float value, float min, float max)
 {
     red = green = blue = 0.0;
     float dv;
@@ -861,10 +864,10 @@ void ColorMap_Class::Hot(float value, float min, float max)
         blue = 4.0*(value - min - 48.0/64.0*dv)/dv;
     }
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::Summer(float value, float min, float max)
+void OpenGL::ColorMap::Summer(float value, float min, float max)
 {
     float dv;
     
@@ -878,10 +881,10 @@ void ColorMap_Class::Summer(float value, float min, float max)
     green = (value - min + 0.3*dv)/dv;
     blue = 0.4;
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::Jet_Fixed(float value, float min, float max)
+void OpenGL::ColorMap::Jet_Fixed(float value, float min, float max)
 {
     red = green = blue = 1.0;
     float dv;
@@ -911,10 +914,10 @@ void ColorMap_Class::Jet_Fixed(float value, float min, float max)
         blue = 0.0;
     }
     
-    myOpenGL.setColors(red, green, blue);
+    OpenGL_Plot.setColors(red, green, blue);
 }
 
-void ColorMap_Class::setColor(float value, float min, float max)
+void OpenGL::ColorMap::setColor(float value, float min, float max)
 {
     if ((colormap &JET) != 0)
         Jet(value, min, max);
@@ -936,68 +939,68 @@ void ColorMap_Class::setColor(float value, float min, float max)
 
 
 //  PLOT FUNCTIONS - NAMESPACE
-void OpenGL::plot(vector<double> &x, vector<double> &y, unsigned char options, int argc, const char *argv[])
+void OpenGL::plot(Vector<double> &x, Vector<double> &y, unsigned char options, int argc, const char *argv[])
 {
-    MyOpenGL_Class::setData(x, y);
-    myOpenGL._options = options;
+    OpenGL::Plot::setData(x, y);
+    OpenGL_Plot._options = options;
     
     glutInit(&argc, (char **)argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-    glutInitWindowSize(myOpenGL._W, myOpenGL._H);
+    glutInitWindowSize(OpenGL_Plot._W, OpenGL_Plot._H);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow((char *)myOpenGL._windowName.c_str());
-    MyOpenGL_Class::initRendering();
-    glutDisplayFunc(MyOpenGL_Class::display2D);
-    glutTimerFunc(myOpenGL._dt, MyOpenGL_Class::timerFunction2D, 0);
-    glutTimerFunc(myOpenGL._dt, MyOpenGL_Class::refreshCameraPosition, 0);
-    glutKeyboardFunc(MyOpenGL_Class::handleKeyPress);
-    glutKeyboardUpFunc(MyOpenGL_Class::handleKeyRelease);
-    glutSpecialFunc(MyOpenGL_Class::handleSpecialKeyPress);
-    glutSpecialUpFunc(MyOpenGL_Class::handleSpecialKeyReleased);
-    glutReshapeFunc(MyOpenGL_Class::reshape2D);
+    glutCreateWindow((char *)OpenGL_Plot._windowName.c_str());
+    OpenGL::Plot::initRendering();
+    glutDisplayFunc(OpenGL::Plot::display2D);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::timerFunction2D, 0);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::refreshCameraPosition, 0);
+    glutKeyboardFunc(OpenGL::Plot::handleKeyPress);
+    glutKeyboardUpFunc(OpenGL::Plot::handleKeyRelease);
+    glutSpecialFunc(OpenGL::Plot::handleSpecialKeyPress);
+    glutSpecialUpFunc(OpenGL::Plot::handleSpecialKeyReleased);
+    glutReshapeFunc(OpenGL::Plot::reshape2D);
     glutMainLoop();
 }
 
-void OpenGL::plot(vector<double> &x, vector<double> &y, vector<double> &z, unsigned char options, int argc, const char *argv[])
+void OpenGL::plot(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char options, int argc, const char *argv[])
 {
-    MyOpenGL_Class::setData(x, y, z);
-    myOpenGL._options = options;
+    OpenGL::Plot::setData(x, y, z);
+    OpenGL_Plot._options = options;
     
     glutInit(&argc, (char **)argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-    glutInitWindowSize(myOpenGL._W, myOpenGL._H);
+    glutInitWindowSize(OpenGL_Plot._W, OpenGL_Plot._H);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow((char *)myOpenGL._windowName.c_str());
-    MyOpenGL_Class::initRendering();
-    glutDisplayFunc(MyOpenGL_Class::display3D);
-    glutTimerFunc(myOpenGL._dt, MyOpenGL_Class::timerFunction2D, 0);
-    glutTimerFunc(myOpenGL._dt, MyOpenGL_Class::refreshCameraPosition, 0);
-    glutKeyboardFunc(MyOpenGL_Class::handleKeyPress);
-    glutKeyboardUpFunc(MyOpenGL_Class::handleKeyRelease);
-    glutSpecialFunc(MyOpenGL_Class::handleSpecialKeyPress);
-    glutSpecialUpFunc(MyOpenGL_Class::handleSpecialKeyReleased);
-    glutReshapeFunc(MyOpenGL_Class::reshape3D);
+    glutCreateWindow((char *)OpenGL_Plot._windowName.c_str());
+    OpenGL::Plot::initRendering();
+    glutDisplayFunc(OpenGL::Plot::display3D);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::timerFunction2D, 0);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::refreshCameraPosition, 0);
+    glutKeyboardFunc(OpenGL::Plot::handleKeyPress);
+    glutKeyboardUpFunc(OpenGL::Plot::handleKeyRelease);
+    glutSpecialFunc(OpenGL::Plot::handleSpecialKeyPress);
+    glutSpecialUpFunc(OpenGL::Plot::handleSpecialKeyReleased);
+    glutReshapeFunc(OpenGL::Plot::reshape3D);
     glutMainLoop();
 }
 
-void OpenGL::plot(vector<double> &x, vector<double> &y, matrix<double> &z, unsigned char options, int argc, const char *argv[])
+void OpenGL::plot(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char options, int argc, const char *argv[])
 {
-    MyOpenGL_Class::setData(x, y, z);
-    myOpenGL._options = options;
+    OpenGL::Plot::setData(x, y, z);
+    OpenGL_Plot._options = options;
     
     glutInit(&argc, (char **)argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH | GLUT_RGBA);
-    glutInitWindowSize(myOpenGL._W, myOpenGL._H);
+    glutInitWindowSize(OpenGL_Plot._W, OpenGL_Plot._H);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow((char *)myOpenGL._windowName.c_str());
-    MyOpenGL_Class::initRendering();
-    glutDisplayFunc(MyOpenGL_Class::display3D);
-    glutTimerFunc(myOpenGL._dt, MyOpenGL_Class::timerFunction3D, 1);
-    glutTimerFunc(myOpenGL._dt, MyOpenGL_Class::refreshCameraPosition, 2);
-    glutKeyboardFunc(MyOpenGL_Class::handleKeyPress);
-    glutKeyboardUpFunc(MyOpenGL_Class::handleKeyRelease);
-    glutSpecialFunc(MyOpenGL_Class::handleSpecialKeyPress);
-    glutSpecialUpFunc(MyOpenGL_Class::handleSpecialKeyReleased);
-    glutReshapeFunc(MyOpenGL_Class::reshape3D);
+    glutCreateWindow((char *)OpenGL_Plot._windowName.c_str());
+    OpenGL::Plot::initRendering();
+    glutDisplayFunc(OpenGL::Plot::display3D);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::timerFunction3D, 1);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::refreshCameraPosition, 2);
+    glutKeyboardFunc(OpenGL::Plot::handleKeyPress);
+    glutKeyboardUpFunc(OpenGL::Plot::handleKeyRelease);
+    glutSpecialFunc(OpenGL::Plot::handleSpecialKeyPress);
+    glutSpecialUpFunc(OpenGL::Plot::handleSpecialKeyReleased);
+    glutReshapeFunc(OpenGL::Plot::reshape3D);
     glutMainLoop();
 }
