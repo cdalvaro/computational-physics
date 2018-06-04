@@ -17,7 +17,7 @@
 #include <GL/glut.h>
 #endif
 
-using namespace cda::containers;
+using namespace cda::math::containers;
 using namespace cda::graphics;
 
 OpenGL OpenGL_Plot;

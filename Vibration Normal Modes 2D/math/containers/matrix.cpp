@@ -16,7 +16,7 @@ const int tolMax = 1000;
 const double preDef = 1E-04;
 const std::string RM = "\n[Matrix::";
 
-using namespace cda::containers;
+using namespace cda::math::containers;
 
             //  --- MATRIX CLASS ---
 
@@ -1461,14 +1461,14 @@ operator<<(std::ostream& out, const Matrix<T>& M)
 
 //  --- OTHER FUNCTIONS ---
 template<typename T>
-Matrix<T> cda::containers::zero(int _n, int _m) {
+Matrix<T> cda::math::containers::zero(int _n, int _m) {
     Matrix<T> tmp(_n,_m);
     tmp.zero();
     return tmp;
 }
 
 template<typename T> inline Matrix<T>
-cda::containers::ones(int _n, int _m)
+cda::math::containers::ones(int _n, int _m)
 {
     Matrix<T> tmp(_n,_m);
     tmp.ones();
@@ -1476,7 +1476,7 @@ cda::containers::ones(int _n, int _m)
 }
 
 template<typename T> inline Matrix<T>
-cda::containers::identity(int _n, int _m)
+cda::math::containers::identity(int _n, int _m)
 {
     if (_n != _m)
         std::cout << RM << "identity(n, m)] - No es una matriz cuadrada.\n";
@@ -1486,7 +1486,7 @@ cda::containers::identity(int _n, int _m)
 }
 
 template<typename T> inline Matrix<T>
-cda::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)
+cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)
 {
     Matrix<T> tmp(A.rows(), A.columns());
     int dim = 0, coincidence = 0;
@@ -1532,7 +1532,7 @@ cda::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)
 }
 
 template<typename T> inline Matrix<T>
-cda::containers::setdiff(Matrix<T>& A, const Matrix<T>& B)
+cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B)
 {
     return setdiff(A, B, A.rows());
 }

@@ -12,8 +12,10 @@
 #include <sys/stat.h>
 #include <thread>
 
-using namespace cda::containers;
-using namespace cda::differential_equations;
+using namespace cda::math::containers;
+using namespace cda::math::differential_equations;
+
+namespace cmc = cda::math::containers;
 
 int tolDef = 1E+05;     //  Número máximo de iteraciones por defecto.
 int errDef = 1E-04;     //  Variación máxima que puede haber entre dos iteraciones.
@@ -684,7 +686,7 @@ Matrix<EDP_T> EDP::solveWave(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &
 Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &y, Matrix<EDP_T> &cI, Matrix<EDP_T> &cId)
 {
     if (!initEDP)
-        fixedEDP = cda::containers::zero<bool>(y.Size(), x.Size());
+        fixedEDP = cmc::zero<bool>(y.Size(), x.Size());
     
     return solveWAVE(bc, 0, x, y, cI, cId, fixedEDP);
 }
@@ -913,7 +915,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     //  Posibles casos que se pueden plantear según las condiciones de contorno
     if ((((bc &BCL_df) && (bc &BCR_f)) != 0) || (((bc &BCB_df) && (bc &BCT_f)) != 0)) {
         solV = Vector<EDP_T>::Zero(dim-1);
-        A = cda::containers::zero<EDP_T>(dim-1,dim-1);
+        A = cmc::zero<EDP_T>(dim-1,dim-1);
         
         A(0,0) = 2.0;
         A(0,1) = -2.0;
@@ -933,7 +935,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         
     } else if ((((bc &BCL_f) && (bc &BCR_df)) != 0) || (((bc &BCB_f) && (bc &BCT_df)) != 0)) {
         solV = Vector<EDP_T>::Zero(dim-1);
-        A = cda::containers::zero<EDP_T>(dim-1,dim-1);
+        A = cmc::zero<EDP_T>(dim-1,dim-1);
         
         A(0,0) = 2.0;
         A(0,1) = -1.0;
@@ -953,7 +955,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         
     } else if ((((bc &BCL_df) && (bc &BCR_df)) != 0) || (((bc &BCB_df) && (bc &BCT_df)) != 0)) {
         solV = Vector<EDP_T>::Zero(dim);
-        A = cda::containers::zero<EDP_T>(dim,dim);
+        A = cmc::zero<EDP_T>(dim,dim);
         
         A(0,0) = 2.0;
         A(0,1) = -2.0;
@@ -973,7 +975,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         
     } else {
         solV = Vector<EDP_T>::Zero(dim-2);
-        A = cda::containers::zero<EDP_T>(dim-2,dim-2);
+        A = cmc::zero<EDP_T>(dim-2,dim-2);
         
         A(0,0) = 2.0;
         A(0,1) = -1.0;
@@ -1061,8 +1063,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc)
 
 Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, int modeY, unsigned char bc, unsigned char opt)
 {
-    Matrix<EDP_T> mx(cda::containers::zero<EDP_T>(1, x.Size()));
-    Matrix<EDP_T> my(cda::containers::zero<EDP_T>(y.Size(), 1));
+    Matrix<EDP_T> mx(cmc::zero<EDP_T>(1, x.Size()));
+    Matrix<EDP_T> my(cmc::zero<EDP_T>(y.Size(), 1));
     
     unsigned char bcX = 0, bcY = 0;
     if ((bc &BCL_df) != 0)
