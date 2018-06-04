@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
+		07A351C520C5D5C800DC2DC2 /* Vectorial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C220C5D5C800DC2DC2 /* Vectorial.cpp */; };
+		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
 		07DA13491559113E00FCF6F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13481559113E00FCF6F8 /* main.cpp */; };
-		07DA134B1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 07DA134A1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 */; };
 		07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13511559115100FCF6F8 /* GLUT.framework */; };
 		07DA13541559115A00FCF6F8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13531559115A00FCF6F8 /* OpenGL.framework */; };
-		07DA135D1559119500FCF6F8 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13571559119500FCF6F8 /* MyOpenGL.cpp */; };
-		07DA135E1559119500FCF6F8 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13591559119500FCF6F8 /* SolveEDP.cpp */; };
-		07DA135F1559119500FCF6F8 /* Vectorial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA135B1559119500FCF6F8 /* Vectorial.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,7 +22,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				07DA134B1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -32,17 +30,16 @@
 /* Begin PBXFileReference section */
 		0730698D1CDFE9F30000BA47 /* Drum Vibration Mode 03.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "Drum Vibration Mode 03.gif"; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
+		07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
+		07A351C020C5D5C800DC2DC2 /* SolveEDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolveEDP.h; sourceTree = "<group>"; };
+		07A351C120C5D5C800DC2DC2 /* Vectorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vectorial.h; sourceTree = "<group>"; };
+		07A351C220C5D5C800DC2DC2 /* Vectorial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vectorial.cpp; sourceTree = "<group>"; };
+		07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolveEDP.cpp; sourceTree = "<group>"; };
 		07DA13441559113E00FCF6F8 /* Vibration Normal Modes 2D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Vibration Normal Modes 2D"; sourceTree = BUILT_PRODUCTS_DIR; };
 		07DA13481559113E00FCF6F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		07DA134A1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Vibration_Normal_Modes_2D.1; sourceTree = "<group>"; };
 		07DA13511559115100FCF6F8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		07DA13531559115A00FCF6F8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		07DA13571559119500FCF6F8 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
-		07DA13581559119500FCF6F8 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
-		07DA13591559119500FCF6F8 /* SolveEDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolveEDP.cpp; sourceTree = "<group>"; };
-		07DA135A1559119500FCF6F8 /* SolveEDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolveEDP.h; sourceTree = "<group>"; };
-		07DA135B1559119500FCF6F8 /* Vectorial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vectorial.cpp; sourceTree = "<group>"; };
-		07DA135C1559119500FCF6F8 /* Vectorial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vectorial.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +55,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		07A351BC20C5D5C800DC2DC2 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */,
+				07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		07A351BF20C5D5C800DC2DC2 /* math */ = {
+			isa = PBXGroup;
+			children = (
+				07A351C020C5D5C800DC2DC2 /* SolveEDP.h */,
+				07A351C120C5D5C800DC2DC2 /* Vectorial.h */,
+				07A351C220C5D5C800DC2DC2 /* Vectorial.cpp */,
+				07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */,
+			);
+			path = math;
+			sourceTree = "<group>";
+		};
 		07DA13391559113E00FCF6F8 = {
 			isa = PBXGroup;
 			children = (
@@ -79,10 +96,10 @@
 		07DA13471559113E00FCF6F8 /* Vibration Normal Modes 2D */ = {
 			isa = PBXGroup;
 			children = (
+				07A351BC20C5D5C800DC2DC2 /* graphics */,
+				07A351BF20C5D5C800DC2DC2 /* math */,
 				0730698D1CDFE9F30000BA47 /* Drum Vibration Mode 03.gif */,
 				07DA13481559113E00FCF6F8 /* main.cpp */,
-				07DA13561559117500FCF6F8 /* Functions */,
-				07DA134A1559113E00FCF6F8 /* Vibration_Normal_Modes_2D.1 */,
 			);
 			path = "Vibration Normal Modes 2D";
 			sourceTree = "<group>";
@@ -94,19 +111,6 @@
 				07DA13511559115100FCF6F8 /* GLUT.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		07DA13561559117500FCF6F8 /* Functions */ = {
-			isa = PBXGroup;
-			children = (
-				07DA13581559119500FCF6F8 /* MyOpenGL.h */,
-				07DA13571559119500FCF6F8 /* MyOpenGL.cpp */,
-				07DA135A1559119500FCF6F8 /* SolveEDP.h */,
-				07DA13591559119500FCF6F8 /* SolveEDP.cpp */,
-				07DA135C1559119500FCF6F8 /* Vectorial.h */,
-				07DA135B1559119500FCF6F8 /* Vectorial.cpp */,
-			);
-			name = Functions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -160,10 +164,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */,
+				07A351C520C5D5C800DC2DC2 /* Vectorial.cpp in Sources */,
 				07DA13491559113E00FCF6F8 /* main.cpp in Sources */,
-				07DA135D1559119500FCF6F8 /* MyOpenGL.cpp in Sources */,
-				07DA135E1559119500FCF6F8 /* SolveEDP.cpp in Sources */,
-				07DA135F1559119500FCF6F8 /* Vectorial.cpp in Sources */,
+				07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

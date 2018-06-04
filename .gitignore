@@ -1,8 +1,12 @@
-# Git ignore file
+# Xcode
 
-*.DS_Store
-
-*.xcodeproj/**/xcuserdata/
-
+## User settings
+xcuserdata/
 build/
 
+# macOS 
+
+## General
+.DS_Store
+.AppleDouble
+.LSOverride
