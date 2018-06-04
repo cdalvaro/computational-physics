@@ -9,9 +9,9 @@
 #include <iostream>
 #include <time.h>
 
-#include "Vectorial.cpp"
-#include "MyOpenGL.h"
-#include "SolveEDP.h"
+#include "math/Vectorial.cpp"
+#include "graphics/MyOpenGL.h"
+#include "math/SolveEDP.h"
 
 using namespace CDA;
 

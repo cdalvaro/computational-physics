@@ -7,7 +7,7 @@
 //
 
 #include "MyOpenGL.h"
-#include "Vectorial.cpp"
+#include "../math/Vectorial.cpp"
 
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>

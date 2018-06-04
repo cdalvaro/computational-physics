@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "Vectorial.h"
+#include "../math/Vectorial.h"
 
 
 //  OPENGL
