@@ -7,7 +7,7 @@
 //
 
 #include "MyOpenGL.h"
-#include "../math/Vectorial.cpp"
+#include "../math/containers/matrix.cpp"
 
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>
@@ -17,9 +17,10 @@
 #include <GL/glut.h>
 #endif
 
-using namespace CDA;
+using namespace cda::containers;
+using namespace cda::graphics;
 
-OpenGL::Plot OpenGL_Plot;
+OpenGL OpenGL_Plot;
 
 bool initOpenGL = false;
 bool defaultSettings = false;
@@ -36,15 +37,15 @@ void upPlot()
 
 
 //  OPENGL - CLASS
-//  Init OpenGL::Plot
-void OpenGL::Plot::initRendering()
+//  Init graphics::Plot
+void OpenGL::initRendering()
 {
     glEnable(GL_DEPTH_TEST);
 }
 
 
 //  Set data
-void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, unsigned char setDefault)
+void OpenGL::setData(Vector<double> &x, Vector<double> &y, unsigned char setDefault)
 {
     OpenGL_Plot._vX = x;
     OpenGL_Plot._vY = y;
@@ -55,12 +56,12 @@ void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, unsigned char s
     }
 }
 
-void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y)
+void OpenGL::setData(Vector<double> &x, Vector<double> &y)
 {
     setData(x, y, SetDefault);
 }
 
-void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char setDefault)
+void OpenGL::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char setDefault)
 {
     OpenGL_Plot._vX = x;
     OpenGL_Plot._vY = y;
@@ -72,12 +73,12 @@ void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Vector<double> 
     }
 }
 
-void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z)
+void OpenGL::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z)
 {
     setData(x, y, z, SetDefault);
 }
 
-void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char setDefault)
+void OpenGL::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char setDefault)
 {
     OpenGL_Plot._vX = x;
     OpenGL_Plot._vY = y;
@@ -89,21 +90,21 @@ void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Matrix<double> 
     }
 }
 
-void OpenGL::Plot::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z)
+void OpenGL::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z)
 {
     setData(x, y, z, SetDefault);
 }
 
 
 //  Set ajustments
-void OpenGL::Plot::setColors(float red, float green, float blue)
+void OpenGL::setColors(float red, float green, float blue)
 {
     OpenGL_Plot._red = red;
     OpenGL_Plot._green = green;
     OpenGL_Plot._blue = blue;
 }
 
-void OpenGL::Plot::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
+void OpenGL::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
 {
     OpenGL_Plot._zoomX = eyeInitPosX = eyePosX = zoomX;
     OpenGL_Plot._zoomY = eyeInitPosY = eyePosY = zoomY;
@@ -114,12 +115,12 @@ void OpenGL::Plot::setZoomsD(float zoomX, float zoomY, unsigned char setDefault)
     }
 }
 
-void OpenGL::Plot::setZooms(float zoomX, float zoomY)
+void OpenGL::setZooms(float zoomX, float zoomY)
 {
     setZoomsD(zoomX, zoomY, SetDefault);
 }
 
-void OpenGL::Plot::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned char setDefault)
+void OpenGL::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned char setDefault)
 {
     OpenGL_Plot._zoomX = eyeInitPosX = eyePosX = zoomX;
     OpenGL_Plot._zoomY = eyeInitPosY = eyePosY = zoomY;
@@ -131,12 +132,12 @@ void OpenGL::Plot::setZoomsD(float zoomX, float zoomY, float zoomZ, unsigned cha
     }
 }
 
-void OpenGL::Plot::setZooms(float zoomX, float zoomY, float zoomZ)
+void OpenGL::setZooms(float zoomX, float zoomY, float zoomZ)
 {
     setZoomsD(zoomX, zoomY, zoomZ, SetDefault);
 }
 
-void OpenGL::Plot::setAxisDirection(float rotX, float rotY, float rotZ, unsigned char setDefault)
+void OpenGL::setAxisDirection(float rotX, float rotY, float rotZ, unsigned char setDefault)
 {
     OpenGL_Plot._rotX = rotX;
     OpenGL_Plot._rotY = rotY;
@@ -148,12 +149,12 @@ void OpenGL::Plot::setAxisDirection(float rotX, float rotY, float rotZ, unsigned
     }
 }
 
-void OpenGL::Plot::setAxisDirection(float rotX, float rotY, float rotZ)
+void OpenGL::setAxisDirection(float rotX, float rotY, float rotZ)
 {
     setAxisDirection(rotX, rotY, rotZ, SetDefault);
 }
 
-void OpenGL::Plot::setStepTime(float dt_milli, unsigned char setDefault)
+void OpenGL::setStepTime(float dt_milli, unsigned char setDefault)
 {
     if (dt_milli >= 1E-4) {
         OpenGL_Plot._dt = (int)ceil(dt_milli*1E4);
@@ -169,12 +170,12 @@ void OpenGL::Plot::setStepTime(float dt_milli, unsigned char setDefault)
     }
 }
 
-void OpenGL::Plot::setStepTime(float dt_milli)
+void OpenGL::setStepTime(float dt_milli)
 {
     setStepTime(dt_milli, SetDefault);
 }
 
-void OpenGL::Plot::setWindowSize(float Width, float Height, unsigned char setDefault)
+void OpenGL::setWindowSize(float Width, float Height, unsigned char setDefault)
 {
     OpenGL_Plot._W = Width;
     OpenGL_Plot._H = Height;
@@ -185,12 +186,12 @@ void OpenGL::Plot::setWindowSize(float Width, float Height, unsigned char setDef
     }
 }
 
-void OpenGL::Plot::setWindowSize(float Width, float Height)
+void OpenGL::setWindowSize(float Width, float Height)
 {
     setWindowSize(Width, Height, SetDefault);
 }
 
-void OpenGL::Plot::setUpdateData(void updateData(), unsigned char setDefault)
+void OpenGL::setUpdateData(void updateData(), unsigned char setDefault)
 {
     OpenGL_Plot._updateData = updateData;
     
@@ -200,12 +201,12 @@ void OpenGL::Plot::setUpdateData(void updateData(), unsigned char setDefault)
     }
 }
 
-void OpenGL::Plot::setUpdateData(void updateData())
+void OpenGL::setUpdateData(void updateData())
 {
     setUpdateData(updateData, SetDefault);
 }
 
-void OpenGL::Plot::setWindowName(std::string windowName, unsigned char setDefault)
+void OpenGL::setWindowName(std::string windowName, unsigned char setDefault)
 {
     OpenGL_Plot._windowName = windowName;
     
@@ -215,12 +216,12 @@ void OpenGL::Plot::setWindowName(std::string windowName, unsigned char setDefaul
     }
 }
 
-void OpenGL::Plot::setWindowName(std::string windowName)
+void OpenGL::setWindowName(std::string windowName)
 {
     setWindowName(windowName, SetDefault);
 }
 
-void OpenGL::Plot::setDefaultParameters(unsigned char params)
+void OpenGL::setDefaultParameters(unsigned char params)
 {
     if ((params& Zoom_D) != 0 && !defaultSettings)
         setZoomsD(1.0, 1.0, 1.0, 0);
@@ -245,7 +246,7 @@ void OpenGL::Plot::setDefaultParameters(unsigned char params)
 
 
 //  Plot functions
-void OpenGL::Plot::reshape2D(int Width, int Height)
+void OpenGL::reshape2D(int Width, int Height)
 {
     glViewport (0, 0, (GLsizei)Width, (GLsizei)Height);
     glMatrixMode (GL_PROJECTION);
@@ -256,7 +257,7 @@ void OpenGL::Plot::reshape2D(int Width, int Height)
     glMatrixMode (GL_MODELVIEW);
 }
 
-void OpenGL::Plot::reshape3D(int Width, int Height)
+void OpenGL::reshape3D(int Width, int Height)
 {
     glViewport (0, 0, (GLsizei)Width, (GLsizei)Height);
     glMatrixMode (GL_PROJECTION);
@@ -267,7 +268,7 @@ void OpenGL::Plot::reshape3D(int Width, int Height)
     glMatrixMode (GL_MODELVIEW);
 }
 
-void OpenGL::Plot::refreshCameraPosition(int value)
+void OpenGL::refreshCameraPosition(int value)
 {
     if ((pKeys &UP) != 0)
         OpenGL_Plot._rotX += dAng;
@@ -300,7 +301,7 @@ void OpenGL::Plot::refreshCameraPosition(int value)
 
 
 //  2D functions
-void OpenGL::Plot::display2D()
+void OpenGL::display2D()
 {
     glClearColor (1.0, 1.0, 1.0, 1.0);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -321,7 +322,7 @@ void OpenGL::Plot::display2D()
     initOpenGL = true;
 }
 
-void OpenGL::Plot::drawSolution2D()
+void OpenGL::drawSolution2D()
 {
     OpenGL_Plot._vMax = OpenGL_Plot._vY.MaximumElement();
     OpenGL_Plot._vMin = OpenGL_Plot._vY.MinimumElement();
@@ -350,7 +351,7 @@ void OpenGL::Plot::drawSolution2D()
     glEnd();
 }
 
-void OpenGL::Plot::timerFunction2D(int value)
+void OpenGL::timerFunction2D(int value)
 {
     OpenGL_Plot._updateData();
     
@@ -366,7 +367,7 @@ void OpenGL::Plot::timerFunction2D(int value)
     glutTimerFunc(OpenGL_Plot._dt, timerFunction2D, 0);
 }
 
-void OpenGL::Plot::plotAxes2D()
+void OpenGL::plotAxes2D()
 {
     const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement();
     const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax;
@@ -395,7 +396,7 @@ void OpenGL::Plot::plotAxes2D()
     glEnd();
 }
 
-void OpenGL::Plot::center2D()
+void OpenGL::center2D()
 {
     OpenGL_Plot._cX = (OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
     OpenGL_Plot._cY = (OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
@@ -403,7 +404,7 @@ void OpenGL::Plot::center2D()
 
 
 //  3D functions
-void OpenGL::Plot::display3D()
+void OpenGL::display3D()
 {
     glClearColor (1.0f, 1.0f, 1.0f, 1.0f);
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -432,7 +433,7 @@ void OpenGL::Plot::display3D()
     initOpenGL = true;
 }
 
-void OpenGL::Plot::drawSolution3D()
+void OpenGL::drawSolution3D()
 {
     OpenGL_Plot._vMax = OpenGL_Plot._mZ.max();
     OpenGL_Plot._vMin = OpenGL_Plot._mZ.min();
@@ -509,7 +510,7 @@ void OpenGL::Plot::drawSolution3D()
     
 }
 
-void OpenGL::Plot::timerFunction3D(int value)
+void OpenGL::timerFunction3D(int value)
 {
     OpenGL_Plot._updateData();
     
@@ -526,7 +527,7 @@ void OpenGL::Plot::timerFunction3D(int value)
     plot_number++;
 }
 
-void OpenGL::Plot::plotAxes3D()
+void OpenGL::plotAxes3D()
 {
     const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement(), tmpZmax = OpenGL_Plot._mZ.max();
     const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax, tmpLimZmax = OpenGL_Plot._limZmax;
@@ -560,7 +561,7 @@ void OpenGL::Plot::plotAxes3D()
     glEnd();
 }
 
-void OpenGL::Plot::center3D()
+void OpenGL::center3D()
 {
     if (OpenGL_Plot._vX.MaximumElement() >= -OpenGL_Plot._vX.MinimumElement())
         OpenGL_Plot._cX = (OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
@@ -580,7 +581,7 @@ void OpenGL::Plot::center3D()
 
 
 //  Keyboard and mouse functions
-void OpenGL::Plot::handleKeyPress(unsigned char key, int x, int y)
+void OpenGL::handleKeyPress(unsigned char key, int x, int y)
 {
     switch(key)
     {
@@ -686,7 +687,7 @@ void OpenGL::Plot::handleKeyPress(unsigned char key, int x, int y)
     }
 }
 
-void OpenGL::Plot::handleKeyRelease(unsigned char key, int x, int y)
+void OpenGL::handleKeyRelease(unsigned char key, int x, int y)
 {
     switch (key) {
         case '+':
@@ -699,7 +700,7 @@ void OpenGL::Plot::handleKeyRelease(unsigned char key, int x, int y)
     }
 }
 
-void OpenGL::Plot::handleSpecialKeyPress(int key, int x, int y)
+void OpenGL::handleSpecialKeyPress(int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_UP:
@@ -720,7 +721,7 @@ void OpenGL::Plot::handleSpecialKeyPress(int key, int x, int y)
     }
 }
 
-void OpenGL::Plot::handleSpecialKeyReleased(int key, int x, int y)
+void OpenGL::handleSpecialKeyReleased(int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_UP:
@@ -743,12 +744,12 @@ void OpenGL::Plot::handleSpecialKeyReleased(int key, int x, int y)
 
 
 //  COLORMAP - CLASS
-float OpenGL::ColorMap::red = 1.0;
-float OpenGL::ColorMap::green = 1.0;
-float OpenGL::ColorMap::blue = 1.0;
-unsigned char OpenGL::ColorMap::colormap = JET;
+float ColorMap::red = 1.0;
+float ColorMap::green = 1.0;
+float ColorMap::blue = 1.0;
+unsigned char ColorMap::colormap = JET;
 
-void OpenGL::ColorMap::Jet(float value, float min, float max)
+void ColorMap::Jet(float value, float min, float max)
 {
     red = green = blue = 1.0;
     float dv;
@@ -781,7 +782,7 @@ void OpenGL::ColorMap::Jet(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::Hot_to_Cold(float value, float min, float max)
+void ColorMap::Hot_to_Cold(float value, float min, float max)
 {
     red = green = blue = 1.0;
     float dv;
@@ -809,7 +810,7 @@ void OpenGL::ColorMap::Hot_to_Cold(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::Cool(float value, float min, float max)
+void ColorMap::Cool(float value, float min, float max)
 {
     float dv;
     
@@ -826,7 +827,7 @@ void OpenGL::ColorMap::Cool(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::Winter(float value, float min, float max)
+void ColorMap::Winter(float value, float min, float max)
 {
     float dv;
     
@@ -843,7 +844,7 @@ void OpenGL::ColorMap::Winter(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::Hot(float value, float min, float max)
+void ColorMap::Hot(float value, float min, float max)
 {
     red = green = blue = 0.0;
     float dv;
@@ -867,7 +868,7 @@ void OpenGL::ColorMap::Hot(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::Summer(float value, float min, float max)
+void ColorMap::Summer(float value, float min, float max)
 {
     float dv;
     
@@ -884,7 +885,7 @@ void OpenGL::ColorMap::Summer(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::Jet_Fixed(float value, float min, float max)
+void ColorMap::Jet_Fixed(float value, float min, float max)
 {
     red = green = blue = 1.0;
     float dv;
@@ -917,7 +918,7 @@ void OpenGL::ColorMap::Jet_Fixed(float value, float min, float max)
     OpenGL_Plot.setColors(red, green, blue);
 }
 
-void OpenGL::ColorMap::setColor(float value, float min, float max)
+void ColorMap::setColor(float value, float min, float max)
 {
     if ((colormap &JET) != 0)
         Jet(value, min, max);
@@ -939,9 +940,9 @@ void OpenGL::ColorMap::setColor(float value, float min, float max)
 
 
 //  PLOT FUNCTIONS - NAMESPACE
-void OpenGL::plot(Vector<double> &x, Vector<double> &y, unsigned char options, int argc, const char *argv[])
+void cda::graphics::plot(Vector<double> &x, Vector<double> &y, unsigned char options, int argc, const char *argv[])
 {
-    OpenGL::Plot::setData(x, y);
+    OpenGL::setData(x, y);
     OpenGL_Plot._options = options;
     
     glutInit(&argc, (char **)argv);
@@ -949,21 +950,21 @@ void OpenGL::plot(Vector<double> &x, Vector<double> &y, unsigned char options, i
     glutInitWindowSize(OpenGL_Plot._W, OpenGL_Plot._H);
     glutInitWindowPosition(100, 100);
     glutCreateWindow((char *)OpenGL_Plot._windowName.c_str());
-    OpenGL::Plot::initRendering();
-    glutDisplayFunc(OpenGL::Plot::display2D);
-    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::timerFunction2D, 0);
-    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::refreshCameraPosition, 0);
-    glutKeyboardFunc(OpenGL::Plot::handleKeyPress);
-    glutKeyboardUpFunc(OpenGL::Plot::handleKeyRelease);
-    glutSpecialFunc(OpenGL::Plot::handleSpecialKeyPress);
-    glutSpecialUpFunc(OpenGL::Plot::handleSpecialKeyReleased);
-    glutReshapeFunc(OpenGL::Plot::reshape2D);
+    OpenGL::initRendering();
+    glutDisplayFunc(OpenGL::display2D);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::timerFunction2D, 0);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::refreshCameraPosition, 0);
+    glutKeyboardFunc(OpenGL::handleKeyPress);
+    glutKeyboardUpFunc(OpenGL::handleKeyRelease);
+    glutSpecialFunc(OpenGL::handleSpecialKeyPress);
+    glutSpecialUpFunc(OpenGL::handleSpecialKeyReleased);
+    glutReshapeFunc(OpenGL::reshape2D);
     glutMainLoop();
 }
 
-void OpenGL::plot(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char options, int argc, const char *argv[])
+void cda::graphics::plot(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char options, int argc, const char *argv[])
 {
-    OpenGL::Plot::setData(x, y, z);
+    OpenGL::setData(x, y, z);
     OpenGL_Plot._options = options;
     
     glutInit(&argc, (char **)argv);
@@ -971,21 +972,21 @@ void OpenGL::plot(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsig
     glutInitWindowSize(OpenGL_Plot._W, OpenGL_Plot._H);
     glutInitWindowPosition(100, 100);
     glutCreateWindow((char *)OpenGL_Plot._windowName.c_str());
-    OpenGL::Plot::initRendering();
-    glutDisplayFunc(OpenGL::Plot::display3D);
-    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::timerFunction2D, 0);
-    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::refreshCameraPosition, 0);
-    glutKeyboardFunc(OpenGL::Plot::handleKeyPress);
-    glutKeyboardUpFunc(OpenGL::Plot::handleKeyRelease);
-    glutSpecialFunc(OpenGL::Plot::handleSpecialKeyPress);
-    glutSpecialUpFunc(OpenGL::Plot::handleSpecialKeyReleased);
-    glutReshapeFunc(OpenGL::Plot::reshape3D);
+    OpenGL::initRendering();
+    glutDisplayFunc(OpenGL::display3D);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::timerFunction2D, 0);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::refreshCameraPosition, 0);
+    glutKeyboardFunc(OpenGL::handleKeyPress);
+    glutKeyboardUpFunc(OpenGL::handleKeyRelease);
+    glutSpecialFunc(OpenGL::handleSpecialKeyPress);
+    glutSpecialUpFunc(OpenGL::handleSpecialKeyReleased);
+    glutReshapeFunc(OpenGL::reshape3D);
     glutMainLoop();
 }
 
-void OpenGL::plot(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char options, int argc, const char *argv[])
+void cda::graphics::plot(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char options, int argc, const char *argv[])
 {
-    OpenGL::Plot::setData(x, y, z);
+    OpenGL::setData(x, y, z);
     OpenGL_Plot._options = options;
     
     glutInit(&argc, (char **)argv);
@@ -993,14 +994,14 @@ void OpenGL::plot(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsig
     glutInitWindowSize(OpenGL_Plot._W, OpenGL_Plot._H);
     glutInitWindowPosition(100, 100);
     glutCreateWindow((char *)OpenGL_Plot._windowName.c_str());
-    OpenGL::Plot::initRendering();
-    glutDisplayFunc(OpenGL::Plot::display3D);
-    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::timerFunction3D, 1);
-    glutTimerFunc(OpenGL_Plot._dt, OpenGL::Plot::refreshCameraPosition, 2);
-    glutKeyboardFunc(OpenGL::Plot::handleKeyPress);
-    glutKeyboardUpFunc(OpenGL::Plot::handleKeyRelease);
-    glutSpecialFunc(OpenGL::Plot::handleSpecialKeyPress);
-    glutSpecialUpFunc(OpenGL::Plot::handleSpecialKeyReleased);
-    glutReshapeFunc(OpenGL::Plot::reshape3D);
+    OpenGL::initRendering();
+    glutDisplayFunc(OpenGL::display3D);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::timerFunction3D, 1);
+    glutTimerFunc(OpenGL_Plot._dt, OpenGL::refreshCameraPosition, 2);
+    glutKeyboardFunc(OpenGL::handleKeyPress);
+    glutKeyboardUpFunc(OpenGL::handleKeyRelease);
+    glutSpecialFunc(OpenGL::handleSpecialKeyPress);
+    glutSpecialUpFunc(OpenGL::handleSpecialKeyReleased);
+    glutReshapeFunc(OpenGL::reshape3D);
     glutMainLoop();
 }

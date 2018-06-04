@@ -1,5 +1,5 @@
 //
-//  Vectorial.cpp
+//  matrix.cpp
 //  Class for vectorial operations
 //  Vibration Normal Modes 2D
 //
@@ -7,7 +7,7 @@
 //  Copyright (c) 2012 NEPTUNO. All rights reserved.
 //
 
-#include "Vectorial.h"
+#include "matrix.hpp"
 
 #include <typeinfo>
 
@@ -16,20 +16,20 @@ const int tolMax = 1000;
 const double preDef = 1E-04;
 const std::string RM = "\n[Matrix::";
 
-using namespace CDA;
+using namespace cda::containers;
 
             //  --- MATRIX CLASS ---
 
 //  --- DEFINITION ---
 
 template<typename T>
-CDA::Matrix<T>::Matrix(T* _a)
+Matrix<T>::Matrix(T* _a)
 {
     a = _a;
 }
 
 template<typename T>
-CDA::Matrix<T>::Matrix(const Matrix<T>& M)
+Matrix<T>::Matrix(const Matrix<T>& M)
 {
     n = M.n;
     m = M.m;
@@ -40,7 +40,7 @@ CDA::Matrix<T>::Matrix(const Matrix<T>& M)
 
 template<typename T>
 template <class T2>
-CDA::Matrix<T>::Matrix(const Matrix<T2>& M)
+Matrix<T>::Matrix(const Matrix<T2>& M)
 {
     n = M.rows();
     m = M.columns();
@@ -53,14 +53,14 @@ CDA::Matrix<T>::Matrix(const Matrix<T2>& M)
 }
 
 template<typename T>
-CDA::Matrix<T>::~Matrix()
+Matrix<T>::~Matrix()
 {
     delete a;
     a = nullptr;
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::reSize(int _n, int _m)
+Matrix<T>::reSize(int _n, int _m)
 {
     Matrix<T> tmp(n,m);
     tmp = (* this);
@@ -87,7 +87,7 @@ CDA::Matrix<T>::reSize(int _n, int _m)
 }
 
 template<typename T> inline
-Matrix<T> &CDA::Matrix<T>::operator=(const Matrix<T>& M)
+Matrix<T> &Matrix<T>::operator=(const Matrix<T>& M)
 {
     if (&M != this) {
         delete a;
@@ -105,7 +105,7 @@ Matrix<T> &CDA::Matrix<T>::operator=(const Matrix<T>& M)
 //  --- GETS AND SETS ---
 //  Gets
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::getRow(int _i)
+Matrix<T>::getRow(int _i)
 {
     Matrix<T> tmp(1,m);
     tmp.zero();
@@ -121,7 +121,7 @@ CDA::Matrix<T>::getRow(int _i)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::getColumn(int _j)
+Matrix<T>::getColumn(int _j)
 {
     Matrix<T> tmp(n,1);
     tmp.zero();
@@ -137,7 +137,7 @@ CDA::Matrix<T>::getColumn(int _j)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::getMatrix(int _i, int _j, int height, int columns)
+Matrix<T>::getMatrix(int _i, int _j, int height, int columns)
 {
     Matrix<T> tmp(height,columns);
     tmp.zero();
@@ -155,13 +155,13 @@ CDA::Matrix<T>::getMatrix(int _i, int _j, int height, int columns)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::getMatrix(int _i, int _j)
+Matrix<T>::getMatrix(int _i, int _j)
 {
     return (this -> getMatrix(_i, _j, n-_i, m-_j));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::getDiagonal()
+Matrix<T>::getDiagonal()
 {
     Vector<T> tmp(n);
     if (n != m)
@@ -173,7 +173,7 @@ CDA::Matrix<T>::getDiagonal()
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::getRowV(int _i, int _j)
+Matrix<T>::getRowV(int _i, int _j)
 {
     Vector<T> tmp(m-_j);
     if (_i >= n) {
@@ -188,13 +188,13 @@ CDA::Matrix<T>::getRowV(int _i, int _j)
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::getRowV(int _i)
+Matrix<T>::getRowV(int _i)
 {
     return (this -> getRowV(_i, 0));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::getColumnV(int _i, int _j)
+Matrix<T>::getColumnV(int _i, int _j)
 {
     Vector<T> tmp(n-_i);
     if (_j >= m) {
@@ -209,7 +209,7 @@ CDA::Matrix<T>::getColumnV(int _i, int _j)
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::getColumnV(int _j)
+Matrix<T>::getColumnV(int _j)
 {
     return (this -> getColumnV(0, _j));
 }
@@ -217,7 +217,7 @@ CDA::Matrix<T>::getColumnV(int _j)
 
 //  Sets
 template<typename T> inline void
-CDA::Matrix<T>::setColumn(int _i, int _j, const Matrix<T>& Mc)
+Matrix<T>::setColumn(int _i, int _j, const Matrix<T>& Mc)
 {
     if (n < _i+Mc.n || Mc.m > 1)
         std::cout << RM << "setColumn(i, j, Mc)] - La columna que se está intentando sustituir es demasiado larga o no se está introduciendo una matriz columna.\n";
@@ -227,13 +227,13 @@ CDA::Matrix<T>::setColumn(int _i, int _j, const Matrix<T>& Mc)
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setColumn(int _j, const Matrix<T>& Mc)
+Matrix<T>::setColumn(int _j, const Matrix<T>& Mc)
 {
     this -> setColumn(0, _j, Mc);
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setColumnV(int _i, int _j, const Vector<T>& V)
+Matrix<T>::setColumnV(int _i, int _j, const Vector<T>& V)
 {
     if (n < _i+V.Size())
         std::cout << RM << "setColumnV(i, j, V)] - La columna que se está intentando sustituir es demasiado larga.\n";
@@ -243,13 +243,13 @@ CDA::Matrix<T>::setColumnV(int _i, int _j, const Vector<T>& V)
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setColumnV(int _j, const Vector<T>& V)
+Matrix<T>::setColumnV(int _j, const Vector<T>& V)
 {
     this -> setColumnV(0, _j, V);
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setRow(int _i, int _j, const Matrix<T>& Mr)
+Matrix<T>::setRow(int _i, int _j, const Matrix<T>& Mr)
 {
     if (m < _j+Mr.m || Mr.n > 1) {
         std::cout << RM << "setRow(i, j, Mr)] - La fila que se está intentando sustituir es demasiado larga o no se está introduciendo una matriz fila.\n";
@@ -260,13 +260,13 @@ CDA::Matrix<T>::setRow(int _i, int _j, const Matrix<T>& Mr)
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setRow(int _i, const Matrix<T>& Mr)
+Matrix<T>::setRow(int _i, const Matrix<T>& Mr)
 {
     this -> setRow(_i, 0, Mr);
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setRowV(int _i, int _j, const Vector<T>& V)
+Matrix<T>::setRowV(int _i, int _j, const Vector<T>& V)
 {
     if (m < _j+V.Size())
         std::cout << RM << "setRowV(i, j, V)] - La fila que se está intentando sustituir es demasiado larga.\n";
@@ -276,13 +276,13 @@ CDA::Matrix<T>::setRowV(int _i, int _j, const Vector<T>& V)
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setRowV(int _i, const Vector<T>& V)
+Matrix<T>::setRowV(int _i, const Vector<T>& V)
 {
     this -> setRowV(_i, 0, V);
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::setMatrix(int _i, int _j, const Matrix<T>& M)
+Matrix<T>::setMatrix(int _i, int _j, const Matrix<T>& M)
 {
     if (n < M.n+_i && m < M.m+_j)
         for (int i=_i; i<n; i++) {
@@ -318,7 +318,7 @@ CDA::Matrix<T>::setMatrix(int _i, int _j, const Matrix<T>& M)
 //  --- FUNCTIONS ---
 //  Returns an integer / a double / a float
 template<typename T> inline int
-CDA::Matrix<T>::dims() const
+Matrix<T>::dims() const
 {
     int dims[2];
     dims[0] = n;
@@ -327,26 +327,26 @@ CDA::Matrix<T>::dims() const
 }
 
 template<typename T> inline int
-CDA::Matrix<T>::rows() const
+Matrix<T>::rows() const
 {
     return n;
 }
 
 template<typename T> inline int
-CDA::Matrix<T>::columns() const
+Matrix<T>::columns() const
 {
     return m;
 }
 
 template<typename T> inline int
-CDA::Matrix<T>::elements() const
+Matrix<T>::elements() const
 {
     return size;
 }
 
 
 template<typename T> inline T
-CDA::Matrix<T>::sumRow(int _i) const
+Matrix<T>::sumRow(int _i) const
 {
     if (n >= _i)
         std::cout << RM << "sumRow(i)] - Esta fila no existe.\n";
@@ -358,7 +358,7 @@ CDA::Matrix<T>::sumRow(int _i) const
 }
 
 template<typename T> inline T
-CDA::Matrix<T>::sumColumn(int _j) const
+Matrix<T>::sumColumn(int _j) const
 {
     if (m >= _j)
         std::cout << RM << "sumColumn(j)] - Esta columna no existe.\n";
@@ -370,7 +370,7 @@ CDA::Matrix<T>::sumColumn(int _j) const
 }
 
 template<typename T> inline T
-CDA::Matrix<T>::max() const
+Matrix<T>::max() const
 {
     T max = a[0];
     for (int k=1; k<size; k++) {
@@ -381,7 +381,7 @@ CDA::Matrix<T>::max() const
 }
 
 template<typename T> inline T
-CDA::Matrix<T>::maxAbs() const
+Matrix<T>::maxAbs() const
 {
     T max = fabs(a[0]);
     for (int k=1; k<size; k++) {
@@ -392,7 +392,7 @@ CDA::Matrix<T>::maxAbs() const
 }
 
 template<typename T> inline T
-CDA::Matrix<T>::maxAbs_sig() const
+Matrix<T>::maxAbs_sig() const
 {
     T max = a[0];
     for (int k=1; k<size; k++) {
@@ -403,7 +403,7 @@ CDA::Matrix<T>::maxAbs_sig() const
 }
 
 template<typename T> inline T
-CDA::Matrix<T>::min() const
+Matrix<T>::min() const
 {
     T min = a[0];
     for (int k=1; k<size; k++) {
@@ -414,7 +414,7 @@ CDA::Matrix<T>::min() const
 }
 
 template<typename T> inline T
-CDA::Matrix<T>::det()
+Matrix<T>::det()
 {
     T det = 1.0;
     if (n != m) {
@@ -433,7 +433,7 @@ CDA::Matrix<T>::det()
 }
 
 template<typename T> inline T&
-CDA::Matrix<T>::operator()(int _i, int _j) const
+Matrix<T>::operator()(int _i, int _j) const
 {
     if (n <= _i || m <= _j)
         std::cout << RM << "operator(i,j)] - Este elemento de matriz no existe.\n";
@@ -441,7 +441,7 @@ CDA::Matrix<T>::operator()(int _i, int _j) const
 }
 
 template<typename T> inline T&
-CDA::Matrix<T>::operator()(int _k) const
+Matrix<T>::operator()(int _k) const
 {
     if (size <= _k)
         std::cout << RM << "operator(k)] - Este elemento de matriz no existe.\n";
@@ -451,7 +451,7 @@ CDA::Matrix<T>::operator()(int _k) const
 
 //  Returns a matrix
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::sumRows()
+Matrix<T>::sumRows()
 {
     T sum;
     Matrix<T> tmp(n,1);
@@ -467,7 +467,7 @@ CDA::Matrix<T>::sumRows()
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::sumColumns()
+Matrix<T>::sumColumns()
 {
     T sum;
     Matrix<T> tmp(1,m);
@@ -483,7 +483,7 @@ CDA::Matrix<T>::sumColumns()
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::transpose()
+Matrix<T>::transpose()
 {
     Matrix<T> tmp(m,n);
     tmp.zero();
@@ -496,7 +496,7 @@ CDA::Matrix<T>::transpose()
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::zero(int _n, int _m)
+Matrix<T>::zero(int _n, int _m)
 {
     Matrix<T> tmp(_n,_m);
     tmp.zero();
@@ -504,7 +504,7 @@ CDA::Matrix<T>::zero(int _n, int _m)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::ones(int _n, int _m)
+Matrix<T>::ones(int _n, int _m)
 {
     Matrix<T> tmp(_n,_m);
     tmp.ones();
@@ -512,7 +512,7 @@ CDA::Matrix<T>::ones(int _n, int _m)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::identity(int _n, int _m)
+Matrix<T>::identity(int _n, int _m)
 {
     if (_n != _m)
         std::cout << RM << "identity(n, m)] - No es una matriz cuadrada.\n";
@@ -523,7 +523,7 @@ CDA::Matrix<T>::identity(int _n, int _m)
 
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::sumRowsV()
+Matrix<T>::sumRowsV()
 {
     T sum;
     Vector<T> tmp(n);
@@ -539,7 +539,7 @@ CDA::Matrix<T>::sumRowsV()
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::sumColumnsV()
+Matrix<T>::sumColumnsV()
 {
     T sum;
     Vector<T> tmp(m);
@@ -557,7 +557,7 @@ CDA::Matrix<T>::sumColumnsV()
 
 //  Returns a bool
 template<typename T> inline bool
-CDA::Matrix<T>::null()
+Matrix<T>::null()
 {
     for (int i=0; i<n; i++) {
         for (int j=0; j<m; j++) {
@@ -569,7 +569,7 @@ CDA::Matrix<T>::null()
 }
 
 template<typename T> inline bool
-CDA::Matrix<T>::duplicate(T range)
+Matrix<T>::duplicate(T range)
 {
     for (int k=0; k<size; k++) {
         for (int p=0; p<size; p++) {
@@ -581,7 +581,7 @@ CDA::Matrix<T>::duplicate(T range)
 }
 
 template<typename T> inline bool
-CDA::Matrix<T>::duplicate()
+Matrix<T>::duplicate()
 {
     return (this -> duplicate(0.0));
 }
@@ -589,7 +589,7 @@ CDA::Matrix<T>::duplicate()
 
 //  Void functions
 template<typename T> inline void
-CDA::Matrix<T>::zero()
+Matrix<T>::zero()
 {
     for (int k=0; k<size; k++) {
         if (typeid(T) == typeid(bool))
@@ -600,7 +600,7 @@ CDA::Matrix<T>::zero()
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::ones()
+Matrix<T>::ones()
 {
     for (int k=0; k<size; k++) {
         if (typeid(T) == typeid(bool))
@@ -611,7 +611,7 @@ CDA::Matrix<T>::ones()
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::identity()
+Matrix<T>::identity()
 {
     if (n != m)
         std::cout << RM << "identity()] - No es una matriz cuadrada.\n";
@@ -627,7 +627,7 @@ CDA::Matrix<T>::identity()
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::write(const std::string& path, const std::string& filename)
+Matrix<T>::write(const std::string& path, const std::string& filename)
 {
     const std::string Npath = path + filename;
     std::ofstream out(Npath.data());
@@ -635,7 +635,7 @@ CDA::Matrix<T>::write(const std::string& path, const std::string& filename)
 }
 
 template<typename T> inline void
-CDA::Matrix<T>::write(const std::string& filename)
+Matrix<T>::write(const std::string& filename)
 {
     const std::string home = getenv("HOME");
     const std::string path = home + "/Desktop/";
@@ -646,7 +646,7 @@ CDA::Matrix<T>::write(const std::string& filename)
 
 //  --- MÉTODO LU ---
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::LU()
+Matrix<T>::LU()
 {
     if (n != m) {
         std::cout << RM << "LU()] - No se puede calcular la diagonal inferior porque no es una matriz cuadrada.\n";
@@ -689,7 +689,7 @@ CDA::Matrix<T>::LU()
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::U()
+Matrix<T>::U()
 {
     if (n != m)
         std::cout << RM << "U()] -> ";
@@ -711,7 +711,7 @@ CDA::Matrix<T>::U()
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::L()
+Matrix<T>::L()
 {
     if (n != m)
         std::cout << RM << "L()] -> ";
@@ -735,7 +735,7 @@ CDA::Matrix<T>::L()
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::solveLU(const Vector<T>& B)
+Matrix<T>::solveLU(const Vector<T>& B)
 {
     Vector<T> tmp(n, 0);
     if (n != m || n != B.Size()) {
@@ -768,7 +768,7 @@ CDA::Matrix<T>::solveLU(const Vector<T>& B)
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::solveLU3d(const Vector<T>& B)
+Matrix<T>::solveLU3d(const Vector<T>& B)
 {
     Vector<T> tmp(n, 0);
     if (n != B.Size()) {
@@ -796,7 +796,7 @@ CDA::Matrix<T>::solveLU3d(const Vector<T>& B)
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::solveGS3d(const Vector<T>& B, T err)
+Matrix<T>::solveGS3d(const Vector<T>& B, T err)
 {
     Vector<T> x(n, 0);
     if (n != B.Size()) {
@@ -832,7 +832,7 @@ CDA::Matrix<T>::solveGS3d(const Vector<T>& B, T err)
 
 //  --- MÉTODO QR ---
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::QR(unsigned char QorR)
+Matrix<T>::QR(unsigned char QorR)
 {
     if (n != m) {
         std::cout << RM << "QR(QorR) - La matriz no es cuadrada.";
@@ -923,7 +923,7 @@ CDA::Matrix<T>::QR(unsigned char QorR)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::eigenVectors(int maxIte, unsigned char opt)
+Matrix<T>::eigenVectors(int maxIte, unsigned char opt)
 {
     if (n != m)
         std::cout << RM << "eigenVectors()] -> ";
@@ -984,19 +984,19 @@ CDA::Matrix<T>::eigenVectors(int maxIte, unsigned char opt)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::eigenVectors(unsigned char opt)
+Matrix<T>::eigenVectors(unsigned char opt)
 {
     return (this -> eigenVectors(tolMax, opt));
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::eigenVectors()
+Matrix<T>::eigenVectors()
 {
     return (this -> eigenVectors(tolMax, 0));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
+Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
 {
     if (n != m)
         std::cout << RM << "eigenVectors()] -> ";
@@ -1047,19 +1047,19 @@ CDA::Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenVector(T eigenValue, unsigned char opt)
+Matrix<T>::eigenVector(T eigenValue, unsigned char opt)
 {
     return (this -> eigenVector(eigenValue, tolMax, opt));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenVector(T eigenValue)
+Matrix<T>::eigenVector(T eigenValue)
 {
     return (this -> eigenVector(eigenValue, tolMax, 0));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenValues(int maxIte, T factor, unsigned char opt)
+Matrix<T>::eigenValues(int maxIte, T factor, unsigned char opt)
 {
     if (n != m)
         std::cout << RM << "eigenValues(maxIte)] -> ";
@@ -1092,19 +1092,19 @@ CDA::Matrix<T>::eigenValues(int maxIte, T factor, unsigned char opt)
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenValues(int maxIte, unsigned char opt)
+Matrix<T>::eigenValues(int maxIte, unsigned char opt)
 {
     return (this -> eigenValues(maxIte, preDef, opt));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenValues(unsigned char opt)
+Matrix<T>::eigenValues(unsigned char opt)
 {
     return (this -> eigenValues(tolMax, preDef, opt));
 }
 
 template<typename T> inline Vector<T>
-CDA::Matrix<T>::eigenValues()
+Matrix<T>::eigenValues()
 {
     return (this -> eigenValues(tolMax, preDef, 0));
 }
@@ -1113,7 +1113,7 @@ CDA::Matrix<T>::eigenValues()
 
 //  --- OPERATORS ---
 template<typename T> inline Matrix<T>&
-CDA::Matrix<T>::operator=(const T* array)
+Matrix<T>::operator=(const T* array)
 {
     for (int k=0; k<size; k++) {
         a[k] = array[k];
@@ -1122,7 +1122,7 @@ CDA::Matrix<T>::operator=(const T* array)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator+(const Matrix<T>& M)
+Matrix<T>::operator+(const Matrix<T>& M)
 {
     if (n != M.n || m != M.m)
         std::cout << RM << "operator+M] - Las matrices no tienen las mismas dimensiones.\n";
@@ -1135,7 +1135,7 @@ CDA::Matrix<T>::operator+(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>&
-CDA::Matrix<T>::operator+=(const Matrix<T>& M)
+Matrix<T>::operator+=(const Matrix<T>& M)
 {
     if (n != M.n || m != M.m)
         std::cout << RM << "operator+=M] - Las matrices no tienen las mismas dimensiones.\n";
@@ -1146,7 +1146,7 @@ CDA::Matrix<T>::operator+=(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator-(const Matrix<T>& M)
+Matrix<T>::operator-(const Matrix<T>& M)
 {
     if (n != M.n || m != M.m)
         std::cout << RM << "operator-M] - Las matrices no tienen las mismas dimensiones.\n";
@@ -1159,7 +1159,7 @@ CDA::Matrix<T>::operator-(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>&
-CDA::Matrix<T>::operator-=(const Matrix<T>& M)
+Matrix<T>::operator-=(const Matrix<T>& M)
 {
     if (n != M.n || m != M.m)
         std::cout << RM << "operator-=M] - Las matrices no tienen las mismas dimensiones.\n";
@@ -1170,7 +1170,7 @@ CDA::Matrix<T>::operator-=(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator*(const T& D)
+Matrix<T>::operator*(const T& D)
 {
     Matrix<T> tmp(n,m);
     tmp.zero();
@@ -1181,7 +1181,7 @@ CDA::Matrix<T>::operator*(const T& D)
 }
 
 template<typename T> inline Matrix<T>&
-CDA::Matrix<T>::operator*=(const T& D)
+Matrix<T>::operator*=(const T& D)
 {
     for (int k=0; k<size; k++) {
         a[k] *= D;
@@ -1190,7 +1190,7 @@ CDA::Matrix<T>::operator*=(const T& D)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator/(const T& D)
+Matrix<T>::operator/(const T& D)
 {
     Matrix<T> tmp(n,m);
     tmp.zero();
@@ -1201,7 +1201,7 @@ CDA::Matrix<T>::operator/(const T& D)
 }
 
 template<typename T> inline Matrix<T>&
-CDA::Matrix<T>::operator/=(const T& D)
+Matrix<T>::operator/=(const T& D)
 {
     for (int k=0; k<size; k++) {
         a[k] /= D;
@@ -1210,7 +1210,7 @@ CDA::Matrix<T>::operator/=(const T& D)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator-()
+Matrix<T>::operator-()
 {
     Matrix<T> tmp(n,m);
     tmp.zero();
@@ -1221,7 +1221,7 @@ CDA::Matrix<T>::operator-()
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator*(const Matrix<T>& M)
+Matrix<T>::operator*(const Matrix<T>& M)
 {
     Matrix<T> tmp(n,M.m);
     tmp.zero();
@@ -1241,7 +1241,7 @@ CDA::Matrix<T>::operator*(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>&
-CDA::Matrix<T>::operator*=(const Matrix<T>& M)
+Matrix<T>::operator*=(const Matrix<T>& M)
 {
     if (n != m || M.n != M.m || n != M.n) {
         std::cout << RM << "operator*=M] - No se puede multiplicar sobre sí misma porque no es una matriz cuadrada.\n";
@@ -1264,7 +1264,7 @@ CDA::Matrix<T>::operator*=(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator*(const Vector<T>& V)
+Matrix<T>::operator*(const Vector<T>& V)
 {
     Matrix<T> tmp(n,V.Size());
     tmp.zero();
@@ -1282,7 +1282,7 @@ CDA::Matrix<T>::operator*(const Vector<T>& V)
 }
 
 template<typename T> inline Matrix<T>
-CDA::Matrix<T>::operator^(const int exp)
+Matrix<T>::operator^(const int exp)
 {
     Matrix<T> tmp(n,m);
     tmp.zero();
@@ -1461,22 +1461,22 @@ operator<<(std::ostream& out, const Matrix<T>& M)
 
 //  --- OTHER FUNCTIONS ---
 template<typename T>
-CDA::Matrix<T> CDA::zero(int _n, int _m) {
+Matrix<T> cda::containers::zero(int _n, int _m) {
     Matrix<T> tmp(_n,_m);
     tmp.zero();
     return tmp;
 }
 
-template<typename T> inline CDA::Matrix<T>
-CDA::ones(int _n, int _m)
+template<typename T> inline Matrix<T>
+cda::containers::ones(int _n, int _m)
 {
     Matrix<T> tmp(_n,_m);
     tmp.ones();
     return tmp;
 }
 
-template<typename T> inline CDA::Matrix<T>
-CDA::identity(int _n, int _m)
+template<typename T> inline Matrix<T>
+cda::containers::identity(int _n, int _m)
 {
     if (_n != _m)
         std::cout << RM << "identity(n, m)] - No es una matriz cuadrada.\n";
@@ -1485,8 +1485,8 @@ CDA::identity(int _n, int _m)
     return I;
 }
 
-template<typename T> inline CDA::Matrix<T>
-CDA::setdiff(CDA::Matrix<T>& A, const CDA::Matrix<T>& B, const int& reps)
+template<typename T> inline Matrix<T>
+cda::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)
 {
     Matrix<T> tmp(A.rows(), A.columns());
     int dim = 0, coincidence = 0;
@@ -1522,7 +1522,7 @@ CDA::setdiff(CDA::Matrix<T>& A, const CDA::Matrix<T>& B, const int& reps)
     }
     
     if (dim == 0) {
-        CDA::Matrix<T> fail(1,1);
+        Matrix<T> fail(1,1);
         fail(0,0) = 0.0;
         return fail;
     } else {
@@ -1531,8 +1531,8 @@ CDA::setdiff(CDA::Matrix<T>& A, const CDA::Matrix<T>& B, const int& reps)
     }
 }
 
-template<typename T> inline CDA::Matrix<T>
-CDA::setdiff(CDA::Matrix<T>& A, const CDA::Matrix<T>& B)
+template<typename T> inline Matrix<T>
+cda::containers::setdiff(Matrix<T>& A, const Matrix<T>& B)
 {
     return setdiff(A, B, A.rows());
 }

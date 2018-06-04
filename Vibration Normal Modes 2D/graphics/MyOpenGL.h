@@ -10,12 +10,13 @@
 
 #include <string>
 
-#include "../math/Vectorial.h"
+#include "../math/containers/vector.hpp"
+#include "../math/containers/matrix.hpp"
 
 
 //  OPENGL
-namespace CDA {
-    namespace OpenGL {
+namespace cda {
+    namespace graphics {
         
         //  OPENGL - CLASS
         
@@ -32,7 +33,7 @@ namespace CDA {
 #define Update_D    0x20
 #define SetDefault  0x40
         
-        class Plot {
+        class OpenGL {
         private:
             float _rotX, _rotY, _rotZ;
             float _zoomX, _zoomY, _zoomZ;
@@ -41,8 +42,8 @@ namespace CDA {
             float _cX, _cY, _cZ;
             float _red, _green, _blue;
             float _vMax, _vMin;
-            Vector<double> _vX, _vY, _vZ;
-            Matrix<double> _mZ;
+            containers::Vector<double> _vX, _vY, _vZ;
+            containers::Matrix<double> _mZ;
             
             void (* _updateData)();
             
@@ -58,12 +59,12 @@ namespace CDA {
             
             
             //  Set params
-            static void setData(Vector<double> &x, Vector<double> &y, unsigned char setDefault);
-            static void setData(Vector<double> &x, Vector<double> &y);
-            static void setData(Vector<double> &x, Vector<double> &y, Vector<double> &z);
-            static void setData(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char setDefault);
-            static void setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z);
-            static void setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char setDefault);
+            static void setData(containers::Vector<double> &x, containers::Vector<double> &y, unsigned char setDefault);
+            static void setData(containers::Vector<double> &x, containers::Vector<double> &y);
+            static void setData(containers::Vector<double> &x, containers::Vector<double> &y, containers::Vector<double> &z);
+            static void setData(containers::Vector<double> &x, containers::Vector<double> &y, containers::Vector<double> &z, unsigned char setDefault);
+            static void setData(containers::Vector<double> &x, containers::Vector<double> &y, containers::Matrix<double> &z);
+            static void setData(containers::Vector<double> &x, containers::Vector<double> &y, containers::Matrix<double> &z, unsigned char setDefault);
             
             //  Set adjustments
             static void setColors(float red, float green, float blue);
@@ -151,8 +152,8 @@ namespace CDA {
         };
         
         //  PLOT FUNCTIONS - NAMESPACE
-        void plot(Vector<double> &x, Vector<double> &y, unsigned char options, int argc, const char *argv[]);
-        void plot(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char options, int argc, const char *argv[]);
-        void plot(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char options, int argc, const char *argv[]);
+        void plot(containers::Vector<double> &x, containers::Vector<double> &y, unsigned char options, int argc, const char *argv[]);
+        void plot(containers::Vector<double> &x, containers::Vector<double> &y, containers::Vector<double> &z, unsigned char options, int argc, const char *argv[]);
+        void plot(containers::Vector<double> &x, containers::Vector<double> &y, containers::Matrix<double> &z, unsigned char options, int argc, const char *argv[]);
     }
 }
