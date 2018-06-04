@@ -1293,11 +1293,11 @@ CDA::Matrix<T>::operator^(const int exp)
     }
     
     if (exp == -1) {
-        Vector<T> I(n), sol(n);
+        Vector<T> I(n);
         for (int i=0; i<m; i++) {
             I.Zero();
             I[i] = (T)1.0;
-            sol = this->solveLU(I);
+            auto sol(this->solveLU(I));
             for (int k=0; k<m; k++) {
                 tmp.a[k*m + i] = sol[k];
             }

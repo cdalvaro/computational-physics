@@ -46,7 +46,12 @@ namespace CDA {
          @param n The size of the vector
          */
         Vector(const size_t &size) :
-        n(size), v((T *)std::malloc(n * sizeof(T))) {
+        n(size), v(nullptr) {
+            if (void *mem = std::realloc(v, n * sizeof(T))) {
+                v = static_cast<T *>(mem);
+            } else {
+                throw std::bad_alloc();
+            }
         }
         
         /**
@@ -63,7 +68,13 @@ namespace CDA {
          @param n The size of the vector
          */
         Vector(const size_t &size, const T &value) :
-        n(size), v((T *)std::malloc(n * sizeof(T))) {
+        n(size), v(nullptr) {
+            if (void *mem = std::realloc(v, n * sizeof(T))) {
+                v = static_cast<T *>(mem);
+            } else {
+                throw std::bad_alloc();
+            }
+            
             std::fill(v, v + n, value);
         }
         
@@ -73,19 +84,26 @@ namespace CDA {
          @param vector The source vector
          */
         Vector(const Vector<T> &vector) :
-        n(vector.n), v((T *)std::malloc(n * sizeof(T))) {
+        n(vector.n), v(nullptr) {
+            if (void *mem = std::realloc(v, n * sizeof(T))) {
+                v = static_cast<T *>(mem);
+            } else {
+                throw std::bad_alloc();
+            }
+            
             std::copy(vector.v, vector.v + n, v);
         }
         
+        // FIXME: This function is not working properly
         /**
          Move constructor
          
          @param vector The source vector
          */
-        Vector(Vector<T> &&vector) :
-        n(vector.n), v(std::move(vector.v)) {
-            
-        }
+//        Vector(Vector<T> &&vector) :
+//        n(vector.n), v(std::move(vector.v)) {
+//
+//        }
         
         /**
          Class destructor
@@ -111,7 +129,7 @@ namespace CDA {
                      the new extra elements will be set to 0
          */
         void Resize(const size_t &size, const bool &fill = true) {
-            if (void *mem = std::realloc(v, size)) {
+            if (void *mem = std::realloc(v, size * sizeof(T))) {
                 v = static_cast<T *>(mem);
             } else {
                 throw std::bad_alloc();
@@ -133,16 +151,17 @@ namespace CDA {
             return (* this);
         }
         
-        Vector<T> &operator=(Vector<T> &&vector) {
-            // TODO: Check method
-            if (&vector != this) {
-                n = vector.n;
-                std::free(v);
-                v = std::move(vector.v);
-            }
-            
-            return (* this);
-        }
+        //  FIXME: This function is not working properly
+//        Vector<T> &operator=(Vector<T> &&vector) {
+//            // TODO: Check method
+//            if (&vector != this) {
+//                n = vector.n;
+//                std::free(v);
+//                v = std::move(vector.v);
+//            }
+//            
+//            return (* this);
+//        }
         
         /**
          Returns \p elements starting from element \p first_element
@@ -182,7 +201,7 @@ namespace CDA {
          @param lenght The number of elements to copy
          */
         void Set(const size_t &first_element, const Vector<T> &vector, const size_t &elements) {
-            if (first_element + elements >= n || elements > vector.n) {
+            if (first_element + elements > n || elements > vector.n) {
                 throw std::out_of_range("Out of bounds");
             }
             
