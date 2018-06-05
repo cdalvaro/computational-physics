@@ -20,121 +20,9 @@ using namespace cda::math::containers;
 
             //  --- MATRIX CLASS ---
 
-//  --- DEFINITION ---
-
-template<typename T>
-Matrix<T>::Matrix(T* _a)
-{
-    a = _a;
-}
-
-template<typename T>
-Matrix<T>::Matrix(const Matrix<T>& M)
-{
-    n = M.n;
-    m = M.m;
-    size = M.size;
-    a = new T[size];
-    std::copy(M.a, M.a + M.size, a);
-}
-
-template<typename T>
-template <class T2>
-Matrix<T>::Matrix(const Matrix<T2>& M)
-{
-    n = M.rows();
-    m = M.columns();
-    size = M.elements();
-    a = new T[size];
-    
-    for (int k=0; k<size; k++) {
-        a[k] = (T)M(k);
-    }
-}
-
-template<typename T>
-Matrix<T>::~Matrix()
-{
-    delete a;
-    a = nullptr;
-}
-
-template<typename T> inline void
-Matrix<T>::reSize(int _n, int _m)
-{
-    Matrix<T> tmp(n,m);
-    tmp = (* this);
-    
-    delete [] a;
-    n = _n;
-    m = _m;
-    size = n*m;
-    a = new T[size];
-    
-    this -> setMatrix(0, 0, tmp);
-    
-    for (int i=0; i<tmp.n; i++) {
-        for (int j=tmp.m; j<_m; j++) {
-            a[i*_m + j] = (T)0.0;
-        }
-    }
-    
-    for (int i=tmp.n; i<_n; i++) {
-        for (int j=0; j<_m; j++) {
-            a[i*_m + j] = (T)0.0;
-        }
-    }
-}
-
-template<typename T> inline
-Matrix<T> &Matrix<T>::operator=(const Matrix<T>& M)
-{
-    if (&M != this) {
-        delete a;
-        n = M.n;
-        m = M.m;
-        size = M.size;
-        a = new T[size];
-        std::copy(M.a, M.a + M.size, a);
-    }
-    return (* this);
-}
-
-
 
 //  --- GETS AND SETS ---
 //  Gets
-template<typename T> inline Matrix<T>
-Matrix<T>::getRow(int _i)
-{
-    Matrix<T> tmp(1,m);
-    tmp.zero();
-    if (_i >= n) {
-        std::cout << RM << "getRow(i)] - Esta fila no existe, se ha devuelvo una fila de unos.\n";
-        tmp.ones();
-    } else {
-        for (int j=0; j<m; j++) {
-            tmp.a[j] = a[_i*m + j];
-        }
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::getColumn(int _j)
-{
-    Matrix<T> tmp(n,1);
-    tmp.zero();
-    if (_j >= m) {
-        std::cout << RM << "getColumn(j)] - Esta columna no existe, se ha devuelvo una columna de unos.\n";
-        tmp.ones();
-    } else {
-        for (int i=0; i<n; i++) {
-            tmp.a[i] = a[i*m + _j];
-        }
-    }
-    return tmp;
-}
 
 template<typename T> inline Matrix<T>
 Matrix<T>::getMatrix(int _i, int _j, int height, int columns)
@@ -435,19 +323,8 @@ Matrix<T>::det()
 template<typename T> inline T&
 Matrix<T>::operator()(int _i, int _j) const
 {
-    if (n <= _i || m <= _j)
-        std::cout << RM << "operator(i,j)] - Este elemento de matriz no existe.\n";
     return a[_i*m + _j];
 }
-
-template<typename T> inline T&
-Matrix<T>::operator()(int _k) const
-{
-    if (size <= _k)
-        std::cout << RM << "operator(k)] - Este elemento de matriz no existe.\n";
-    return a[_k];
-}
-
 
 //  Returns a matrix
 template<typename T> inline Matrix<T>
@@ -588,27 +465,6 @@ Matrix<T>::duplicate()
 
 
 //  Void functions
-template<typename T> inline void
-Matrix<T>::zero()
-{
-    for (int k=0; k<size; k++) {
-        if (typeid(T) == typeid(bool))
-            a[k] = false;
-        else
-            a[k] = (T)0.0;
-    }
-}
-
-template<typename T> inline void
-Matrix<T>::ones()
-{
-    for (int k=0; k<size; k++) {
-        if (typeid(T) == typeid(bool))
-            a[k] = true;
-        else
-            a[k] = (T)1.0;
-    }
-}
 
 template<typename T> inline void
 Matrix<T>::identity()
@@ -856,7 +712,7 @@ Matrix<T>::QR(unsigned char QorR)
     // TODO: Implement transpose method for Vector class
     // v = vt.transpose();
     for (auto it = vt.Begin(); it != vt.End(); ++it) {
-        v(std::distance(vt.Begin(), it), 0) = *it;
+        v[std::distance(vt.Begin(), it)][0] = *it;
     }
     
     H = I - (v*vt)*2/(vt.SquaredNorm());
@@ -871,9 +727,9 @@ Matrix<T>::QR(unsigned char QorR)
     for (int i=1; i<n-1; i++) {
         c.Resize(n-i);
         vt.Resize(n-i);
-        A.reSize(n-i, n-i);
-        H.reSize(n-i, n-i);
-        v.reSize(n-i, 1);
+        A.Resize(n-i, n-i);
+        H.Resize(n-i, n-i);
+        v.Resize(n-i, 1);
         
         A = R.getMatrix(i, i);
         c = A.getColumnV(0);
@@ -1023,7 +879,7 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
         
         if ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k == maxIte) {
             eVe.ones();
-            eVe(0) *= 2.0;
+            eVe[0][0] *= 2.0;
             eVa = eigenValue+1.0;
             k=1;
             Ainv = (* this) - identity(n,n)*eigenValue*(1.0+fact);
@@ -1315,16 +1171,6 @@ Matrix<T>::operator^(const int exp)
 }
 
 //  --- MORE OPERATORS ---
-template<typename T> inline Matrix<T>
-operator*(const T& D, const Matrix<T>& M)
-{
-    Matrix<T> tmp(M.rows(),M.columns());
-    tmp.zero();
-    for (int k=0; k<M.elements(); k++) {
-        tmp(k) = M(k) * D;
-    }
-    return tmp;
-}
 
 template<typename T> inline Matrix<T>
 operator&&(const Matrix<T>& Mi, const Matrix<T>& Md)
@@ -1379,7 +1225,7 @@ operator>>(std::istream& in, Matrix<T>& M)
         n++;
     }
     
-    M.reSize(n, m);
+    M.Resize(n, m);
     for (int i=0; i<n-1; i++) {
         endR = cc.find("\r", endR+1);
         for (int j=0; j<m; j++) {
@@ -1526,7 +1372,7 @@ cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps
         fail(0,0) = 0.0;
         return fail;
     } else {
-        tmp.reSize(dim, A.columns());
+        tmp.Resize(dim, A.columns());
         return tmp;
     }
 }

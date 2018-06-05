@@ -39,6 +39,14 @@ namespace cda {
                 size_t n;
                 T *v;
                 
+                void AllocateMemory(const size_t &size) {
+                    if (void *mem = std::realloc(v, size * sizeof(T))) {
+                        v = static_cast<T *>(mem);
+                    } else {
+                        throw std::bad_alloc();
+                    }
+                }
+                
             public:
                 
                 /**
@@ -46,21 +54,9 @@ namespace cda {
                  
                  @param n The size of the vector
                  */
-                Vector(const size_t &size) :
+                Vector(const size_t &size = 0) :
                 n(size), v(nullptr) {
-                    if (void *mem = std::realloc(v, n * sizeof(T))) {
-                        v = static_cast<T *>(mem);
-                    } else {
-                        throw std::bad_alloc();
-                    }
-                }
-                
-                /**
-                 Class default constructor
-                 */
-                Vector() :
-                Vector(0) {
-                    
+                    AllocateMemory(n);
                 }
                 
                 /**
@@ -70,12 +66,7 @@ namespace cda {
                  */
                 Vector(const size_t &size, const T &value) :
                 n(size), v(nullptr) {
-                    if (void *mem = std::realloc(v, n * sizeof(T))) {
-                        v = static_cast<T *>(mem);
-                    } else {
-                        throw std::bad_alloc();
-                    }
-                    
+                    AllocateMemory(n);
                     std::fill(v, v + n, value);
                 }
                 
@@ -86,12 +77,7 @@ namespace cda {
                  */
                 Vector(const Vector<T> &vector) :
                 n(vector.n), v(nullptr) {
-                    if (void *mem = std::realloc(v, n * sizeof(T))) {
-                        v = static_cast<T *>(mem);
-                    } else {
-                        throw std::bad_alloc();
-                    }
-                    
+                    AllocateMemory(n);
                     std::copy(vector.v, vector.v + n, v);
                 }
                 
@@ -101,25 +87,29 @@ namespace cda {
                  
                  @param vector The source vector
                  */
-                //        Vector(Vector<T> &&vector) :
-                //        n(vector.n), v(std::move(vector.v)) {
-                //
-                //        }
+                Vector(Vector<T> &&vector) :
+                n(vector.n), v(vector.v) {
+                    vector.n = 0;
+                    vector.v = nullptr;
+                }
                 
                 /**
                  Class destructor
                  */
                 ~Vector() {
-                    std::free(v);
-                    v = nullptr;
+                    if (v) {
+                        std::free(v);
+                        v = nullptr;
+                        n = 0;
+                    }
                 }
                 
                 T *Begin() const {
-                    return this->v;
+                    return v;
                 }
                 
                 T *End() const {
-                    return this->v + this->n;
+                    return v + n;
                 }
                 
                 /**
@@ -130,12 +120,11 @@ namespace cda {
                  the new extra elements will be set to 0
                  */
                 void Resize(const size_t &size, const bool &fill = true) {
-                    if (void *mem = std::realloc(v, size * sizeof(T))) {
-                        v = static_cast<T *>(mem);
-                    } else {
-                        throw std::bad_alloc();
+                    if (size == n) {
+                        return;
                     }
                     
+                    AllocateMemory(size);
                     if (fill && size > n) {
                         std::fill_n(v + n, size - n, static_cast<T>(0));
                     }
@@ -144,25 +133,26 @@ namespace cda {
                 }
                 
                 Vector<T> &operator=(const Vector<T> &vector) {
-                    if (&vector != this) {
-                        this->Resize(vector.n, false);
+                    if (this != &vector) {
+                        Resize(vector.n, false);
                         std::copy(vector.v, vector.v + n, v);
                     }
                     
-                    return (* this);
+                    return *this;
                 }
                 
-                //  FIXME: This function is not working properly
-                //        Vector<T> &operator=(Vector<T> &&vector) {
-                //            // TODO: Check method
-                //            if (&vector != this) {
-                //                n = vector.n;
-                //                std::free(v);
-                //                v = std::move(vector.v);
-                //            }
-                //
-                //            return (* this);
-                //        }
+                Vector<T> &operator=(Vector<T> &&vector) {
+                    if (this != &vector) {
+                        std::free(v);
+                        v = vector.v;
+                        n = vector.n;
+                        
+                        vector.v = nullptr;
+                        vector.n = 0;
+                    }
+        
+                    return *this;
+                }
                 
                 /**
                  Returns \p elements starting from element \p first_element
@@ -319,7 +309,7 @@ namespace cda {
                 }
                 
                 T SquaredNorm() const {
-                    return (* this) * (* this);
+                    return *this * *this;
                 }
                 
                 /**
@@ -425,7 +415,7 @@ namespace cda {
                 void Write(const std::string &filename, const std::string &path = getenv("HOME")) const {
                     const std::string file_path(path + filename);
                     std::ofstream output(file_path.data());
-                    output << (* this);
+                    output << *this;
                 }
                 
                 //  --- OPERATORS ---

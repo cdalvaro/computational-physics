@@ -19,37 +19,151 @@ namespace cda {
             template <typename T>
             class Matrix {
             private:
-                int n, m, size;
+                size_t n, m, size;
                 T *a;
                 
+                void AllocateMemory(const size_t &size) {
+                    if (void *mem = std::realloc(a, size * sizeof(T))) {
+                        a = static_cast<T *>(mem);
+                    } else {
+                        throw std::bad_alloc();
+                    }
+                }
+                
             public:
-                //  --- DEFINITION ---
-                Matrix(int _n, int _m) :
-                n(_n), m(_m), size(_n * _m), a(new T[size]) {
+                
+                Matrix(const size_t &rows = 0, const size_t &columns = 0) :
+                n(rows), m(columns), size(rows * columns), a(nullptr) {
+                    AllocateMemory(size);
+                }
+                
+                Matrix(const size_t &rows, const size_t &columns, const T &value) :
+                n(rows), m(columns), size(rows * columns), a(nullptr) {
+                    AllocateMemory(size);
+                    std::fill(a, a + size, value);
+                }
+                
+                Matrix(const Matrix<T> &matrix) :
+                n(matrix.n), m(matrix.m), size(matrix.size), a(nullptr) {
+                    AllocateMemory(size);
+                    std::copy(matrix.a, matrix.a + size, a);
+                }
+                
+                Matrix(Matrix<T> &&matrix) :
+                n(matrix.n), m(matrix.m), size(matrix.size), a(matrix.a) {
+                    matrix.n = 0;
+                    matrix.m = 0;
+                    matrix.size = 0;
+                    matrix.a = nullptr;
+                }
+                
+                ~Matrix() {
+                    if (a) {
+                        std::free(a);
+                        a = nullptr;
+                        n = m = size = 0;
+                    }
+                }
+                
+                T *Begin() const {
+                    return a;
+                }
+                
+                T *End() const {
+                    return a + size;
+                }
+                
+                void Resize(const size_t &rows, const size_t &columns, const bool &fill = false) {
+                    if (rows == n && columns == m) {
+                        return;
+                    }
+                    
+                    if (columns == m) {
+                        const auto new_size = rows * columns;
+                        AllocateMemory(new_size);
+                        
+                        if (fill && rows > n) {
+                            std::fill_n(a + size, new_size - size, static_cast<T>(0));
+                        }
+                        
+                        n = rows;
+                        size = new_size;
+                    } else {
+                        
+                        Matrix<T> tmp(rows, columns);
+                        if (fill) {
+                            tmp.zero();
+                        }
+                        
+                        if (size != 0) {
+                            const auto &rows_to_copy = rows < n ? rows : n;
+                            const auto &columns_to_copy = columns < m ? columns : m;
+                            for (size_t row = 0; row < rows_to_copy; ++row) {
+                                for (size_t column = 0; column < columns_to_copy; ++column) {
+                                    tmp(row, column) = this->operator()(row, column);
+                                }
+                            }
+                        }
+                        
+                        this->operator=(std::move(tmp));
+                    }
                     
                 }
                 
-                Matrix() :
-                n(0), m(0), size(0), a(nullptr) {
+                Matrix<T> &operator=(const Matrix<T> &matrix) {
+                    if (this != &matrix) {
+                        Resize(matrix.n, matrix.m);
+                        std::copy(matrix.a, matrix.a + size, a);
+                    }
                     
+                    return *this;
                 }
                 
-                Matrix(T* _a);
-                Matrix(const Matrix<T>& M);
+                Matrix<T> &operator=(Matrix<T> &&matrix) {
+                    if (this != &matrix) {
+                        std::free(a);
+                        a = matrix.a;
+                        n = matrix.n;
+                        m = matrix.m;
+                        size = matrix.size;
+                        
+                        matrix.a = nullptr;
+                        matrix.n = 0;
+                        matrix.m = 0;
+                        matrix.size = 0;
+                    }
+                    
+                    return *this;
+                }
                 
-                template <class T2>
-                Matrix(const Matrix<T2>& M);
+                Matrix<T> GetRow(const size_t &row) const {
+                    if (row >= n) {
+                        throw std::out_of_range("Index out of bounds");
+                    }
+                    
+                    Matrix<T> tmp(1, m);
+                    
+                    const auto &it_row = a + row * m;
+                    std::copy(it_row, it_row + m, tmp.a);
+                    
+                    return tmp;
+                }
                 
-                ~Matrix();
-                void reSize(int _n, int _m);
-                Matrix<T>& operator=(const Matrix<T>& M);
+                Matrix<T> GetColumn(const size_t &column) const {
+                    if (column >= m) {
+                        throw std::out_of_range("Index out of bounds");
+                    }
+                    
+                    Matrix<T> tmp(n, 1);
+                    auto it_tmp = tmp.a;
+                    
+                    for (size_t i = 0; i < n; ++i, ++it_tmp) {
+                        *it_tmp = a[i*m + column];
+                    }
+                    
+                    return tmp;
+                }
                 
-                
-                
-                //  --- GETS AND SETS ---
-                //  Gets
-                Matrix<T> getRow(int _i);                                                 //  Devuelve la fila i.
-                Matrix<T> getColumn(int _j);                                              //  Devuelve la columna j.
                 Matrix<T> getMatrix(int _i, int _j, int rows, int columns);               //  Devuelve la submatriz (i,j) con tamaño (n,m).
                 Matrix<T> getMatrix(int _i, int _j);                                      //  Devuelve la submatriz (i,j).
                 
@@ -87,7 +201,14 @@ namespace cda {
                 T min() const;                                                          //  Devuelve el mínimo de la matriz.
                 T det();                                                                //  Calcula el determinante de una matriz.
                 T& operator()(int _i, int _j) const;                                    //  Cambia el valor del elemento (i,j). (Notación matricial).
-                T& operator()(int _k) const;                                            //  Cambia el valor del elemento k. (Notación pseudovectorial).
+                
+                const T *operator[](const size_t &row) const {
+                    return &a[row * m];
+                }
+                
+                T *operator[](const size_t &row) {
+                    return &a[row * m];
+                }
                 
                 //  Returns a Matrix / a vector
                 Matrix<T> sumRows();                                                      //  Suma todos los elementos de las filas y las devuelve en una matriz columna.
@@ -106,8 +227,18 @@ namespace cda {
                 bool duplicate();                                                       //  Comprueba si hay elementos duplicados.
                 
                 //  Void functions
-                void zero();                                                            //  Llena la matriz de ceros.
-                void ones();                                                            //  Llena la matriz de unos.
+                void Fill(const T &value) {
+                    std::fill(a, a + size, value);
+                }
+                
+                void zero() {
+                    Fill(0);
+                }
+                
+                void ones() {
+                    Fill(1);
+                }
+                
                 void identity();                                                        //  Combierte a la matriz en la identidad.
                 void write(const std::string& path, const std::string& filename);                 //  Escribe la matriz en un fichero.
                 void write(const std::string& filename);
@@ -171,8 +302,18 @@ namespace cda {
 } /* namespace cda */
 
 //  --- MORE OPERATORS ---
-template <class T> inline cda::math::containers::Matrix<T>
-operator*(const T& D, const cda::math::containers::Matrix<T>& M);                                    //  Define el producto de un escalar y una matriz por la izquierda.
+template <class T>
+inline cda::math::containers::Matrix<T> operator*(const T &value, const cda::math::containers::Matrix<T> &matrix) {
+    cda::math::containers::Matrix<T> tmp(matrix.rows(), matrix.columns());
+    auto it_tmp = tmp.Begin();
+    
+    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix, ++it_tmp) {
+        *it_tmp = *it_matrix * value;
+    }
+    
+    return tmp;
+}
+
 template <class T> inline cda::math::containers::Matrix<T>
 operator&&(const cda::math::containers::Matrix<T>& Mi, const cda::math::containers::Matrix<T>& Md);                           //  Devuelve una matriz que tendrá unidas dos matrices.
 template <class T> inline void

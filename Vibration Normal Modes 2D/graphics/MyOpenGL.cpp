@@ -45,7 +45,7 @@ void OpenGL::initRendering()
 
 
 //  Set data
-void OpenGL::setData(Vector<double> &x, Vector<double> &y, unsigned char setDefault)
+void OpenGL::setData(const Vector<double> &x, const Vector<double> &y, unsigned char setDefault)
 {
     OpenGL_Plot._vX = x;
     OpenGL_Plot._vY = y;
@@ -56,12 +56,12 @@ void OpenGL::setData(Vector<double> &x, Vector<double> &y, unsigned char setDefa
     }
 }
 
-void OpenGL::setData(Vector<double> &x, Vector<double> &y)
+void OpenGL::setData(const Vector<double> &x, const Vector<double> &y)
 {
     setData(x, y, SetDefault);
 }
 
-void OpenGL::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z, unsigned char setDefault)
+void OpenGL::setData(const Vector<double> &x, const Vector<double> &y, const Vector<double> &z, unsigned char setDefault)
 {
     OpenGL_Plot._vX = x;
     OpenGL_Plot._vY = y;
@@ -73,12 +73,12 @@ void OpenGL::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z, un
     }
 }
 
-void OpenGL::setData(Vector<double> &x, Vector<double> &y, Vector<double> &z)
+void OpenGL::setData(const Vector<double> &x, const Vector<double> &y, const Vector<double> &z)
 {
     setData(x, y, z, SetDefault);
 }
 
-void OpenGL::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char setDefault)
+void OpenGL::setData(const Vector<double> &x, const Vector<double> &y, const Matrix<double> &z, unsigned char setDefault)
 {
     OpenGL_Plot._vX = x;
     OpenGL_Plot._vY = y;
@@ -90,7 +90,7 @@ void OpenGL::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z, un
     }
 }
 
-void OpenGL::setData(Vector<double> &x, Vector<double> &y, Matrix<double> &z)
+void OpenGL::setData(const Vector<double> &x, const Vector<double> &y, const Matrix<double> &z)
 {
     setData(x, y, z, SetDefault);
 }
@@ -984,7 +984,7 @@ void cda::graphics::plot(Vector<double> &x, Vector<double> &y, Vector<double> &z
     glutMainLoop();
 }
 
-void cda::graphics::plot(Vector<double> &x, Vector<double> &y, Matrix<double> &z, unsigned char options, int argc, const char *argv[])
+void cda::graphics::plot(const Vector<double> &x, const Vector<double> &y, const Matrix<double> &z, unsigned char options, int argc, const char *argv[])
 {
     OpenGL::setData(x, y, z);
     OpenGL_Plot._options = options;

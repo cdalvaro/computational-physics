@@ -541,7 +541,7 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
                 for (int i=start; i<end; i++) {
                     for (int j=1; j<m-1; j++) {
                         if (!fixed(i,j))
-                            sol(i,j) = cI(i,j) + dt*cId(i,j) + Q2D(x[j],y[i])*dt*dt/2.0*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx));
+                            sol(i,j) = cI[i][j] + dt*cId(i,j) + Q2D(x[j],y[i])*dt*dt/2.0*((cI(i+1,j)-2.0*cI(i,j)+cI(i-1,j))/(dy*dy) + (cI(i,j+1)-2.0*cI(i,j)+cI(i,j-1))/(dx*dx));
                     }
                 }
             });

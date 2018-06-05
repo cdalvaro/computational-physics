@@ -59,12 +59,12 @@ namespace cda {
             
             
             //  Set params
-            static void setData(math::containers::Vector<double> &x, math::containers::Vector<double> &y, unsigned char setDefault);
-            static void setData(math::containers::Vector<double> &x, math::containers::Vector<double> &y);
-            static void setData(math::containers::Vector<double> &x, math::containers::Vector<double> &y, math::containers::Vector<double> &z);
-            static void setData(math::containers::Vector<double> &x, math::containers::Vector<double> &y, math::containers::Vector<double> &z, unsigned char setDefault);
-            static void setData(math::containers::Vector<double> &x, math::containers::Vector<double> &y, math::containers::Matrix<double> &z);
-            static void setData(math::containers::Vector<double> &x, math::containers::Vector<double> &y, math::containers::Matrix<double> &z, unsigned char setDefault);
+            static void setData(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y, unsigned char setDefault);
+            static void setData(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y);
+            static void setData(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y, const math::containers::Vector<double> &z);
+            static void setData(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y, const math::containers::Vector<double> &z, unsigned char setDefault);
+            static void setData(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y, const math::containers::Matrix<double> &z);
+            static void setData(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y, const math::containers::Matrix<double> &z, unsigned char setDefault);
             
             //  Set adjustments
             static void setColors(float red, float green, float blue);
@@ -154,6 +154,6 @@ namespace cda {
         //  PLOT FUNCTIONS - NAMESPACE
         void plot(math::containers::Vector<double> &x, math::containers::Vector<double> &y, unsigned char options, int argc, const char *argv[]);
         void plot(math::containers::Vector<double> &x, math::containers::Vector<double> &y, math::containers::Vector<double> &z, unsigned char options, int argc, const char *argv[]);
-        void plot(math::containers::Vector<double> &x, math::containers::Vector<double> &y, math::containers::Matrix<double> &z, unsigned char options, int argc, const char *argv[]);
+        void plot(const math::containers::Vector<double> &x, const math::containers::Vector<double> &y, const math::containers::Matrix<double> &z, unsigned char options, int argc, const char *argv[]);
     }
 }
