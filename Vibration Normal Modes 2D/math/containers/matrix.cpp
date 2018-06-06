@@ -320,12 +320,6 @@ Matrix<T>::det()
     return det;
 }
 
-template<typename T> inline T&
-Matrix<T>::operator()(int _i, int _j) const
-{
-    return a[_i*m + _j];
-}
-
 //  Returns a matrix
 template<typename T> inline Matrix<T>
 Matrix<T>::sumRows()
@@ -741,7 +735,7 @@ Matrix<T>::QR(unsigned char QorR)
             // TODO: Implement transpose method for Vector class
             // v = vt.transpose();
             for (auto it = vt.Begin(); it != vt.End(); ++it) {
-                v(std::distance(vt.Begin(), it), 0) = *it;
+                v[std::distance(vt.Begin(), it)][0] = *it;
             }
             
             H = I.getMatrix(i, i) - (v*vt)*2/(vt.SquaredNorm());
@@ -1185,13 +1179,13 @@ operator&&(const Matrix<T>& Mi, const Matrix<T>& Md)
     
     for (int i=0; i<Mi.rows(); i++) {
         for (int j=0; j<Mi.columns(); j++) {
-            tmp(i,j) = Mi(i,j);
+            tmp[i][j] = Mi[i][j];
         }
     }
     
     for (int i=0; i<Md.rows(); i++) {
         for (int j=Mi.columns(); j<m; j++) {
-            tmp(i,j) = Md(i,j-Mi.columns());
+            tmp[i][j] = Md[i][j-Mi.columns()];
         }
     }
     

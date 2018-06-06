@@ -581,21 +581,21 @@ void single_slit_A()                        //  Una rendija de anchura pequeña
     int SlitWidth = n*0.01;
     
     for (int i=0; i<n; i++) {
-        fixedPoints(i,SlitCenterX-1) = true;
-        fixedPoints(i,SlitCenterX) = true;
-        cI(i,SlitCenterX) = 0.5;
-        fixedPoints(i,SlitCenterX+1) = true;
+        fixedPoints[i][SlitCenterX-1] = true;
+        fixedPoints[i][SlitCenterX] = true;
+        cI[i][SlitCenterX] = 0.5;
+        fixedPoints[i][SlitCenterX+1] = true;
     }
     
     for (int i=SlitCenterY-SlitWidth; i<=SlitCenterY+SlitWidth; i++) {
-        fixedPoints(i,SlitCenterX) = false;
-        fixedPoints(i,SlitCenterX-1) = false;
-        fixedPoints(i,SlitCenterX+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][SlitCenterX] = false;
+        fixedPoints[i][SlitCenterX-1] = false;
+        fixedPoints[i][SlitCenterX+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
-    cI(SlitCenterY-(SlitWidth+1),SlitCenterX) = 0.0;
-    cI(SlitCenterY+(SlitWidth+1),SlitCenterX) = 0.0;
+    cI[SlitCenterY-(SlitWidth+1)][SlitCenterX] = 0.0;
+    cI[SlitCenterY+(SlitWidth+1)][SlitCenterX] = 0.0;
     
     //  FUERZA SINUSOIDAL
     sPosX = 0;                  //  Centro de la fuerza en X
@@ -643,21 +643,21 @@ void single_slit_B()                        //  Una rendija de anchura grande
     
     //  CONFIGURACIÓN DE LA RENDIJA
     for (int i=0; i<n; i++) {
-        fixedPoints(i,m/3-1) = true;
-        fixedPoints(i,m/3) = true;
-        cI(i,m/3) = 0.5;
-        fixedPoints(i,m/3+1) = true;
+        fixedPoints[i][m/3-1] = true;
+        fixedPoints[i][m/3] = true;
+        cI[i][m/3] = 0.5;
+        fixedPoints[i][m/3+1] = true;
     }
     
     for (int i=n/2-10; i<=n/2+10; i++) {
-        fixedPoints(i,m/3) = false;
-        fixedPoints(i,m/3-1) = false;
-        fixedPoints(i,m/3+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][m/3] = false;
+        fixedPoints[i][m/3-1] = false;
+        fixedPoints[i][m/3+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
-    cI(n/2-11,m/3) = 0.0;
-    cI(n/2+11,m/3) = 0.0;
+    cI[n/2-11][m/3] = 0.0;
+    cI[n/2+11][m/3] = 0.0;
     
     //  FUERZA SINUSOIDAL
     sPosX = 0;                  //  Centro de la fuerza en X
@@ -705,30 +705,30 @@ void double_slit()                          //  Doble rendija
     
     //  CONFIGURACIÓN DE LAS RENDIJAS
     for (int i=0; i<n; i++) {
-        fixedPoints(i,m/3-1) = true;
-        fixedPoints(i,m/3) = true;
-        cI(i,m/3) = 0.5;
-        fixedPoints(i,m/3+1) = true;
+        fixedPoints[i][m/3-1] = true;
+        fixedPoints[i][m/3] = true;
+        cI[i][m/3] = 0.5;
+        fixedPoints[i][m/3+1] = true;
     }
     
     for (int i=2*n/5-3; i<=2*n/5+3; i++) {
-        fixedPoints(i,m/3) = false;
-        fixedPoints(i,m/3-1) = false;
-        fixedPoints(i,m/3+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][m/3] = false;
+        fixedPoints[i][m/3-1] = false;
+        fixedPoints[i][m/3+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
     for (int i=3*n/5-3; i<=3*n/5+3; i++) {
-        fixedPoints(i,m/3) = false;
-        fixedPoints(i,m/3-1) = false;
-        fixedPoints(i,m/3+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][m/3] = false;
+        fixedPoints[i][m/3-1] = false;
+        fixedPoints[i][m/3+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
-    cI(2*n/5-4,m/3) = 0.0;
-    cI(2*n/5+4,m/3) = 0.0;
-    cI(3*n/5-4,m/3) = 0.0;
-    cI(3*n/5+4,m/3) = 0.0;
+    cI[2*n/5-4][m/3] = 0.0;
+    cI[2*n/5+4][m/3] = 0.0;
+    cI[3*n/5-4][m/3] = 0.0;
+    cI[3*n/5+4][m/3] = 0.0;
     
     //  FUERZA SINUSOIDAL
     sPosX = 0;                  //  Centro de la fuerza en X
@@ -780,8 +780,8 @@ void cylinder()                             //  Cilindro
     for (int i=n/2-(radio+1); i<=n/2+(radio+1); i++) {
         for (int j=m/3-(radio+1); j<=m/3+(radio+1); j++) {
             if ((i-n/2)*(i-n/2)+(j-m/3)*(j-m/3) <= (radio+1)*(radio+1)) {
-                fixedPoints(i,j) = true;
-                cI(i,j) = 0.0;
+                fixedPoints[i][j] = true;
+                cI[i][j] = 0.0;
             }
         }
     }
@@ -789,8 +789,8 @@ void cylinder()                             //  Cilindro
     for (int i=n/2-radio; i<=n/2+radio; i++) {
         for (int j=m/3-radio; j<=m/3+radio; j++) {
             if ((i-n/2)*(i-n/2)+(j-m/3)*(j-m/3) <= radio*radio) {
-                fixedPoints(i,j) = true;
-                cI(i,j) = 0.5;
+                fixedPoints[i][j] = true;
+                cI[i][j] = 0.5;
             }
         }
     }
@@ -845,21 +845,21 @@ void single_slit_circular_wave()            //  Una rendija de anchura con ondas
     int SlitWidth = n*0.01;
     
     for (int i=0; i<n; i++) {
-        fixedPoints(i,SlitCenterX-1) = true;
-        fixedPoints(i,SlitCenterX) = true;
-        cI(i,SlitCenterX) = 0.5;
-        fixedPoints(i,SlitCenterX+1) = true;
+        fixedPoints[i][SlitCenterX-1] = true;
+        fixedPoints[i][SlitCenterX] = true;
+        cI[i][SlitCenterX] = 0.5;
+        fixedPoints[i][SlitCenterX+1] = true;
     }
     
     for (int i=SlitCenterY-SlitWidth; i<=SlitCenterY+SlitWidth; i++) {
-        fixedPoints(i,SlitCenterX) = false;
-        fixedPoints(i,SlitCenterX-1) = false;
-        fixedPoints(i,SlitCenterX+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][SlitCenterX] = false;
+        fixedPoints[i][SlitCenterX-1] = false;
+        fixedPoints[i][SlitCenterX+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
-    cI(SlitCenterY-(SlitWidth+1),SlitCenterX) = 0.0;
-    cI(SlitCenterY+(SlitWidth+1),SlitCenterX) = 0.0;
+    cI[SlitCenterY-(SlitWidth+1)][SlitCenterX] = 0.0;
+    cI[SlitCenterY+(SlitWidth+1)][SlitCenterX] = 0.0;
     
     //  FUERZA SINUSOIDAL
     sPosX = m/6;                //  Centro de la fuerza en X
@@ -907,30 +907,30 @@ void double_slit_circular_wave()            //  Doble rendija con ondas circular
     
     //  CONFIGURACIÓN DE LAS RENDIJAS
     for (int i=0; i<n; i++) {
-        fixedPoints(i,m/3-1) = true;
-        fixedPoints(i,m/3) = true;
-        cI(i,m/3) = 0.5;
-        fixedPoints(i,m/3+1) = true;
+        fixedPoints[i][m/3-1] = true;
+        fixedPoints[i][m/3] = true;
+        cI[i][m/3] = 0.5;
+        fixedPoints[i][m/3+1] = true;
     }
     
     for (int i=2*n/5-3; i<=2*n/5+3; i++) {
-        fixedPoints(i,m/3) = false;
-        fixedPoints(i,m/3-1) = false;
-        fixedPoints(i,m/3+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][m/3] = false;
+        fixedPoints[i][m/3-1] = false;
+        fixedPoints[i][m/3+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
     for (int i=3*n/5-3; i<=3*n/5+3; i++) {
-        fixedPoints(i,m/3) = false;
-        fixedPoints(i,m/3-1) = false;
-        fixedPoints(i,m/3+1) = false;
-        cI(i,m/3) = 0.0;
+        fixedPoints[i][m/3] = false;
+        fixedPoints[i][m/3-1] = false;
+        fixedPoints[i][m/3+1] = false;
+        cI[i][m/3] = 0.0;
     }
     
-    cI(2*n/5-4,m/3) = 0.0;
-    cI(2*n/5+4,m/3) = 0.0;
-    cI(3*n/5-4,m/3) = 0.0;
-    cI(3*n/5+4,m/3) = 0.0;
+    cI[2*n/5-4][m/3] = 0.0;
+    cI[2*n/5+4][m/3] = 0.0;
+    cI[3*n/5-4][m/3] = 0.0;
+    cI[3*n/5+4][m/3] = 0.0;
     
     //  FUERZA SINUSOIDAL
     sPosX = m/6;                //  Centro de la fuerza en X
@@ -982,8 +982,8 @@ void cylinder_circular_wave()               //  Cilindro con onda circular
     for (int i=n/2-(radio+1); i<=n/2+(radio+1); i++) {
         for (int j=m/2-(radio+1); j<=m/2+(radio+1); j++) {
             if ((i-n/2)*(i-n/2)+(j-m/2)*(j-m/2) <= (radio+1)*(radio+1)) {
-                fixedPoints(i,j) = true;
-                cI(i,j) = 0.0;
+                fixedPoints[i][j] = true;
+                cI[i][j] = 0.0;
             }
         }
     }
@@ -991,8 +991,8 @@ void cylinder_circular_wave()               //  Cilindro con onda circular
     for (int i=n/2-radio; i<=n/2+radio; i++) {
         for (int j=m/2-radio; j<=m/2+radio; j++) {
             if ((i-n/2)*(i-n/2)+(j-m/2)*(j-m/2) <= radio*radio) {
-                fixedPoints(i,j) = true;
-                cI(i,j) = 0.5;
+                fixedPoints[i][j] = true;
+                cI[i][j] = 0.5;
             }
         }
     }
@@ -1053,7 +1053,7 @@ Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)      
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
             if (i >= 0 && i < cI.rows() && j >= 0 && j < cI.columns())
-                tmp(i,j) = strenght;
+                tmp[i][j] = strenght;
         }
     }
     
@@ -1066,8 +1066,8 @@ Matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double stre
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
             if (i >= 0 && i < cId.rows() && j >= 0 && j < cId.columns()) {
-                tmp(i,j) = strenght*sin((membrane.time+membrane.dt)*freq);
-                fixedPoints(i,j) = true;
+                tmp[i][j] = strenght*sin((membrane.time+membrane.dt)*freq);
+                fixedPoints[i][j] = true;
             }
         }
     }

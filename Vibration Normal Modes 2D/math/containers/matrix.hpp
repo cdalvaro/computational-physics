@@ -100,7 +100,7 @@ namespace cda {
                             const auto &columns_to_copy = columns < m ? columns : m;
                             for (size_t row = 0; row < rows_to_copy; ++row) {
                                 for (size_t column = 0; column < columns_to_copy; ++column) {
-                                    tmp(row, column) = this->operator()(row, column);
+                                    tmp[row][column] = this->operator[](row)[column];
                                 }
                             }
                         }
@@ -200,10 +200,23 @@ namespace cda {
                 T maxAbs_sig() const;                                                   //  Devuelve el máximo absoluto de la matriz, pero con su signo.
                 T min() const;                                                          //  Devuelve el mínimo de la matriz.
                 T det();                                                                //  Calcula el determinante de una matriz.
-                T& operator()(int _i, int _j) const;                                    //  Cambia el valor del elemento (i,j). (Notación matricial).
+                
+                const T &At(const size_t &row, const size_t &column) const {
+                    if(row >= n || column >= m) {
+                        throw std::out_of_range("Indexes out of range");
+                    }
+                    return a[row * m + column];
+                }
                 
                 const T *operator[](const size_t &row) const {
                     return &a[row * m];
+                }
+                
+                T &At(const size_t &row, const size_t &column) {
+                    if (row >= n || column >= m) {
+                        throw std::out_of_range("Indexes out of range");
+                    }
+                    return a[row * m + column];
                 }
                 
                 T *operator[](const size_t &row) {

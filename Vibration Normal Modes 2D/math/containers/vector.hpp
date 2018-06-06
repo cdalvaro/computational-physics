@@ -284,7 +284,6 @@ namespace cda {
                     if (element >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
-                    
                     return v[element];
                 }
                 
@@ -296,7 +295,6 @@ namespace cda {
                     if (element >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
-                    
                     return v[element];
                 }
                 
