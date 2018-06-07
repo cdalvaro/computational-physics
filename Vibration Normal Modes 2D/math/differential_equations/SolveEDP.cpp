@@ -168,7 +168,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
 //  Función principal / Método de resolución
 Matrix<EDP_T> EDP::solveLAPLACE(unsigned char bc, unsigned char sbc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& cI, EDP_T err, int tol)
 {
-    int n = cI.rows(), m = cI.columns();
+    int n = cI.Rows(), m = cI.Columns();
     EDP_T hx = (EDP_T)(x[m-1]-x[0])/(m-1), hy = (EDP_T)(y[n-1]-y[0])/(n-1);
     Matrix<EDP_T> sol(n,m), solOld(n,m);
     
@@ -322,7 +322,7 @@ Matrix<EDP_T> EDP::solveLAPLACE_SBC(unsigned char sbc, Vector<EDP_T>& x, Vector<
 //  Función principal / Método de resolución
 Matrix<EDP_T> EDP::solvePOISSON(unsigned char bc, unsigned char sbc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& cI, EDP_T err, int tol)
 {
-    int n = cI.rows(), m = cI.columns();
+    int n = cI.Rows(), m = cI.Columns();
     EDP_T hx = (EDP_T)(x[m-1]-x[0])/(m-1), hy = (EDP_T)(y[n-1]-y[0])/(n-1);
     Matrix<EDP_T> sol(n,m), solOld(n,m);
     
@@ -1249,7 +1249,7 @@ void EDP::saveDATA(const std::string fileName, unsigned char opt, Vector<EDP_T>&
 
 void EDP::printMATLAB(const std::string path, const std::string fileName, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& forPrint)
 {
-    int n = forPrint.rows(), m = forPrint.columns();
+    int n = forPrint.Rows(), m = forPrint.Columns();
     EDP_T hx = (EDP_T)(x[m-1]-x[0])/(m-1), hy = (EDP_T)(y[n-1]-y[0])/(n-1);
     
     std::string inPath;

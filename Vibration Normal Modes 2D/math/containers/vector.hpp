@@ -52,7 +52,7 @@ namespace cda {
                 /**
                  Class constructor
                  
-                 @param n The size of the vector
+                 @param size The size of the vector
                  */
                 Vector(const size_t &size = 0) :
                 n(size), v(nullptr) {
@@ -62,7 +62,7 @@ namespace cda {
                 /**
                  Class constructor
                  
-                 @param n The size of the vector
+                 @param size The size of the vector
                  */
                 Vector(const size_t &size, const T &value) :
                 n(size), v(nullptr) {
@@ -81,7 +81,6 @@ namespace cda {
                     std::copy(vector.v, vector.v + n, v);
                 }
                 
-                // FIXME: This function is not working properly
                 /**
                  Move constructor
                  
@@ -152,6 +151,17 @@ namespace cda {
                     }
         
                     return *this;
+                }
+                
+                void Copy(const size_t &size, const T *array) {
+                    if (size > n) {
+                        throw std::out_of_range("Not enough space for the copy");
+                    }
+                    std::copy(array, array + size, v);
+                }
+                
+                void Copy(const Vector<T> &vector) {
+                    this->Copy(vector.n, vector.Begin());
                 }
                 
                 /**

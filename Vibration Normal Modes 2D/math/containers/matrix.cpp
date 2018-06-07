@@ -20,89 +20,6 @@ using namespace cda::math::containers;
 
             //  --- MATRIX CLASS ---
 
-
-//  --- GETS AND SETS ---
-//  Gets
-
-template<typename T> inline Matrix<T>
-Matrix<T>::getMatrix(int _i, int _j, int height, int columns)
-{
-    Matrix<T> tmp(height,columns);
-    tmp.zero();
-    if (n < _i+height || m < _j+columns) {
-        std::cout << RM << "getMatrix(i, j, height, columns)] - Estás intentado acceder a una parte de la matriz que no existe, se ha devuelto una matriz de unos\n";
-        tmp.ones();
-    } else {
-        for (int i=0; i<height; i++) {
-            for (int j=0; j<columns; j++) {
-                tmp.a[i*columns + j] = a[(i+_i)*m + (j+_j)];
-            }
-        }
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::getMatrix(int _i, int _j)
-{
-    return (this -> getMatrix(_i, _j, n-_i, m-_j));
-}
-
-template<typename T> inline Vector<T>
-Matrix<T>::getDiagonal()
-{
-    Vector<T> tmp(n);
-    if (n != m)
-        std::cout << RM << "getDiagonal()] - Esta no es una matriz cuadrada.\n";
-    for (int i=0; i<n; i++) {
-        tmp[i] = a[i*m + i];
-    }
-    return tmp;
-}
-
-template<typename T> inline Vector<T>
-Matrix<T>::getRowV(int _i, int _j)
-{
-    Vector<T> tmp(m-_j);
-    if (_i >= n) {
-        std::cout << RM << "getRowV(i, j)] - Esta fila no existe, se ha devuelvo una fila de unos.\n";
-        tmp.Ones();
-    } else {
-        for (int j=0; j<m-_j; j++) {
-            tmp[j] = a[_i*m + (j+_j)];
-        }
-    }
-    return tmp;
-}
-
-template<typename T> inline Vector<T>
-Matrix<T>::getRowV(int _i)
-{
-    return (this -> getRowV(_i, 0));
-}
-
-template<typename T> inline Vector<T>
-Matrix<T>::getColumnV(int _i, int _j)
-{
-    Vector<T> tmp(n-_i);
-    if (_j >= m) {
-        std::cout << RM << "getColumnV(i, j)] - Esta columna no existe, se ha devuelvo una columna de unos.\n";
-        tmp.Ones();
-    } else {
-        for (int i=0; i<n-_i; i++) {
-            tmp[i] = a[(i+_i)*m + _j];
-        }
-    }
-    return tmp;
-}
-
-template<typename T> inline Vector<T>
-Matrix<T>::getColumnV(int _j)
-{
-    return (this -> getColumnV(0, _j));
-}
-
-
 //  Sets
 template<typename T> inline void
 Matrix<T>::setColumn(int _i, int _j, const Matrix<T>& Mc)
@@ -205,33 +122,6 @@ Matrix<T>::setMatrix(int _i, int _j, const Matrix<T>& M)
 
 //  --- FUNCTIONS ---
 //  Returns an integer / a double / a float
-template<typename T> inline int
-Matrix<T>::dims() const
-{
-    int dims[2];
-    dims[0] = n;
-    dims[1] = m;
-    return (* dims);
-}
-
-template<typename T> inline int
-Matrix<T>::rows() const
-{
-    return n;
-}
-
-template<typename T> inline int
-Matrix<T>::columns() const
-{
-    return m;
-}
-
-template<typename T> inline int
-Matrix<T>::elements() const
-{
-    return size;
-}
-
 
 template<typename T> inline T
 Matrix<T>::sumRow(int _i) const
@@ -427,17 +317,6 @@ Matrix<T>::sumColumnsV()
 
 
 //  Returns a bool
-template<typename T> inline bool
-Matrix<T>::null()
-{
-    for (int i=0; i<n; i++) {
-        for (int j=0; j<m; j++) {
-            if (a[i*m + j] != (T)0.0)
-                return false;
-        }
-    }
-    return true;
-}
 
 template<typename T> inline bool
 Matrix<T>::duplicate(T range)
@@ -701,8 +580,8 @@ Matrix<T>::QR(unsigned char QorR)
     Matrix<T> v(n,1);
     v.zero();
     
-    c = this->getColumnV(0);
-    vt = c + I.getRowV(0)*(c[0]/std::abs(c[0]))*(c.Norm());
+    c = this->GetColumnAsVector(0);
+    vt = c + I.GetRowAsVector(0)*(c[0]/std::abs(c[0]))*(c.Norm());
     // TODO: Implement transpose method for Vector class
     // v = vt.transpose();
     for (auto it = vt.Begin(); it != vt.End(); ++it) {
@@ -725,20 +604,20 @@ Matrix<T>::QR(unsigned char QorR)
         H.Resize(n-i, n-i);
         v.Resize(n-i, 1);
         
-        A = R.getMatrix(i, i);
-        c = A.getColumnV(0);
+        A = R.GetMatrix(i, i);
+        c = A.GetColumnAsVector(0);
         
         if (c.IsNull()) {
             H.identity();
         } else {
-            vt = c + I.getRowV(i, i)*(c[0]/std::abs(c[0]))*(c.Norm());
+            vt = c + I.GetRowAsVector(i, i)*(c[0]/std::abs(c[0]))*(c.Norm());
             // TODO: Implement transpose method for Vector class
             // v = vt.transpose();
             for (auto it = vt.Begin(); it != vt.End(); ++it) {
                 v[std::distance(vt.Begin(), it)][0] = *it;
             }
             
-            H = I.getMatrix(i, i) - (v*vt)*2/(vt.SquaredNorm());
+            H = I.GetMatrix(i, i) - (v*vt)*2/(vt.SquaredNorm());
             A = I;
             A.setMatrix(i, i, H);
             H = A;
@@ -888,7 +767,7 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
             }
         }
     }
-    eVeV = eVe.getColumnV(0);
+    eVeV = eVe.GetColumnAsVector(0);
     
     if ((opt& EVe_Ite) != 0)
         std::cout << RM << "eigenVectors()] - Iteraciones para calcular el autovector: " << k << std::endl;
@@ -928,17 +807,17 @@ Matrix<T>::eigenValues(int maxIte, T factor, unsigned char opt)
     while (cota > err && k<maxIte) {
         Q = A.QR(QRmatrix);
         Q||R;
-        diagOld = A.getDiagonal();
+        diagOld = A.GetDiagonal();
         A = R*Q;
-        cota = (diagOld - A.getDiagonal()).AbsoluteMaximumElement();
-        err = (A.getDiagonal()).AbsoluteMaximumElement()*factor;
+        cota = (diagOld - A.GetDiagonal()).AbsoluteMaximumElement();
+        err = (A.GetDiagonal()).AbsoluteMaximumElement()*factor;
         k++;
     }
     
     if ((opt& EVa_Ite) != 0)
         std::cout << RM << "eigenValues()] - Iteraciones para calcular los autovalores: " << k << std::endl;
     
-    return A.getDiagonal();
+    return A.GetDiagonal();
 }
 
 template<typename T> inline Vector<T>
@@ -1169,23 +1048,23 @@ Matrix<T>::operator^(const int exp)
 template<typename T> inline Matrix<T>
 operator&&(const Matrix<T>& Mi, const Matrix<T>& Md)
 {
-    if (Mi.rows() != Md.rows())
+    if (Mi.Rows() != Md.Rows())
         std::cout << RM << "operator&&(Mi, Md)] - Estas matrices no tienen la misma altura.\n";
     int n,m;
-    n = std::max(Mi.rows(), Md.rows());
-    m = Mi.columns() + Md.columns();
+    n = std::max(Mi.Rows(), Md.Rows());
+    m = Mi.Columns() + Md.Columns();
     Matrix<T> tmp(n,m);
     tmp.zero();
     
-    for (int i=0; i<Mi.rows(); i++) {
-        for (int j=0; j<Mi.columns(); j++) {
+    for (int i=0; i<Mi.Rows(); i++) {
+        for (int j=0; j<Mi.Columns(); j++) {
             tmp[i][j] = Mi[i][j];
         }
     }
     
-    for (int i=0; i<Md.rows(); i++) {
-        for (int j=Mi.columns(); j<m; j++) {
-            tmp[i][j] = Md[i][j-Mi.columns()];
+    for (int i=0; i<Md.Rows(); i++) {
+        for (int j=Mi.Columns(); j<m; j++) {
+            tmp[i][j] = Md[i][j-Mi.Columns()];
         }
     }
     
@@ -1195,11 +1074,11 @@ operator&&(const Matrix<T>& Mi, const Matrix<T>& Md)
 template<typename T> inline void
 operator||(Matrix<T>& Mi, Matrix<T>& Md)
 {
-    if (Mi.rows() != Md.rows())
+    if (Mi.Rows() != Md.Rows())
         std::cout << RM << "operator||(Mi, Md)] - Las matrices no tienen la misma altura.\n";
     
-    Md = Mi.getMatrix(0, (Mi.columns() - Md.columns()), Md.rows(), Md.columns());
-    Mi = Mi.getMatrix(0, 0, Mi.rows(), (Mi.columns() - Md.columns()));
+    Md = Mi.GetMatrix(0, (Mi.Columns() - Md.Columns()), Md.Rows(), Md.Columns());
+    Mi = Mi.GetMatrix(0, 0, Mi.Rows(), (Mi.Columns() - Md.Columns()));
 }
 
 template<typename T> inline void
@@ -1255,42 +1134,42 @@ operator<<(std::ostream& out, const Matrix<T>& M)
 //        out << fixed;
 //        out.fill(' ');
 //        out.precision(6);
-//        if (M.rows() == 1 && M.columns() == 1) {
+//        if (M.Rows() == 1 && M.Columns() == 1) {
 //            out << M(0) << endl;
-//        } else if (M.rows() == 1) {
+//        } else if (M.Rows() == 1) {
 //            out << "[" << M(0);
-//            for (int j=1; j<M.columns(); j++) {
+//            for (int j=1; j<M.Columns(); j++) {
 //                out << "\t" << M(j); 
 //            }
 //            out << "]\n";
 //        } else {
 //            out << "⎡" << M(0);
-//            for (int j=1; j<M.columns(); j++) {
+//            for (int j=1; j<M.Columns(); j++) {
 //                out << right << "\t" << M(j);
 //            }
 //            out.width();
 //            out << "\t⎤\n";
-//            for (int i=1; i<M.rows()-1; i++) {
-//                out << "⎢" << M(i*M.columns());
-//                for (int j=1; j<M.columns(); j++) {
-//                    out << "\t" << M(i*M.columns() + j);
+//            for (int i=1; i<M.Rows()-1; i++) {
+//                out << "⎢" << M(i*M.Columns());
+//                for (int j=1; j<M.Columns(); j++) {
+//                    out << "\t" << M(i*M.Columns() + j);
 //                }
 //                out << "\t⎥\n";
 //            }
-//            out << "⎣" << M((M.rows()-1)*M.columns());
-//            for (int j=1; j<M.columns(); j++) {
-//                out << "\t" << M((M.rows()-1)*M.columns() + j);
+//            out << "⎣" << M((M.Rows()-1)*M.Columns());
+//            for (int j=1; j<M.Columns(); j++) {
+//                out << "\t" << M((M.Rows()-1)*M.Columns() + j);
 //            }
 //            out << "\t⎦\n";
 //        }
 //        out.precision();
 //    } else {
-//        for (int i=0; i<M.rows(); i++) {
-//            for (int j=0; j<M.columns()-1; j++) {
-//                out << M(i*M.columns() + j) << ",";
+//        for (int i=0; i<M.Rows(); i++) {
+//            for (int j=0; j<M.Columns()-1; j++) {
+//                out << M(i*M.Columns() + j) << ",";
 //            }
-//            out << M(i*M.columns() + (M.columns()-1));
-//            if (i != M.rows()-1)
+//            out << M(i*M.Columns() + (M.Columns()-1));
+//            if (i != M.Rows()-1)
 //                out << endl; 
 //        }
 //    }
@@ -1328,21 +1207,21 @@ cda::math::containers::identity(int _n, int _m)
 template<typename T> inline Matrix<T>
 cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)
 {
-    Matrix<T> tmp(A.rows(), A.columns());
+    Matrix<T> tmp(A.Rows(), A.Columns());
     int dim = 0, coincidence = 0;
     
-    for (int i=0; i<A.rows(); i++) {
+    for (int i=0; i<A.Rows(); i++) {
         
         bool equal = false;
-        for (int j=0; j<B.rows(); j++) {
+        for (int j=0; j<B.Rows(); j++) {
             
             int count=0;
-            for (int k=0; k<A.columns(); k++) {
+            for (int k=0; k<A.Columns(); k++) {
                 if (A(i,k) == B(j,k))
                     count++;
             }
             
-            if (count == A.columns()) {
+            if (count == A.Columns()) {
                 equal = true;
                 coincidence++;
                 break;
@@ -1350,13 +1229,13 @@ cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps
         }
         
         if (equal != true) {
-            tmp.setRowV(dim,A.getRowV(i));
+            tmp.setRowV(dim,A.GetRowAsVector(i));
             dim++;
         }
         
         if (coincidence == reps) {
             tmp.setMatrix(dim,0,A.getMatrix(i+1,0));
-            dim = A.rows() - reps;
+            dim = A.Rows() - reps;
             break;
         }
     }
@@ -1366,7 +1245,7 @@ cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps
         fail(0,0) = 0.0;
         return fail;
     } else {
-        tmp.Resize(dim, A.columns());
+        tmp.Resize(dim, A.Columns());
         return tmp;
     }
 }
@@ -1374,5 +1253,5 @@ cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps
 template<typename T> inline Matrix<T>
 cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B)
 {
-    return setdiff(A, B, A.rows());
+    return setdiff(A, B, A.Rows());
 }

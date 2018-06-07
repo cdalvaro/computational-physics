@@ -11,6 +11,8 @@
 
 #include "vector.hpp"
 
+#include <utility>
+
 namespace cda {
     namespace math {
         namespace containers {
@@ -164,14 +166,65 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<T> getMatrix(int _i, int _j, int rows, int columns);               //  Devuelve la submatriz (i,j) con tamaño (n,m).
-                Matrix<T> getMatrix(int _i, int _j);                                      //  Devuelve la submatriz (i,j).
+                Matrix<T> GetMatrix(const size_t &row, const size_t &column, const size_t &number_of_rows, const size_t &number_of_columns) const {
+                    if (row + number_of_rows >= n || column + number_of_columns >= m) {
+                        throw std::out_of_range("Index out of bounds");
+                    }
+                    
+                    Matrix<T> tmp(number_of_rows, number_of_columns);
+                    
+                    auto it_this = Begin() + row * m + column;
+                    for (auto it_tmp = tmp.Begin(); it_tmp != tmp.End(); it_tmp += number_of_columns, it_this += m) {
+                        std::copy(it_this, it_this + number_of_columns, it_tmp);
+                    }
+                    
+                    return tmp;
+                }
                 
-                Vector<T> getDiagonal();                                                  //  Devuelve la diagonal de una matriz.
-                Vector<T> getRowV(int _i, int _j);                                        //  Devuelve como vector la fila i desde la columna j.
-                Vector<T> getRowV(int _i);                                                //  Devuelve como vector la fila i.
-                Vector<T> getColumnV(int _i, int _j);                                     //  Devuelve como vector la columna j desde la fila i.
-                Vector<T> getColumnV(int _j);                                             //  Devuelve como vector la columna j.
+                Matrix<T> GetMatrix(const size_t &row, const size_t &column) const {
+                    return this->GetMatrix(row, column, n - row, m - column);
+                }
+                
+                Vector<T> GetDiagonal() const {
+                    if (this->IsSquared()) {
+                        throw std::logic_error("Matrix must be an square matrix");
+                    }
+                    
+                    Vector<T> diagonal(n);
+                    
+                    auto it_this = Begin();
+                    for (auto it_diagonal = diagonal.Begin(); it_diagonal != diagonal.End(); ++it_diagonal, it_this += m + 1) {
+                        *it_diagonal = *it_this;
+                    }
+                    
+                    return diagonal;
+                }
+                
+                Vector<T> GetRowAsVector(const size_t &row, size_t number_of_columns = 0) const {
+                    if (number_of_columns == 0) {
+                        number_of_columns = m;
+                    }
+                    
+                    Vector<T> vector(number_of_columns);
+                    vector.Copy(number_of_columns, this->operator[](row));
+                    
+                    return vector;
+                }
+                
+                Vector<T> GetColumnAsVector(const size_t &column, size_t number_of_rows = 0) const {
+                    if (number_of_rows == 0) {
+                        number_of_rows = n;
+                    }
+                    
+                    Vector<T> vector(number_of_rows);
+                    
+                    auto it_this = Begin();
+                    for (auto it_vector = vector.Begin(); it_vector != End(); ++it_vector, it_this += m) {
+                        *it_vector = *it_this;
+                    }
+                    
+                    return vector;
+                }
                 
                 //  Sets
                 void setColumn(int _i, int _j, const Matrix<T>& Mc);                      //  Introduce una matriz columna en la columna j desde la fila i.
@@ -188,10 +241,21 @@ namespace cda {
                 
                 //  --- FUNCTIONS ---
                 //  Returns an integer / a double / a float
-                int dims() const;                                                       //  Devuelve las dimensiones de la matriz.
-                int rows() const;                                                       //  Devuelve el número de filas de la matriz.
-                int columns() const;                                                    //  Devuelve el número de columnas de la matriz.
-                int elements() const;                                                   //  Devuelve el número de elementos de la matriz.
+                std::pair<size_t, size_t> Dimensions() const {
+                    return std::pair<size_t, size_t>{ n, m };
+                }
+                
+                size_t Rows() const {
+                    return n;
+                }
+                
+                size_t Columns() const {
+                    return m;
+                }
+                
+                size_t Size() const {
+                    return size;
+                }
                 
                 T sumRow(int _i) const;                                                 //  Suma todos los elementos de la fila i.
                 T sumColumn(int _j) const;                                              //  Suma todos los elementos de la columna j.
@@ -235,7 +299,19 @@ namespace cda {
                 Vector<T> sumColumnsV();                                                  //  Suma todos los elementos de las columnas y las devuelve en un vector.
                 
                 //  Returns a bool
-                bool null();                                                            //  Comprueba si la matriz es una matriz de ceros.
+                bool IsNull() const {
+                    for (auto it = a; it != a + size; ++it) {
+                        if (*it != 0) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                
+                bool IsSquared() const {
+                    return n == m;
+                }
+                
                 bool duplicate(T range);                                                //  Comprueba si hay elementos duplicados (próximos);
                 bool duplicate();                                                       //  Comprueba si hay elementos duplicados.
                 
@@ -317,7 +393,7 @@ namespace cda {
 //  --- MORE OPERATORS ---
 template <class T>
 inline cda::math::containers::Matrix<T> operator*(const T &value, const cda::math::containers::Matrix<T> &matrix) {
-    cda::math::containers::Matrix<T> tmp(matrix.rows(), matrix.columns());
+    cda::math::containers::Matrix<T> tmp(matrix.Rows(), matrix.Columns());
     auto it_tmp = tmp.Begin();
     
     for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix, ++it_tmp) {
