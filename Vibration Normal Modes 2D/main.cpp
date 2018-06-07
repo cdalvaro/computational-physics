@@ -1049,10 +1049,10 @@ void calcSol()                              //  Calcula los nuevos valores de la
 //  FUNCIÓN PULSO Y FUNCIÓN SINUSOIDAL
 Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)                              //  Función pulso
 {
-    Matrix<double> tmp = cmc::zero<double>(cI.rows(), cI.columns());
+    Matrix<double> tmp = cmc::zero<double>(cI.Rows(), cI.Columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
-            if (i >= 0 && i < cI.rows() && j >= 0 && j < cI.columns())
+            if (i >= 0 && i < cI.Rows() && j >= 0 && j < cI.Columns())
                 tmp[i][j] = strenght;
         }
     }
@@ -1062,10 +1062,10 @@ Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)      
 
 Matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double strenght, double freq)      //  Fuerza sinusoidal
 {
-    Matrix<double> tmp = cmc::zero<double>(cId.rows(), cId.columns());
+    Matrix<double> tmp = cmc::zero<double>(cId.Rows(), cId.Columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
-            if (i >= 0 && i < cId.rows() && j >= 0 && j < cId.columns()) {
+            if (i >= 0 && i < cId.Rows() && j >= 0 && j < cId.Columns()) {
                 tmp[i][j] = strenght*sin((membrane.time+membrane.dt)*freq);
                 fixedPoints[i][j] = true;
             }

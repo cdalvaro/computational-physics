@@ -135,6 +135,8 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         diagMA[0][1] = 2.0 - h*h*B(x[0]);
         diagMA[0][2] = -2.0;
         b[0] = -h*h*C(x[0]) + 2.0*h*BCL(x[0],0.0)*(h*A(x[0])/2.0 - 1.0);
+        
+        // TODO: Check if the condition must be i < dim-1
         for (int i=1; i<dim-2; i++) {
             tI += h;
             diagMA[i][0] = -1.0 - ((h*A(tI))/2.0);
