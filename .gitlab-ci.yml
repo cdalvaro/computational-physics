@@ -1,0 +1,34 @@
+stages:
+  - analyze
+  - build
+  - archive
+
+analyze_project:
+  stage: analyze
+  script:
+    - xcodebuild clean analyze -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug | xcpretty -f `xcpretty-travis-formatter`
+  tags:
+    - Xcode_9-3
+    - macOS_10-13
+
+build_project:
+  stage: build
+  script:
+    - xcodebuild clean build -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+  tags:
+    - Xcode_9-3
+    - macOS_10-13
+
+archive_project:
+  stage: archive
+  script:
+    - xcodebuild clean archive -archivePath build/NumericalPDEs -scheme 'Numerical PDEs' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+  only:
+    - master
+  artifacts:
+    paths:
+    - build/NumericalPDEs.xcarchive
+  tags:
+    - Xcode_9-3
+    - macOS_10-13
+

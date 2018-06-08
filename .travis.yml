@@ -1,6 +1,0 @@
-os: osx
-osx_image: xcode9.3
-language: cpp
-script:
-    - xcodebuild clean build analyze -project 'Vibration Normal Modes 2D.xcodeproj'
-
