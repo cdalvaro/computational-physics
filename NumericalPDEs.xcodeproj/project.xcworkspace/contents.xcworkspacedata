@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Vibration Normal Modes 2D.xcodeproj">
+      location = "self:/Users/Carlos/Documents/Projects/NumericalPDEs/NumericalPDEs.xcodeproj">
    </FileRef>
 </Workspace>

@@ -28,7 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0730698D1CDFE9F30000BA47 /* Drum Vibration Mode 03.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "Drum Vibration Mode 03.gif"; sourceTree = "<group>"; };
+		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
 		07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
 		07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
@@ -37,7 +37,7 @@
 		07A351C220C5D5C800DC2DC2 /* matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = matrix.cpp; sourceTree = "<group>"; };
 		07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolveEDP.cpp; sourceTree = "<group>"; };
 		07A351CA20C5D92400DC2DC2 /* matrix.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = matrix.hpp; sourceTree = "<group>"; };
-		07DA13441559113E00FCF6F8 /* Vibration Normal Modes 2D */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Vibration Normal Modes 2D"; sourceTree = BUILT_PRODUCTS_DIR; };
+		07DA13441559113E00FCF6F8 /* NumericalPDEs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NumericalPDEs; sourceTree = BUILT_PRODUCTS_DIR; };
 		07DA13481559113E00FCF6F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		07DA13511559115100FCF6F8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		07DA13531559115A00FCF6F8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -97,7 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				0733CF321F24831800C4F677 /* README.md */,
-				07DA13471559113E00FCF6F8 /* Vibration Normal Modes 2D */,
+				0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */,
+				07DA13471559113E00FCF6F8 /* NumericalPDEs */,
 				07DA13551559116000FCF6F8 /* Frameworks */,
 				07DA13451559113E00FCF6F8 /* Products */,
 			);
@@ -106,20 +107,19 @@
 		07DA13451559113E00FCF6F8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				07DA13441559113E00FCF6F8 /* Vibration Normal Modes 2D */,
+				07DA13441559113E00FCF6F8 /* NumericalPDEs */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		07DA13471559113E00FCF6F8 /* Vibration Normal Modes 2D */ = {
+		07DA13471559113E00FCF6F8 /* NumericalPDEs */ = {
 			isa = PBXGroup;
 			children = (
 				07A351BC20C5D5C800DC2DC2 /* graphics */,
 				07A351BF20C5D5C800DC2DC2 /* math */,
-				0730698D1CDFE9F30000BA47 /* Drum Vibration Mode 03.gif */,
 				07DA13481559113E00FCF6F8 /* main.cpp */,
 			);
-			path = "Vibration Normal Modes 2D";
+			path = NumericalPDEs;
 			sourceTree = "<group>";
 		};
 		07DA13551559116000FCF6F8 /* Frameworks */ = {
@@ -134,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		07DA13431559113E00FCF6F8 /* Vibration Normal Modes 2D */ = {
+		07DA13431559113E00FCF6F8 /* NumericalPDEs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 07DA134E1559113E00FCF6F8 /* Build configuration list for PBXNativeTarget "Vibration Normal Modes 2D" */;
+			buildConfigurationList = 07DA134E1559113E00FCF6F8 /* Build configuration list for PBXNativeTarget "NumericalPDEs" */;
 			buildPhases = (
 				07DA13401559113E00FCF6F8 /* Sources */,
 				07DA13411559113E00FCF6F8 /* Frameworks */,
@@ -146,9 +146,9 @@
 			);
 			dependencies = (
 			);
-			name = "Vibration Normal Modes 2D";
+			name = NumericalPDEs;
 			productName = "Vibration Normal Modes 2D";
-			productReference = 07DA13441559113E00FCF6F8 /* Vibration Normal Modes 2D */;
+			productReference = 07DA13441559113E00FCF6F8 /* NumericalPDEs */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -160,7 +160,7 @@
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = cdalvaro;
 			};
-			buildConfigurationList = 07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "Vibration Normal Modes 2D" */;
+			buildConfigurationList = 07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "NumericalPDEs" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -172,7 +172,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				07DA13431559113E00FCF6F8 /* Vibration Normal Modes 2D */,
+				07DA13431559113E00FCF6F8 /* NumericalPDEs */,
 			);
 		};
 /* End PBXProject section */
@@ -225,6 +225,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
+					GL_SILENCE_DEPRECATION,
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -268,6 +269,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -300,7 +302,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "Vibration Normal Modes 2D" */ = {
+		07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "NumericalPDEs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07DA134C1559113E00FCF6F8 /* Debug */,
@@ -309,7 +311,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		07DA134E1559113E00FCF6F8 /* Build configuration list for PBXNativeTarget "Vibration Normal Modes 2D" */ = {
+		07DA134E1559113E00FCF6F8 /* Build configuration list for PBXNativeTarget "NumericalPDEs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07DA134F1559113E00FCF6F8 /* Debug */,
