@@ -200,7 +200,7 @@ Matrix<T>::det()
         return det;
     }
     Matrix<T> tmp(n,m);
-    tmp.zero();
+    tmp.Zero();
     tmp = this -> U();
     
     for (int i=0; i<n; i++) {
@@ -216,7 +216,7 @@ Matrix<T>::sumRows()
 {
     T sum;
     Matrix<T> tmp(n,1);
-    tmp.zero();
+    tmp.Zero();
     for (int i=0; i<n; i++) {
         sum = (T)0.0;
         for (int j=0; j<m; j++) {
@@ -232,7 +232,7 @@ Matrix<T>::sumColumns()
 {
     T sum;
     Matrix<T> tmp(1,m);
-    tmp.zero();
+    tmp.Zero();
     for (int i=0; i<n; i++) {
         sum = (T)0.0;
         for (int j=0; j<m; j++) {
@@ -247,7 +247,7 @@ template<typename T> inline Matrix<T>
 Matrix<T>::transpose()
 {
     Matrix<T> tmp(m,n);
-    tmp.zero();
+    tmp.Zero();
     for (int i=0; i<m; i++) {
         for (int j=0; j<n; j++) {
             tmp.a[i*n + j] = a[j*m + i];
@@ -256,31 +256,6 @@ Matrix<T>::transpose()
     return tmp;
 }
 
-template<typename T> inline Matrix<T>
-Matrix<T>::zero(int _n, int _m)
-{
-    Matrix<T> tmp(_n,_m);
-    tmp.zero();
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::ones(int _n, int _m)
-{
-    Matrix<T> tmp(_n,_m);
-    tmp.ones();
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::identity(int _n, int _m)
-{
-    if (_n != _m)
-        std::cout << RM << "identity(n, m)] - No es una matriz cuadrada.\n";
-    Matrix<T> I(_n,_m);
-    I.identity();
-    return I;
-}
 
 
 template<typename T> inline Vector<T>
@@ -288,7 +263,7 @@ Matrix<T>::sumRowsV()
 {
     T sum;
     Vector<T> tmp(n);
-    tmp.zero();
+    tmp.Zero();
     for (int i=0; i<n; i++) {
         sum = (T)0.0;
         for (int j=0; j<m; j++) {
@@ -304,7 +279,7 @@ Matrix<T>::sumColumnsV()
 {
     T sum;
     Vector<T> tmp(m);
-    tmp.zero();
+    tmp.Zero();
     for (int i=0; i<n; i++) {
         sum = (T)0.0;
         for (int j=0; j<m; j++) {
@@ -339,21 +314,6 @@ Matrix<T>::duplicate()
 
 //  Void functions
 
-template<typename T> inline void
-Matrix<T>::identity()
-{
-    if (n != m)
-        std::cout << RM << "identity()] - No es una matriz cuadrada.\n";
-    for (int i=0; i<n; i++) {
-        for (int j=0; j<m; j++) {
-            if (i == j) {
-                a[i*m + j] = (T)1.0;
-            } else {
-                a[i*m + j] = (T)0.0;
-            }
-        }
-    }
-}
 
 template<typename T> inline void
 Matrix<T>::write(const std::string& path, const std::string& filename)
@@ -380,12 +340,12 @@ Matrix<T>::LU()
     if (n != m) {
         std::cout << RM << "LU()] - No se puede calcular la diagonal inferior porque no es una matriz cuadrada.\n";
         Matrix<T> tmp(n,m);
-        tmp.ones();
+        tmp.Ones();
         return tmp;
     }
     
     Matrix<T> LU(n,m);
-    LU.zero();
+    LU.Zero();
     LU = *this;
     
     for (int i=1; i<n; i++) {
@@ -423,8 +383,8 @@ Matrix<T>::U()
     if (n != m)
         std::cout << RM << "U()] -> ";
     Matrix<T> LU(n,m), U(n,m);
-    LU.zero();
-    U.zero();
+    LU.Zero();
+    U.Zero();
     LU = this -> LU();
     
     for (int i=0; i<n; i++) {
@@ -445,8 +405,8 @@ Matrix<T>::L()
     if (n != m)
         std::cout << RM << "L()] -> ";
     Matrix<T> LU(n,m), L(n,m);
-    LU.zero();
-    L.zero();
+    LU.Zero();
+    L.Zero();
     LU = this -> LU();
     
     for (int i=0; i<n; i++) {
@@ -474,7 +434,7 @@ Matrix<T>::solveLU(const Vector<T>& B)
     }
     Vector<T> x(n, 0);
     Matrix<T> LU(n,m);
-    LU.zero();
+    LU.Zero();
     LU = this -> LU();
     
     T sum = (T)0.0;
@@ -565,30 +525,28 @@ Matrix<T>::QR(unsigned char QorR)
 {
     if (n != m) {
         std::cout << RM << "QR(QorR) - La matriz no es cuadrada.";
-        return ones(n, n);
+        return Ones(n, n);
     }
     
     Matrix<T> Q(n,n), R(n,n), I(n,n), H(n,n), A(n,n);
-    Q.zero();
-    R.zero();
-    H.zero();
-    A.zero();
-    I.identity();
+    Q.Zero();
+    R.Zero();
+    H.Zero();
+    A.Zero();
+    I.Identity();
     
     //  First column
-    Vector<T> c(n, 0), vt(n, 0);
-    Matrix<T> v(n,1);
-    v.zero();
+    auto c = this->GetColumnAsVector(0);
+    auto vt = c + I.GetRowAsVector(0)*(c[0]/std::abs(c[0]))*(c.Norm());
     
-    c = this->GetColumnAsVector(0);
-    vt = c + I.GetRowAsVector(0)*(c[0]/std::abs(c[0]))*(c.Norm());
     // TODO: Implement transpose method for Vector class
     // v = vt.transpose();
+    Matrix<T> v(n, 1);
     for (auto it = vt.Begin(); it != vt.End(); ++it) {
         v[std::distance(vt.Begin(), it)][0] = *it;
     }
     
-    H = I - (v*vt)*2/(vt.SquaredNorm());
+    H = I - (v*vt) * 2.0/(vt.SquaredNorm());
     R = H * (* this);
     
     for (int i=1; i<n; i++) {
@@ -608,7 +566,7 @@ Matrix<T>::QR(unsigned char QorR)
         c = A.GetColumnAsVector(0);
         
         if (c.IsNull()) {
-            H.identity();
+            H.Identity();
         } else {
             vt = c + I.GetRowAsVector(i, i)*(c[0]/std::abs(c[0]))*(c.Norm());
             // TODO: Implement transpose method for Vector class
@@ -617,7 +575,7 @@ Matrix<T>::QR(unsigned char QorR)
                 v[std::distance(vt.Begin(), it)][0] = *it;
             }
             
-            H = I.GetMatrix(i, i) - (v*vt)*2/(vt.SquaredNorm());
+            H = I.GetMatrix(i, i) - 2.0*(v*vt)/(vt.SquaredNorm());
             A = I;
             A.setMatrix(i, i, H);
             H = A;
@@ -645,7 +603,7 @@ Matrix<T>::QR(unsigned char QorR)
         return R;
     else {
         Matrix<T> QR(n,2*n);
-        QR.zero();
+        QR.Zero();
         QR = Q&&R;
         return QR;
     }
@@ -662,9 +620,9 @@ Matrix<T>::eigenVectors(int maxIte, unsigned char opt)
     Vector<T> eVas(n);
     Matrix<T> eVes(n,n), eVe(n,1), Ainv(n,n);
     
-    Ainv.zero();
-    eVas.zero();
-    eVes.zero();
+    Ainv.Zero();
+    eVas.Zero();
+    eVes.Zero();
     
     eVas = this -> eigenValues(maxIte, preDef, opt);
     if ((opt& ORGANIZED) != 0)
@@ -674,7 +632,7 @@ Matrix<T>::eigenVectors(int maxIte, unsigned char opt)
         std::cout << RM << "eigenVectors()] - Hay autovalores duplicados, no se asegura la obtención de todos los autovectores.\n";
     
     for (int i=0; i<n; i++) {
-        eVe.ones();
+        eVe.Ones();
         eVa = (T)eVas(i)+1.0;
         k=1;
         Ainv = (* this) - identity(n,n)*eVas(i)*(1.0+fact);
@@ -688,7 +646,7 @@ Matrix<T>::eigenVectors(int maxIte, unsigned char opt)
             k++;
             
             if ((eVa < eVas(i)*(1.0-fact) || eVa > eVas(i)*(1.0+fact)) && k == maxIte) {
-                eVe.ones();
+                eVe.Ones();
                 eVe(i) *= 2.0;
                 eVa = (T)eVas(i)+1.0;
                 k=1;
@@ -735,12 +693,12 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
     Vector<T> eVeV(n);
     Matrix<T> eVe(n,1), Ainv(n,n);
     
-    Ainv.zero();
-    eVe.ones();
+    Ainv.Zero();
+    eVe.Ones();
     
     eVa = eigenValue+1.0;
     k=1;
-    Ainv = (* this) - identity(n,n)*eigenValue*(1.0+fact);
+    Ainv = (* this) - eigenValue*(1.0+fact)*Identity(n,n);
     Ainv = Ainv^(-1);
     
     while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < maxIte) {
@@ -751,11 +709,11 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
         k++;
         
         if ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k == maxIte) {
-            eVe.ones();
+            eVe.Ones();
             eVe[0][0] *= 2.0;
             eVa = eigenValue+1.0;
             k=1;
-            Ainv = (* this) - identity(n,n)*eigenValue*(1.0+fact);
+            Ainv = (* this) - eigenValue*(1.0+fact)*Identity(n,n);
             Ainv = Ainv^(-1);
             
             while (1/eVa != eigenValue && k < maxIte) {
@@ -799,9 +757,9 @@ Matrix<T>::eigenValues(int maxIte, T factor, unsigned char opt)
     Matrix<T> A(n,n), Q(n,2*n), R(n,n);
     Vector<T> diagOld(n, 0);
     
-    A.zero();
-    Q.zero();
-    R.zero();
+    A.Zero();
+    Q.Zero();
+    R.Zero();
     A = (* this);
     
     while (cota > err && k<maxIte) {
@@ -841,130 +799,13 @@ Matrix<T>::eigenValues()
 
 
 //  --- OPERATORS ---
-template<typename T> inline Matrix<T>&
-Matrix<T>::operator=(const T* array)
-{
-    for (int k=0; k<size; k++) {
-        a[k] = array[k];
-    }
-    return (* this);
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::operator+(const Matrix<T>& M)
-{
-    if (n != M.n || m != M.m)
-        std::cout << RM << "operator+M] - Las matrices no tienen las mismas dimensiones.\n";
-    Matrix<T> tmp(n,m);
-    tmp.zero();
-    for (int k=0; k<size; k++) {
-        tmp.a[k] = a[k] + M.a[k];
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>&
-Matrix<T>::operator+=(const Matrix<T>& M)
-{
-    if (n != M.n || m != M.m)
-        std::cout << RM << "operator+=M] - Las matrices no tienen las mismas dimensiones.\n";
-    for (int k=0; k<size; k++) {
-        a[k] += M.a[k];
-    }
-    return (* this);
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::operator-(const Matrix<T>& M)
-{
-    if (n != M.n || m != M.m)
-        std::cout << RM << "operator-M] - Las matrices no tienen las mismas dimensiones.\n";
-    Matrix<T> tmp(n,m);
-    tmp.zero();
-    for (int k=0; k<size; k++) {
-        tmp.a[k] = a[k] - M.a[k];
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>&
-Matrix<T>::operator-=(const Matrix<T>& M)
-{
-    if (n != M.n || m != M.m)
-        std::cout << RM << "operator-=M] - Las matrices no tienen las mismas dimensiones.\n";
-    for (int k=0; k<size; k++) {
-        a[k] -= M.a[k];
-    }
-    return (* this);
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::operator*(const T& D)
-{
-    Matrix<T> tmp(n,m);
-    tmp.zero();
-    for (int k=0; k<size; k++) {
-        tmp.a[k] = a[k] * D;
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>&
-Matrix<T>::operator*=(const T& D)
-{
-    for (int k=0; k<size; k++) {
-        a[k] *= D;
-    }
-    return (* this);
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::operator/(const T& D)
-{
-    Matrix<T> tmp(n,m);
-    tmp.zero();
-    for (int k=0; k<size; k++) {
-        tmp.a[k] = a[k] / D;
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>&
-Matrix<T>::operator/=(const T& D)
-{
-    for (int k=0; k<size; k++) {
-        a[k] /= D;
-    }
-    return (* this);
-}
-
 template<typename T> inline Matrix<T>
 Matrix<T>::operator-()
 {
     Matrix<T> tmp(n,m);
-    tmp.zero();
+    tmp.Zero();
     for (int k=0; k<size; k++) {
         tmp.a[k] = -a[k];
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::operator*(const Matrix<T>& M)
-{
-    Matrix<T> tmp(n,M.m);
-    tmp.zero();
-    if (m == M.n) {
-        for (int i=0; i<n; i++) {
-            for (int j=0; j<M.m; j++) {
-                for (int k=0; k<m; k++) {
-                    tmp.a[i*M.m + j] += a[i*m + k] * M.a[k*M.m + j];
-                }
-            }
-        }
-    } else {
-        std::cout << RM << "operator*M] - Las dimensiones de las matrices no permiten su producto.\n";
-        tmp.ones();
     }
     return tmp;
 }
@@ -978,7 +819,7 @@ Matrix<T>::operator*=(const Matrix<T>& M)
     }
     T prod;
     Matrix<T> tmp(n,M.m);
-    tmp.zero();
+    tmp.Zero();
     for (int i=0; i<n; i++) {
         for (int j=0; j<M.m; j++) {
             prod = (T)0.0;
@@ -993,31 +834,13 @@ Matrix<T>::operator*=(const Matrix<T>& M)
 }
 
 template<typename T> inline Matrix<T>
-Matrix<T>::operator*(const Vector<T>& V)
-{
-    Matrix<T> tmp(n,V.Size());
-    tmp.zero();
-    if (m != 1) {
-        std::cout << RM << "operator*V] - La matriz debe tener una única columna para multiplicarse por un vector.\n";
-        tmp.ones();
-    } else {
-        for (int i=0; i<n; i++) {
-            for (int j=0; j<V.Size(); j++) {
-                tmp.a[i*V.Size() + j] = a[i] * V[j];
-            }
-        }
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
 Matrix<T>::operator^(const int exp)
 {
     Matrix<T> tmp(n,m);
-    tmp.zero();
+    tmp.Zero();
     if (n != m) {
         std::cout << RM << "operator^exp] - No se puede elevar la matriz a " << exp << " porque no es cuadrada.\n";
-        tmp.ones();
+        tmp.Ones();
         return tmp;
     }
     
@@ -1054,7 +877,7 @@ operator&&(const Matrix<T>& Mi, const Matrix<T>& Md)
     n = std::max(Mi.Rows(), Md.Rows());
     m = Mi.Columns() + Md.Columns();
     Matrix<T> tmp(n,m);
-    tmp.zero();
+    tmp.Zero();
     
     for (int i=0; i<Mi.Rows(); i++) {
         for (int j=0; j<Mi.Columns(); j++) {
@@ -1179,30 +1002,7 @@ operator<<(std::ostream& out, const Matrix<T>& M)
 
 
 //  --- OTHER FUNCTIONS ---
-template<typename T>
-Matrix<T> cda::math::containers::zero(int _n, int _m) {
-    Matrix<T> tmp(_n,_m);
-    tmp.zero();
-    return tmp;
-}
 
-template<typename T> inline Matrix<T>
-cda::math::containers::ones(int _n, int _m)
-{
-    Matrix<T> tmp(_n,_m);
-    tmp.ones();
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>
-cda::math::containers::identity(int _n, int _m)
-{
-    if (_n != _m)
-        std::cout << RM << "identity(n, m)] - No es una matriz cuadrada.\n";
-    Matrix<T> I(_n,_m);
-    I.identity();
-    return I;
-}
 
 template<typename T> inline Matrix<T>
 cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)

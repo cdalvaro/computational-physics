@@ -22,11 +22,12 @@ namespace cda {
             class Matrix {
             private:
                 size_t n, m, size;
-                T *a;
+                T *a, *it_end;
                 
                 void AllocateMemory(const size_t &size) {
                     if (void *mem = std::realloc(a, size * sizeof(T))) {
                         a = static_cast<T *>(mem);
+                        it_end = a + size;
                     } else {
                         throw std::bad_alloc();
                     }
@@ -35,34 +36,36 @@ namespace cda {
             public:
                 
                 Matrix(const size_t &rows = 0, const size_t &columns = 0) :
-                n(rows), m(columns), size(rows * columns), a(nullptr) {
+                n(rows), m(columns), size(rows * columns),
+                a(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
                 }
                 
                 Matrix(const size_t &rows, const size_t &columns, const T &value) :
-                n(rows), m(columns), size(rows * columns), a(nullptr) {
+                n(rows), m(columns), size(rows * columns),
+                a(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
-                    std::fill(a, a + size, value);
+                    std::fill(this->Begin(), this->End(), value);
                 }
                 
                 Matrix(const Matrix<T> &matrix) :
-                n(matrix.n), m(matrix.m), size(matrix.size), a(nullptr) {
+                n(matrix.n), m(matrix.m), size(matrix.size),
+                a(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
-                    std::copy(matrix.a, matrix.a + size, a);
+                    std::copy(matrix.Begin(), matrix.End(), this->Begin());
                 }
                 
                 Matrix(Matrix<T> &&matrix) :
-                n(matrix.n), m(matrix.m), size(matrix.size), a(matrix.a) {
-                    matrix.n = 0;
-                    matrix.m = 0;
-                    matrix.size = 0;
-                    matrix.a = nullptr;
+                n(matrix.n), m(matrix.m), size(matrix.size),
+                a(matrix.a), it_end(matrix.it_end) {
+                    matrix.n = matrix.m = matrix.size = 0;
+                    matrix.a = matrix.it_end = nullptr;
                 }
                 
                 ~Matrix() {
                     if (a) {
                         std::free(a);
-                        a = nullptr;
+                        a = it_end = nullptr;
                         n = m = size = 0;
                     }
                 }
@@ -72,7 +75,7 @@ namespace cda {
                 }
                 
                 T *End() const {
-                    return a + size;
+                    return it_end;
                 }
                 
                 void Resize(const size_t &rows, const size_t &columns, const bool &fill = false) {
@@ -94,7 +97,7 @@ namespace cda {
                         
                         Matrix<T> tmp(rows, columns);
                         if (fill) {
-                            tmp.zero();
+                            tmp.Zero();
                         }
                         
                         if (size != 0) {
@@ -115,7 +118,7 @@ namespace cda {
                 Matrix<T> &operator=(const Matrix<T> &matrix) {
                     if (this != &matrix) {
                         Resize(matrix.n, matrix.m);
-                        std::copy(matrix.a, matrix.a + size, a);
+                        std::copy(matrix.Begin(), matrix.End(), this->Begin());
                     }
                     
                     return *this;
@@ -125,14 +128,13 @@ namespace cda {
                     if (this != &matrix) {
                         std::free(a);
                         a = matrix.a;
+                        it_end = matrix.it_end;
                         n = matrix.n;
                         m = matrix.m;
                         size = matrix.size;
                         
-                        matrix.a = nullptr;
-                        matrix.n = 0;
-                        matrix.m = 0;
-                        matrix.size = 0;
+                        matrix.a = matrix.it_end = nullptr;
+                        matrix.n = matrix.m = matrix.size = 0;
                     }
                     
                     return *this;
@@ -146,7 +148,7 @@ namespace cda {
                     Matrix<T> tmp(1, m);
                     
                     const auto &it_row = a + row * m;
-                    std::copy(it_row, it_row + m, tmp.a);
+                    std::copy(it_row, it_row + m, tmp.Begin());
                     
                     return tmp;
                 }
@@ -157,7 +159,7 @@ namespace cda {
                     }
                     
                     Matrix<T> tmp(n, 1);
-                    auto it_tmp = tmp.a;
+                    auto it_tmp = tmp.Begin();
                     
                     for (size_t i = 0; i < n; ++i, ++it_tmp) {
                         *it_tmp = a[i*m + column];
@@ -291,16 +293,13 @@ namespace cda {
                 Matrix<T> sumRows();                                                      //  Suma todos los elementos de las filas y las devuelve en una matriz columna.
                 Matrix<T> sumColumns();                                                   //  Suma todos los elementos de las columnas y las devuelve en una matriz fila.
                 Matrix<T> transpose();                                                    //  Transpone la matriz.
-                Matrix<T> zero(int _n, int _m);                                           //  Devuelve una matriz de tamaño (n,m) llena de ceros.
-                Matrix<T> ones(int _n, int _m);                                           //  Devuelve una matriz de tamaño (n,m) llena de unos.
-                Matrix<T> identity(int _n, int _m);                                       //  Devuelve una matriz identidad de tamaño (n,m).
                 
                 Vector<T> sumRowsV();                                                     //  Suma todos los elementos de las filas y las devuelve en un vector.
                 Vector<T> sumColumnsV();                                                  //  Suma todos los elementos de las columnas y las devuelve en un vector.
                 
                 //  Returns a bool
                 bool IsNull() const {
-                    for (auto it = a; it != a + size; ++it) {
+                    for (auto it = Begin(); it != End(); ++it) {
                         if (*it != 0) {
                             return false;
                         }
@@ -317,18 +316,28 @@ namespace cda {
                 
                 //  Void functions
                 void Fill(const T &value) {
-                    std::fill(a, a + size, value);
+                    std::fill(Begin(), End(), value);
                 }
                 
-                void zero() {
+                void Zero() {
                     Fill(0);
                 }
                 
-                void ones() {
+                void Ones() {
                     Fill(1);
                 }
                 
-                void identity();                                                        //  Combierte a la matriz en la identidad.
+                void Identity() {
+                    if (!IsSquared()) {
+                        throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
+                    }
+                    
+                    Zero();
+                    for (auto it = Begin(); it != End(); it += m + 1) {
+                        *it = 1;
+                    }
+                }
+                
                 void write(const std::string& path, const std::string& filename);                 //  Escribe la matriz en un fichero.
                 void write(const std::string& filename);
                 
@@ -358,32 +367,165 @@ namespace cda {
                 
                 
                 //  --- OPERATORS ---
-                Matrix<T>& operator=(const T* Array);                                     //  Introduce los elementos de una matriz a través de un array.
-                Matrix<T> operator+(const Matrix<T>& M);                                    //  Definición de suma de dos matrices.
-                Matrix<T>& operator+=(const Matrix<T>& M);                                  //  Suma la matriz con otra sobre sí misma.
-                Matrix<T> operator-(const Matrix<T>& M);                                    //  Definición de diferencia de dos matrices.
-                Matrix<T>& operator-=(const Matrix<T>& M);                                  //  Diferencia de la matriz con otra sobre sí misma.
-                Matrix<T> operator*(const T& D);                                          //  Producto de la matriz por una constante.
-                Matrix<T>& operator*=(const T& D);                                        //  Producto de la matriz sobre sí misma por una constante.
-                Matrix<T> operator/(const T& D);                                          //  Cociente de la matriz por una constante.
-                Matrix<T>& operator/=(const T& D);                                        //  Cociente de la matriz sobre sí misma por una constante.
+                Matrix<T> operator+(const Matrix<T> &matrix) const {
+                    if (this->n != matrix.n || this->m != matrix.m) {
+                        throw std::logic_error("Matrices must be of the same dimensions.");
+                    }
+                    
+                    Matrix<T> new_matrix(n, m);
+                    auto it_new = new_matrix.Begin();
+                    auto it_matrix = matrix.Begin();
+                    
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix, ++it_new) {
+                        *it_new = *it_this + *it_matrix;
+                    }
+                    
+                    return new_matrix;
+                }
+                
+                Matrix<T>& operator+=(const Matrix<T> &matrix) {
+                    if (this->n != matrix.n || this->m != matrix.m) {
+                        throw std::logic_error("Matrices must be of the same dimensions.");
+                    }
+                    
+                    auto it_matrix = matrix.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix) {
+                        *it_this += *it_matrix;
+                    }
+                    
+                    return *this;
+                }
+                
+                Matrix<T> operator-(const Matrix<T> &matrix) const {
+                    if (this->n != matrix.n || this->m != matrix.m) {
+                        throw std::logic_error("Matrices must be of the same dimensions.");
+                    }
+                    
+                    Matrix<T> new_matrix(n, m);
+                    auto it_new = new_matrix.Begin();
+                    auto it_matrix = matrix.Begin();
+                    
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix, ++it_new) {
+                        *it_new = *it_this - *it_matrix;
+                    }
+                    
+                    return new_matrix;
+                }
+                
+                Matrix<T>& operator-=(const Matrix<T> &matrix) {
+                    if (this->n != matrix.n || this->m != matrix.m) {
+                        throw std::logic_error("Matrices must be of the same dimensions.");
+                    }
+                    
+                    auto it_matrix = matrix.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix) {
+                        *it_this -= *it_matrix;
+                    }
+                    
+                    return *this;
+                }
+                
+                template<typename T2>
+                Matrix<T> operator*(const T2 &value) const {
+                    Matrix<T> new_matrix(n, m);
+                    auto it_new = new_matrix.Begin();
+                    
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_new) {
+                        *it_new = *it_this * static_cast<T>(value);
+                    }
+                    
+                    return new_matrix;
+                }
+                
+                template<typename T2>
+                Matrix<T> operator*(const Matrix<T2> &matrix) {
+                    if (this->n != matrix.m || this->m != matrix.n) {
+                        throw std::logic_error("Matrices dimensions are not compatible.");
+                    }
+                    
+                    Matrix<T> new_matrix(this->n, matrix.m, 0);
+                    
+                    for (size_t this_row = 0; this_row < this->n; ++this_row) {
+                        for (size_t other_column = 0; other_column < matrix.m; ++other_column) {
+                            for (size_t element = 0; element < this->m; ++element) {
+                                new_matrix[this_row][other_column] += this->operator[](this_row)[element] * static_cast<T>(matrix[element][other_column]);
+                            }
+                        }
+                    }
+                    
+                    return new_matrix;
+                }
+                
+                template<typename T2>
+                Matrix<T> operator*(const Vector<T2> &vector) {
+                    if (m != 1) {
+                        throw std::logic_error("Matrix and Vector are not compatible.");
+                    }
+                    
+                    Matrix<T> new_matrix(n, vector.Size());
+                    auto it_new = new_matrix.Begin();
+                    auto it_vector = vector.Begin();
+                    
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector, ++it_new) {
+                        *it_new = *it_this * *it_vector;
+                    }
+                    
+                    return new_matrix;
+                }
+                
+                Matrix<T>& operator*=(const T &value) {
+                    for (auto it = Begin(); it != End(); ++it) {
+                        *it *= value;
+                    }
+                    return *this;
+                }
+                
+                Matrix<T> operator/(const T &value) const {
+                    Matrix<T> new_matrix(this->n, this->m);
+                    auto it_new = new_matrix.Begin();
+                    
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_new) {
+                        *it_new = *it_this / value;
+                    }
+                    
+                    return new_matrix;
+                }
+                
+                Matrix<T>& operator/=(const T &value) {
+                    for (auto it = Begin(); it != End(); ++it) {
+                        *it /= value;
+                    }
+                    return *this;
+                }
+                
                 Matrix<T> operator-();                                                    //  Cambia el signo de todos los elementos de la matriz.
-                Matrix<T> operator*(const Matrix<T>& M);                                    //  Definición del producto de dos matrices.
                 Matrix<T>& operator*=(const Matrix<T>& M);                                  //  Producto de una matriz por otra sobre sí misma.
-                Matrix<T> operator*(const Vector<T>& V);                                    //  Producto de una matriz por un vector.
                 Matrix<T> operator^(const int exp);                                       //  Eleva a una potencia la matriz ó calcula su inversa.
+                
+                //  --- STATIC METHODS ---
+                static Matrix<T> Zero(const size_t &rows, const size_t &columns) {
+                    return Matrix<T>(rows, columns, 0);
+                }
+                
+                static Matrix<T> Ones(const size_t &rows, const size_t &columns) {
+                    return Matrix<T>(rows, columns, 1);
+                }
+                
+                static Matrix<T> Identity(const size_t &rows, const size_t &columns) {
+                    if (rows != columns) {
+                        throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
+                    }
+                    
+                    Matrix<T> identity(rows, columns);
+                    identity.Identity();
+                    return identity;
+                }
+                
             };
             
-            //  --- OTHER FUNCTIONS ---
-            template <class T>
-            Matrix<T> zero(int _n, int _m);                                                       //  Devuelve una matriz de tamaño (n,m) llena de ceros.
-            template <class T>
-            Matrix<T> ones(int _n, int _m);                                                       //  Devuelve una matriz de tamaño (n,m) llena de unos.
-            template <class T>
-            Matrix<T> identity(int _n, int _m);                                                   //  Devuelve una matriz identidad de tamaño (n,m).
-            template <class T>
+            template <typename T>
             Matrix<T> setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps);                     //  Devuelve los valores de A que no se encuentran en B.
-            template <class T>
+            template <typename T>
             Matrix<T> setdiff(Matrix<T>& A, const Matrix<T>& B);                                      //  Devuelve los valores de A que no se encuentran en B.
         
         } /* namespace math */
@@ -391,7 +533,7 @@ namespace cda {
 } /* namespace cda */
 
 //  --- MORE OPERATORS ---
-template <class T>
+template <typename T>
 inline cda::math::containers::Matrix<T> operator*(const T &value, const cda::math::containers::Matrix<T> &matrix) {
     cda::math::containers::Matrix<T> tmp(matrix.Rows(), matrix.Columns());
     auto it_tmp = tmp.Begin();
@@ -403,13 +545,36 @@ inline cda::math::containers::Matrix<T> operator*(const T &value, const cda::mat
     return tmp;
 }
 
-template <class T> inline cda::math::containers::Matrix<T>
+template<typename T>
+inline cda::math::containers::Vector<T> operator*(const cda::math::containers::Vector<T> &vector,
+                                                  const cda::math::containers::Matrix<T> &matrix) {
+    const auto &rows = matrix.Rows();
+    if (rows != vector.Size()) {
+        throw std::logic_error("The vector and the matrix are incompatible");
+    }
+    
+    const auto &columns = matrix.Columns();
+    cda::math::containers::Vector<T> new_vector(columns, 0);
+    
+    // TODO: Check this operation
+    auto it_new = new_vector.Begin();
+    for (size_t column = 0; column < columns; ++column, ++it_new) {
+        auto it_vector = vector.Begin();
+        for (size_t row = 0; row < rows; ++row, ++it_vector) {
+            *it_new += *it_vector * matrix[row][column];
+        }
+    }
+    
+    return new_vector;
+}
+
+template <typename T> inline cda::math::containers::Matrix<T>
 operator&&(const cda::math::containers::Matrix<T>& Mi, const cda::math::containers::Matrix<T>& Md);                           //  Devuelve una matriz que tendrá unidas dos matrices.
-template <class T> inline void
+template <typename T> inline void
 operator||(cda::math::containers::Matrix<T>& Mi, cda::math::containers::Matrix<T>& Md);                                       //  Separa una matriz en dos.
-template <class T> inline void
+template <typename T> inline void
 operator>>(std::istream& in, cda::math::containers::Matrix<T>& M);                                        //  Importa una matriz desde un fichero.
-template <class T> inline std::ostream&
+template <typename T> inline std::ostream&
 operator<<(std::ostream& out, const cda::math::containers::Matrix<T>& M);                                 //  Exporta la matriz a un ostream.
 
 #endif /* math_containers_matrix_hpp */
