@@ -26,9 +26,20 @@ using namespace cda::math::containers;
 }
 
 - (Boolean)sumOfTwoVectors {
-    Vector<double> vector1(10, 3);
-    Vector<double> vector2(10, 4);
-    Vector<double> expected(10, 7);
+    Vector<double> vector1(10);
+    for (size_t i = 0; i < vector1.Size(); ++i) {
+        vector1[i] = i;
+    }
+    
+    Vector<double> vector2(10);
+    for (size_t i = 0; i < vector2.Size(); ++i) {
+        vector2[i] = 10 + i;
+    }
+    
+    Vector<double> expected(10);
+    for (size_t i = 0; i < expected.Size(); ++i) {
+        expected[i] = vector1[i] + vector2[i];
+    }
     
     auto result = vector1 + vector2;
     

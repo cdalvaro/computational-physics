@@ -160,17 +160,13 @@ namespace cda {
                     std::copy(array, array + size, v);
                 }
                 
-                void Copy(const Vector<T> &vector) {
-                    this->Copy(vector.n, vector.Begin());
-                }
-                
                 bool operator==(const Vector<T> &vector) const {
                     if (this->n != vector.n) {
                         return false;
                     }
                     
                     auto it_vector = vector.Begin();
-                    for (auto it = this->Begin(); it != this->End(); ++it) {
+                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_vector) {
                         if (*it != *it_vector) {
                             return false;
                         }
