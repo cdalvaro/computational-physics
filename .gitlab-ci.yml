@@ -1,5 +1,6 @@
 stages:
   - analyze
+  - test
   - build
   - archive
 
@@ -7,6 +8,15 @@ analyze_project:
   stage: analyze
   script:
     - xcodebuild clean analyze -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug | xcpretty -f `xcpretty-travis-formatter`
+  tags:
+    - Xcode_9-3
+    - macOS_10-13
+
+test_project:
+  stage: test
+  script:
+    - xcodebuild clean test -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
+    - slather coverage --scheme 'Numerical PDEs' --show NumericalPDEs.xcodeproj
   tags:
     - Xcode_9-3
     - macOS_10-13
