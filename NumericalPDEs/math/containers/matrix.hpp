@@ -140,6 +140,25 @@ namespace cda {
                     return *this;
                 }
                 
+                bool operator==(const Matrix<T> &matrix) const {
+                    if (this->n != matrix.n || this->m != matrix.m) {
+                        return false;
+                    }
+                    
+                    auto it_matrix = matrix.Begin();
+                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_matrix) {
+                        if (*it != *it_matrix) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                }
+                
+                bool operator!=(const Matrix<T> &matrix) const {
+                    return !this->operator==(matrix);
+                }
+                
                 Matrix<T> GetRow(const size_t &row) const {
                     if (row >= n) {
                         throw std::out_of_range("Index out of bounds");
