@@ -164,6 +164,25 @@ namespace cda {
                     this->Copy(vector.n, vector.Begin());
                 }
                 
+                bool operator==(const Vector<T> &vector) const {
+                    if (this->n != vector.n) {
+                        return false;
+                    }
+                    
+                    auto it_vector = vector.Begin();
+                    for (auto it = this->Begin(); it != this->End(); ++it) {
+                        if (*it != *it_vector) {
+                            return false;
+                        }
+                    }
+                    
+                    return true;
+                }
+                
+                bool operator!=(const Vector<T> &vector) const {
+                    return !this->operator==(vector);
+                }
+                
                 /**
                  Returns \p elements starting from element \p first_element
                  
@@ -199,7 +218,7 @@ namespace cda {
                  
                  @param first_element The position of the first element to be copied
                  @param vector The vector with the elements to be copied
-                 @param lenght The number of elements to copy
+                 @param elements The number of elements to copy
                  */
                 void Set(const size_t &first_element, const Vector<T> &vector, const size_t &elements) {
                     if (first_element + elements > n || elements > vector.n) {
