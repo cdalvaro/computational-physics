@@ -236,9 +236,9 @@ void vibration_modes_A()                    //  Bordes fijos
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -271,9 +271,9 @@ void vibration_modes_B()                    //  Bordes libres
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -306,9 +306,9 @@ void vibration_modes_C()                    //  Composición de modos (bordes fi
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -342,9 +342,9 @@ void vibration_modes_D()                    //  Composición de modos (bordes li
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -378,9 +378,9 @@ void pulse()                                //  Pulsos aplicados sobre la membra
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -418,9 +418,9 @@ void chladni_patterns_A()                   //  Figuras de Chladni
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -443,7 +443,7 @@ void chladni_patterns_A()                   //  Figuras de Chladni
     sForce = 0.005;
     freqSignal = (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
 }
 
 void chladni_patterns_B()                   //  Figuras de Chladni
@@ -464,9 +464,9 @@ void chladni_patterns_B()                   //  Figuras de Chladni
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -493,7 +493,7 @@ void chladni_patterns_B()                   //  Figuras de Chladni
     my = 6;             //  Modo Y
     freqSignal += (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
 }
 
 void chladni_patterns_C()                   //  Figuras de Chladni
@@ -514,9 +514,9 @@ void chladni_patterns_C()                   //  Figuras de Chladni
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -539,7 +539,7 @@ void chladni_patterns_C()                   //  Figuras de Chladni
     sForce = 0.005;
     freqSignal = (double)sqrt((double)QQ(vX[0],vY[0])*(((double)mx*mx/(Lx*Lx)))+((double)my*my/(Ly*Ly)))*PI;
     
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
 }
 
 
@@ -562,9 +562,9 @@ void single_slit_A()                        //  Una rendija de anchura pequeña
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -604,7 +604,7 @@ void single_slit_A()                        //  Una rendija de anchura pequeña
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 25.0;          //  Frecuencia de oscilación de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -628,9 +628,9 @@ void single_slit_B()                        //  Una rendija de anchura grande
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -666,7 +666,7 @@ void single_slit_B()                        //  Una rendija de anchura grande
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -690,9 +690,9 @@ void double_slit()                          //  Doble rendija
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -737,7 +737,7 @@ void double_slit()                          //  Doble rendija
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -761,9 +761,9 @@ void cylinder()                             //  Cilindro
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -802,7 +802,7 @@ void cylinder()                             //  Cilindro
     sRangeY = n/2;              //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -826,9 +826,9 @@ void single_slit_circular_wave()            //  Una rendija de anchura con ondas
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -868,7 +868,7 @@ void single_slit_circular_wave()            //  Una rendija de anchura con ondas
     sRangeY = 2;                //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -892,9 +892,9 @@ void double_slit_circular_wave()            //  Doble rendija con ondas circular
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -939,7 +939,7 @@ void double_slit_circular_wave()            //  Doble rendija con ondas circular
     sRangeY = 2;                //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -963,9 +963,9 @@ void cylinder_circular_wave()               //  Cilindro con onda circular
     
     vX = Vector<double>::Zero(m);
     vY = Vector<double>::Zero(n);
-    cI = cmc::zero<double>(n,m);
-    cId = cmc::zero<double>(n,m);
-    fixedPoints = cmc::zero<bool>(n,m);
+    cI = Matrix<double>::Zero(n,m);
+    cId = Matrix<double>::Zero(n,m);
+    fixedPoints = Matrix<bool>::Zero(n,m);
     
     for (int i=0; i<n; i++)
         vY[i] = i*dy;
@@ -1004,7 +1004,7 @@ void cylinder_circular_wave()               //  Cilindro con onda circular
     sRangeY = 2;                //  Número de puntos a arriba y abajo (2n + 1) puntos en Y sobre los que se aplica la fuerza
     sForce = 0.3;               //  Amplitud de la fuerza
     freqSignal = 100.0;         //  Frecuencia de oscilació de la fuerza
-    sinu = cmc::zero<double>(n, m);
+    sinu = Matrix<double>::Zero(n, m);
     
     //  PARA EL PLOT
     ColorMap::colormap = JET_FIXED;
@@ -1049,7 +1049,7 @@ void calcSol()                              //  Calcula los nuevos valores de la
 //  FUNCIÓN PULSO Y FUNCIÓN SINUSOIDAL
 Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)                              //  Función pulso
 {
-    Matrix<double> tmp = cmc::zero<double>(cI.Rows(), cI.Columns());
+    Matrix<double> tmp = Matrix<double>::Zero(cI.Rows(), cI.Columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
             if (i >= 0 && i < cI.Rows() && j >= 0 && j < cI.Columns())
@@ -1062,7 +1062,7 @@ Matrix<double> pick(int x, int y, int rangeX, int rangeY, double strenght)      
 
 Matrix<double> sinusoidalForce(int x, int y, int rangeX, int rangeY, double strenght, double freq)      //  Fuerza sinusoidal
 {
-    Matrix<double> tmp = cmc::zero<double>(cId.Rows(), cId.Columns());
+    Matrix<double> tmp = Matrix<double>::Zero(cId.Rows(), cId.Columns());
     for (int i=y-rangeY; i<=y+rangeY; i++) {
         for (int j=x-rangeX; j<=x+rangeX; j++) {
             if (i >= 0 && i < cId.Rows() && j >= 0 && j < cId.Columns()) {
