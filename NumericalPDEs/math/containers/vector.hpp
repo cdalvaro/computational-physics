@@ -33,15 +33,16 @@ namespace cda {
     namespace math {
         namespace containers {
     
-            template <class T>
+            template <typename T>
             class Vector {
             private:
                 size_t n;
-                T *v;
+                T *v, *it_end;
                 
                 void AllocateMemory(const size_t &size) {
                     if (void *mem = std::realloc(v, size * sizeof(T))) {
                         v = static_cast<T *>(mem);
+                        it_end = v + size;
                     } else {
                         throw std::bad_alloc();
                     }
@@ -55,7 +56,7 @@ namespace cda {
                  @param size The size of the vector
                  */
                 Vector(const size_t &size = 0) :
-                n(size), v(nullptr) {
+                n(size), v(nullptr), it_end(nullptr) {
                     AllocateMemory(n);
                 }
                 
@@ -65,9 +66,9 @@ namespace cda {
                  @param size The size of the vector
                  */
                 Vector(const size_t &size, const T &value) :
-                n(size), v(nullptr) {
+                n(size), v(nullptr), it_end(nullptr) {
                     AllocateMemory(n);
-                    std::fill(v, v + n, value);
+                    std::fill(this->Begin(), this->End(), value);
                 }
                 
                 /**
@@ -76,9 +77,9 @@ namespace cda {
                  @param vector The source vector
                  */
                 Vector(const Vector<T> &vector) :
-                n(vector.n), v(nullptr) {
+                n(vector.n), v(nullptr), it_end(nullptr) {
                     AllocateMemory(n);
-                    std::copy(vector.v, vector.v + n, v);
+                    std::copy(vector.Begin(), vector.End(), this->Begin());
                 }
                 
                 /**
@@ -87,9 +88,9 @@ namespace cda {
                  @param vector The source vector
                  */
                 Vector(Vector<T> &&vector) :
-                n(vector.n), v(vector.v) {
+                n(vector.n), v(vector.v), it_end(vector.it_end) {
                     vector.n = 0;
-                    vector.v = nullptr;
+                    vector.v = vector.it_end = nullptr;
                 }
                 
                 /**
@@ -98,7 +99,7 @@ namespace cda {
                 ~Vector() {
                     if (v) {
                         std::free(v);
-                        v = nullptr;
+                        v = it_end = nullptr;
                         n = 0;
                     }
                 }
@@ -108,7 +109,7 @@ namespace cda {
                 }
                 
                 T *End() const {
-                    return v + n;
+                    return it_end;
                 }
                 
                 /**
@@ -134,9 +135,8 @@ namespace cda {
                 Vector<T> &operator=(const Vector<T> &vector) {
                     if (this != &vector) {
                         Resize(vector.n, false);
-                        std::copy(vector.v, vector.v + n, v);
+                        std::copy(vector.Begin(), vector.End(), this->Begin());
                     }
-                    
                     return *this;
                 }
                 
@@ -144,12 +144,12 @@ namespace cda {
                     if (this != &vector) {
                         std::free(v);
                         v = vector.v;
+                        it_end = vector.it_end;
                         n = vector.n;
                         
-                        vector.v = nullptr;
+                        vector.v = vector.it_end = nullptr;
                         vector.n = 0;
                     }
-        
                     return *this;
                 }
                 
@@ -205,7 +205,6 @@ namespace cda {
                     if (first_element + elements > n || elements > vector.n) {
                         throw std::out_of_range("Out of bounds");
                     }
-                    
                     std::copy(vector.v, vector.v + elements, v + first_element);
                 }
                 
@@ -224,69 +223,54 @@ namespace cda {
                 }
                 
                 T MaximumElement() const {
-                    auto max = *v;
-                    const auto it_end = v + n;
-                    
-                    for (auto it = v + 1; it != it_end; ++it) {
+                    auto max = *Begin();
+                    for (auto it = Begin() + 1; it != End(); ++it) {
                         if (*it > max) {
                             max = *it;
                         }
                     }
-                    
                     return max;
                 }
                 
                 T AbsoluteMaximumElement() const {
-                    auto max = std::abs(*v);
-                    const auto it_end = v + n;
-                    
+                    auto max = std::abs(*Begin());
                     T abs_max;
-                    for (auto it = v + 1; it != it_end; ++it) {
+                    for (auto it = Begin() + 1; it != End(); ++it) {
                         abs_max = std::abs(*it);
                         if (abs_max > max) {
                             max = abs_max;
                         }
                     }
-                    
                     return max;
                 }
                 
                 T MinimumElement() const {
-                    auto min = *v;
-                    const auto it_end = v + n;
-                    
-                    for (auto it = v +1; it != it_end; ++it) {
+                    auto min = *Begin();
+                    for (auto it = Begin() +1 ; it != End(); ++it) {
                         if (*it < min) {
                             min = *it;
                         }
                     }
-                    
                     return min;
                 }
                 
                 T AbsoluteMinimumElement() const {
-                    auto min = std::abs(*v);
-                    const auto it_end = v + n;
-                    
+                    auto min = std::abs(*Begin());
                     T abs_min;
-                    for (auto it = v +1; it != it_end; ++it) {
+                    for (auto it = Begin() + 1; it != End(); ++it) {
                         abs_min = std::abs(*it);
                         if (abs_min < min) {
                             min = abs_min;
                         }
                     }
-                    
                     return min;
                 }
                 
                 T Sum() const {
-                    auto sum = *v;
-                    const auto it_end = v + n;
-                    
-                    for (auto it = v + 1; it != it_end; ++it) {
+                    auto sum = *Begin();
+                    for (auto it = Begin() + 1; it != End(); ++it) {
                         sum += *it;
                     }
-                    
                     return sum;
                 }
                 
@@ -331,22 +315,19 @@ namespace cda {
                 
                 void Sort() {
                     bool change;
-                    const auto it_end = v + n;
-                    
                     do {
                         change = false;
-                        for (auto it_prev = v, it = it_prev + 1; it != it_end; ++it_prev, ++it) {
+                        for (auto it_prev = Begin(), it = it_prev + 1; it != End(); ++it_prev, ++it) {
                             if (*it_prev > *it) {
                                 change = true;
                                 std::swap(*it, *it_prev);
                             }
                         }
                     } while (change);
-                    
                 }
                 
                 void Fill(const T &value) {
-                    std::fill(v, v + n, value);
+                    std::fill(Begin(), End(), value);
                 }
                 
                 static Vector<T> Zero(const size_t &size) {
@@ -372,29 +353,24 @@ namespace cda {
                 }
                 
                 void Random(const T &min = 0, const T &max = 1) {
-                    const auto it_end = v + n;
-                    for (auto it = v; it != it_end; ++it) {
+                    for (auto it = Begin(); it != End(); ++it) {
                         *it = static_cast<T>(drand48() * max + min);
                     }
                 }
                 
                 bool IsNull() const {
-                    const auto it_end = v + n;
-                    for (auto it = v; it != it_end; ++it) {
+                    for (auto it = Begin(); it != End(); ++it) {
                         if (*it != 0) {
                             return false;
                         }
                     }
-                    
                     return true;
                 }
                 
                 bool HasDuplicated(const T &precision) const {
-                    const auto it_end = v + n;
                     T distance;
-                    
-                    for (auto it1 = v; it1 != it_end; ++it1) {
-                        for (auto it2 = v; it2 != it_end; ++it2) {
+                    for (auto it1 = Begin(); it1 != End(); ++it1) {
+                        for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2) {
                                 distance = *it1 - *it2;
                                 if (std::sqrt(distance * distance) < precision) {
@@ -403,20 +379,17 @@ namespace cda {
                             }
                         }
                     }
-                    
                     return false;
                 }
                 
                 bool HasDuplicated() const {
-                    const auto it_end = v + n;
-                    for (auto it1 = v; it1 != it_end; ++it1) {
-                        for (auto it2 = v; it2 != it_end; ++it2) {
+                    for (auto it1 = Begin(); it1 != End(); ++it1) {
+                        for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2 && *it1 == *it2) {
                                 return true;
                             }
                         }
                     }
-                    
                     return false;
                 }
                 
@@ -433,12 +406,10 @@ namespace cda {
                     }
                     
                     Vector<T> new_vector(this->n);
-                    auto it_new = new_vector.v;
                     
-                    auto it_vector = vector.v;
-                    const auto it_end = this->v + this->n;
-                    
-                    for (auto it_this = this->v; it_this != it_end; ++it_this, ++it_vector, ++it_new) {
+                    auto it_new = new_vector.Begin();
+                    auto it_vector = vector.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector, ++it_new) {
                         *it_new = *it_this + *it_vector;
                     }
                     
@@ -450,10 +421,8 @@ namespace cda {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
                     
-                    auto it_vector = vector.v;
-                    const auto it_end = this->v + this->n;
-                    
-                    for (auto it_this = this->v; it_this != it_end; ++it_this, ++it_vector) {
+                    auto it_vector = vector.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector) {
                         *it_this += *it_vector;
                     }
                     
@@ -466,12 +435,10 @@ namespace cda {
                     }
                     
                     Vector<T> new_vector(this->n);
-                    auto it_new = new_vector.v;
                     
-                    auto it_vector = vector.v;
-                    const auto it_end = this->v + this->n;
-                    
-                    for (auto it_this = this->v; it_this != it_end; ++it_this, ++it_vector, ++it_new) {
+                    auto it_new = new_vector.Begin();
+                    auto it_vector = vector.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector, ++it_new) {
                         *it_new = *it_this - *it_vector;
                     }
                     
@@ -483,10 +450,8 @@ namespace cda {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
                     
-                    auto it_vector = vector.v;
-                    const auto it_end = this->v + this->n;
-                    
-                    for (auto it_this = this->v; it_this != it_end; ++it_this, ++it_vector) {
+                    auto it_vector = vector.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector) {
                         *it_this -= *it_vector;
                     }
                     
@@ -495,52 +460,27 @@ namespace cda {
                 
                 inline Vector<T> operator*(const T &value) const {
                     Vector<T> new_vector(this->n);
-                    const auto it_end = new_vector.v + new_vector.n;
+                    auto it_new = new_vector.Begin();
                     
-                    for (auto it_new = new_vector.v; it_new != it_end; ++it_new) {
-                        *it_new *= value;
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_new) {
+                        *it_new = *it_this * value;
                     }
                     
                     return new_vector;
                 }
                 
                 inline Vector<T> &operator*=(const T &value) {
-                    const auto it_end = this->v + this->n;
-                    for (auto it = this->v; it != it_end; ++it) {
+                    for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it *= value;
                     }
-                    
                     return *this;
-                }
-                
-                template<class Matrix>
-                inline Vector<T> operator*(const Matrix& matrix) const {
-                    const auto &rows = matrix.Rows();
-                    if (rows != this->n) {
-                        throw std::logic_error("This vector and this matrix are incompatible");
-                    }
-                    
-                    const auto &columns = matrix.Columns();
-                    Vector<T> new_vector(columns, 0);
-                    
-                    // TODO: Check this operation
-                    auto it_new = new_vector.v;
-                    for (size_t column = 0; column < columns; ++column, ++it_new) {
-                        auto it_this = this->v;
-                        for (size_t row = 0; row < rows; ++row, ++it_this) {
-                            *it_new += *it_this * matrix(row, column);
-                        }
-                    }
-                    
-                    return new_vector;
                 }
                 
                 inline Vector<T> operator/(const T &value) const {
                     Vector<T> new_vector(this->n);
-                    auto it_new = new_vector.v;
-                    const auto it_end = this->v + this->n;
+                    auto it_new = new_vector.Begin();
                     
-                    for (auto it = this->v; it != it_end; ++it, ++it_new) {
+                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
                         *it_new = *it / value;
                     }
                     
@@ -548,22 +488,19 @@ namespace cda {
                 }
                 
                 inline Vector<T> &operator/=(const T &value) {
-                    auto it_end = this->v + this->n;
-                    for (auto it = this->v; it != it_end; ++it) {
+                    for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it /= value;
                     }
-                    
                     return *this;
                 }
                 
                 template<typename Integer,
-                typename = std::enable_if<std::is_integral<Integer>::value>>
+                         typename = std::enable_if<std::is_integral<Integer>::value>>
                 inline Vector<T> operator%(const Integer &value) const {
                     Vector<Integer> new_vector(this->n);
-                    auto it_new = new_vector->v;
-                    const auto it_end = this->v + this->n;
+                    auto it_new = new_vector.Begin();
                     
-                    for (auto it = this->v; it != it_end; ++it, ++it_new) {
+                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
                         *it_new = static_cast<Integer>(*it) % value;
                     }
                     
@@ -571,22 +508,19 @@ namespace cda {
                 }
                 
                 template<typename Integer,
-                typename = std::enable_if<std::is_integral<Integer>::value>>
+                         typename = std::enable_if<std::is_integral<Integer>::value>>
                 inline Vector<T> &operator%=(const Integer& value) {
-                    const auto it_end = this->v + this->n;
-                    for (auto it = this->v; it != it_end; ++it) {
+                    for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it = static_cast<Integer>(*it) % value;
                     }
-                    
                     return *this;
                 }
                 
                 inline Vector<T> operator-() const {
                     Vector<T> new_vector(this->n);
-                    auto it_new = new_vector.v;
-                    const auto it_end = this->v + this->n;
+                    auto it_new = new_vector.Begin();
                     
-                    for (auto it = this->v; it != it_end; ++it, ++it_new) {
+                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
                         *it_new = -(*it);
                     }
                     
@@ -599,9 +533,9 @@ namespace cda {
                     }
                     
                     Vector<T> new_vector(this->n);
-                    new_vector.v[0] = this->v[1] * vector.v[2] - this->v[2] * vector.v[1];
-                    new_vector.v[1] = this->v[2] * vector.v[0] - this->v[0] * vector.v[2];
-                    new_vector.v[2] = this->v[0] * vector.v[1] - this->v[1] * vector.v[0];
+                    new_vector[0] = this->operator[](1) * vector[2] - this->operator[](2) * vector[1];
+                    new_vector[1] = this->operator[](2) * vector[0] - this->operator[](0) * vector[2];
+                    new_vector[2] = this->operator[](0) * vector[1] - this->operator[](1) * vector[0];
                     
                     return new_vector;
                 }
@@ -612,10 +546,9 @@ namespace cda {
                     }
                     
                     T value(0);
-                    auto it_vector = vector.v;
-                    const auto it_end = this->v + this->n;
+                    auto it_vector = vector.Begin();
                     
-                    for (auto it_this = this->v; it_this != it_end; ++it_this, ++it_vector) {
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector) {
                         value += *it_this * *it_vector;
                     }
                     
@@ -629,14 +562,13 @@ namespace cda {
 } /* namespace containers */
 
 //  --- MORE OPERATORS ---
-template <typename T>
-inline static cda::math::containers::Vector<T> operator*(const T &value, const cda::math::containers::Vector<T> &vector) {
-    cda::math::containers::Vector<T> new_vector(vector.v);
-    auto it_new = new_vector.v;
-    const auto it_end = vector.v + vector.n;
+template <typename T, typename T2>
+inline static cda::math::containers::Vector<T> operator*(const T2 &value, const cda::math::containers::Vector<T> &vector) {
+    cda::math::containers::Vector<T> new_vector(vector.Size());
+    auto it_new = new_vector.Begin();
     
-    for (auto it = vector.v; it != it_end; ++it, ++it_new) {
-        *it = *it * value;
+    for (auto it = vector.Begin(); it != vector.End(); ++it, ++it_new) {
+        *it_new = *it * static_cast<T>(value);
     }
     
     return new_vector;
