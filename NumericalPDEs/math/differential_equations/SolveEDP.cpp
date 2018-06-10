@@ -1195,8 +1195,8 @@ Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, i
         bcY |= BCT_f;
     }
     
-    mx.setRowV(0, eigenVAL_VEC(x, modeX, bcX, opt));
-    my.setColumnV(0, eigenVAL_VEC(y, modeY, bcY, opt));
+    mx.SetRow(0, eigenVAL_VEC(x, modeX, bcX, opt));
+    my.SetColumn(0, eigenVAL_VEC(y, modeY, bcY, opt));
     
     return my*mx;
 }

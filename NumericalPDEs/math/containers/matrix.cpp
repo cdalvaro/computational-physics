@@ -21,70 +21,6 @@ using namespace cda::math::containers;
             //  --- MATRIX CLASS ---
 
 //  Sets
-template<typename T> inline void
-Matrix<T>::setColumn(int _i, int _j, const Matrix<T>& Mc)
-{
-    if (n < _i+Mc.n || Mc.m > 1)
-        std::cout << RM << "setColumn(i, j, Mc)] - La columna que se está intentando sustituir es demasiado larga o no se está introduciendo una matriz columna.\n";
-    for (int i=_i; i<_i+Mc.n; i++) {
-        a[i*m + _j] = Mc.a[(i-_i)*Mc.m];
-    }
-}
-
-template<typename T> inline void
-Matrix<T>::setColumn(int _j, const Matrix<T>& Mc)
-{
-    this -> setColumn(0, _j, Mc);
-}
-
-template<typename T> inline void
-Matrix<T>::setColumnV(int _i, int _j, const Vector<T>& V)
-{
-    if (n < _i+V.Size())
-        std::cout << RM << "setColumnV(i, j, V)] - La columna que se está intentando sustituir es demasiado larga.\n";
-    for (int i=_i; i<_i+V.Size(); i++) {
-        a[i*m + _j] = V[i-_i];
-    }
-}
-
-template<typename T> inline void
-Matrix<T>::setColumnV(int _j, const Vector<T>& V)
-{
-    this -> setColumnV(0, _j, V);
-}
-
-template<typename T> inline void
-Matrix<T>::setRow(int _i, int _j, const Matrix<T>& Mr)
-{
-    if (m < _j+Mr.m || Mr.n > 1) {
-        std::cout << RM << "setRow(i, j, Mr)] - La fila que se está intentando sustituir es demasiado larga o no se está introduciendo una matriz fila.\n";
-    }
-    for (int j=_j; j<_j+Mr.m; j++) {
-        a[_i*m + j] = Mr.a[j-_j];
-    }
-}
-
-template<typename T> inline void
-Matrix<T>::setRow(int _i, const Matrix<T>& Mr)
-{
-    this -> setRow(_i, 0, Mr);
-}
-
-template<typename T> inline void
-Matrix<T>::setRowV(int _i, int _j, const Vector<T>& V)
-{
-    if (m < _j+V.Size())
-        std::cout << RM << "setRowV(i, j, V)] - La fila que se está intentando sustituir es demasiado larga.\n";
-    for (int j=_j; j<_j+V.Size(); j++) {
-        a[_i*m + j] = V[j-_j];
-    }
-}
-
-template<typename T> inline void
-Matrix<T>::setRowV(int _i, const Vector<T>& V)
-{
-    this -> setRowV(_i, 0, V);
-}
 
 template<typename T> inline void
 Matrix<T>::setMatrix(int _i, int _j, const Matrix<T>& M)
@@ -528,11 +464,7 @@ Matrix<T>::QR(unsigned char QorR)
         return Ones(n, n);
     }
     
-    Matrix<T> Q(n,n), R(n,n), I(n,n), H(n,n), A(n,n);
-    Q.Zero();
-    R.Zero();
-    H.Zero();
-    A.Zero();
+    Matrix<T> I(n,n);
     I.Identity();
     
     //  First column
@@ -546,24 +478,18 @@ Matrix<T>::QR(unsigned char QorR)
         v[std::distance(vt.Begin(), it)][0] = *it;
     }
     
-    H = I - (v*vt) * 2.0/(vt.SquaredNorm());
-    R = H * (* this);
-    
+    auto Q(I - (v*vt) * 2.0/(vt.SquaredNorm()));
+    auto R(Q * (* this));
     for (int i=1; i<n; i++) {
         R.a[i*m] = (T)0.0;
     }
-    Q = H;
     
     //  Other columns
     for (int i=1; i<n-1; i++) {
-        c.Resize(n-i);
-        vt.Resize(n-i);
-        A.Resize(n-i, n-i);
-        H.Resize(n-i, n-i);
+        Matrix<T> H(Q.Rows(), Q.Columns());
         v.Resize(n-i, 1);
         
-        A = R.GetMatrix(i, i);
-        c = A.GetColumnAsVector(0);
+        c = R.GetMatrix(i, i).GetColumnAsVector(0);
         
         if (c.IsNull()) {
             H.Identity();
@@ -576,7 +502,7 @@ Matrix<T>::QR(unsigned char QorR)
             }
             
             H = I.GetMatrix(i, i) - 2.0*(v*vt)/(vt.SquaredNorm());
-            A = I;
+            auto A(I);
             A.setMatrix(i, i, H);
             H = A;
         }
@@ -585,7 +511,7 @@ Matrix<T>::QR(unsigned char QorR)
         R = H*R;
         
         for (int j=0; j<i; j++) {
-            R.a[i*m + j] = (T)0.0;
+            R[i][j] = (T)0.0;
         }
     }
     
@@ -593,19 +519,16 @@ Matrix<T>::QR(unsigned char QorR)
     
     for (int i=1; i<n; i++) {
         for (int j=0; j<i; j++) {
-            R.a[i*m + j] = (T)0.0;
+            R[i][j] = (T)0.0;
         }
     }
     
-    if ((QorR& Qmatrix) != 0)
+    if (QorR & Qmatrix) {
         return Q;
-    else if ((QorR& Rmatrix) != 0)
+    } else if (QorR & Rmatrix) {
         return R;
-    else {
-        Matrix<T> QR(n,2*n);
-        QR.Zero();
-        QR = Q&&R;
-        return QR;
+    } else {
+        return Q && R;
     }
 }
 

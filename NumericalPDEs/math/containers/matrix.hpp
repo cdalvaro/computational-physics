@@ -188,7 +188,7 @@ namespace cda {
                 }
                 
                 Matrix<T> GetMatrix(const size_t &row, const size_t &column, const size_t &number_of_rows, const size_t &number_of_columns) const {
-                    if (row + number_of_rows >= n || column + number_of_columns >= m) {
+                    if (row + number_of_rows > n || column + number_of_columns > m) {
                         throw std::out_of_range("Index out of bounds");
                     }
                     
@@ -207,7 +207,7 @@ namespace cda {
                 }
                 
                 Vector<T> GetDiagonal() const {
-                    if (this->IsSquared()) {
+                    if (!this->IsSquared()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     
@@ -221,26 +221,26 @@ namespace cda {
                     return diagonal;
                 }
                 
-                Vector<T> GetRowAsVector(const size_t &row, size_t number_of_columns = 0) const {
-                    if (number_of_columns == 0) {
-                        number_of_columns = m;
+                Vector<T> GetRowAsVector(const size_t &row, const size_t &from_column = 0) const {
+                    if (from_column >= this->m) {
+                        throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    Vector<T> vector(number_of_columns);
-                    vector.Copy(number_of_columns, this->operator[](row));
+                    Vector<T> vector(this->m - from_column);
+                    vector.Copy(vector.Size(), this->operator[](row) + from_column);
                     
                     return vector;
                 }
                 
-                Vector<T> GetColumnAsVector(const size_t &column, size_t number_of_rows = 0) const {
-                    if (number_of_rows == 0) {
-                        number_of_rows = n;
+                Vector<T> GetColumnAsVector(const size_t &column, const size_t &from_row = 0) const {
+                    if (from_row >= this->n) {
+                        throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    Vector<T> vector(number_of_rows);
+                    Vector<T> vector(this->n - from_row);
                     
-                    auto it_this = Begin();
-                    for (auto it_vector = vector.Begin(); it_vector != End(); ++it_vector, it_this += m) {
+                    auto it_this = this->Begin() + this->m * from_row;
+                    for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector, it_this += m) {
                         *it_vector = *it_this;
                     }
                     
@@ -248,14 +248,70 @@ namespace cda {
                 }
                 
                 //  Sets
-                void setColumn(int _i, int _j, const Matrix<T>& Mc);                      //  Introduce una matriz columna en la columna j desde la fila i.
-                void setColumn(int _j, const Matrix<T>& Mc);                              //  Introduce una matriz columna en la columna j.
-                void setColumnV(int _i, int _j, const Vector<T>& V);                      //  Introduce un vector en la columna j desde la fila i.
-                void setColumnV(int _j, const Vector<T>& V);                              //  Introduce un vector en la columna j.
-                void setRow(int _i, int _j, const Matrix<T>& Mr);                         //  Introduce una matriz fila en la fila i desde la columna j.
-                void setRow(int _i, const Matrix<T>& Mr);                                 //  Introduce una matriz fila en la fila i.
-                void setRowV(int _i, int _j, const Vector<T>& V);                         //  Introduce un vector en la fila i desde la columna j.
-                void setRowV(int _i, const Vector<T>& V);                                 //  Introduce un vector en la fila i.
+                void SetColumn(const size_t &column, const Matrix<T> &matrix) {
+                    if (column >= this->m) {
+                        throw std::out_of_range("Index out of bounds.");
+                    }
+                    
+                    if (matrix.m > 1) {
+                        throw std::logic_error("Source matrix must have only one column");
+                    }
+                    
+                    if (matrix.n != this->n) {
+                        throw std::logic_error("Matrices must have the same number of rows");
+                    }
+                    
+                    auto it_this = this->Begin() + column;
+                    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix, it_this += m) {
+                        *it_this = *it_matrix;
+                    }
+                }
+                
+                void SetColumn(const size_t &column, const Vector<T> &vector) {
+                    if (column >= this->m) {
+                        throw std::out_of_range("Index out of bounds.");
+                    }
+                    
+                    if (vector.Size() != this->n) {
+                        throw std::logic_error("The vector and the column of the matrix must have the same number of elements");
+                    }
+                    
+                    auto it_this = this->Begin() + column;
+                    for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector, it_this += m) {
+                        *it_this = *it_vector;
+                    }
+                }
+                
+                void SetRow(const size_t &row, const Matrix<T> &matrix) {
+                    if (row >= this->n) {
+                        throw std::out_of_range("Index out of bounds.");
+                    }
+                    
+                    if (matrix.n > 1) {
+                        throw std::logic_error("Source matrix must have only one row");
+                    }
+                    
+                    if (matrix.m != this->m) {
+                        throw std::logic_error("Matrices must have the same number of columns");
+                    }
+                    
+                    auto it_this = this->Begin() + row * this->m;
+                    std::copy(matrix.Begin(), matrix.End(), it_this);
+                }
+                
+                void SetRow(const size_t &row, const Vector<T> &vector) {
+                    if (row >= this->n) {
+                        throw std::out_of_range("Index out of bounds.");
+                    }
+                    
+                    if (vector.Size() != this->m) {
+                        throw std::logic_error("The vector and the row of the matrix must have the same number of elements");
+                    }
+                    
+                    auto it_this = this->Begin() + row * this->m;
+                    std::copy(vector.Begin(), vector.End(), it_this);
+                }
+                
                 void setMatrix(int _i, int _j, const Matrix<T>& M);                       //  Introduce una matriz en la posición (i,j).
                 
                 
@@ -352,7 +408,9 @@ namespace cda {
                     }
                     
                     Zero();
-                    for (auto it = Begin(); it != End(); it += m + 1) {
+                    auto it_end = End() + m;
+                    const size_t step = m + 1;
+                    for (auto it = Begin(); it != it_end; it += step) {
                         *it = 1;
                     }
                 }
