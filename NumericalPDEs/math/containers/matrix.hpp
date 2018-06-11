@@ -73,6 +73,16 @@ namespace cda {
                     std::copy(values, values + size, this->Begin());
                 }
                 
+                template <size_t rows, size_t columns>
+                Matrix(const T (&values)[rows][columns]):
+                n(rows), m(columns), size(rows * columns),
+                a(nullptr), it_end(nullptr) {
+                    AllocateMemory(size);
+                    for (size_t row = 0; row < rows; ++row) {
+                        std::copy(values[row], values[row] + columns, this->operator[](row));
+                    }
+                }
+                
                 ~Matrix() {
                     if (a) {
                         std::free(a);
@@ -332,7 +342,7 @@ namespace cda {
                     const auto number_of_columns = std::min(this->m - column, matrix.Columns());
                     
                     auto it_matrix = matrix.Begin();
-                    const auto it_this_end = this->operator[](row) + number_of_rows;
+                    const auto it_this_end = this->operator[](row) + number_of_rows * this->m;
                     for (auto it_this = this->operator[](row); it_this != it_this_end; it_this += this->m, it_matrix += matrix.Columns()) {
                         std::copy_n(it_matrix, number_of_columns, it_this + column);
                     }
@@ -409,7 +419,18 @@ namespace cda {
                 //  Returns a Matrix / a vector
                 Matrix<T> sumRows();                                                      //  Suma todos los elementos de las filas y las devuelve en una matriz columna.
                 Matrix<T> sumColumns();                                                   //  Suma todos los elementos de las columnas y las devuelve en una matriz fila.
-                Matrix<T> transpose();                                                    //  Transpone la matriz.
+                
+                Matrix<T> Transpose() const {
+                    Matrix<T> new_matrix(this->m, this->n);
+                    
+                    for (size_t row = 0; row < this->n; ++row) {
+                        for (size_t column = 0; column < this->m; ++column) {
+                            new_matrix[column][row] = this->operator[](row)[column];
+                        }
+                    }
+                    
+                    return new_matrix;
+                }
                 
                 Vector<T> sumRowsV();                                                     //  Suma todos los elementos de las filas y las devuelve en un vector.
                 Vector<T> sumColumnsV();                                                  //  Suma todos los elementos de las columnas y las devuelve en un vector.
@@ -463,10 +484,10 @@ namespace cda {
                 
                 
                 //  --- MÉTODO LU ---
-                Matrix<T> LU();                                                           //  Descompone una matriz en dos por el método LU.
+                Matrix<T> LU() const;                                                           //  Descompone una matriz en dos por el método LU.
                 Matrix<T> U();                                                            //  Devuelve la matriz U del método LU.
                 Matrix<T> L();                                                            //  Devuelve la matriz L del método LU.
-                Vector<T> solveLU(const Vector<T>& B);                                      //  Resuelve un sistema de ecuaciones por el método LU.
+                Vector<T> solveLU(const Vector<T>& B) const;                                      //  Resuelve un sistema de ecuaciones por el método LU.
                 Vector<T> solveLU3d(const Vector<T>& B);                                    //  Resuelve un sistema de ecuaciones tridiagonal por el método LU.
                 Vector<T> solveGS3d(const Vector<T>& B, T err);                             //  Resuelve un sistema de ecuaciones tridiagonal por el método Gauss-Seidel.
                 
@@ -557,7 +578,7 @@ namespace cda {
                 }
                 
                 template<typename T2>
-                Matrix<T> operator*(const Matrix<T2> &matrix) {
+                Matrix<T> operator*(const Matrix<T2> &matrix) const {
                     if (this->n != matrix.m || this->m != matrix.n) {
                         throw std::logic_error("Matrices dimensions are not compatible.");
                     }
@@ -617,9 +638,51 @@ namespace cda {
                     return *this;
                 }
                 
-                Matrix<T> operator-();                                                    //  Cambia el signo de todos los elementos de la matriz.
-                Matrix<T>& operator*=(const Matrix<T>& M);                                  //  Producto de una matriz por otra sobre sí misma.
-                Matrix<T> operator^(const int exp);                                       //  Eleva a una potencia la matriz ó calcula su inversa.
+                Matrix<T> operator-() const {
+                    Matrix<T> new_matrix(this->n, this->m);
+                    std::transform(this->Begin(), this->End(), new_matrix.Begin(),
+                                   [](const T &value) {
+                                       return -value;
+                                   });
+                    
+                    return new_matrix;
+                }
+                
+                Matrix<T> Pow(const ssize_t &power) const {
+                    if (!this->IsSquared()) {
+                        throw std::logic_error("Matrix must be an square matrix");
+                    }
+                    
+                    Matrix<T> new_matrix;
+                    
+                    switch (power) {
+                        case -1:
+                            {
+                                new_matrix.Resize(this->n, this->m);
+                                Vector<T> I(n);
+                                for (size_t i = 0; i<m; i++) {
+                                    I[i] = static_cast<T>(1);
+                                    new_matrix.SetColumn(i, this->solveLU(I));
+                                    I[i] = static_cast<T>(0);
+                                }
+                            }
+                            break;
+                            
+                        case 0:
+                            new_matrix.Resize(this->n, this->m);
+                            new_matrix.Identity();
+                            break;
+                            
+                        default:
+                            new_matrix = *this;
+                            for (size_t i = 2; i <= power; ++i) {
+                                new_matrix = new_matrix * *this;
+                            }
+                            break;
+                    }
+                    
+                    return new_matrix;
+                }
                 
                 //  --- STATIC METHODS ---
                 static Matrix<T> Zero(const size_t &rows, const size_t &columns) {
@@ -641,11 +704,6 @@ namespace cda {
                 }
                 
             };
-            
-            template <typename T>
-            Matrix<T> setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps);                     //  Devuelve los valores de A que no se encuentran en B.
-            template <typename T>
-            Matrix<T> setdiff(Matrix<T>& A, const Matrix<T>& B);                                      //  Devuelve los valores de A que no se encuentran en B.
         
         } /* namespace math */
     } /* namespace containers */
@@ -653,7 +711,9 @@ namespace cda {
 
 //  --- MORE OPERATORS ---
 template <typename T>
-inline cda::math::containers::Matrix<T> operator*(const T &value, const cda::math::containers::Matrix<T> &matrix) {
+inline cda::math::containers::Matrix<T> operator*(const T &value,
+                                                  const cda::math::containers::Matrix<T> &matrix) {
+    
     cda::math::containers::Matrix<T> tmp(matrix.Rows(), matrix.Columns());
     auto it_tmp = tmp.Begin();
     
@@ -664,9 +724,10 @@ inline cda::math::containers::Matrix<T> operator*(const T &value, const cda::mat
     return tmp;
 }
 
-template<typename T>
+template <typename T>
 inline cda::math::containers::Vector<T> operator*(const cda::math::containers::Vector<T> &vector,
                                                   const cda::math::containers::Matrix<T> &matrix) {
+    
     const auto &rows = matrix.Rows();
     if (rows != vector.Size()) {
         throw std::logic_error("The vector and the matrix are incompatible");
@@ -687,10 +748,28 @@ inline cda::math::containers::Vector<T> operator*(const cda::math::containers::V
     return new_vector;
 }
 
-template <typename T> inline cda::math::containers::Matrix<T>
-operator&&(const cda::math::containers::Matrix<T>& Mi, const cda::math::containers::Matrix<T>& Md);                           //  Devuelve una matriz que tendrá unidas dos matrices.
-template <typename T> inline void
-operator||(cda::math::containers::Matrix<T>& Mi, cda::math::containers::Matrix<T>& Md);                                       //  Separa una matriz en dos.
+template <typename T>
+inline cda::math::containers::Matrix<T> operator&&(const cda::math::containers::Matrix<T> &left_matrix,
+                                                   const cda::math::containers::Matrix<T> &right_matrix) {
+    
+    if (left_matrix.Rows() != right_matrix.Rows()) {
+        throw std::logic_error("Both matrices must have the same number of rows");
+    }
+    
+    cda::math::containers::Matrix<T> new_matrix(left_matrix.Rows(), left_matrix.Columns() + right_matrix.Columns());
+    new_matrix.SetMatrix(0, 0, left_matrix);
+    new_matrix.SetMatrix(0, left_matrix.Columns(), right_matrix);
+    
+    return new_matrix;
+}
+
+template <typename T> inline
+void operator||(cda::math::containers::Matrix<T> &left_matrix, cda::math::containers::Matrix<T> &right_matrix) {
+    const size_t left_matrix_columns = left_matrix.Columns() / 2;
+    right_matrix = left_matrix.GetMatrix(0, left_matrix_columns, left_matrix.Rows(), left_matrix.Columns() - left_matrix_columns);
+    left_matrix.Resize(left_matrix.Rows(), left_matrix_columns);
+}
+
 template <typename T> inline void
 operator>>(std::istream& in, cda::math::containers::Matrix<T>& M);                                        //  Importa una matriz desde un fichero.
 template <typename T> inline std::ostream&

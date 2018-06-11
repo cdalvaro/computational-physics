@@ -121,21 +121,6 @@ Matrix<T>::sumColumns()
     return tmp;
 }
 
-template<typename T> inline Matrix<T>
-Matrix<T>::transpose()
-{
-    Matrix<T> tmp(m,n);
-    tmp.Zero();
-    for (int i=0; i<m; i++) {
-        for (int j=0; j<n; j++) {
-            tmp.a[i*n + j] = a[j*m + i];
-        }
-    }
-    return tmp;
-}
-
-
-
 template<typename T> inline Vector<T>
 Matrix<T>::sumRowsV()
 {
@@ -213,7 +198,7 @@ Matrix<T>::write(const std::string& filename)
 
 //  --- MÉTODO LU ---
 template<typename T> inline Matrix<T>
-Matrix<T>::LU()
+Matrix<T>::LU() const
 {
     if (n != m) {
         std::cout << RM << "LU()] - No se puede calcular la diagonal inferior porque no es una matriz cuadrada.\n";
@@ -302,7 +287,7 @@ Matrix<T>::L()
 }
 
 template<typename T> inline Vector<T>
-Matrix<T>::solveLU(const Vector<T>& B)
+Matrix<T>::solveLU(const Vector<T>& B) const
 {
     Vector<T> tmp(n, 0);
     if (n != m || n != B.Size()) {
@@ -457,7 +442,7 @@ Matrix<T>::QR(unsigned char QorR)
         }
     }
     
-    Q = Q.transpose();
+    Q = Q.Transpose();
     
     for (int i=1; i<n; i++) {
         for (int j=0; j<i; j++) {
@@ -469,9 +454,9 @@ Matrix<T>::QR(unsigned char QorR)
         return Q;
     } else if (QorR & Rmatrix) {
         return R;
-    } else {
-        return Q && R;
     }
+    
+    return Q && R;
 }
 
 template<typename T> inline Matrix<T>
@@ -564,7 +549,7 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
     eVa = eigenValue+1.0;
     k=1;
     Ainv = (* this) - eigenValue*(1.0+fact)*Identity(n,n);
-    Ainv = Ainv^(-1);
+    Ainv = Ainv.Pow(-1);
     
     while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < maxIte) {
         eVe = Ainv * eVe;
@@ -579,7 +564,7 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
             eVa = eigenValue+1.0;
             k=1;
             Ainv = (* this) - eigenValue*(1.0+fact)*Identity(n,n);
-            Ainv = Ainv^(-1);
+            Ainv = Ainv.Pow(-1);
             
             while (1/eVa != eigenValue && k < maxIte) {
                 eVe = Ainv * eVe;
@@ -666,110 +651,8 @@ Matrix<T>::eigenValues()
 
 
 //  --- OPERATORS ---
-template<typename T> inline Matrix<T>
-Matrix<T>::operator-()
-{
-    Matrix<T> tmp(n,m);
-    tmp.Zero();
-    for (int k=0; k<size; k++) {
-        tmp.a[k] = -a[k];
-    }
-    return tmp;
-}
-
-template<typename T> inline Matrix<T>&
-Matrix<T>::operator*=(const Matrix<T>& M)
-{
-    if (n != m || M.n != M.m || n != M.n) {
-        std::cout << RM << "operator*=M] - No se puede multiplicar sobre sí misma porque no es una matriz cuadrada.\n";
-        return (* this);
-    }
-    T prod;
-    Matrix<T> tmp(n,M.m);
-    tmp.Zero();
-    for (int i=0; i<n; i++) {
-        for (int j=0; j<M.m; j++) {
-            prod = (T)0.0;
-            for (int k=0; k<M.m; k++) {
-                prod += a[i*m + k] * M.a[k*M.m + j];
-            }
-            tmp.a[i*M.m + j] = prod;
-        }
-    }
-    *this = tmp;
-    return (* this);
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::operator^(const int exp)
-{
-    Matrix<T> tmp(n,m);
-    tmp.Zero();
-    if (n != m) {
-        std::cout << RM << "operator^exp] - No se puede elevar la matriz a " << exp << " porque no es cuadrada.\n";
-        tmp.Ones();
-        return tmp;
-    }
-    
-    if (exp == -1) {
-        Vector<T> I(n);
-        for (int i=0; i<m; i++) {
-            I.Zero();
-            I[i] = (T)1.0;
-            auto sol(this->solveLU(I));
-            for (int k=0; k<m; k++) {
-                tmp.a[k*m + i] = sol[k];
-            }
-        }
-    }
-    
-    if (exp > 0) {
-        tmp = *this;
-        for (int i=2; i<=exp; i++) {
-            tmp *= (* this);
-        }
-    }
-    
-    return tmp;
-}
 
 //  --- MORE OPERATORS ---
-
-template<typename T> inline Matrix<T>
-operator&&(const Matrix<T>& Mi, const Matrix<T>& Md)
-{
-    if (Mi.Rows() != Md.Rows())
-        std::cout << RM << "operator&&(Mi, Md)] - Estas matrices no tienen la misma altura.\n";
-    int n,m;
-    n = std::max(Mi.Rows(), Md.Rows());
-    m = Mi.Columns() + Md.Columns();
-    Matrix<T> tmp(n,m);
-    tmp.Zero();
-    
-    for (int i=0; i<Mi.Rows(); i++) {
-        for (int j=0; j<Mi.Columns(); j++) {
-            tmp[i][j] = Mi[i][j];
-        }
-    }
-    
-    for (int i=0; i<Md.Rows(); i++) {
-        for (int j=Mi.Columns(); j<m; j++) {
-            tmp[i][j] = Md[i][j-Mi.Columns()];
-        }
-    }
-    
-    return tmp;
-}
-
-template<typename T> inline void
-operator||(Matrix<T>& Mi, Matrix<T>& Md)
-{
-    if (Mi.Rows() != Md.Rows())
-        std::cout << RM << "operator||(Mi, Md)] - Las matrices no tienen la misma altura.\n";
-    
-    Md = Mi.GetMatrix(0, (Mi.Columns() - Md.Columns()), Md.Rows(), Md.Columns());
-    Mi = Mi.GetMatrix(0, 0, Mi.Rows(), (Mi.Columns() - Md.Columns()));
-}
 
 template<typename T> inline void
 operator>>(std::istream& in, Matrix<T>& M)
@@ -864,61 +747,4 @@ operator<<(std::ostream& out, const Matrix<T>& M)
 //        }
 //    }
     return out;
-}
-
-
-
-//  --- OTHER FUNCTIONS ---
-
-
-template<typename T> inline Matrix<T>
-cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B, const int& reps)
-{
-    Matrix<T> tmp(A.Rows(), A.Columns());
-    int dim = 0, coincidence = 0;
-    
-    for (int i=0; i<A.Rows(); i++) {
-        
-        bool equal = false;
-        for (int j=0; j<B.Rows(); j++) {
-            
-            int count=0;
-            for (int k=0; k<A.Columns(); k++) {
-                if (A(i,k) == B(j,k))
-                    count++;
-            }
-            
-            if (count == A.Columns()) {
-                equal = true;
-                coincidence++;
-                break;
-            }
-        }
-        
-        if (equal != true) {
-            tmp.setRowV(dim,A.GetRowAsVector(i));
-            dim++;
-        }
-        
-        if (coincidence == reps) {
-            tmp.setMatrix(dim,0,A.getMatrix(i+1,0));
-            dim = A.Rows() - reps;
-            break;
-        }
-    }
-    
-    if (dim == 0) {
-        Matrix<T> fail(1,1);
-        fail(0,0) = 0.0;
-        return fail;
-    } else {
-        tmp.Resize(dim, A.Columns());
-        return tmp;
-    }
-}
-
-template<typename T> inline Matrix<T>
-cda::math::containers::setdiff(Matrix<T>& A, const Matrix<T>& B)
-{
-    return setdiff(A, B, A.Rows());
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */; };
 		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
 		07A351C520C5D5C800DC2DC2 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C220C5D5C800DC2DC2 /* matrix.cpp */; };
 		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
+		07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixTests.mm; sourceTree = "<group>"; };
 		07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
 		07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
 		07A351C020C5D5C800DC2DC2 /* SolveEDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolveEDP.h; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				07D8C2FB20CED49A00F194F3 /* VectorTests.mm */,
+				07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */,
 			);
 			path = containers;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */,
 				07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
