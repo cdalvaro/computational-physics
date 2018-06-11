@@ -22,54 +22,8 @@ using namespace cda::math::containers;
 
 //  Sets
 
-template<typename T> inline void
-Matrix<T>::setMatrix(int _i, int _j, const Matrix<T>& M)
-{
-    if (n < M.n+_i && m < M.m+_j)
-        for (int i=_i; i<n; i++) {
-            for (int j=_j; j<m; j++) {
-                a[i*m + j] = M.a[(i-_i)*M.m + (j-_j)];
-            }
-        }
-    
-    else if (n < M.n)
-        for (int i=_i; i<n; i++) {
-            for (int j=_j; j<M.m+_j; j++) {
-                a[i*m + j] = M.a[(i-_i)*M.m + (j-_j)];
-            }
-        }
-    
-    else if (m < M.m+_j)
-        for (int i=_i; i<M.n+_i; i++) {
-            for (int j=_j; j<m; j++) {
-                a[i*m + j] = M.a[(i-_i)*M.m + (j-_j)];
-            }
-        }
-    
-    else
-        for (int i=_i; i<M.n+_i; i++) {
-            for (int j=_j; j<M.m+_j; j++) {
-                a[i*m + j] = M.a[(i-_i)*M.m + (j-_j)];
-            }
-        }
-}
-
-
-
 //  --- FUNCTIONS ---
 //  Returns an integer / a double / a float
-
-template<typename T> inline T
-Matrix<T>::sumRow(int _i) const
-{
-    if (n >= _i)
-        std::cout << RM << "sumRow(i)] - Esta fila no existe.\n";
-    T sum = (T)0.0;
-    for (int j=0; j<m; j++) {
-        sum += a[_i*m + j];
-    }
-    return sum;
-}
 
 template<typename T> inline T
 Matrix<T>::sumColumn(int _j) const
@@ -503,7 +457,7 @@ Matrix<T>::QR(unsigned char QorR)
             
             H = I.GetMatrix(i, i) - 2.0*(v*vt)/(vt.SquaredNorm());
             auto A(I);
-            A.setMatrix(i, i, H);
+            A.SetMatrix(i, i, H);
             H = A;
         }
         
@@ -674,29 +628,31 @@ Matrix<T>::eigenValues(int maxIte, T factor, unsigned char opt)
     if (n != m)
         std::cout << RM << "eigenValues(maxIte)] -> ";
     
-    int k=1;
     T cota = 1.0;
     T err = 0.1;
-    Matrix<T> A(n,n), Q(n,2*n), R(n,n);
-    Vector<T> diagOld(n, 0);
     
-    A.Zero();
-    Q.Zero();
-    R.Zero();
-    A = (* this);
+    Matrix<T> R(n,n);
+    auto A(*this);
     
-    while (cota > err && k<maxIte) {
-        Q = A.QR(QRmatrix);
+    size_t k;
+    for (k = 1; k <= maxIte; ++k) {
+        auto Q(A.QR(QRmatrix));
         Q||R;
-        diagOld = A.GetDiagonal();
+        
+        auto diagOld(A.GetDiagonal());
         A = R*Q;
+        
         cota = (diagOld - A.GetDiagonal()).AbsoluteMaximumElement();
         err = (A.GetDiagonal()).AbsoluteMaximumElement()*factor;
-        k++;
+        
+        if (cota <= err) {
+            break;
+        }
     }
     
-    if ((opt& EVa_Ite) != 0)
+    if (opt & EVa_Ite) {
         std::cout << RM << "eigenValues()] - Iteraciones para calcular los autovalores: " << k << std::endl;
+    }
     
     return A.GetDiagonal();
 }

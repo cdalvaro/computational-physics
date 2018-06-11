@@ -62,6 +62,30 @@ namespace cda {
                     matrix.a = matrix.it_end = nullptr;
                 }
                 
+                template <size_t size>
+                Matrix(const size_t &rows, const size_t &columns, const T (&values)[size]):
+                n(rows), m(columns), size(rows * columns), a(nullptr) {
+                    if (this->size != size) {
+                        throw std::logic_error("Sizes do not match");
+                    }
+                    
+                    AllocateMemory(size);
+                    std::copy(values, values + size, this->Begin());
+                }
+                
+                template <size_t size>
+                Matrix(const size_t &rows, const size_t &columns, T (&&values)[size]) :
+                n(rows), m(columns), size(rows * columns), a(nullptr), it_end(nullptr) {
+                    if (this->size != size) {
+                        throw std::logic_error("Sizes do not match");
+                    }
+                    
+                    this->a = values;
+                    this->it_end = this->a + this->size;
+                    
+                    values = nullptr;
+                }
+                
                 ~Matrix() {
                     if (a) {
                         std::free(a);
@@ -312,9 +336,20 @@ namespace cda {
                     std::copy(vector.Begin(), vector.End(), it_this);
                 }
                 
-                void setMatrix(int _i, int _j, const Matrix<T>& M);                       //  Introduce una matriz en la posición (i,j).
-                
-                
+                void SetMatrix(const size_t &row, const size_t &column, const Matrix<T> &matrix) {
+                    if (row >= this->n || column >= this->m) {
+                        throw std::out_of_range("Index out of bounds.");
+                    }
+                    
+                    const auto number_of_rows = std::min(this->n - row, matrix.Rows());
+                    const auto number_of_columns = std::min(this->m - column, matrix.Columns());
+                    
+                    auto it_matrix = matrix.Begin();
+                    const auto it_this_end = this->operator[](row) + number_of_rows;
+                    for (auto it_this = this->operator[](row); it_this != it_this_end; it_this += this->m, it_matrix += matrix.Columns()) {
+                        std::copy_n(it_matrix, number_of_columns, it_this + column);
+                    }
+                }
                 
                 //  --- FUNCTIONS ---
                 //  Returns an integer / a double / a float
@@ -334,7 +369,17 @@ namespace cda {
                     return size;
                 }
                 
-                T sumRow(int _i) const;                                                 //  Suma todos los elementos de la fila i.
+                T SumRow(const size_t &row) const {
+                    T sum = 0;
+                    
+                    const auto &it_end = this->operator[](row) + this->m;
+                    for (auto it_row = this->operator[](row); it_row != it_end; ++it_row) {
+                        sum += *it_row;
+                    }
+                    
+                    return sum;
+                }
+                
                 T sumColumn(int _j) const;                                              //  Suma todos los elementos de la columna j.
                 T max() const;                                                          //  Devuelve el máximo de la matriz.
                 T maxAbs() const;                                                       //  Devuelve el máximo absoluto de la matriz.

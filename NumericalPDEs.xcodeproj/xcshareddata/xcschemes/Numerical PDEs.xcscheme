@@ -36,7 +36,7 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "07AE5CB020CC194500FFC7E1"
+               BlueprintIdentifier = "07B57FC520CED3D0001DDC78"
                BuildableName = "Tests.xctest"
                BlueprintName = "Tests"
                ReferencedContainer = "container:NumericalPDEs.xcodeproj">

@@ -91,11 +91,11 @@ int main(int argc, const char * argv[])
     //  1. normalModes
     //  2. chladni
     //  3. diffraction
-    model = diffraction;
+    model = normalModes;
     
     //  ELIGE UN EJEMPLO
     //  1. normalModes: 1 - 5
-    example = 3;
+    example = 1;
     
     
     switch (model) {
