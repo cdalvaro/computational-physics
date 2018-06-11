@@ -64,26 +64,13 @@ namespace cda {
                 
                 template <size_t size>
                 Matrix(const size_t &rows, const size_t &columns, const T (&values)[size]):
-                n(rows), m(columns), size(rows * columns), a(nullptr) {
+                n(rows), m(columns), size(rows * columns),
+                a(nullptr), it_end(nullptr) {
                     if (this->size != size) {
                         throw std::logic_error("Sizes do not match");
                     }
-                    
                     AllocateMemory(size);
                     std::copy(values, values + size, this->Begin());
-                }
-                
-                template <size_t size>
-                Matrix(const size_t &rows, const size_t &columns, T (&&values)[size]) :
-                n(rows), m(columns), size(rows * columns), a(nullptr), it_end(nullptr) {
-                    if (this->size != size) {
-                        throw std::logic_error("Sizes do not match");
-                    }
-                    
-                    this->a = values;
-                    this->it_end = this->a + this->size;
-                    
-                    values = nullptr;
                 }
                 
                 ~Matrix() {
@@ -380,7 +367,17 @@ namespace cda {
                     return sum;
                 }
                 
-                T sumColumn(int _j) const;                                              //  Suma todos los elementos de la columna j.
+                T SumColumn(const size_t &column) const {
+                    T sum = 0;
+                    
+                    const auto &it_column_end = this->End() + column;
+                    for (auto it_column = this->Begin() + column; it_column != it_column_end; it_column += this->m) {
+                        sum += *it_column;
+                    }
+                    
+                    return sum;
+                }
+                
                 T max() const;                                                          //  Devuelve el máximo de la matriz.
                 T maxAbs() const;                                                       //  Devuelve el máximo absoluto de la matriz.
                 T maxAbs_sig() const;                                                   //  Devuelve el máximo absoluto de la matriz, pero con su signo.

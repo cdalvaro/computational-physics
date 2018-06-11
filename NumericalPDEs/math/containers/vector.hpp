@@ -93,6 +93,13 @@ namespace cda {
                     vector.v = vector.it_end = nullptr;
                 }
                 
+                template <size_t size>
+                Vector(const T (& values)[size]) :
+                n(size), v(nullptr), it_end(nullptr) {
+                    AllocateMemory(size);
+                    std::copy(values, values + size, this->Begin());
+                }
+                
                 /**
                  Class destructor
                  */

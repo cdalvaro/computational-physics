@@ -26,18 +26,6 @@ using namespace cda::math::containers;
 //  Returns an integer / a double / a float
 
 template<typename T> inline T
-Matrix<T>::sumColumn(int _j) const
-{
-    if (m >= _j)
-        std::cout << RM << "sumColumn(j)] - Esta columna no existe.\n";
-    T sum = (T)0.0;
-    for (int i=0; i<n; i++) {
-        sum += a[i*m + _j];
-    }
-    return sum;
-}
-
-template<typename T> inline T
 Matrix<T>::max() const
 {
     T max = a[0];
