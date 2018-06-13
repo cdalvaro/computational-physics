@@ -138,4 +138,46 @@ using namespace cda::math::containers;
     XCTAssert(result == expected2, "SetMatrix with lengths OK");
 }
 
+- (void)testMarrixLUMethods {
+    Matrix<double> matrix_test({
+        {3,  2,  1,  2},
+        {7,  6,  5,  1},
+        {12, 10,  9,  8},
+        {15, 14, 13, 12}
+    });
+    
+    const auto accuracy = 1E-13;
+    
+    // Matrix U
+    Matrix<double> expected_u({
+        {3.0,     2.0,     1.0,       2.0},
+        {0.0, 4.0/3.0, 8.0/3.0, -11.0/3.0},
+        {0.0,     0.0,     1.0,  11.0/2.0},
+        {0.0,     0.0,     0.0,      13.0}
+    });
+    
+    auto result_u = matrix_test.U();
+    
+    for (auto it_result = result_u.Begin(), it_expected = expected_u.Begin();
+         it_result != result_u.End(); ++it_result, ++it_expected) {
+        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Element of matrix U is equal");
+    }
+    
+    // Matrix L
+    Matrix<double> expected_l({
+        {    1.0,     0.0, 0.0, 0.0},
+        {7.0/3.0,     1.0, 0.0, 0.0},
+        {    4.0, 3.0/2.0, 1.0, 0.0},
+        {    5.0,     3.0, 0.0, 1.0}
+    });
+    
+    auto result_l = matrix_test.L();
+    
+    for (auto it_result = result_l.Begin(), it_expected = expected_l.Begin();
+         it_result != result_l.End(); ++it_result, ++it_expected) {
+        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Element of matrix L is equal");
+    }
+    
+}
+
 @end

@@ -435,8 +435,8 @@ void OpenGL::display3D()
 
 void OpenGL::drawSolution3D()
 {
-    OpenGL_Plot._vMax = OpenGL_Plot._mZ.max();
-    OpenGL_Plot._vMin = OpenGL_Plot._mZ.min();
+    OpenGL_Plot._vMax = OpenGL_Plot._mZ.MaximumElement();
+    OpenGL_Plot._vMin = OpenGL_Plot._mZ.MinimumElement();
     
     float adjX, adjY, adjZ;
     adjX = -OpenGL_Plot._cX;
@@ -529,10 +529,10 @@ void OpenGL::timerFunction3D(int value)
 
 void OpenGL::plotAxes3D()
 {
-    const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement(), tmpZmax = OpenGL_Plot._mZ.max();
+    const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement(), tmpZmax = OpenGL_Plot._mZ.MaximumElement();
     const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax, tmpLimZmax = OpenGL_Plot._limZmax;
     
-    const float tmpXmin = OpenGL_Plot._vX.MinimumElement(), tmpYmin = OpenGL_Plot._vY.MinimumElement(), tmpZmin = OpenGL_Plot._mZ.min();
+    const float tmpXmin = OpenGL_Plot._vX.MinimumElement(), tmpYmin = OpenGL_Plot._vY.MinimumElement(), tmpZmin = OpenGL_Plot._mZ.MinimumElement();
     const float tmpLimXmin = OpenGL_Plot._limXmin, tmpLimYmin = OpenGL_Plot._limYmin, tmpLimZmin = OpenGL_Plot._limZmin;
     
     OpenGL_Plot._limXmax = std::max(tmpXmax, tmpLimXmax);
@@ -561,22 +561,19 @@ void OpenGL::plotAxes3D()
     glEnd();
 }
 
-void OpenGL::center3D()
-{
-    if (OpenGL_Plot._vX.MaximumElement() >= -OpenGL_Plot._vX.MinimumElement())
-        OpenGL_Plot._cX = (OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
-    else
-        OpenGL_Plot._cX = -(OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
+void OpenGL::center3D() {
     
-    if (OpenGL_Plot._vY.MaximumElement() >= -OpenGL_Plot._vY.MinimumElement())
-        OpenGL_Plot._cY = (OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
-    else
-        OpenGL_Plot._cY = -(OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
+    auto max_vX = OpenGL_Plot._vX.MaximumElement();
+    auto min_vX = OpenGL_Plot._vX.MinimumElement();
+    OpenGL_Plot._cX = (max_vX >= -min_vX ? 0.5 : -0.5) * (max_vX - min_vX);
     
-    if (OpenGL_Plot._mZ.max() >= -OpenGL_Plot._mZ.min())
-        OpenGL_Plot._cZ = (OpenGL_Plot._mZ.max() - OpenGL_Plot._mZ.min())/2.0;
-    else
-        OpenGL_Plot._cZ = -(OpenGL_Plot._mZ.max() - OpenGL_Plot._mZ.min())/2.0;
+    auto max_vY = OpenGL_Plot._vY.MaximumElement();
+    auto min_vY = OpenGL_Plot._vY.MinimumElement();
+    OpenGL_Plot._cY = (max_vY >= -min_vY ? 0.5 : -0.5) * (max_vY - min_vY);
+    
+    auto max_mZ = OpenGL_Plot._mZ.MaximumElement();
+    auto min_mZ = OpenGL_Plot._mZ.MinimumElement();
+    OpenGL_Plot._cZ = (max_mZ >= -min_mZ ? 0.5 : -0.5) * (max_mZ - min_mZ);
 }
 
 

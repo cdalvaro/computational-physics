@@ -25,69 +25,6 @@ using namespace cda::math::containers;
 //  --- FUNCTIONS ---
 //  Returns an integer / a double / a float
 
-template<typename T> inline T
-Matrix<T>::max() const
-{
-    T max = a[0];
-    for (int k=1; k<size; k++) {
-        if (max < a[k])
-            max = a[k];
-    }
-    return max;
-}
-
-template<typename T> inline T
-Matrix<T>::maxAbs() const
-{
-    T max = fabs(a[0]);
-    for (int k=1; k<size; k++) {
-        if (fabs(a[k]) > max)
-            max = fabs(a[k]);
-    }
-    return max;
-}
-
-template<typename T> inline T
-Matrix<T>::maxAbs_sig() const
-{
-    T max = a[0];
-    for (int k=1; k<size; k++) {
-        if (fabs(a[k]) > fabs(max))
-            max = a[k];
-    }
-    return max;
-}
-
-template<typename T> inline T
-Matrix<T>::min() const
-{
-    T min = a[0];
-    for (int k=1; k<size; k++) {
-        if (min > a[k])
-            min = a[k];
-    }
-    return min;
-}
-
-template<typename T> inline T
-Matrix<T>::det()
-{
-    T det = 1.0;
-    if (n != m) {
-        std::cout << RM << "det()] - La matriz no es cuadrada, así que no se puede calcular su determinante.\n";
-        return det;
-    }
-    Matrix<T> tmp(n,m);
-    tmp.Zero();
-    tmp = this -> U();
-    
-    for (int i=0; i<n; i++) {
-        det *= tmp(i,i);
-    }
-    
-    return det;
-}
-
 //  Returns a matrix
 template<typename T> inline Matrix<T>
 Matrix<T>::sumRows()
@@ -197,94 +134,6 @@ Matrix<T>::write(const std::string& filename)
 
 
 //  --- MÉTODO LU ---
-template<typename T> inline Matrix<T>
-Matrix<T>::LU() const
-{
-    if (n != m) {
-        std::cout << RM << "LU()] - No se puede calcular la diagonal inferior porque no es una matriz cuadrada.\n";
-        Matrix<T> tmp(n,m);
-        tmp.Ones();
-        return tmp;
-    }
-    
-    Matrix<T> LU(n,m);
-    LU.Zero();
-    LU = *this;
-    
-    for (int i=1; i<n; i++) {
-        LU.a[i*m] /= LU.a[0];
-    }
-    T sum = (T)0.0;
-    for (int i=1; i<n-1; i++) {
-        for (int j=i; j<m; j++) {
-            sum = (T)0.0;
-            for (int k=0; k<i; k++) {
-                sum += LU.a[k*m + j] * LU.a[i*m + k];
-            }
-            LU.a[i*m + j] -= sum;
-        }
-        for (int k=i+1; k<n; k++) {
-            sum = (T)0.0;
-            for (int j=0; j<i; j++) {
-                sum += LU.a[j*m + i] * LU.a[k*m + j];
-            }
-            LU.a[k*m + i] = (LU.a[k*m + i] - sum) / LU.a[i*m + i];
-        }
-    }
-    sum = (T)0.0;
-    for (int k=0; k<n-1; k++) {
-        sum += LU.a[k*m + (m-1)] * LU.a[(n-1)*m + k];
-    }
-    LU.a[(n-1)*m + (m-1)] -= sum;
-    
-    return LU;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::U()
-{
-    if (n != m)
-        std::cout << RM << "U()] -> ";
-    Matrix<T> LU(n,m), U(n,m);
-    LU.Zero();
-    U.Zero();
-    LU = this -> LU();
-    
-    for (int i=0; i<n; i++) {
-        for (int j=0; j<m; j++) {
-            if (j >= i) {
-                U.a[i*m + j] = LU.a[i*m + j];
-            } else {
-                U.a[i*m + j] = (T)0.0;
-            }
-        }
-    }
-    return U;
-}
-
-template<typename T> inline Matrix<T>
-Matrix<T>::L()
-{
-    if (n != m)
-        std::cout << RM << "L()] -> ";
-    Matrix<T> LU(n,m), L(n,m);
-    LU.Zero();
-    L.Zero();
-    LU = this -> LU();
-    
-    for (int i=0; i<n; i++) {
-        for (int j=0; j<m; j++) {
-            if (j < i) {
-                L.a[i*m + j] = LU.a[i*m + j];
-            } else if (j == i) {
-                L.a[i*m + j] = (T)1.0;
-            } else {
-                L.a[i*m + j] = (T)0.0;
-            }
-        }
-    }
-    return L;
-}
 
 template<typename T> inline Vector<T>
 Matrix<T>::solveLU(const Vector<T>& B) const
@@ -553,7 +402,7 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
     
     while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < maxIte) {
         eVe = Ainv * eVe;
-        maxS = eVe.maxAbs_sig();
+        maxS = eVe.AbsoluteMaximumElementWithSign();
         eVa = 1/maxS + eigenValue*(1.0+fact);
         eVe /= maxS;
         k++;
@@ -568,7 +417,7 @@ Matrix<T>::eigenVector(T eigenValue, int maxIte, unsigned char opt)
             
             while (1/eVa != eigenValue && k < maxIte) {
                 eVe = Ainv * eVe;
-                maxS = eVe.maxAbs_sig();
+                maxS = eVe.AbsoluteMaximumElementWithSign();
                 eVa = 1/maxS + eigenValue*(1.0+fact);
                 eVe /= maxS;
                 k++;

@@ -33,6 +33,44 @@ namespace cda {
                     }
                 }
                 
+                Matrix<T> LU() const {
+                    if (!this->IsSquared()) {
+                        std::logic_error("LU matrix cannot be computed for a non-squared matrix.");
+                    }
+                    
+                    auto LU = *this;
+                    
+                    auto element00 = LU[0][0];
+                    for (size_t row = 1; row < n; ++row) {
+                        LU[row][0] /= element00;
+                    }
+                    
+                    T sum;
+                    for (size_t i=1; i<n-1; i++) {
+                        for (size_t j=i; j<m; j++) {
+                            sum = 0;
+                            for (size_t k=0; k<i; k++) {
+                                sum += LU[k][j] * LU[i][k];
+                            }
+                            LU[i][j] -= sum;
+                        }
+                        for (size_t k=i+1; k<n; k++) {
+                            sum = 0;
+                            for (size_t j=0; j<i; j++) {
+                                sum += LU[j][i] * LU[k][j];
+                            }
+                            LU[k][i] = (LU[k][i] - sum) / LU[i][i];
+                        }
+                    }
+                    sum = 0;
+                    for (size_t k=0; k<n-1; k++) {
+                        sum += LU[k][m-1] * LU[n-1][k];
+                    }
+                    LU[n-1][m-1] -= sum;
+                    
+                    return LU;
+                }
+                
             public:
                 
                 Matrix(const size_t &rows = 0, const size_t &columns = 0) :
@@ -187,7 +225,7 @@ namespace cda {
                     
                     Matrix<T> tmp(1, m);
                     
-                    const auto &it_row = a + row * m;
+                    const auto &it_row = this->operator[](row);
                     std::copy(it_row, it_row + m, tmp.Begin());
                     
                     return tmp;
@@ -202,13 +240,14 @@ namespace cda {
                     auto it_tmp = tmp.Begin();
                     
                     for (size_t i = 0; i < n; ++i, ++it_tmp) {
-                        *it_tmp = a[i*m + column];
+                        *it_tmp = this->operator[](i)[column];
                     }
                     
                     return tmp;
                 }
                 
-                Matrix<T> GetMatrix(const size_t &row, const size_t &column, const size_t &number_of_rows, const size_t &number_of_columns) const {
+                Matrix<T> GetMatrix(const size_t &row, const size_t &column,
+                                    const size_t &number_of_rows, const size_t &number_of_columns) const {
                     if (row + number_of_rows > n || column + number_of_columns > m) {
                         throw std::out_of_range("Index out of bounds");
                     }
@@ -316,7 +355,7 @@ namespace cda {
                         throw std::logic_error("Matrices must have the same number of columns");
                     }
                     
-                    auto it_this = this->Begin() + row * this->m;
+                    auto it_this = this->operator[](row);
                     std::copy(matrix.Begin(), matrix.End(), it_this);
                 }
                 
@@ -329,7 +368,7 @@ namespace cda {
                         throw std::logic_error("The vector and the row of the matrix must have the same number of elements");
                     }
                     
-                    auto it_this = this->Begin() + row * this->m;
+                    auto it_this = this->operator[](row);
                     std::copy(vector.Begin(), vector.End(), it_this);
                 }
                 
@@ -342,7 +381,7 @@ namespace cda {
                     const auto number_of_columns = std::min(this->m - column, matrix.Columns());
                     
                     auto it_matrix = matrix.Begin();
-                    const auto it_this_end = this->operator[](row) + number_of_rows * this->m;
+                    const auto it_this_end = this->operator[](row + number_of_rows);
                     for (auto it_this = this->operator[](row); it_this != it_this_end; it_this += this->m, it_matrix += matrix.Columns()) {
                         std::copy_n(it_matrix, number_of_columns, it_this + column);
                     }
@@ -388,17 +427,120 @@ namespace cda {
                     return sum;
                 }
                 
-                T max() const;                                                          //  Devuelve el máximo de la matriz.
-                T maxAbs() const;                                                       //  Devuelve el máximo absoluto de la matriz.
-                T maxAbs_sig() const;                                                   //  Devuelve el máximo absoluto de la matriz, pero con su signo.
-                T min() const;                                                          //  Devuelve el mínimo de la matriz.
-                T det();                                                                //  Calcula el determinante de una matriz.
+                T MaximumElement() const {
+                    auto it = this->Begin();
+                    
+                    T max_element = *it;
+                    ++it;
+                    
+                    for (; it != this->End(); ++it) {
+                        if (*it > max_element) {
+                            max_element = *it;
+                        }
+                    }
+                    
+                    return max_element;
+                }
+                
+                T AbsoluteMaximumElement() const {
+                    auto it = this->Begin();
+                    
+                    T max_element = std::abs(*it);
+                    ++it;
+                    
+                    T abs_it;
+                    for (; it != this->End(); ++it) {
+                        abs_it = std::abs(*it);
+                        if (abs_it > max_element) {
+                            max_element = abs_it;
+                        }
+                    }
+                    
+                    return max_element;
+                }
+                
+                T AbsoluteMaximumElementWithSign() const {
+                    auto it = this->Begin();
+                    
+                    T max_element = *it;
+                    ++it;
+                    
+                    for (; it != this->End(); ++it) {
+                        if (std::abs(*it) > std::abs(max_element)) {
+                            max_element = *it;
+                        }
+                    }
+                    
+                    return max_element;
+                }
+                
+                T MinimumElement() const {
+                    auto it = this->Begin();
+                    
+                    T min_element = *it;
+                    ++it;
+                    
+                    for (; it != this->End(); ++it) {
+                        if (*it < min_element) {
+                            min_element = *it;
+                        }
+                    }
+                    
+                    return min_element;
+                }
+                
+                T AbsoluteMinimumElement() const {
+                    auto it = this->Begin();
+                    
+                    T min_element = std::abs(*it);
+                    ++it;
+                    
+                    T abs_it;
+                    for (; it != this->End(); ++it) {
+                        abs_it = std::abs(*it);
+                        if (abs_it < min_element) {
+                            min_element = abs_it;
+                        }
+                    }
+                    
+                    return min_element;
+                }
+                
+                T AbsoluteMinimumElementWithSign() const {
+                    auto it = this->Begin();
+                    
+                    T min_element = *it;
+                    ++it;
+                    
+                    for (; it != this->End(); ++it) {
+                        if (std::abs(*it) < std::abs(min_element)) {
+                            min_element = *it;
+                        }
+                    }
+                    
+                    return min_element;
+                }
+                
+                T Determinant() const {
+                    if (!this->IsSquared()) {
+                        throw std::logic_error("Matrix must be squared to compute its determinant.");
+                    }
+                    
+                    T determinant = 1.0;
+                    auto u_matrix = this->U();
+                    
+                    for (size_t row = 0; row < n; ++row) {
+                        determinant *= u_matrix[row][row];
+                    }
+                    
+                    return determinant;
+                }
                 
                 const T &At(const size_t &row, const size_t &column) const {
-                    if(row >= n || column >= m) {
+                    if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
                     }
-                    return a[row * m + column];
+                    return this->operator[](row)[column];
                 }
                 
                 const T *operator[](const size_t &row) const {
@@ -409,7 +551,7 @@ namespace cda {
                     if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
                     }
-                    return a[row * m + column];
+                    return this->operator[](row)[column];
                 }
                 
                 T *operator[](const size_t &row) {
@@ -484,9 +626,40 @@ namespace cda {
                 
                 
                 //  --- MÉTODO LU ---
-                Matrix<T> LU() const;                                                           //  Descompone una matriz en dos por el método LU.
-                Matrix<T> U();                                                            //  Devuelve la matriz U del método LU.
-                Matrix<T> L();                                                            //  Devuelve la matriz L del método LU.
+                Matrix<T> U() const {
+                    if (!this->IsSquared()) {
+                        std::logic_error("U matrix cannot be computed for a non-squared matrix.");
+                    }
+                    
+                    Matrix<T> U(n, m);
+                    auto LU = this->LU();
+                    
+                    for (size_t row = 0; row < n; ++row) {
+                        for (size_t column = 0; column < m; ++column) {
+                            U[row][column] = column >= row ? LU[row][column] : static_cast<T>(0);
+                        }
+                    }
+                    
+                    return U;
+                }
+                
+                Matrix<T> L() const {
+                    if (!this->IsSquared()) {
+                        std::logic_error("L matrix cannot be computed for a non-squared matrix.");
+                    }
+                    
+                    Matrix<T> L(n, m);
+                    auto LU = this->LU();
+                    
+                    for (size_t row = 0; row < n; ++row) {
+                        for (size_t column = 0; column < m; ++column) {
+                            L[row][column] = column < row ? LU[row][column] : static_cast<T>(column == row ? 1 : 0);
+                        }
+                    }
+                    
+                    return L;
+                }
+                
                 Vector<T> solveLU(const Vector<T>& B) const;                                      //  Resuelve un sistema de ecuaciones por el método LU.
                 Vector<T> solveLU3d(const Vector<T>& B);                                    //  Resuelve un sistema de ecuaciones tridiagonal por el método LU.
                 Vector<T> solveGS3d(const Vector<T>& B, T err);                             //  Resuelve un sistema de ecuaciones tridiagonal por el método Gauss-Seidel.
