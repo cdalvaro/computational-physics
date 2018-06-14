@@ -415,8 +415,8 @@ namespace cda {
                     return false;
                 }
                 
-                void Write(const std::string &filename, const std::string &path = getenv("HOME")) const {
-                    const std::string file_path(path + filename);
+                void Write(const std::string &filename, const std::string &path = "/tmp") const {
+                    const std::string file_path(path + "/" + filename);
                     std::ofstream output(file_path.data());
                     output << *this;
                 }

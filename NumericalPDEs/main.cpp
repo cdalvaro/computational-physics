@@ -91,7 +91,7 @@ int main(int argc, const char * argv[])
     //  1. normalModes
     //  2. chladni
     //  3. diffraction
-    model = normalModes;
+    model = chladni;
     
     //  ELIGE UN EJEMPLO
     //  1. normalModes: 1 - 5

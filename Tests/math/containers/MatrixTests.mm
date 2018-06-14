@@ -180,4 +180,42 @@ using namespace cda::math::containers;
     
 }
 
+- (void)testSumRows {
+    Matrix<int> matrix_test({
+        { 3,  2,  1,  2},
+        { 7,  6,  5,  1},
+        {12, 10,  9,  8},
+        {15, 14, 13, 12}
+    });
+    
+    Matrix<int> expected1(4, 1, {8, 19, 39, 54});
+    auto result1 = matrix_test.SumRows();
+    
+    XCTAssert(result1 == expected1, "SumRows OK");
+    
+    auto expected2 = expected1.GetColumnAsVector(0);
+    auto result2 = matrix_test.SumRowsAsVector();
+    
+    XCTAssert(result2 == expected2, "SumRowsAsVector OK");
+}
+
+- (void)testSumColumns {
+    Matrix<int> matrix_test({
+        { 3,  2,  1,  2},
+        { 7,  6,  5,  1},
+        {12, 10,  9,  8},
+        {15, 14, 13, 12}
+    });
+    
+    Matrix<int> expected1(1, 4, {37, 32, 28, 23});
+    auto result1 = matrix_test.SumColumns();
+    
+    XCTAssert(result1 == expected1, "CumColumns OK");
+    
+    auto expected2 = expected1.GetRowAsVector(0);
+    auto result2 = matrix_test.SumColumnsAsVector();
+    
+    XCTAssert(result2 == expected2, "SumColumnsAsVector OK");
+}
+
 @end

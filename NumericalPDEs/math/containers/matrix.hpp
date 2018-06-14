@@ -405,6 +405,24 @@ namespace cda {
                     return size;
                 }
                 
+                Matrix<T> SumRows() const {
+                    Matrix<T> sum_rows(n, 1, 0);
+                    
+                    auto it_this = this->Begin();
+                    for (auto it_sum = sum_rows.Begin(); it_sum != sum_rows.End(); ++it_sum) {
+                        auto it_this_row_end = it_this + this->m;
+                        for (; it_this != it_this_row_end; ++it_this) {
+                            *it_sum += *it_this;
+                        }
+                    }
+                    
+                    return sum_rows;
+                }
+                
+                Vector<T> SumRowsAsVector() const {
+                    return SumRows().GetColumnAsVector(0);
+                }
+                
                 T SumRow(const size_t &row) const {
                     T sum = 0;
                     
@@ -414,6 +432,22 @@ namespace cda {
                     }
                     
                     return sum;
+                }
+                
+                Matrix<T> SumColumns() const {
+                    Matrix<T> sum_columns(1, m, 0);
+                    
+                    for (auto it_this = this->Begin(); it_this != this->End();) {
+                        for (auto it_sum = sum_columns.Begin(); it_sum != sum_columns.End(); ++it_sum, ++it_this) {
+                            *it_sum += *it_this;
+                        }
+                    }
+                    
+                    return sum_columns;
+                }
+                
+                Vector<T> SumColumnsAsVector() const {
+                    return SumColumns().GetRowAsVector(0);
                 }
                 
                 T SumColumn(const size_t &column) const {
@@ -558,10 +592,6 @@ namespace cda {
                     return &a[row * m];
                 }
                 
-                //  Returns a Matrix / a vector
-                Matrix<T> sumRows();                                                      //  Suma todos los elementos de las filas y las devuelve en una matriz columna.
-                Matrix<T> sumColumns();                                                   //  Suma todos los elementos de las columnas y las devuelve en una matriz fila.
-                
                 Matrix<T> Transpose() const {
                     Matrix<T> new_matrix(this->m, this->n);
                     
@@ -574,10 +604,6 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Vector<T> sumRowsV();                                                     //  Suma todos los elementos de las filas y las devuelve en un vector.
-                Vector<T> sumColumnsV();                                                  //  Suma todos los elementos de las columnas y las devuelve en un vector.
-                
-                //  Returns a bool
                 bool IsNull() const {
                     for (auto it = Begin(); it != End(); ++it) {
                         if (*it != 0) {
@@ -591,8 +617,31 @@ namespace cda {
                     return n == m;
                 }
                 
-                bool duplicate(T range);                                                //  Comprueba si hay elementos duplicados (próximos);
-                bool duplicate();                                                       //  Comprueba si hay elementos duplicados.
+                bool HasDuplicated(const T &precision) const {
+                    T distance;
+                    for (auto it1 = Begin(); it1 != End(); ++it1) {
+                        for (auto it2 = Begin(); it2 != End(); ++it2) {
+                            if (it1 != it2) {
+                                distance = *it1 - *it2;
+                                if (std::sqrt(distance * distance) < precision) {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    return false;
+                }
+                
+                bool HasDuplicated() const {
+                    for (auto it1 = Begin(); it1 != End(); ++it1) {
+                        for (auto it2 = Begin(); it2 != End(); ++it2) {
+                            if (it1 != it2 && *it1 == *it2) {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
                 
                 //  Void functions
                 void Fill(const T &value) {
@@ -620,10 +669,11 @@ namespace cda {
                     }
                 }
                 
-                void write(const std::string& path, const std::string& filename);                 //  Escribe la matriz en un fichero.
-                void write(const std::string& filename);
-                
-                
+                void Write(const std::string &filename, const std::string &path = "/tmp") const {
+                    const std::string file_path(path + "/" + filename);
+                    std::ofstream output(file_path.data());
+                    output << *this;
+                }
                 
                 //  --- MÉTODO LU ---
                 Matrix<T> U() const {
