@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		070BBC6820D43252008DDBDE /* TestsTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6720D43252008DDBDE /* TestsTools.m */; };
+		070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */ = {isa = PBXBuildFile; fileRef = 070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */; };
+		070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */; };
+		070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */; };
 		07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */; };
 		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
 		07A351C520C5D5C800DC2DC2 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C220C5D5C800DC2DC2 /* matrix.cpp */; };
@@ -30,6 +34,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		070BBC6620D42E9E008DDBDE /* BigMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = BigMatrix.csv; sourceTree = "<group>"; };
+		070BBC6720D43252008DDBDE /* TestsTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestsTools.m; sourceTree = "<group>"; };
+		070BBC6920D4328E008DDBDE /* TestsTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestsTools.h; sourceTree = "<group>"; };
+		070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmallMatrix.csv; sourceTree = "<group>"; };
+		070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixPerformance.mm; sourceTree = "<group>"; };
+		070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorPerformance.mm; sourceTree = "<group>"; };
 		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
 		07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixTests.mm; sourceTree = "<group>"; };
@@ -71,6 +81,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		070BBC6320D42E2A008DDBDE /* data */ = {
+			isa = PBXGroup;
+			children = (
+				070BBC6420D42E37008DDBDE /* math */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		070BBC6420D42E37008DDBDE /* math */ = {
+			isa = PBXGroup;
+			children = (
+				070BBC6520D42E3D008DDBDE /* containers */,
+			);
+			path = math;
+			sourceTree = "<group>";
+		};
+		070BBC6520D42E3D008DDBDE /* containers */ = {
+			isa = PBXGroup;
+			children = (
+				070BBC6620D42E9E008DDBDE /* BigMatrix.csv */,
+				070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */,
+			);
+			path = containers;
+			sourceTree = "<group>";
+		};
 		07A351BC20C5D5C800DC2DC2 /* graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -111,8 +146,11 @@
 		07B57FC720CED3D0001DDC78 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				070BBC6320D42E2A008DDBDE /* data */,
 				07B57FCE20CED3F8001DDC78 /* math */,
 				07B57FCA20CED3D0001DDC78 /* Info.plist */,
+				070BBC6720D43252008DDBDE /* TestsTools.m */,
+				070BBC6920D4328E008DDBDE /* TestsTools.h */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -128,8 +166,10 @@
 		07B57FCF20CED400001DDC78 /* containers */ = {
 			isa = PBXGroup;
 			children = (
-				07D8C2FB20CED49A00F194F3 /* VectorTests.mm */,
+				070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */,
 				07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */,
+				070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */,
+				07D8C2FB20CED49A00F194F3 /* VectorTests.mm */,
 			);
 			path = containers;
 			sourceTree = "<group>";
@@ -251,6 +291,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,7 +302,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				070BBC6820D43252008DDBDE /* TestsTools.m in Sources */,
+				070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */,
 				07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */,
+				070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */,
 				07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

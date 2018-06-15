@@ -8,9 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
+#import "../../TestsTools.h"
 #import "../../../NumericalPDEs/math/containers/vector.hpp"
 
 using namespace cda::math::containers;
+
 
 @interface VectorTests : XCTestCase
 
@@ -20,6 +22,7 @@ using namespace cda::math::containers;
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    [TestsTools setDefaultWorkingDirectory];
 }
 
 - (void)tearDown {
@@ -126,15 +129,6 @@ using namespace cda::math::containers;
     auto result = vector1 + vector2;
     
     XCTAssert(result == expected, "The sum of two vectors is OK");
-}
-
-- (void)testPerformanceVectorMoveConstructor {
-    [self measureBlock:^{
-        for (NSInteger i = 0; i < 1E+03; ++i) {
-            Vector<double> vector(1E+04, 1);
-            Vector<double> newVector(std::move(vector));
-        }
-    }];
 }
 
 @end

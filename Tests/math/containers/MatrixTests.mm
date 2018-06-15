@@ -8,9 +8,11 @@
 
 #import <XCTest/XCTest.h>
 
+#import "../../TestsTools.h"
 #import "../../../NumericalPDEs/math/containers/matrix.hpp"
 
 using namespace cda::math::containers;
+
 
 @interface MatrixTests : XCTestCase
 
@@ -20,6 +22,7 @@ using namespace cda::math::containers;
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    [TestsTools setDefaultWorkingDirectory];
 }
 
 - (void)tearDown {
@@ -216,6 +219,36 @@ using namespace cda::math::containers;
     auto result2 = matrix_test.SumColumnsAsVector();
     
     XCTAssert(result2 == expected2, "SumColumnsAsVector OK");
+}
+
+-(void)testLoadMatrixFromFile {
+    
+    std::ifstream file;
+    Matrix<double> matrix;
+    
+    // Big Matrix
+    file.open("data/math/containers/BigMatrix.csv", std::ios::in);
+    file >> matrix;
+    file.close();
+    
+    std::pair<size_t, size_t> expected_dimensions {449, 106};
+    
+    XCTAssert(matrix.Dimensions() == expected_dimensions, "Big Matrix dimensions are the right ones.");
+    
+    // Small Matrix
+    file.open("data/math/containers/SmallMatrix.csv", std::ios::in);
+    file >> matrix;
+    file.close();
+    
+    Matrix<double> expected_matrix({
+        {0.1680625202081561, 0.1722621842917498, 0.7412169766918424, 0.6987185197938875, 0.3302779764663697},
+        {0.10215466928767196, 0.3990300364707511, 0.7262335341926227, 0.08155865621143804, 0.3684479022981741},
+        {0.4550947968717964, 0.33873967383847237, 0.4988407455385848, 0.8256508889575926, 0.4998906510004011},
+        {0.6474657582972254, 0.5223187955808917, 0.548139118672313, 0.7215750817149178, 0.14924930831433234},
+        {0.796918578539592, 0.4904564565638245, 0.11938391918190965, 0.9765232400263497, 0.6245631592365628}
+    });
+    
+    XCTAssert(matrix == expected_matrix, "Small Matrix has been loaded properly.");
 }
 
 @end
