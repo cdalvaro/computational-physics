@@ -585,7 +585,8 @@ namespace cda {
 
 //  --- MORE OPERATORS ---
 template <typename T, typename T2>
-inline static cda::math::containers::Vector<T> operator*(const T2 &value, const cda::math::containers::Vector<T> &vector) {
+cda::math::containers::Vector<T> operator*(const T2 &value, const cda::math::containers::Vector<T> &vector) {
+    
     cda::math::containers::Vector<T> new_vector(vector.Size());
     auto it_new = new_vector.Begin();
     

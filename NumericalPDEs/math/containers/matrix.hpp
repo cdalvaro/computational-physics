@@ -12,6 +12,8 @@
 #include "vector.hpp"
 
 #include <utility>
+#include <istream>
+#include <sstream>
 
 namespace cda {
     namespace math {
@@ -172,6 +174,15 @@ namespace cda {
                         this->operator=(std::move(tmp));
                     }
                     
+                }
+                
+                void ChangeDimensions(const size_t &rows, const size_t &columns) {
+                    if (rows * columns != this->size) {
+                        throw std::out_of_range("This method does not resize the matrix, just change the dimensions");
+                    }
+                    
+                    this->n = rows;
+                    this->m = columns;
                 }
                 
                 Matrix<T> &operator=(const Matrix<T> &matrix) {
@@ -934,8 +945,8 @@ namespace cda {
 
 //  --- MORE OPERATORS ---
 template <typename T>
-inline cda::math::containers::Matrix<T> operator*(const T &value,
-                                                  const cda::math::containers::Matrix<T> &matrix) {
+cda::math::containers::Matrix<T> operator*(const T &value,
+                                           const cda::math::containers::Matrix<T> &matrix) {
     
     cda::math::containers::Matrix<T> tmp(matrix.Rows(), matrix.Columns());
     auto it_tmp = tmp.Begin();
@@ -948,8 +959,8 @@ inline cda::math::containers::Matrix<T> operator*(const T &value,
 }
 
 template <typename T>
-inline cda::math::containers::Vector<T> operator*(const cda::math::containers::Vector<T> &vector,
-                                                  const cda::math::containers::Matrix<T> &matrix) {
+cda::math::containers::Vector<T> operator*(const cda::math::containers::Vector<T> &vector,
+                                           const cda::math::containers::Matrix<T> &matrix) {
     
     const auto &rows = matrix.Rows();
     if (rows != vector.Size()) {
@@ -972,8 +983,8 @@ inline cda::math::containers::Vector<T> operator*(const cda::math::containers::V
 }
 
 template <typename T>
-inline cda::math::containers::Matrix<T> operator&&(const cda::math::containers::Matrix<T> &left_matrix,
-                                                   const cda::math::containers::Matrix<T> &right_matrix) {
+cda::math::containers::Matrix<T> operator&&(const cda::math::containers::Matrix<T> &left_matrix,
+                                            const cda::math::containers::Matrix<T> &right_matrix) {
     
     if (left_matrix.Rows() != right_matrix.Rows()) {
         throw std::logic_error("Both matrices must have the same number of rows");
@@ -986,16 +997,115 @@ inline cda::math::containers::Matrix<T> operator&&(const cda::math::containers::
     return new_matrix;
 }
 
-template <typename T> inline
-void operator||(cda::math::containers::Matrix<T> &left_matrix, cda::math::containers::Matrix<T> &right_matrix) {
+template <typename T>
+void operator||(cda::math::containers::Matrix<T> &left_matrix,
+                cda::math::containers::Matrix<T> &right_matrix) {
+    
     const size_t left_matrix_columns = left_matrix.Columns() / 2;
+    
     right_matrix = left_matrix.GetMatrix(0, left_matrix_columns, left_matrix.Rows(), left_matrix.Columns() - left_matrix_columns);
     left_matrix.Resize(left_matrix.Rows(), left_matrix_columns);
 }
 
-template <typename T> inline void
-operator>>(std::istream& in, cda::math::containers::Matrix<T>& M);                                        //  Importa una matriz desde un fichero.
-template <typename T> inline std::ostream&
-operator<<(std::ostream& out, const cda::math::containers::Matrix<T>& M);                                 //  Exporta la matriz a un ostream.
+template <typename T>
+void operator>>(std::istream &input,
+                cda::math::containers::Matrix<T> &matrix) {
+    
+    if (!input) {
+        throw std::logic_error("Input is not avaiable");
+    }
+    
+    size_t initial_size = 100;
+    matrix.Resize(initial_size, 1);
+    
+    size_t rows = 0, columns = 0;
+    
+    bool is_file_first_row = true;
+    char comma;
+    std::string line, cell;
+    size_t element = 0;
+    while (std::getline(input, line)) {
+        
+        std::stringstream line_stream(line);
+        while (line_stream >> matrix[element][0]) {
+            
+            ++element;
+            
+            if (element >= matrix.Rows()) {
+                initial_size *= 2;
+                matrix.Resize(matrix.Rows() + initial_size, 1);
+            }
+            
+            if (is_file_first_row) {
+                ++columns;
+            }
+            
+            line_stream >> comma;
+        }
+        
+        if (is_file_first_row) {
+            is_file_first_row = false;
+        }
+        
+        ++rows;
+    }
+    
+    if (rows * columns != element) {
+        throw std::out_of_range("The size of the matrix could not be determined properly.");
+    }
+    
+    matrix.Resize(element, 1);
+    matrix.ChangeDimensions(rows, columns);
+}
+
+template <typename T>
+std::ostream& operator<<(std::ostream &output,
+                         const cda::math::containers::Matrix<T> &matrix) {
+    
+    if (output.rdbuf() == std::cout.rdbuf()) {
+    //        out.width();
+    //        out << fixed;
+    //        out.fill(' ');
+    //        out.precision(6);
+    //        if (M.Rows() == 1 && M.Columns() == 1) {
+    //            out << M(0) << endl;
+    //        } else if (M.Rows() == 1) {
+    //            out << "[" << M(0);
+    //            for (int j=1; j<M.Columns(); j++) {
+    //                out << "\t" << M(j);
+    //            }
+    //            out << "]\n";
+    //        } else {
+    //            out << "⎡" << M(0);
+    //            for (int j=1; j<M.Columns(); j++) {
+    //                out << right << "\t" << M(j);
+    //            }
+    //            out.width();
+    //            out << "\t⎤\n";
+    //            for (int i=1; i<M.Rows()-1; i++) {
+    //                out << "⎢" << M(i*M.Columns());
+    //                for (int j=1; j<M.Columns(); j++) {
+    //                    out << "\t" << M(i*M.Columns() + j);
+    //                }
+    //                out << "\t⎥\n";
+    //            }
+    //            out << "⎣" << M((M.Rows()-1)*M.Columns());
+    //            for (int j=1; j<M.Columns(); j++) {
+    //                out << "\t" << M((M.Rows()-1)*M.Columns() + j);
+    //            }
+    //            out << "\t⎦\n";
+    //        }
+    //        out.precision();
+        } else {
+            for (size_t row = 0; row < matrix.Rows(); ++row) {
+                for (size_t column = 0; column < matrix.Columns(); ++column) {
+                    std::cout << matrix[row][column] << ";";
+                }
+                std::cout << std::endl;
+            }
+        }
+    
+    return output;
+}
 
 #endif /* math_containers_matrix_hpp */
