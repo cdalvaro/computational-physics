@@ -41,8 +41,8 @@
 #include <cmath>
 #include <fstream>
 
-#include "../containers/vector.hpp"
-#include "../containers/matrix.hpp"
+#include "../containers.hpp"
+
 
 namespace cda {
     namespace math {

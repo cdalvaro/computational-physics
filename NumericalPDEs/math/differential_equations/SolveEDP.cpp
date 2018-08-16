@@ -7,13 +7,16 @@
 //
 
 #include "SolveEDP.h"
-#include "../containers/matrix.hpp"
-#include "../containers/matrix.cpp"
+
+#include "../containers.hpp"
+#include "../equations/systems/linear.hpp"
+#include "../algorithms/eigenvalue/qr.hpp"
 
 #include <sys/stat.h>
 #include <thread>
 
 using namespace cda::math::containers;
+using namespace cda::math::equations::systems;
 using namespace cda::math::differential_equations;
 
 namespace cmc = cda::math::containers;
@@ -54,11 +57,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-3] += (1.0 - (A(x[dim-1]-h)*h)/2.0)*BCR(x[dim-1],0.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = diagMA.solveGS3d(b, err);
+            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         }
         
         sol = y;
@@ -87,11 +90,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-1] = -h*h*C(x[dim-1]) + 2.0*h*BCR(x[dim-1],0.0)*(h*A(x[dim-1])/2.0 + 1.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = diagMA.solveGS3d(b, err);
+            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         }
         
         sol = solV;
@@ -116,11 +119,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-2] = -h*h*C(x[dim-1]) + 2.0*h*BCR(x[dim-1],0.0)*(h*A(x[dim-1])/2.0 + 1.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = diagMA.solveGS3d(b, err);
+            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         }
         
         sol = y;
@@ -148,11 +151,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-2] += (1.0 - (A(x[dim-1]-h)*h)/2.0)*BCR(x[dim-1],0.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = diagMA.solveGS3d(b, err);
+            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = diagMA.solveLU3d(b);
+            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
         }
         
         sol = y;
@@ -789,7 +792,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
             b[i] = Q1D(x[i])*dtx*(1.0-theta)*y[i+2] + (1.0 - 2.0*Q1D(x[i])*dtx*(1.0-theta))*y[i+1] + Q1D(x[i])*dtx*(1.0-theta)*y[i];
         }
         
-        solV = diagLU.solveLU3d(b);
+        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = y;
         sol.Set(1, solV);
@@ -817,7 +820,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-2][2] = 0.0;
         b[n-2] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        solV = diagLU.solveLU3d(b);
+        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = y;
         y.Set(1, solV);
@@ -845,7 +848,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
             b[i] = Q1D(x[i])*dtx*(1.0-theta)*y[i+1] + (1.0 - 2.0*Q1D(x[i])*dtx*(1.0-theta))*y[i] + Q1D(x[i])*dtx*(1.0-theta)*y[i-1];
         }
         
-        solV = diagLU.solveLU3d(b);
+        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = y;
         sol.Set(0, solV);
@@ -878,7 +881,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-1][2] = 0.0;
         b[n-1] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        solV = diagLU.solveLU3d(b);
+        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = solV;
     }
@@ -1085,7 +1088,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
-        eigVal = A.eigenValues(20, opt);
+        algorithms::eigenvalue::QR<EDP_T> qrA(A);
+        eigVal = qrA.EigenValues();
         eigVal.Sort();
         
         if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
@@ -1105,7 +1109,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         std::ifstream in(path.data());
         if (in.fail()) {
             std::cout << "\n\tEl fichero no existe, se van a calcular los autovalores... ";
-            eigVal = A.eigenValues(20, opt);
+            //  FIXME: Call the correct method
+//            eigVal = A.eigenValues(20, opt);
             eigVal.Sort();
             if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
                 eigVal[0] = 0.0;
@@ -1126,7 +1131,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     } else {
         std::cout << "\tCalculando autovalores... ";
-        eigVal = A.eigenValues(20, opt);
+        //  FIXME: Call the correct method
+//        eigVal = A.eigenValues(20, opt);
         eigVal.Sort();
         if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
             eigVal[0] = 0.0;
@@ -1138,7 +1144,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     if ((((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) && eigVal[mode-1] == 0) {
         solV.Ones();
     } else {
-        solV = A.eigenVector(eigVal[mode-1], opt);
+        //  FIXME: Call the correct method
+//        solV = A.eigenVector(eigVal[mode-1], opt);
     }
     
     if (bc & BCL_df || bc & BCB_df) {

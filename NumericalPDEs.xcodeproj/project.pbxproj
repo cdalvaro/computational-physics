@@ -16,6 +16,7 @@
 		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
 		07A351C520C5D5C800DC2DC2 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C220C5D5C800DC2DC2 /* matrix.cpp */; };
 		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
+		07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07C653BA2124993C006F0CC3 /* QRTests.mm */; };
 		07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07D8C2FB20CED49A00F194F3 /* VectorTests.mm */; };
 		07DA13491559113E00FCF6F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13481559113E00FCF6F8 /* main.cpp */; };
 		07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13511559115100FCF6F8 /* GLUT.framework */; };
@@ -41,8 +42,16 @@
 		070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmallMatrix.csv; sourceTree = "<group>"; };
 		070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixPerformance.mm; sourceTree = "<group>"; };
 		070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorPerformance.mm; sourceTree = "<group>"; };
+		0713449C20D44CB80048FC79 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		0713449D20D44CB80048FC79 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		072AB5B520D598DE009BAB93 /* LUTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LUTests.mm; sourceTree = "<group>"; };
 		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
+		073199B420D6612D003FED85 /* linear.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = linear.hpp; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
+		077949C620D5088200A8347E /* lu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lu.hpp; sourceTree = "<group>"; };
+		07890FBB20D6CA6600784F5C /* containers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = containers.hpp; sourceTree = "<group>"; };
+		07890FBD20D6CC3600784F5C /* qr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = qr.hpp; sourceTree = "<group>"; };
+		07890FBE20D6D84D00784F5C /* math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = math.hpp; sourceTree = "<group>"; };
 		07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixTests.mm; sourceTree = "<group>"; };
 		07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
 		07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
@@ -55,6 +64,8 @@
 		07B3891020CC2AEB009910B6 /* .gitlab-ci.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".gitlab-ci.yml"; sourceTree = "<group>"; };
 		07B57FC620CED3D0001DDC78 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07B57FCA20CED3D0001DDC78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07C1B099210F8EA700EB8A9B /* algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = algorithms.hpp; sourceTree = "<group>"; };
+		07C653BA2124993C006F0CC3 /* QRTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QRTests.mm; sourceTree = "<group>"; };
 		07D8C2FB20CED49A00F194F3 /* VectorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorTests.mm; sourceTree = "<group>"; };
 		07DA13441559113E00FCF6F8 /* NumericalPDEs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NumericalPDEs; sourceTree = BUILT_PRODUCTS_DIR; };
 		07DA13481559113E00FCF6F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -107,6 +118,81 @@
 			path = containers;
 			sourceTree = "<group>";
 		};
+		072AB5B320D598B6009BAB93 /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				07C653B92124990C006F0CC3 /* eigenvalue */,
+				072AB5B420D598C4009BAB93 /* factorization */,
+			);
+			path = algorithms;
+			sourceTree = "<group>";
+		};
+		072AB5B420D598C4009BAB93 /* factorization */ = {
+			isa = PBXGroup;
+			children = (
+				072AB5B520D598DE009BAB93 /* LUTests.mm */,
+			);
+			path = factorization;
+			sourceTree = "<group>";
+		};
+		073199AF20D660B8003FED85 /* equations */ = {
+			isa = PBXGroup;
+			children = (
+				073199B220D660D2003FED85 /* differential */,
+				073199B020D660C1003FED85 /* systems */,
+			);
+			path = equations;
+			sourceTree = "<group>";
+		};
+		073199B020D660C1003FED85 /* systems */ = {
+			isa = PBXGroup;
+			children = (
+				073199B420D6612D003FED85 /* linear.hpp */,
+			);
+			path = systems;
+			sourceTree = "<group>";
+		};
+		073199B220D660D2003FED85 /* differential */ = {
+			isa = PBXGroup;
+			children = (
+				073199B320D660DD003FED85 /* partial */,
+			);
+			path = differential;
+			sourceTree = "<group>";
+		};
+		073199B320D660DD003FED85 /* partial */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = partial;
+			sourceTree = "<group>";
+		};
+		077949C320D506D200A8347E /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				07890FBC20D6CC1500784F5C /* eigenvalue */,
+				077949C420D5083D00A8347E /* factorization */,
+				07C1B099210F8EA700EB8A9B /* algorithms.hpp */,
+			);
+			path = algorithms;
+			sourceTree = "<group>";
+		};
+		077949C420D5083D00A8347E /* factorization */ = {
+			isa = PBXGroup;
+			children = (
+				077949C620D5088200A8347E /* lu.hpp */,
+			);
+			path = factorization;
+			sourceTree = "<group>";
+		};
+		07890FBC20D6CC1500784F5C /* eigenvalue */ = {
+			isa = PBXGroup;
+			children = (
+				07890FBD20D6CC3600784F5C /* qr.hpp */,
+			);
+			path = eigenvalue;
+			sourceTree = "<group>";
+		};
 		07A351BC20C5D5C800DC2DC2 /* graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -119,8 +205,12 @@
 		07A351BF20C5D5C800DC2DC2 /* math */ = {
 			isa = PBXGroup;
 			children = (
+				073199AF20D660B8003FED85 /* equations */,
+				077949C320D506D200A8347E /* algorithms */,
 				07A351C820C5D7FE00DC2DC2 /* differential_equations */,
 				07A351C720C5D7E200DC2DC2 /* containers */,
+				07890FBB20D6CA6600784F5C /* containers.hpp */,
+				07890FBE20D6D84D00784F5C /* math.hpp */,
 			);
 			path = math;
 			sourceTree = "<group>";
@@ -159,6 +249,7 @@
 		07B57FCE20CED3F8001DDC78 /* math */ = {
 			isa = PBXGroup;
 			children = (
+				072AB5B320D598B6009BAB93 /* algorithms */,
 				07B57FCF20CED400001DDC78 /* containers */,
 			);
 			path = math;
@@ -175,9 +266,19 @@
 			path = containers;
 			sourceTree = "<group>";
 		};
+		07C653B92124990C006F0CC3 /* eigenvalue */ = {
+			isa = PBXGroup;
+			children = (
+				07C653BA2124993C006F0CC3 /* QRTests.mm */,
+			);
+			path = eigenvalue;
+			sourceTree = "<group>";
+		};
 		07DA13391559113E00FCF6F8 = {
 			isa = PBXGroup;
 			children = (
+				0713449C20D44CB80048FC79 /* CMakeLists.txt */,
+				0713449D20D44CB80048FC79 /* LICENSE */,
 				07B3890F20CC2AEA009910B6 /* .gitignore */,
 				07B3891020CC2AEB009910B6 /* .gitlab-ci.yml */,
 				0733CF321F24831800C4F677 /* README.md */,
@@ -303,6 +404,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */,
+				072AB5B620D598DE009BAB93 /* LUTests.mm in Sources */,
 				070BBC6820D43252008DDBDE /* TestsTools.m in Sources */,
 				070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */,
 				07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */,
