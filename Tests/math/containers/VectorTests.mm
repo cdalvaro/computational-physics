@@ -128,7 +128,21 @@ using namespace cda::math::containers;
     
     auto result = vector1 + vector2;
     
-    XCTAssert(result == expected, "The sum of two vectors is OK");
+    XCTAssertEqual(result, expected, "The sum of two vectors is OK");
+}
+
+- (void)testNorms {
+    const Vector<int> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    
+    // Squared Norm
+    auto result = vector.SquaredNorm();
+    double expected = 385;
+    XCTAssertEqual(result, expected, "The squared norm of the vector is OK");
+    
+    // Norm
+    result = vector.Norm();
+    expected = std::sqrt(expected);
+    XCTAssertEqual(result, expected, "The norm of the vector is OK");
 }
 
 @end

@@ -9,24 +9,10 @@
 
 #pragma once
 
-#include <iostream>
-#include <iomanip>
 #include <cmath>
-#include <stdlib.h>
 #include <fstream>
-#include <algorithm>
+#include <stdlib.h>
 #include <string>
-#include <stdexcept>
-
-//  Para QR
-#define Qmatrix     0x01
-#define Rmatrix     0x02
-#define QRmatrix    0x04
-
-//  Para mostrar las iteraciones de los autovalores y de los autovectores
-#define EVa_Ite     0x01
-#define EVe_Ite     0x02
-#define ORGANIZED   0x04
 
 
 namespace cda {
@@ -40,11 +26,16 @@ namespace cda {
                 T *v, *it_end;
                 
                 void AllocateMemory(const size_t &size) {
-                    if (void *mem = std::realloc(v, size * sizeof(T))) {
-                        v = static_cast<T *>(mem);
-                        it_end = v + size;
+                    if (size == 0) {
+                        std::free(v);
+                        v = it_end = nullptr;
                     } else {
-                        throw std::bad_alloc();
+                        if (void *mem = std::realloc(v, size * sizeof(T))) {
+                            v = static_cast<T *>(mem);
+                            it_end = v + size;
+                        } else {
+                            throw std::bad_alloc();
+                        }
                     }
                 }
                 
@@ -318,11 +309,11 @@ namespace cda {
                     return v[element];
                 }
                 
-                T Norm() const {
+                double Norm() const {
                     return std::sqrt(SquaredNorm());
                 }
                 
-                T SquaredNorm() const {
+                double SquaredNorm() const {
                     return *this * *this;
                 }
                 
@@ -378,6 +369,14 @@ namespace cda {
                     for (auto it = Begin(); it != End(); ++it) {
                         *it = static_cast<T>(drand48() * max + min);
                     }
+                }
+                
+                bool Clear() {
+                    AllocateMemory(0);
+                }
+                
+                bool IsEmpty() const {
+                    return n == 0;
                 }
                 
                 bool IsNull() const {

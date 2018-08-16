@@ -6,14 +6,18 @@
 //  Copyright © 2018 cdalvaro. All rights reserved.
 //
 
-#ifndef math_containers_matrix_hpp
-#define math_containers_matrix_hpp
+#pragma once
 
 #include "vector.hpp"
 
-#include <utility>
+#include <cmath>
+#include <fstream>
+#include <iostream>
 #include <istream>
 #include <sstream>
+#include <stdlib.h>
+#include <string>
+
 
 namespace cda {
     namespace math {
@@ -27,50 +31,17 @@ namespace cda {
                 T *a, *it_end;
                 
                 void AllocateMemory(const size_t &size) {
-                    if (void *mem = std::realloc(a, size * sizeof(T))) {
-                        a = static_cast<T *>(mem);
-                        it_end = a + size;
+                    if (size == 0) {
+                        std::free(a);
+                        a = it_end = nullptr;
                     } else {
-                        throw std::bad_alloc();
-                    }
-                }
-                
-                Matrix<T> LU() const {
-                    if (!this->IsSquared()) {
-                        std::logic_error("LU matrix cannot be computed for a non-squared matrix.");
-                    }
-                    
-                    auto LU = *this;
-                    
-                    auto element00 = LU[0][0];
-                    for (size_t row = 1; row < n; ++row) {
-                        LU[row][0] /= element00;
-                    }
-                    
-                    T sum;
-                    for (size_t i=1; i<n-1; i++) {
-                        for (size_t j=i; j<m; j++) {
-                            sum = 0;
-                            for (size_t k=0; k<i; k++) {
-                                sum += LU[k][j] * LU[i][k];
-                            }
-                            LU[i][j] -= sum;
-                        }
-                        for (size_t k=i+1; k<n; k++) {
-                            sum = 0;
-                            for (size_t j=0; j<i; j++) {
-                                sum += LU[j][i] * LU[k][j];
-                            }
-                            LU[k][i] = (LU[k][i] - sum) / LU[i][i];
+                        if (void *mem = std::realloc(a, size * sizeof(T))) {
+                            a = static_cast<T *>(mem);
+                            it_end = a + size;
+                        } else {
+                            throw std::bad_alloc();
                         }
                     }
-                    sum = 0;
-                    for (size_t k=0; k<n-1; k++) {
-                        sum += LU[k][m-1] * LU[n-1][k];
-                    }
-                    LU[n-1][m-1] -= sum;
-                    
-                    return LU;
                 }
                 
             public:
@@ -310,7 +281,7 @@ namespace cda {
                     
                     Vector<T> vector(this->n - from_row);
                     
-                    auto it_this = this->Begin() + this->m * from_row;
+                    auto it_this = this->Begin() + this->m * from_row + column;
                     for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector, it_this += m) {
                         *it_vector = *it_this;
                     }
@@ -615,6 +586,14 @@ namespace cda {
                     return new_matrix;
                 }
                 
+                void Clear() {
+                    AllocateMemory(0);
+                }
+                
+                bool IsEmpty() const {
+                    return size == 0;
+                }
+                
                 bool IsNull() const {
                     for (auto it = Begin(); it != End(); ++it) {
                         if (*it != 0) {
@@ -686,61 +665,6 @@ namespace cda {
                     output << *this;
                 }
                 
-                //  --- MÉTODO LU ---
-                Matrix<T> U() const {
-                    if (!this->IsSquared()) {
-                        std::logic_error("U matrix cannot be computed for a non-squared matrix.");
-                    }
-                    
-                    Matrix<T> U(n, m);
-                    auto LU = this->LU();
-                    
-                    for (size_t row = 0; row < n; ++row) {
-                        for (size_t column = 0; column < m; ++column) {
-                            U[row][column] = column >= row ? LU[row][column] : static_cast<T>(0);
-                        }
-                    }
-                    
-                    return U;
-                }
-                
-                Matrix<T> L() const {
-                    if (!this->IsSquared()) {
-                        std::logic_error("L matrix cannot be computed for a non-squared matrix.");
-                    }
-                    
-                    Matrix<T> L(n, m);
-                    auto LU = this->LU();
-                    
-                    for (size_t row = 0; row < n; ++row) {
-                        for (size_t column = 0; column < m; ++column) {
-                            L[row][column] = column < row ? LU[row][column] : static_cast<T>(column == row ? 1 : 0);
-                        }
-                    }
-                    
-                    return L;
-                }
-                
-                Vector<T> solveLU(const Vector<T>& B) const;                                      //  Resuelve un sistema de ecuaciones por el método LU.
-                Vector<T> solveLU3d(const Vector<T>& B);                                    //  Resuelve un sistema de ecuaciones tridiagonal por el método LU.
-                Vector<T> solveGS3d(const Vector<T>& B, T err);                             //  Resuelve un sistema de ecuaciones tridiagonal por el método Gauss-Seidel.
-                
-                //  --- MÉTODO QR ---
-                Matrix<T> QR(unsigned char QorR);                                         //  Descompone una matriz en dos por el método QR.
-                Matrix<T> eigenVectors(int maxIte, unsigned char opt);                    //  Calcula los autovectores a partir de los autovalores (QR).
-                Matrix<T> eigenVectors(unsigned char opt);                                //  Calcula los autovectores a partir de los autovaleres (QR).
-                Matrix<T> eigenVectors();                                                 //  Calcula los autovectores a partir de los autovalores (QR).
-                Vector<T> eigenVector(T eigenValue, int maxIte, unsigned char opt);       //  Calcula el autovector correspondiente al autovector introducido.
-                Vector<T> eigenVector(T eigenValue, unsigned char opt);                   //  Calcula el autovector correspondiente al autovector introducido.
-                Vector<T> eigenVector(T eigenValue);                                      //  Calcula el autovector correspondiente al autovector introducido.
-                Vector<T> eigenValues(int maxIte, T factor, unsigned char opt);           //  Calcula los autovalores de una matriz por el método QR.
-                Vector<T> eigenValues(int maxIte, unsigned char opt);                     //  Calcula los autovalores de una matriz por el método QR.
-                Vector<T> eigenValues(unsigned char opt);                                 //  Calcula los autovalores de una matriz por el método QR.
-                Vector<T> eigenValues();                                                  //  Calcula los autovalores de una matraz por el método QR.
-                
-                
-                
-                //  --- OPERATORS ---
                 Matrix<T> operator+(const Matrix<T> &matrix) const {
                     if (this->n != matrix.n || this->m != matrix.m) {
                         throw std::logic_error("Matrices must be of the same dimensions.");
@@ -813,7 +737,7 @@ namespace cda {
                 
                 template<typename T2>
                 Matrix<T> operator*(const Matrix<T2> &matrix) const {
-                    if (this->n != matrix.m || this->m != matrix.n) {
+                    if (this->m != matrix.n) {
                         throw std::logic_error("Matrices dimensions are not compatible.");
                     }
                     
@@ -838,10 +762,12 @@ namespace cda {
                     
                     Matrix<T> new_matrix(n, vector.Size());
                     auto it_new = new_matrix.Begin();
-                    auto it_vector = vector.Begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector, ++it_new) {
-                        *it_new = *it_this * *it_vector;
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
+                        for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector) {
+                            *it_new = *it_this * *it_vector;
+                            ++it_new;
+                        }
                     }
                     
                     return new_matrix;
@@ -891,15 +817,7 @@ namespace cda {
                     
                     switch (power) {
                         case -1:
-                            {
-                                new_matrix.Resize(this->n, this->m);
-                                Vector<T> I(n);
-                                for (size_t i = 0; i<m; i++) {
-                                    I[i] = static_cast<T>(1);
-                                    new_matrix.SetColumn(i, this->solveLU(I));
-                                    I[i] = static_cast<T>(0);
-                                }
-                            }
+                            throw std::logic_error("To get the inverse matrix use LU::InverseMatrix");
                             break;
                             
                         case 0:
@@ -1107,5 +1025,3 @@ std::ostream& operator<<(std::ostream &output,
     
     return output;
 }
-
-#endif /* math_containers_matrix_hpp */

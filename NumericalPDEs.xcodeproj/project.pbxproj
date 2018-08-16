@@ -11,6 +11,7 @@
 		070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */ = {isa = PBXBuildFile; fileRef = 070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */; };
 		070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */; };
 		070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */; };
+		072AB5B620D598DE009BAB93 /* LUTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 072AB5B520D598DE009BAB93 /* LUTests.mm */; };
 		07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */; };
 		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
 		07A351C520C5D5C800DC2DC2 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C220C5D5C800DC2DC2 /* matrix.cpp */; };
