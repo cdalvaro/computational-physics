@@ -41,6 +41,15 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix1.Columns(), 4, "The number of columns of matrix1 is OK");
     XCTAssertEqual(matrix1.Size(), 16, "The size of matrix1 is OK");
     
+    bool all_elements_are_one = true;
+    for (auto it = matrix1.Begin(); it != matrix1.End(); ++it) {
+        if (*it != 1) {
+            all_elements_are_one = false;
+            break;
+        }
+    }
+    XCTAssert(all_elements_are_one, "All elements of matrix1 are OK");
+    
     const Matrix<int> matrix2(4, 4, {
         0,  1,  2,  3,
         4,  5,  6,  7,
@@ -80,6 +89,42 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix5, matrix2, "matrix5 and matrix2 are equal");
     XCTAssert(matrix4.IsEmpty(), "matrix4 is empty after had been moved in asignation");
     XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved in asignation");
+}
+
+- (void)testOnes {
+    const Matrix<uint> expected_ones(5, 5, 1);
+    XCTAssertEqual(Matrix<uint>::Ones(5, 5), expected_ones, "Ones static method OK");
+    
+    Matrix<uint> result(5, 5, 2);
+    result.Ones();
+    XCTAssertEqual(result, expected_ones, "Ones method OK");
+}
+
+- (void)testZero {
+    const Matrix<uint> expected_zero(5, 5, 0);
+    XCTAssertEqual(Matrix<uint>::Zero(5, 5), expected_zero, "Zero static method OK");
+    
+    Matrix<uint> result(5, 5, 2);
+    result.Zero();
+    XCTAssertEqual(result, expected_zero, "Zero method OK");
+}
+
+- (void)testIdentity {
+    const Matrix<uint> expected_identity({
+        {1, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 0, 1}
+    });
+    XCTAssertEqual(Matrix<uint>::Identity(5, 5), expected_identity, "Identity static method OK");
+    
+    Matrix<uint> result(5, 5, 2);
+    result.Identity();
+    XCTAssertEqual(result, expected_identity, "Identity method OK");
+    
+    Matrix<uint> result2(5, 4, 2);
+    XCTAssertThrows(result2.Identity(), "Identity method is only valid for squared matrices");
 }
 
 - (void)testComparison {
@@ -278,6 +323,14 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix.Transpose(), expected, "Transpose operation OK");
 }
 
+- (void)testSquaredMatrix {
+    const auto squared_matrix = Matrix<int>::Ones(4, 4);
+    XCTAssert(squared_matrix.IsSquared(), "squared_matrix is squared");
+    
+    const auto rectangular_matrix = Matrix<int>::Ones(4, 3);
+    XCTAssert(!rectangular_matrix.IsSquared(), "rectangular_matrix is not squared");
+}
+
 - (void)testGetMatrixMethods {
     const Matrix<int> matrix({
         {0,  1,  2,  3,  4},
@@ -317,48 +370,56 @@ using namespace cda::math::containers;
     // Get the whole first column
     Vector<int> expected_vector({0, 5, 10, 15});
     auto result_vector = matrix.GetColumnAsVector(0);
-    XCTAssert(result_vector == expected_vector, "GetColumnAsVector for the whole first column OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the whole first column OK!");
     
     // Get the last two elements of the first column
     expected_vector = Vector<int>({10, 15});
     result_vector = matrix.GetColumnAsVector(0, 2);
-    XCTAssert(result_vector == expected_vector, "GetColumnAsVector for the last two elements of the first column OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the last two elements of the first column OK!");
     
     // Get the whole third column
     expected_vector = Vector<int>({2, 7, 12, 17});
     result_vector = matrix.GetColumnAsVector(2);
-    XCTAssert(result_vector == expected_vector, "GetColumnAsVector for the whole third column OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the whole third column OK!");
     
     // Get the last three elements of the fourth column
     expected_vector = Vector<int>({8, 13, 18});
     result_vector = matrix.GetColumnAsVector(3, 1);
-    XCTAssert(result_vector == expected_vector, "GetColumnAsVector for the last three elements of the fourth column OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the last three elements of the fourth column OK!");
     
     // Get the last column
     expected_vector = Vector<int>({4, 9, 14, 19});
     result_vector = matrix.GetColumnAsVector(4);
-    XCTAssert(result_vector == expected_vector, "GetColumnAsVector for the last column OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the last column OK!");
+    
+    // Get column out of bounds
+    XCTAssertThrows(matrix.GetColumnAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");
+    XCTAssertThrows(matrix.GetColumnAsVector(6), "GetColumnAsVector out of bounds by number of column");
     
     // --- GetRowAsVector ---
     // Get the whole first row
     expected_vector = Vector<int>({0,  1,  2,  3,  4});
     result_vector = matrix.GetRowAsVector(0);
-    XCTAssert(result_vector == expected_vector, "GetRowAsVector for the whole first row OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the whole first row OK!");
     
     // Get the last two elements of the first column
     expected_vector = Vector<int>({7,  8,  9});
     result_vector = matrix.GetRowAsVector(1, 2);
-    XCTAssert(result_vector == expected_vector, "GetRowAsVector for the last three elements of the second row OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the last three elements of the second row OK!");
     
     // Get the whole third row
     expected_vector = Vector<int>({10, 11, 12, 13, 14});
     result_vector = matrix.GetRowAsVector(2);
-    XCTAssert(result_vector == expected_vector, "GetRowAsVector for the whole third row OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the whole third row OK!");
     
     // Get the last element of the last row
     expected_vector = Vector<int>({19});
     result_vector = matrix.GetRowAsVector(3, 4);
-    XCTAssert(result_vector == expected_vector, "GetRowAsVector for the last element of the last row OK!");
+    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the last element of the last row OK!");
+    
+    // Get row out of bounds
+    XCTAssertThrows(matrix.GetRowAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");
+    XCTAssertThrows(matrix.GetRowAsVector(6), "GetColumnAsVector out of bounds by number of column");
 }
 
 - (void)testSetMatrixMethods {
