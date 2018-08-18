@@ -13,6 +13,10 @@
 #include "../../math.hpp"
 
 
+#define CDA_QR_DEFAULT_ACCURACY 1E-06
+#define CDA_QR_DEFAULT_MAX_ITERATIONS 1E+06
+
+
 namespace cda {
     namespace math {
         namespace algorithms {
@@ -23,8 +27,8 @@ namespace cda {
                 public:
                     
                     QR(const containers::Matrix<T> &matrix,
-                       const size_t &max_iterations = 1E+04,
-                       const double &accuracy = 1E-04) :
+                       const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
+                       const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
                     max_iterations(max_iterations), accuracy(accuracy) {
                         
                         if (!matrix.IsSquared()) {

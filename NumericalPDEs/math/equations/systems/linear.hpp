@@ -13,13 +13,13 @@
 #include "../../algorithms/factorization/lu.hpp"
 
 
+#define CDA_LINEAR_DEFAULT_ACCURACY 1E-06
+
 namespace cda {
     namespace math {
         namespace equations {
             namespace systems {
                 namespace linear {
-                    
-                    const double DEFAULT_ACCURACY = 1E-04;
                     
                     template <typename T>
                     containers::Vector<T> SolveLinearSystemLU(const containers::Matrix<T> &system,
@@ -66,7 +66,7 @@ namespace cda {
                     template<typename T>
                     containers::Vector<T> SolveLinearSystemGaussSeidel3Diagonal(const containers::Matrix<T> &system,
                                                                                 const containers::Vector<T> &b_terms,
-                                                                                const double &accuracy = DEFAULT_ACCURACY) {
+                                                                                const double &accuracy = CDA_LINEAR_DEFAULT_ACCURACY) {
                         
                         if (!system.IsSquared()) {
                             throw std::logic_error("The system is matrix is not squared");
