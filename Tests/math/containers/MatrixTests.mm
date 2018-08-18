@@ -331,7 +331,7 @@ using namespace cda::math::containers;
     XCTAssert(!rectangular_matrix.IsSquared(), "rectangular_matrix is not squared");
 }
 
-- (void)testGetMatrixMethods {
+- (void)testGettersMethods {
     const Matrix<int> matrix({
         {0,  1,  2,  3,  4},
         {5,  6,  7,  8,  9},
@@ -339,26 +339,64 @@ using namespace cda::math::containers;
         {15, 16, 17, 18, 19}
     });
     
-    const Matrix<int> expected1({
+    // --- GetMatrix
+    const Matrix<int> expected_matrix1({
         {7,  8,  9},
         {12, 13, 14},
         {17, 18, 19}
     });
     
-    XCTAssertEqual(matrix.GetMatrix(1, 2), expected1, "GetMatrix without lengths OK");
+    XCTAssertEqual(matrix.GetMatrix(1, 2), expected_matrix1, "GetMatrix without lengths OK");
     
-    const Matrix<int> expected2({
+    const Matrix<int> expected_matrix2({
         {0,  1,  2},
         {5,  6,  7},
         {10, 11, 12}
     });
     
-    XCTAssertEqual(matrix.GetMatrix(0, 0, 3, 3), expected2, "GetMatrix with lengths OK");
+    XCTAssertEqual(matrix.GetMatrix(0, 0, 3, 3), expected_matrix2, "GetMatrix with lengths OK");
     
     XCTAssertThrows(matrix.GetMatrix(1, 1, 6, 6), "Unable to get submatrix. Elements out of bounds");
+    
+    // --- GetRow
+    const Matrix<int> expected_first_row({{0,  1,  2,  3,  4}});
+    XCTAssertEqual(matrix.GetRow(0), expected_first_row, "GetRow first OK");
+    
+    const Matrix<int> expected_last_row({{15, 16, 17, 18, 19}});
+    XCTAssertEqual(matrix.GetRow(3), expected_last_row, "GetRow last OK");
+    
+    const Matrix<int> expected_in_between_row({{10, 11, 12, 13, 14}});
+    XCTAssertEqual(matrix.GetRow(2), expected_in_between_row, "GetRow last OK");
+    
+    XCTAssertThrows(matrix.GetRow(4), "GetRow out of bounds");
+    
+    // --- GetColumn
+    const Matrix<int> expected_first_column(4, 1, {0, 5, 10, 15});
+    XCTAssertEqual(matrix.GetColumn(0), expected_first_column, "GetRow first OK");
+    
+    const Matrix<int> expected_last_column(4, 1, {4, 9, 14, 19});
+    XCTAssertEqual(matrix.GetColumn(4), expected_last_column, "GetRow last OK");
+    
+    const Matrix<int> expected_in_between_column(4, 1, {2, 7, 12, 17});
+    XCTAssertEqual(matrix.GetColumn(2), expected_in_between_column, "GetRow last OK");
+    
+    XCTAssertThrows(matrix.GetColumn(5), "GetColumn out of bounds");
+    
+    // --- GetDiagonal
+    XCTAssertThrows(matrix.GetDiagonal(), "This method is only available for squared matrices");
+    
+    const Matrix<int> squared_matrix({
+        { 0,  1,  2,  3},
+        { 5,  6,  7,  8},
+        {10, 11, 12, 13},
+        {15, 16, 17, 18}
+    });
+    
+    const Vector<int> expected_diagonal({0, 6, 12, 18});
+    XCTAssertEqual(squared_matrix.GetDiagonal(), expected_diagonal, "GetDiagonal method OK");
 }
 
-- (void)testGetAsVectorMethods {
+- (void)testGettersAsVectorMethods {
     const Matrix<int> matrix({
         {0,  1,  2,  3,  4},
         {5,  6,  7,  8,  9},
