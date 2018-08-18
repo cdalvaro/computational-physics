@@ -17,6 +17,7 @@
 		07A351C520C5D5C800DC2DC2 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C220C5D5C800DC2DC2 /* matrix.cpp */; };
 		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
 		07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07C653BA2124993C006F0CC3 /* QRTests.mm */; };
+		07CD429921284C030096693E /* MathTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07CD429821284C030096693E /* MathTests.mm */; };
 		07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07D8C2FB20CED49A00F194F3 /* VectorTests.mm */; };
 		07DA13491559113E00FCF6F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13481559113E00FCF6F8 /* main.cpp */; };
 		07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13511559115100FCF6F8 /* GLUT.framework */; };
@@ -66,6 +67,7 @@
 		07B57FCA20CED3D0001DDC78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07C1B099210F8EA700EB8A9B /* algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = algorithms.hpp; sourceTree = "<group>"; };
 		07C653BA2124993C006F0CC3 /* QRTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QRTests.mm; sourceTree = "<group>"; };
+		07CD429821284C030096693E /* MathTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MathTests.mm; sourceTree = "<group>"; };
 		07D8C2FB20CED49A00F194F3 /* VectorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorTests.mm; sourceTree = "<group>"; };
 		07DA13441559113E00FCF6F8 /* NumericalPDEs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NumericalPDEs; sourceTree = BUILT_PRODUCTS_DIR; };
 		07DA13481559113E00FCF6F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			children = (
 				072AB5B320D598B6009BAB93 /* algorithms */,
 				07B57FCF20CED400001DDC78 /* containers */,
+				07CD429821284C030096693E /* MathTests.mm */,
 			);
 			path = math;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */,
 				070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */,
 				07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */,
+				07CD429921284C030096693E /* MathTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
