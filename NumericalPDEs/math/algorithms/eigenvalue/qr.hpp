@@ -161,13 +161,7 @@ namespace cda {
                         auto c = matrix.GetColumnAsVector(0);
                         auto vt = c + I.GetRowAsVector(0) * signum(c[0]) * c.Norm();
                         
-                        containers::Matrix<T> v(rows, 1);
-                        auto it_v = v.Begin();
-                        for (auto it = vt.Begin(); it != vt.End(); ++it, ++it_v) {
-                            *it_v = *it;
-                        }
-                        
-                        q = I - 2.0 * (v * vt) / vt.SquaredNorm();
+                        q = I - 2.0 * (containers::Transpose(vt) * vt) / vt.SquaredNorm();
                         r = q * matrix;
                         for (auto it_r = r.Begin() + rows; it_r != r.End(); it_r += rows) {
                             *it_r = 0;
@@ -178,20 +172,13 @@ namespace cda {
                         const auto last_row = rows - 1;
                         
                         for (size_t row = 1; row < last_row; ++row) {
-                            v.Resize(rows - row, 1);
-                            
                             c = r.GetColumnAsVector(row).Get(row);
                             
                             if (c.IsNull()) {
                                 h = containers::Matrix<T>::Identity(rows - row, rows - row);
                             } else {
                                 vt = c + I.GetRowAsVector(row, row) * signum(c[0]) * c.Norm();
-                                it_v = v.Begin();
-                                for (auto it = vt.Begin(); it != vt.End(); ++it, ++it_v) {
-                                    *it_v = *it;
-                                }
-                                
-                                h = I.GetMatrix(row, row) - 2.0 * (v * vt) / vt.SquaredNorm();
+                                h = I.GetMatrix(row, row) - 2.0 * (containers::Transpose(vt) * vt) / vt.SquaredNorm();
                                 
                                 auto A(I);
                                 A.SetMatrix(row, row, h);

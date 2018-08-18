@@ -856,12 +856,20 @@ namespace cda {
                 }
                 
             };
+            
+            //  MARK: - Extra funcions
+            template <typename T>
+            Matrix<T> Transpose(const Vector<T> &vector) {
+                Matrix<T> matrix(vector.Size(), 1);
+                std::copy(vector.Begin(), vector.End(), matrix.Begin());
+                return matrix;
+            }
         
         } /* namespace math */
     } /* namespace containers */
 } /* namespace cda */
 
-//  --- MORE OPERATORS ---
+//  MARK: - Extra operators
 template <typename T>
 cda::math::containers::Matrix<T> operator*(const T &value,
                                            const cda::math::containers::Matrix<T> &matrix) {

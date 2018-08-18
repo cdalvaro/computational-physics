@@ -314,4 +314,22 @@ using namespace cda::math::containers;
     XCTAssertEqual(result, expected, "Product of two patrices OK");
 }
 
+- (void)testTransposeVectorToMatrix {
+    const Vector<int> vector({0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+    const Matrix<int> expected({
+        {0},
+        {1},
+        {2},
+        {3},
+        {4},
+        {5},
+        {6},
+        {7},
+        {8},
+        {9}
+    });
+    
+    XCTAssertEqual(Transpose(vector), expected, "Transpose vector is the expected matrix");
+}
+
 @end
