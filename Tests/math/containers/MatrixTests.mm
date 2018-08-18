@@ -29,31 +29,234 @@ using namespace cda::math::containers;
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
-- (void)testMatrixProduct {
-    const Matrix<int> matrix1(4, 4, {
-         0,  1,  2,  3,
-         4,  5,  6,  7,
-         8,  9, 10, 11,
-        12, 13, 14, 15
-    });
+- (void)testConstructors {
+    
+    const Matrix<int> matrix;
+    XCTAssert(matrix.IsEmpty(), "matrix is empty");
+    XCTAssert(matrix.IsNull(), "matrix is null");
+    
+    const Matrix<int> matrix1(4, 4, 1);
+    XCTAssert(!matrix1.IsEmpty() && !matrix1.IsNull(), "matrix1 is not empty and is not null");
+    XCTAssertEqual(matrix1.Rows(), 4, "The number of rows of matrix1 is OK");
+    XCTAssertEqual(matrix1.Columns(), 4, "The number of columns of matrix1 is OK");
+    XCTAssertEqual(matrix1.Size(), 16, "The size of matrix1 is OK");
     
     const Matrix<int> matrix2(4, 4, {
-         3,  2,  1,  0,
-         7,  6,  5,  4,
-        11, 10,  9,  8,
-        15, 14, 13, 12
+        0,  1,  2,  3,
+        4,  5,  6,  7,
+        8,  9, 10, 11,
+        12, 13, 14, 15
+    });
+    XCTAssert(!matrix2.IsEmpty() && !matrix2.IsNull(), "matrix2 is not empty and is not null");
+    XCTAssertEqual(matrix2.Rows(), 4, "The number of rows of matrix2 is OK");
+    XCTAssertEqual(matrix2.Columns(), 4, "The number of columns of matrix2 is OK");
+    XCTAssertEqual(matrix2.Size(), 16, "The size of matrix2 is OK");
+    
+    XCTAssertThrows(Matrix<int>(2, 2, { 0,  1,  2 }), "The array of values has different size than the matrix");
+    
+    const Matrix<int> matrix3({
+        { 0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  9, 10, 11},
+        {12, 13, 14, 15}
+    });
+    XCTAssert(!matrix3.IsEmpty() && !matrix3.IsNull(), "matrix3 is not empty and is not null");
+    XCTAssertEqual(matrix3.Rows(), 4, "The number of rows of matrix3 is OK");
+    XCTAssertEqual(matrix3.Columns(), 4, "The number of columns of matrix3 is OK");
+    XCTAssertEqual(matrix3.Size(), 16, "The size of matrix3 is OK");
+    
+    Matrix<int> matrix4(matrix3);
+    XCTAssertEqual(matrix4, matrix3, "matrix3 and matrix4 are equal");
+    
+    Matrix<int> matrix5(std::move(matrix4));
+    XCTAssertEqual(matrix5, matrix3, "matrix3 and matrix4 are equal");
+    XCTAssert(matrix4.IsEmpty(), "matrix4 is empty after had been moved");
+    XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved");
+    
+    matrix4 = matrix2;
+    XCTAssertEqual(matrix4, matrix2, "matrix4 and matrix2 are equal");
+    
+    matrix5 = std::move(matrix4);
+    XCTAssertEqual(matrix5, matrix2, "matrix5 and matrix2 are equal");
+    XCTAssert(matrix4.IsEmpty(), "matrix4 is empty after had been moved in asignation");
+    XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved in asignation");
+}
+
+- (void)testComparison {
+    const Matrix<int> matrix1({
+        { 0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  9, 10, 11},
+        {12, 13, 14, 15}
     });
     
-    const Matrix<int> expected(4, 4, {
-        74, 68, 62, 56,
-        218, 196, 174, 152,
-        362, 324, 286, 248,
-        506, 452, 398, 344
+    XCTAssert(matrix1 == matrix1, "Matrix is equal to itself");
+    XCTAssert(!(matrix1 != matrix1), "Matrix is not different to itself");
+    
+    const Matrix<int> matrix2({
+        { 0,  1,  2,  3},
+        { 8,  9, 10, 11},
+        { 4,  5,  6,  7},
+        {12, 13, 14, 15}
     });
     
-    const auto result = matrix1 * matrix2;
+    XCTAssert(matrix1 != matrix2, "matrix1 is different to matrix2");
+    XCTAssert(!(matrix1 == matrix2), "matrix1 is not equal to matrix2");
     
-    XCTAssert(result == expected, "Matrix product OK");
+    // Same as matrix1 whit less columns
+    const Matrix<int> matrix3({
+        { 0,  1,  2},
+        { 4,  5,  6},
+        { 8,  9, 10},
+        {12, 13, 14}
+    });
+    
+    XCTAssert(matrix3 != matrix1, "matrix3 is different to matrix1");
+    XCTAssert(!(matrix3 == matrix1), "matrix3 is not equal to matrix1");
+    
+    // Same as matrix2 whit less rows
+    const Matrix<int> matrix4({
+        { 0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        {12, 13, 14, 15}
+    });
+    
+    XCTAssert(matrix4 != matrix2, "matrix4 is different to matrix2");
+    XCTAssert(!(matrix4 == matrix2), "matrix4 is not equal to matrix2");
+}
+
+- (void)testResize {
+    const Matrix<int> matrix({
+        {0, 1,  2},
+        {4, 5,  6},
+        {8, 9, 10}
+    });
+    
+    auto result(matrix);
+    result.Resize(matrix.Rows(), matrix.Columns());
+    XCTAssertEqual(result, matrix, "matrix has not been changed");
+    
+    const Matrix<int> expected1({
+        {0, 1},
+        {4, 5}
+    });
+    
+    result = Matrix<int>(matrix);
+    result.Resize(2, 2);
+    XCTAssertEqual(result, expected1, "matrix has been resized OK to a 2x2 matrix");
+    
+    const Matrix<int> expected2({
+        {0, 1},
+        {4, 5},
+        {8, 9}
+    });
+    
+    result = Matrix<int>(matrix);
+    result.Resize(3, 2);
+    XCTAssertEqual(result, expected2, "matrix has been resized OK to a 3x2 matrix");
+    
+    const Matrix<int> expected3({
+        {0, 1, 2},
+        {4, 5, 6}
+    });
+    
+    result = Matrix<int>(matrix);
+    result.Resize(2, 3);
+    XCTAssertEqual(result, expected3, "matrix has been resized OK to a 2x3 matrix");
+    
+    const Matrix<int> expected4({
+        {0, 1,  2, 0},
+        {4, 5,  6, 0},
+        {8, 9, 10, 0},
+        {0, 0,  0, 0}
+    });
+    
+    result = Matrix<int>(matrix);
+    result.Resize(4, 4, true);
+    XCTAssertEqual(result, expected4, "matrix has been resized OK to a 4x4 matrix adding zeros to the new elements");
+    
+    const Matrix<int> expected5({
+        {0, 1,  2},
+        {4, 5,  6},
+        {8, 9, 10},
+        {0, 0,  0}
+    });
+    
+    result = Matrix<int>(matrix);
+    result.Resize(4, 3, true);
+    XCTAssertEqual(result, expected5, "matrix has been resized OK to a 4x3 matrix adding zeros to the new elements");
+}
+
+- (void)testChangeDimensions {
+    const Matrix<int> matrix({
+        {0, 1,  2, 4},
+        {4, 5,  6, 7},
+        {8, 9, 10, 11}
+    });
+    
+    const Matrix<int> expected({
+        {0,  1,  2},
+        {4,  4,  5},
+        {6,  7,  8},
+        {9, 10, 11}
+    });
+    
+    auto result(matrix);
+    result.ChangeDimensions(4, 3);
+    
+    XCTAssertEqual(result, expected, "Dimensions have been changed OK");
+    XCTAssertThrows(result.ChangeDimensions(3, 3), "The total size of the matrix cannot be changed");
+}
+
+- (void)testProducts {
+    const Matrix<int> matrix1({
+        { 0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  9, 10, 11},
+        {12, 13, 14, 15}
+    });
+    
+    const Matrix<int> matrix2({
+        { 3,  2,  1,  0},
+        { 7,  6,  5,  4},
+        {11, 10,  9,  8},
+        {15, 14, 13, 12}
+    });
+    
+    const Matrix<int> expected1({
+        { 74,  68,  62,  56},
+        {218, 196, 174, 152},
+        {362, 324, 286, 248},
+        {506, 452, 398, 344}
+    });
+    
+    XCTAssertEqual(matrix1 * matrix2, expected1, "Square matrices product OK");
+    
+    const Matrix<int> matrix3({
+        { 0,  1,  2,  3, -1},
+        { 4,  5,  6,  7, -2},
+        { 8,  9, 10, 11, -3},
+        {12, 13, 14, 15, -4}
+    });
+    
+    const Matrix<int> matrix4({
+        { 3,   2,   1,   0, -11, 235},
+        { 7,   6,   5,   4, -22, 264},
+        {11,  10,   9,   8, -33, 436},
+        {15,  14,  13,  12, -44, 643},
+        {54, 235,  21,  21, 235, 426}
+    });
+    
+    const Matrix<int> expected2({
+        { 20, -167,  41,  35,  -455,  2639},
+        {110, -274, 132, 110, -1130,  8525},
+        {200, -381, 223, 185, -1805, 14411},
+        {290, -488, 314, 260, -2480, 20297}
+    });
+    
+    XCTAssertEqual(matrix3 * matrix4, expected2, "Rectangular matrices product OK");
+    
+    XCTAssertThrows(matrix4 * matrix3, "Matrices dimensions are incompatible");
 }
 
 - (void)testTransposeOperation {
@@ -72,9 +275,7 @@ using namespace cda::math::containers;
         {4, 9, 14, 19}
     });
     
-    const auto result = matrix.Transpose();
-    
-    XCTAssert(result == expected, "Transpose operation OK");
+    XCTAssertEqual(matrix.Transpose(), expected, "Transpose operation OK");
 }
 
 - (void)testGetMatrixMethods {
@@ -91,9 +292,7 @@ using namespace cda::math::containers;
         {17, 18, 19}
     });
     
-    const auto result1 = matrix.GetMatrix(1, 2);
-    
-    XCTAssert(result1 == expected1, "GetMatrix without lengths OK");
+    XCTAssertEqual(matrix.GetMatrix(1, 2), expected1, "GetMatrix without lengths OK");
     
     const Matrix<int> expected2({
         {0,  1,  2},
@@ -101,9 +300,9 @@ using namespace cda::math::containers;
         {10, 11, 12}
     });
     
-    const auto result2 = matrix.GetMatrix(0, 0, 3, 3);
+    XCTAssertEqual(matrix.GetMatrix(0, 0, 3, 3), expected2, "GetMatrix with lengths OK");
     
-    XCTAssert(result2 == expected2, "GetMatrix with lengths OK");
+    XCTAssertThrows(matrix.GetMatrix(1, 1, 6, 6), "Unable to get submatrix. Elements out of bounds");
 }
 
 - (void)testGetAsVectorMethods {
