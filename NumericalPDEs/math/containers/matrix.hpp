@@ -264,7 +264,7 @@ namespace cda {
                 }
                 
                 Vector<T> GetRowAsVector(const size_t &row, const size_t &from_column = 0) const {
-                    if (from_column >= this->m) {
+                    if (row >= this->n || from_column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
@@ -275,7 +275,7 @@ namespace cda {
                 }
                 
                 Vector<T> GetColumnAsVector(const size_t &column, const size_t &from_row = 0) const {
-                    if (from_row >= this->n) {
+                    if (column >= this->m || from_row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
@@ -846,10 +846,6 @@ namespace cda {
                 }
                 
                 static Matrix<T> Identity(const size_t &rows, const size_t &columns) {
-                    if (rows != columns) {
-                        throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
-                    }
-                    
                     Matrix<T> identity(rows, columns);
                     identity.Identity();
                     return identity;
