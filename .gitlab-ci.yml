@@ -15,7 +15,7 @@ analyze_project:
 test_project:
   stage: test
   script:
-    - xcodebuild clean test -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
+    - xcodebuild test -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
     - slather coverage --scheme 'Numerical PDEs' --show NumericalPDEs.xcodeproj
   tags:
     - Xcode_9-3
@@ -32,7 +32,7 @@ build_project:
 archive_project:
   stage: archive
   script:
-    - xcodebuild clean archive -archivePath build/NumericalPDEs -scheme 'Numerical PDEs' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+    - xcodebuild archive -archivePath build/NumericalPDEs -scheme 'Numerical PDEs' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
   only:
     - master
   artifacts:
