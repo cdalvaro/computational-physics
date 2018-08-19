@@ -21,13 +21,10 @@ namespace cda {
                 public:
                     
                     LU(const containers::Matrix<T> &matrix) :
-                    is_factorized(false) {
-                        
+                    is_factorized(false), original(matrix), rows(matrix.Rows()) {
                         if (!matrix.IsSquared()) {
                             std::logic_error("LU matrix cannot be computed for a non-squared matrix.");
                         }
-                        
-                        lu = matrix;
                     }
                     
                     virtual ~LU() = default;
@@ -43,10 +40,6 @@ namespace cda {
                     }
                     
                     containers::Vector<T> SolveLinearSystem(const containers::Vector<T> &b_terms) {
-                        
-                        const auto rows = lu.Rows();
-                        const auto columns = lu.Columns();
-                        
                         if (rows != b_terms.Size()) {
                             throw std::logic_error("The number of rows of the LU matrix does not match the number of elements in the b terms vector.");
                         }
@@ -59,17 +52,19 @@ namespace cda {
                         for (size_t row = 0; row < rows; ++row) {
                             sum = 0;
                             for (size_t column = 0; column < row; ++column) {
-                                sum += lu[row][column] * tmp[column];
+                                sum += original[row][column] * tmp[column];
                             }
                             tmp[row] = b_terms[row] - sum;
                         }
                         
-                        for (ssize_t row = rows - 1; row >= 0; --row) {
+                        // Since matrix is square -> #rows == #columns
+                        const size_t last_row = rows - 1;
+                        for (ssize_t row = last_row; row >= 0; --row) {
                             sum = 0;
-                            for (ssize_t column = columns - 1; column >= 0; --column) {
-                                sum += lu[row][column] * x[column];
+                            for (ssize_t column = last_row; column >= 0; --column) {
+                                sum += original[row][column] * x[column];
                             }
-                            x[row] = (tmp[row] - sum) / lu[row][row];
+                            x[row] = (tmp[row] - sum) / original[row][row];
                         }
                         
                         return x;
@@ -77,7 +72,6 @@ namespace cda {
                     
                     containers::Matrix<T> InverseMatrix() {
                         
-                        const auto rows = lu.Rows();
                         containers::Matrix<T> inverse(rows, rows);
                         containers::Vector<T> I(rows, 0);
                         
@@ -91,13 +85,29 @@ namespace cda {
                     }
                     
                     static containers::Matrix<T> InverseMatrix(const containers::Matrix<T> &matrix) {
-                        LU<T> lu_matrix(matrix);
-                        return lu_matrix.InverseMatrix();
+                        return LU<T>(matrix).InverseMatrix();
+                    }
+                    
+                    T Determinant() const {
+                        T determinant = 1.0;
+                        
+                        FactorizeLU();
+                        for (size_t row = 0; row < rows; ++row) {
+                            determinant *= u[row][row];
+                        }
+                        
+                        return determinant;
+                    }
+                    
+                    static T Determinant(const containers::Matrix<T> &matrix) {
+                         return LU<T>(matrix).Determinant();
                     }
                     
                 private:
                     
-                    containers::Matrix<T> lu;
+                    const containers::Matrix<T> original;
+                    const size_t rows;
+                    
                     containers::Matrix<T> l;
                     containers::Matrix<T> u;
                     
@@ -109,56 +119,56 @@ namespace cda {
                             return;
                         }
                         
-                        auto rows = lu.Rows();
-                        auto columns = lu.Columns();
+                        auto matrix(original);
                         
-                        l.Resize(rows, columns, 0);
-                        u.Resize(rows, columns, 0);
+                        l.Resize(rows, rows, 0);
+                        u.Resize(rows, rows, 0);
                         
-                        auto first_element = lu[0][0];
+                        auto first_element = matrix[0][0];
                         for (size_t row = 1; row < rows; ++row) {
-                            lu[row][0] /= first_element;
+                            matrix[row][0] /= first_element;
                         }
                         
                         T sum;
-                        for (size_t row = 1; row < rows - 1; ++row) {
+                        const size_t last_row = rows - 1;
+                        for (size_t row = 1; row < last_row; ++row) {
                             
                             // U Matrix
-                            for (size_t column = row; column < columns; ++column) {
+                            for (size_t column = row; column < rows; ++column) {
                                 sum = 0;
                                 for (size_t k = 0; k < row; ++k) {
-                                    sum += lu[k][column] * lu[row][k];
+                                    sum += matrix[k][column] * matrix[row][k];
                                 }
-                                lu[row][column] -= sum;
+                                matrix[row][column] -= sum;
                             }
                             
                             // L Matrix
                             for (size_t k = row + 1; k < rows; ++k) {
                                 sum = 0;
                                 for (size_t column = 0; column < row; ++column) {
-                                    sum += lu[column][row] * lu[k][column];
+                                    sum += matrix[column][row] * matrix[k][column];
                                 }
-                                lu[k][row] = (lu[k][row] - sum) / lu[row][row];
+                                matrix[k][row] = (matrix[k][row] - sum) / matrix[row][row];
                             }
                         }
                         
                         sum = 0;
-                        for (size_t k = 0; k < rows - 1; ++k) {
-                            sum += lu[k][columns - 1] * lu[rows - 1][k];
+                        for (size_t k = 0; k < last_row; ++k) {
+                            sum += matrix[k][last_row] * matrix[last_row][k];
                         }
-                        lu[rows - 1][columns - 1] -= sum;
+                        matrix[last_row][last_row] -= sum;
                         
                         for (size_t row = 0; row < rows; ++row) {
-                            for (size_t column = 0; column < columns; ++column) {
+                            for (size_t column = 0; column < rows; ++column) {
                                 if (column > row) {
-                                    u[row][column] = lu[row][column];
+                                    u[row][column] = matrix[row][column];
                                     l[row][column] = 0;
                                 } else if (column == row) {
-                                    u[row][column] = lu[row][column];
+                                    u[row][column] = matrix[row][column];
                                     l[row][column] = 1;
                                 } else {
                                     u[row][column] = 0;
-                                    l[row][column] = lu[row][column];
+                                    l[row][column] = matrix[row][column];
                                 }
                             }
                         }
