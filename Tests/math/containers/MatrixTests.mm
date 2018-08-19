@@ -476,7 +476,7 @@ using namespace cda::math::containers;
         {0, 0, 17, 18, 19}
     });
     
-    XCTAssert(result == expected1, "SetMatrix without lengths OK");
+    XCTAssertEqual(result, expected1, "SetMatrix without lengths OK");
     
     result.SetMatrix(0, 0,
                      Matrix<int>({
@@ -492,7 +492,98 @@ using namespace cda::math::containers;
         { 0,  0, 17, 18, 19}
     });
     
-    XCTAssert(result == expected2, "SetMatrix with lengths OK");
+    XCTAssertEqual(result, expected2, "SetMatrix with lengths OK");
+    
+    result.SetMatrix(0, 0,
+                     Matrix<int>({
+        { 0,  1,  2,  0,  0, 346},
+        { 5,  6,  7,  8,  9,  21},
+        {10, 11, 12, 13, 14,   1},
+        { 0,  0, 17, 18, 19, 251},
+        { 5,  6,  7,  8,  9,  21}
+    }));
+    
+    XCTAssertEqual(result, expected2, "SetMatrix with greater lengths OK");
+    
+    XCTAssertThrows(result.SetMatrix(5, 4, expected2), "SetMatrix out of bounds by row");
+    XCTAssertThrows(result.SetMatrix(3, 6, expected2), "SetMatrix out of bounds by column");
+}
+
+- (void)testSetRow {
+    auto result = Matrix<int>::Ones(4, 5);
+    
+    const Matrix<int> expected({
+        { 1,  1, 1, 1,  1},
+        { 2, -5, 7, 9, -7},
+        { 1,  1, 1, 1,  1},
+        { 1,  1, 1, 1,  1}
+    });
+    
+    Matrix<int> new_row({{2, -5, 7, 9, -7}});
+    result.SetRow(1, new_row);
+    XCTAssertEqual(result, expected, "SetRow complete OK");
+    
+    XCTAssertThrows(result.SetRow(4, new_row), "SetRow: row out of bounds");
+    
+    new_row = Matrix<int>({
+        {1, 2, 3, 4, 5, 6},
+        {1, 2, 3, 4, 5, 6}
+    });
+    XCTAssertThrows(result.SetRow(1, new_row), "SetRow: new row has more than one row");
+    
+    new_row = Matrix<int>({
+        {1, 2, 3, 4, 5, 6}
+    });
+    XCTAssertThrows(result.SetRow(1, new_row), "SetRow: new row has more elements than old one");
+    
+    result.Ones();
+    new_row = Matrix<int>({{2, -5, 7, 9, -7}});
+    result.SetRow(1, new_row.GetRowAsVector(0));
+    XCTAssertEqual(result, expected, "SetRow (vector) complete OK");
+    
+    XCTAssertThrows(result.SetRow(4, new_row.GetRowAsVector(0)), "SetRow (vector): row out of bounds");
+    
+    new_row = Matrix<int>({{1, 2, 3, 4, 5, 6}});
+    XCTAssertThrows(result.SetRow(1, new_row.GetRowAsVector(0)), "SetRow (vector): new row has more elements than old one");
+    
+    new_row = Matrix<int>({{1, 2, 3}});
+    XCTAssertThrows(result.SetRow(1, new_row.GetRowAsVector(0)), "SetRow (vector): new row has fewer elements than old one");
+}
+
+- (void)testSetColumn {
+    auto result = Matrix<int>::Ones(4, 5);
+    
+    const Matrix<int> expected({
+        { 1,  2, 1, 1, 1},
+        { 1, -3, 1, 1, 1},
+        { 1,  6, 1, 1, 1},
+        { 1, -8, 1, 1, 1}
+    });
+    
+    Matrix<int> new_column(4, 1, {2, -3, 6, -8});
+    result.SetColumn(1, new_column);
+    XCTAssertEqual(result, expected, "SetColumn complete OK");
+    
+    XCTAssertThrows(result.SetColumn(5, new_column), "SetColumn: column out of bounds");
+    
+    new_column = Matrix<int>(4, 2, {1, 2, 3, 4, 5, 6, 7, 8});
+    XCTAssertThrows(result.SetColumn(1, new_column), "SetColumn: new column has more than one column");
+    
+    new_column = Matrix<int>(5, 1, {1, 2, 3, 4, 5});
+    XCTAssertThrows(result.SetColumn(1, new_column), "SetColumn: new column has more elements than old one");
+    
+    result.Ones();
+    new_column = Matrix<int>(4, 1, {2, -3, 6, -8});
+    result.SetColumn(1, new_column.GetColumnAsVector(0));
+    XCTAssertEqual(result, expected, "SetColumn (vector) complete OK");
+    
+    XCTAssertThrows(result.SetColumn(5, new_column.GetColumnAsVector(0)), "SetColumn (vector): column out of bounds");
+    
+    new_column = Matrix<int>(5, 1, {1, 2, 3, 4, 5});
+    XCTAssertThrows(result.SetColumn(1, new_column.GetColumnAsVector(0)), "SetColumn (vector): new column has more elements than old one");
+    
+    new_column = Matrix<int>(3, 1, {1, 2, 3});
+    XCTAssertThrows(result.SetColumn(1, new_column.GetColumnAsVector(0)), "SetColumn (vector): new column has fewer elements than old one");
 }
 
 - (void)testSumRows {
