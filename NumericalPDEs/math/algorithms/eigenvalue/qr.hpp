@@ -13,8 +13,8 @@
 #include "../../math.hpp"
 
 
-#define CDA_QR_DEFAULT_ACCURACY 1E-06
-#define CDA_QR_DEFAULT_MAX_ITERATIONS 1E+06
+#define CDA_QR_DEFAULT_ACCURACY 1E-05
+#define CDA_QR_DEFAULT_MAX_ITERATIONS 1E+05
 
 
 namespace cda {
@@ -29,14 +29,11 @@ namespace cda {
                     QR(const containers::Matrix<T> &matrix,
                        const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
+                    original(matrix), rows(matrix.Rows()),
                     max_iterations(max_iterations), accuracy(accuracy) {
-                        
                         if (!matrix.IsSquared()) {
                             throw std::logic_error("Matrix must be squared to compute its eigenvalues.");
                         }
-                        
-                        original = matrix;
-                        rows = matrix.Rows();
                     }
                     
                     virtual ~QR() = default;
@@ -149,13 +146,14 @@ namespace cda {
                     
                 private:
                     
-                    containers::Matrix<T> original;
-                    containers::Matrix<T> q;
-                    containers::Matrix<T> r;
+                    const containers::Matrix<T> original;
+                    const size_t rows;
                     
-                    size_t rows;
                     size_t max_iterations;
                     double accuracy;
+                    
+                    containers::Matrix<T> q;
+                    containers::Matrix<T> r;
                     
                     void ComputeQR(const containers::Matrix<T> &matrix) {
                         
@@ -176,13 +174,13 @@ namespace cda {
                         const auto last_row = rows - 1;
                         
                         for (size_t row = 1; row < last_row; ++row) {
-                            c = r.GetColumnAsVector(row).Get(row);
+                            c = r.GetColumnAsVector(row, row);
                             
                             if (c.IsNull()) {
                                 h = containers::Matrix<T>::Identity(rows - row, rows - row);
                             } else {
-                                vt = c + I.GetRowAsVector(row, row) * signum(c[0]) * c.Norm();
-                                h = I.GetMatrix(row, row) - 2.0 * (containers::Transpose(vt) * vt) / vt.SquaredNorm();
+                                vt = c + I.GetRowAsVector(row, row) * (signum(c[0]) * c.Norm());
+                                h = I.GetMatrix(row, row) - (containers::Transpose(vt) * vt) * (2.0 / vt.SquaredNorm());
                                 
                                 auto A(I);
                                 A.SetMatrix(row, row, h);
