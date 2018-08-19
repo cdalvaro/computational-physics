@@ -262,17 +262,17 @@ using namespace cda::math::containers;
     });
     
     const Matrix<int> matrix2({
-        { 3,  2,  1,  0},
-        { 7,  6,  5,  4},
-        {11, 10,  9,  8},
-        {15, 14, 13, 12}
+        { 3,  2,  1},
+        { 7,  6,  5},
+        {11, 10,  9},
+        {15, 14, 13}
     });
     
     const Matrix<int> expected1({
-        { 74,  68,  62,  56},
-        {218, 196, 174, 152},
-        {362, 324, 286, 248},
-        {506, 452, 398, 344}
+        { 74,  68,  62},
+        {218, 196, 174},
+        {362, 324, 286},
+        {506, 452, 398}
     });
     
     XCTAssertEqual(matrix1 * matrix2, expected1, "Square matrices product OK");
