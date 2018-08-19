@@ -91,6 +91,26 @@ using namespace cda::math::containers;
     XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved in asignation");
 }
 
+- (void)testAssign {
+    const Matrix<int> matrix(4, 4, {
+        0,  1,  2,  3,
+        4,  5,  6,  7,
+        8,  9, 10, 11,
+        12, 13, 14, 15
+    });
+    
+    Matrix<int> test;
+    test = matrix;
+    
+    XCTAssertEqual(test, matrix, "Assignment OK");
+    
+    Matrix<int> test2;
+    test2 = std::move(test);
+    
+    XCTAssertEqual(test2, matrix, "Move assignment OK");
+    XCTAssert(test.IsNull(), "test matrix is null after had been moved");
+}
+
 - (void)testOnes {
     const Matrix<uint> expected_ones(5, 5, 1);
     XCTAssertEqual(Matrix<uint>::Ones(5, 5), expected_ones, "Ones static method OK");
@@ -322,6 +342,95 @@ using namespace cda::math::containers;
     });
     
     XCTAssertEqual(matrix1_copy *= 2, expected3, "Product between matrix and scalar OK");
+}
+
+- (void)testAdditionOfMatrices {
+    Matrix<int> matrix1({
+        { 3,  2,  1},
+        { 7,  6,  5},
+        {11, 10,  9}
+    });
+    
+    const Matrix<int> matrix2({
+        { 4,  62,    6},
+        {34,  73,  375},
+        {25, 251, 2531}
+    });
+    
+    const Matrix<int> expected({
+        { 7,  64,    7},
+        {41,  79,  380},
+        {36, 261, 2540}
+    });
+    
+    XCTAssertEqual(matrix1 + matrix2, expected, "Addition of matrix1 plus matrix2 OK");
+    XCTAssertEqual(matrix2 + matrix1, expected, "Addition of matrix2 plus matrix1 OK");
+    XCTAssertEqual(matrix1 += matrix2, expected, "Addition of matrix2 over matrix1 OK");
+    
+    const Matrix<int> matrix3({
+        { 4,  62,    6},
+        {34,  73,  375},
+        {25, 251, 2531},
+        {34, 215,  321}
+    });
+    
+    const Matrix<int> matrix4({
+        { 4,  62,    6,  132},
+        {34,  73,  375, 3215},
+        {25, 251, 2531, 3125}
+    });
+    
+    XCTAssertThrows(matrix2 + matrix3, "Add incompatible dimensions");
+    XCTAssertThrows(matrix2 + matrix4, "Add incompatible dimensions");
+    XCTAssertThrows(matrix1 += matrix3, "Add incompatible dimensions");
+    XCTAssertThrows(matrix1 += matrix3, "Add incompatible dimensions");
+}
+
+- (void)testNegativeMatrix {
+    const Matrix<int> matrix(4, 4, 1);
+    XCTAssertEqual(-matrix, matrix * -1, "Negative matrix OK");
+}
+
+- (void)testSubtractionOfMatrices {
+    Matrix<int> matrix1({
+        { 3,  2,  1},
+        { 7,  6,  5},
+        {11, 10,  9}
+    });
+    
+    const Matrix<int> matrix2({
+        { 4,  62,    6},
+        {34,  73,  375},
+        {25, 251, 2531}
+    });
+    
+    const Matrix<int> expected({
+        { -1,  -60,    -5},
+        {-27,  -67,  -370},
+        {-14, -241, -2522}
+    });
+    
+    XCTAssertEqual(matrix1 - matrix2, expected, "Subtraction of matrix1 plus matrix2 OK");
+    XCTAssertEqual(matrix2 - matrix1, -expected, "Subtraction of matrix2 plus matrix1 OK");
+    XCTAssertEqual(matrix1 -= matrix2, expected, "Subtraction of matrix2 over matrix1 OK");
+    
+    const Matrix<int> matrix3({
+        { 4,  62,    6},
+        {34,  73,  375},
+        {25, 251, 2531},
+        {34, 215,  321}
+    });
+    
+    const Matrix<int> matrix4({
+        { 4,  62,    6,  132},
+        {34,  73,  375, 3215},
+        {25, 251, 2531, 3125}
+    });
+    
+    XCTAssertThrows(matrix2 - matrix3, "Subtract incompatible dimensions");
+    XCTAssertThrows(matrix2 - matrix4, "Subtract incompatible dimensions");
+    XCTAssertThrows(matrix1 -= matrix3, "Subtract incompatible dimensions");
+    XCTAssertThrows(matrix1 -= matrix3, "Subtract incompatible dimensions");
 }
 
 - (void)testTransposeOperation {
