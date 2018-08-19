@@ -7,7 +7,6 @@
 //
 
 #include "MyOpenGL.h"
-#include "../math/containers/matrix.cpp"
 
 #ifdef __APPLE__
 #include <OpenGL/OpenGL.h>

@@ -276,6 +276,7 @@ using namespace cda::math::containers;
     });
     
     XCTAssertEqual(matrix1 * matrix2, expected1, "Square matrices product OK");
+    XCTAssertThrows(matrix2 * matrix1, "Incompatible dimensions to compute the product");
     
     const Matrix<int> matrix3({
         { 0,  1,  2,  3, -1},
@@ -302,6 +303,25 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix3 * matrix4, expected2, "Rectangular matrices product OK");
     
     XCTAssertThrows(matrix4 * matrix3, "Matrices dimensions are incompatible");
+    
+    const Matrix<int> expected3({
+        { 0,  2,  4,  6},
+        { 8, 10, 12, 14},
+        {16, 18, 20, 22},
+        {24, 26, 28, 30}
+    });
+    
+    XCTAssertEqual(matrix1 * 2, expected3, "Product between matrix and scalar OK");
+    XCTAssertEqual(2 * matrix1, expected3, "Product between scalar and matrix OK");
+    
+    Matrix<int> matrix1_copy({
+        { 0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  9, 10, 11},
+        {12, 13, 14, 15}
+    });
+    
+    XCTAssertEqual(matrix1_copy *= 2, expected3, "Product between matrix and scalar OK");
 }
 
 - (void)testTransposeOperation {
@@ -595,14 +615,12 @@ using namespace cda::math::containers;
     });
     
     Matrix<int> expected1(4, 1, {8, 19, 39, 54});
-    auto result1 = matrix_test.SumRows();
+    XCTAssertEqual(matrix_test.SumRows(), expected1, "SumRows OK");
+    XCTAssertEqual(matrix_test.SumRowsAsVector(), expected1.GetColumnAsVector(0), "SumRowsAsVector OK");
     
-    XCTAssert(result1 == expected1, "SumRows OK");
     
-    auto expected2 = expected1.GetColumnAsVector(0);
-    auto result2 = matrix_test.SumRowsAsVector();
-    
-    XCTAssert(result2 == expected2, "SumRowsAsVector OK");
+    XCTAssertEqual(matrix_test.SumRow(1), expected1[0][1], "SumRow OK");
+    XCTAssertThrows(matrix_test.SumRow(4), "SumRow out of range");
 }
 
 - (void)testSumColumns {
@@ -614,14 +632,11 @@ using namespace cda::math::containers;
     });
     
     const Matrix<int> expected1(1, 4, {37, 32, 28, 23});
-    auto result1 = matrix_test.SumColumns();
+    XCTAssertEqual(matrix_test.SumColumns(), expected1, "CumColumns OK");
+    XCTAssertEqual(matrix_test.SumColumnsAsVector(), expected1.GetRowAsVector(0), "SumColumnsAsVector OK");
     
-    XCTAssert(result1 == expected1, "CumColumns OK");
-    
-    auto expected2 = expected1.GetRowAsVector(0);
-    auto result2 = matrix_test.SumColumnsAsVector();
-    
-    XCTAssert(result2 == expected2, "SumColumnsAsVector OK");
+    XCTAssertEqual(matrix_test.SumColumn(1), expected1[0][1], "SumColumn OK");
+    XCTAssertThrows(matrix_test.SumColumn(4), "SumColumn out of range");
 }
 
 - (void)testLoadMatrixFromFile {
@@ -654,34 +669,6 @@ using namespace cda::math::containers;
     XCTAssert(matrix == expected_matrix, "Small Matrix has been loaded properly.");
 }
 
-- (void)testProduct {
-    const Matrix<int> matrix1({
-        { 3,  2,  1,  2},
-        { 7,  6,  5,  1},
-        {12, 10,  9,  8},
-        {15, 14, 13, 12}
-    });
-    
-    const Matrix<int> matrix2({
-        { 2,  1,  2},
-        { 6,  5,  1},
-        {10,  9,  8},
-        {14, 13, 12}
-    });
-    
-    const Matrix<int> expected({
-        { 56,  48,  40},
-        {114,  95,  72},
-        {286, 247, 202},
-        {412, 358, 292}
-    });
-    
-    auto result = matrix1 * matrix2;
-    
-    XCTAssertEqual(result, expected, "Product of two patrices OK");
-    XCTAssertThrows(matrix2 * matrix1, "Incompatible dimensions to compute the product");
-}
-
 - (void)testProductBetweenMatrixAndVector {
     Matrix<int> matrix({
         { 3},
@@ -699,8 +686,30 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    auto result = matrix * vector;
-    XCTAssertEqual(result, expected, "Product of two patrices OK");
+    XCTAssertEqual(matrix * vector, expected, "Product between matrix and vector OK");
+    
+    Matrix<int> matrix_2columns({
+        { 3, 4},
+        { 7, 1},
+        {12, 5},
+        {15, 6}
+    });
+    
+    XCTAssertThrows(matrix_2columns * vector, "Dimensions are not compatible");
+}
+
+- (void)testProductBetweenVectorAndMatrix {
+    const Vector<int> vector({ 7,  6,  5,  1});
+    const Matrix<int> matrix({
+        { 3, 4},
+        { 7, 8},
+        {12, 20},
+        {15, 3}
+    });
+    
+    XCTAssertEqual(vector * matrix, Vector<int>({138, 179}), "Product between vector and matrix OK");
+    
+    XCTAssertThrows(Vector<int>({1, 35, 362, 4362, 34}) * matrix, "Dimensions are not compatible");
 }
 
 - (void)testTransposeVectorToMatrix {
@@ -719,6 +728,122 @@ using namespace cda::math::containers;
     });
     
     XCTAssertEqual(Transpose(vector), expected, "Transpose vector is the expected matrix");
+}
+
+- (void)testMaximumAndMinimumElements {
+    const Matrix<double> matrix({
+        {  1.134,   0.001,   2.523,  -0.231,     0.321, -312353.123},
+        {  5.213,   6.312,  -7.142,   8.243,     9.234,      21.426},
+        { 10.123, -11.321,  12.213, -13.213,    14.231,       1.213},
+        { -0.024,   0.314,  17.143,  18.143, -1913.136,  523251.316},
+        {  5.432,  -6.236,   7.342,   8.324,    -9.341,      21.341}
+    });
+    
+    XCTAssertEqual(matrix.MaximumElement(), 523251.316, "MaximumElement OK");
+    XCTAssertEqual(matrix.AbsoluteMaximumElement(), 523251.316, "AbsoluteMaximumElement OK");
+    XCTAssertEqual(matrix.AbsoluteMaximumElementWithSign(), 523251.316, "AbsoluteMaximumElementWithSign OK");
+    
+    XCTAssertEqual(matrix.MinimumElement(), -312353.123, "MinimumElement OK");
+    XCTAssertEqual(matrix.AbsoluteMinimumElement(), 0.001, "AbsoluteMinimumElement OK");
+    XCTAssertEqual(matrix.AbsoluteMinimumElementWithSign(), 0.001, "AbsoluteMinimumElementWithSign OK");
+}
+
+- (void)testAccessors {
+    const Matrix<int> matrix1({
+        { 21, 18, 15,  3},
+        { 49, 42, 35,  7},
+        { 84, 72, 60, 12},
+        {105, 90, 75, 15}
+    });
+    
+    XCTAssertEqual(matrix1.At(0, 0), 21, "Matrix At for first element OK");
+    XCTAssertEqual(matrix1.At(3, 3), 15, "Matrix At for last element OK");
+    XCTAssertEqual(matrix1.At(0, 3), 3, "Matrix At for last element of first row OK");
+    XCTAssertEqual(matrix1.At(3, 0), 105, "Matrix At for first element of last row OK");
+    
+    XCTAssertThrows(matrix1.At(-1, -1), "Matrix At out of range for negative indexes");
+    XCTAssertThrows(matrix1.At(4, 4), "Matrix At out of range for indexes greater than matrix dimensions");
+    XCTAssertThrows(matrix1.At(0, 4), "Matrix At out of range for index that exceeds the limits of the row");
+    XCTAssertThrows(matrix1.At(4, 0), "Matrix At out of range for index that exceeds the limits of the column");
+    
+    Matrix<int> matrix2({
+        { 21, 18, 15,  3},
+        { 49, 42, 35,  7},
+        { 84, 72, 60, 12},
+        {105, 90, 75, 15}
+    });
+    
+    matrix2.At(0, 0) = 12;
+    XCTAssertEqual(matrix2.At(0, 0), 12, "Matrix At for setting the first element OK");
+    
+    matrix2.At(3, 3) = 51;
+    XCTAssertEqual(matrix2.At(3, 3), 51, "Matrix At for setting the last element OK");
+    
+    matrix2.At(0, 3) = -3;
+    XCTAssertEqual(matrix2.At(0, 3), -3, "Matrix At for setting the last element of first row OK");
+    
+    matrix2.At(3, 0) = 501;
+    XCTAssertEqual(matrix2.At(3, 0), 501, "Matrix At for setting the first element of last row OK");
+    
+    XCTAssertThrows(matrix2.At(-1, -1) = 21, "Matrix At out of range for setting value at negative indexes");
+    XCTAssertThrows(matrix2.At(4, 4) = 15, "Matrix At out of range for setting value at indexes greater than matrix dimensions");
+    XCTAssertThrows(matrix2.At(0, 4) = 3, "Matrix At out of range for setting value at index that exceeds the limits of the row");
+    XCTAssertThrows(matrix2.At(4, 0) = 105, "Matrix At out of range for setting value at index that exceeds the limits of the column");
+}
+
+- (void)testIsNullAndIsEmptyMethods {
+    Matrix<int> matrix;
+    XCTAssert(matrix.IsNull(), "Matrix is null");
+    XCTAssert(matrix.IsEmpty(), "Matrix is empty");
+    
+    matrix = Matrix<int>::Zero(4, 4);
+    XCTAssert(matrix.IsNull(), "Matrix is null");
+    XCTAssert(!matrix.IsEmpty(), "Matrix is not empty");
+}
+
+- (void)testClear {
+    Matrix<int> matrix({
+        { 21, 18, 15,  3},
+        { 49, 42, 35,  7},
+        { 84, 72, 60, 12},
+        {105, 90, 75, 15}
+    });
+    
+    matrix.Clear();
+    
+    XCTAssert(matrix.IsNull(), "Matrix is null");
+    XCTAssert(matrix.IsEmpty(), "Matrix is empty");
+}
+
+- (void)testHasDuplicate {
+    Matrix<int> matrix({
+        { 21, 18, 15,  3},
+        { 49, 42, 35,  7},
+        { 84, 72, 60, 12},
+        {105, 90, 75, 15}
+    });
+    
+    XCTAssert(matrix.HasDuplicate(), "Matrix has duplicate elements");
+    
+    matrix = Matrix<int>({
+        { 21, 18, 15,  3},
+        { 49, 42, 35,  7},
+        { 84, 72, 60, 12},
+        {105, 90, 75, 16}
+    });
+    
+    XCTAssert(!matrix.HasDuplicate(), "Matrix does not have duplicate elements");
+    
+    Matrix<double> matrix2({
+        { 21.1727, 18.1355, 15.5478,  3.5235},
+        { 49.1253, 42.2135, 35.2135,  7.2135},
+        { 84.3255, 72.3164, 60.2544, 12.7543},
+        {105.2757, 90.3164, 75.7235, 15.5435}
+    });
+    
+    XCTAssert(!matrix2.HasDuplicate(), "Matrix double does not have duplicate elements with accuracy inf");
+    XCTAssert(!matrix2.HasDuplicate(1E-04), "Matrix double does not have duplicate elements with accuracy 1E-04");
+    XCTAssert(matrix2.HasDuplicate(1E-02), "Matrix double does not have duplicate elements with accuracy 1E-02");
 }
 
 @end

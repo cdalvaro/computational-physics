@@ -9,7 +9,6 @@
 #include <iostream>
 #include <time.h>
 
-#include "math/containers/matrix.cpp"
 #include "math/differential_equations/SolveEDP.h"
 #include "graphics/MyOpenGL.h"
 

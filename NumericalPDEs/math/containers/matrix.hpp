@@ -406,6 +406,10 @@ namespace cda {
                 }
                 
                 T SumRow(const size_t &row) const {
+                    if (row >= this->n) {
+                        throw std::out_of_range("Index out of range");
+                    }
+                    
                     T sum = 0;
                     
                     const auto &it_end = this->operator[](row) + this->m;
@@ -433,6 +437,10 @@ namespace cda {
                 }
                 
                 T SumColumn(const size_t &column) const {
+                    if (column >= this->m) {
+                        throw std::out_of_range("Index out of range");
+                    }
+                    
                     T sum = 0;
                     
                     const auto &it_column_end = this->End() + column;
@@ -537,21 +545,6 @@ namespace cda {
                     return min_element;
                 }
                 
-                T Determinant() const {
-                    if (!this->IsSquared()) {
-                        throw std::logic_error("Matrix must be squared to compute its determinant.");
-                    }
-                    
-                    T determinant = 1.0;
-                    auto u_matrix = this->U();
-                    
-                    for (size_t row = 0; row < n; ++row) {
-                        determinant *= u_matrix[row][row];
-                    }
-                    
-                    return determinant;
-                }
-                
                 const T &At(const size_t &row, const size_t &column) const {
                     if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
@@ -588,6 +581,7 @@ namespace cda {
                 
                 void Clear() {
                     AllocateMemory(0);
+                    n = m = size = 0;
                 }
                 
                 bool IsEmpty() const {
@@ -607,13 +601,13 @@ namespace cda {
                     return n == m;
                 }
                 
-                bool HasDuplicated(const T &precision) const {
+                bool HasDuplicate(const T &accuracy) const {
                     T distance;
                     for (auto it1 = Begin(); it1 != End(); ++it1) {
                         for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2) {
                                 distance = *it1 - *it2;
-                                if (std::sqrt(distance * distance) < precision) {
+                                if (std::sqrt(distance * distance) < accuracy) {
                                     return true;
                                 }
                             }
@@ -622,7 +616,7 @@ namespace cda {
                     return false;
                 }
                 
-                bool HasDuplicated() const {
+                bool HasDuplicate() const {
                     for (auto it1 = Begin(); it1 != End(); ++it1) {
                         for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2 && *it1 == *it2) {
@@ -755,6 +749,12 @@ namespace cda {
                 }
                 
                 template<typename T2>
+                Matrix<T> &operator*=(const Matrix<T2> &matrix) {
+                    *this = *this * matrix;
+                    return *this;
+                }
+                
+                template<typename T2>
                 Matrix<T> operator*(const Vector<T2> &vector) {
                     if (m != 1) {
                         throw std::logic_error("Matrix and Vector are not compatible.");
@@ -817,7 +817,7 @@ namespace cda {
                     
                     switch (power) {
                         case -1:
-                            throw std::logic_error("To get the inverse matrix use LU::InverseMatrix");
+                            throw std::logic_error("To compute the inverse matrix consider using LU::InverseMatrix");
                             break;
                             
                         case 0:
@@ -828,7 +828,7 @@ namespace cda {
                         default:
                             new_matrix = *this;
                             for (size_t i = 2; i <= power; ++i) {
-                                new_matrix = new_matrix * *this;
+                                new_matrix *= *this;
                             }
                             break;
                     }
@@ -892,7 +892,6 @@ cda::math::containers::Vector<T> operator*(const cda::math::containers::Vector<T
     const auto &columns = matrix.Columns();
     cda::math::containers::Vector<T> new_vector(columns, 0);
     
-    // TODO: Check this operation
     auto it_new = new_vector.Begin();
     for (size_t column = 0; column < columns; ++column, ++it_new) {
         auto it_vector = vector.Begin();
