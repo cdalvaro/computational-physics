@@ -13,6 +13,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include <string>
+#include <stdexcept>
 
 
 namespace cda {
@@ -41,6 +42,8 @@ namespace cda {
                 
             public:
                 
+                typedef T ValueType;
+                
                 /**
                  Class constructor
                  
@@ -56,7 +59,7 @@ namespace cda {
                  
                  @param size The size of the vector
                  */
-                Vector(const size_t &size, const T &value) :
+                Vector(const size_t &size, const ValueType &value) :
                 n(size), v(nullptr), it_end(nullptr) {
                     AllocateMemory(n);
                     std::fill(this->Begin(), this->End(), value);
@@ -67,7 +70,7 @@ namespace cda {
                  
                  @param vector The source vector
                  */
-                Vector(const Vector<T> &vector) :
+                Vector(const Vector<ValueType> &vector) :
                 n(vector.n), v(nullptr), it_end(nullptr) {
                     AllocateMemory(n);
                     std::copy(vector.Begin(), vector.End(), this->Begin());
@@ -78,14 +81,14 @@ namespace cda {
                  
                  @param vector The source vector
                  */
-                Vector(Vector<T> &&vector) :
+                Vector(Vector<ValueType> &&vector) :
                 n(vector.n), v(vector.v), it_end(vector.it_end) {
                     vector.n = 0;
                     vector.v = vector.it_end = nullptr;
                 }
                 
                 template <size_t size>
-                Vector(const T (& values)[size]) :
+                Vector(const ValueType (& values)[size]) :
                 n(size), v(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
                     std::copy(values, values + size, this->Begin());
@@ -102,11 +105,11 @@ namespace cda {
                     }
                 }
                 
-                T *Begin() const {
+                ValueType *Begin() const {
                     return v;
                 }
                 
-                T *End() const {
+                ValueType *End() const {
                     return it_end;
                 }
                 
@@ -124,13 +127,13 @@ namespace cda {
                     
                     AllocateMemory(size);
                     if (fill && size > n) {
-                        std::fill_n(v + n, size - n, static_cast<T>(0));
+                        std::fill_n(v + n, size - n, static_cast<ValueType>(0));
                     }
                     
                     n = size;
                 }
                 
-                Vector<T> &operator=(const Vector<T> &vector) {
+                Vector<ValueType> &operator=(const Vector<ValueType> &vector) {
                     if (this != &vector) {
                         Resize(vector.n, false);
                         std::copy(vector.Begin(), vector.End(), this->Begin());
@@ -138,7 +141,7 @@ namespace cda {
                     return *this;
                 }
                 
-                Vector<T> &operator=(Vector<T> &&vector) {
+                Vector<ValueType> &operator=(Vector<ValueType> &&vector) {
                     if (this != &vector) {
                         std::free(v);
                         v = vector.v;
@@ -151,14 +154,14 @@ namespace cda {
                     return *this;
                 }
                 
-                void Copy(const size_t &size, const T *array) {
+                void Copy(const size_t &size, const ValueType *array) {
                     if (size > n) {
                         throw std::out_of_range("Not enough space for the copy");
                     }
                     std::copy(array, array + size, v);
                 }
                 
-                bool operator==(const Vector<T> &vector) const {
+                bool operator==(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         return false;
                     }
@@ -173,7 +176,7 @@ namespace cda {
                     return true;
                 }
                 
-                bool operator!=(const Vector<T> &vector) const {
+                bool operator!=(const Vector<ValueType> &vector) const {
                     return !this->operator==(vector);
                 }
                 
@@ -185,12 +188,12 @@ namespace cda {
                  
                  @return A vector with size \p elements and the values starting from \p first_element
                  */
-                Vector<T> Get(const size_t &first_element, const size_t &elements) {
+                Vector<ValueType> Get(const size_t &first_element, const size_t &elements) {
                     if (n - first_element < elements) {
                         throw std::out_of_range("There are not enough elements inside the vector");
                     }
                     
-                    Vector<T> tmp(n - first_element);
+                    Vector<ValueType> tmp(n - first_element);
                     std::copy(v + first_element, v + first_element + elements, tmp.v);
                     
                     return tmp;
@@ -203,7 +206,7 @@ namespace cda {
                  
                  @return A vector with all values starting from \p first_element
                  */
-                Vector<T> Get(const size_t &first_element) {
+                Vector<ValueType> Get(const size_t &first_element) {
                     return Get(first_element, n - first_element);
                 }
                 
@@ -214,7 +217,7 @@ namespace cda {
                  @param vector The vector with the elements to be copied
                  @param elements The number of elements to copy
                  */
-                void Set(const size_t &first_element, const Vector<T> &vector, const size_t &elements) {
+                void Set(const size_t &first_element, const Vector<ValueType> &vector, const size_t &elements) {
                     if (first_element + elements > n || elements > vector.n) {
                         throw std::out_of_range("Out of bounds");
                     }
@@ -227,7 +230,7 @@ namespace cda {
                  @param first_element The position of the first element to be copied
                  @param vector The vector to copy
                  */
-                void Set(const size_t &first_element, const Vector<T> &vector) {
+                void Set(const size_t &first_element, const Vector<ValueType> &vector) {
                     Set(first_element, vector, vector.n);
                 }
                 
@@ -235,7 +238,7 @@ namespace cda {
                     return n;
                 }
                 
-                T MaximumElement() const {
+                ValueType MaximumElement() const {
                     auto max = *Begin();
                     for (auto it = Begin() + 1; it != End(); ++it) {
                         if (*it > max) {
@@ -245,9 +248,9 @@ namespace cda {
                     return max;
                 }
                 
-                T AbsoluteMaximumElement() const {
+                ValueType AbsoluteMaximumElement() const {
                     auto max = std::abs(*Begin());
-                    T abs_max;
+                    ValueType abs_max;
                     for (auto it = Begin() + 1; it != End(); ++it) {
                         abs_max = std::abs(*it);
                         if (abs_max > max) {
@@ -257,7 +260,7 @@ namespace cda {
                     return max;
                 }
                 
-                T MinimumElement() const {
+                ValueType MinimumElement() const {
                     auto min = *Begin();
                     for (auto it = Begin() +1 ; it != End(); ++it) {
                         if (*it < min) {
@@ -267,9 +270,9 @@ namespace cda {
                     return min;
                 }
                 
-                T AbsoluteMinimumElement() const {
+                ValueType AbsoluteMinimumElement() const {
                     auto min = std::abs(*Begin());
-                    T abs_min;
+                    ValueType abs_min;
                     for (auto it = Begin() + 1; it != End(); ++it) {
                         abs_min = std::abs(*it);
                         if (abs_min < min) {
@@ -279,7 +282,7 @@ namespace cda {
                     return min;
                 }
                 
-                T Sum() const {
+                ValueType Sum() const {
                     auto sum = *Begin();
                     for (auto it = Begin() + 1; it != End(); ++it) {
                         sum += *it;
@@ -287,25 +290,25 @@ namespace cda {
                     return sum;
                 }
                 
-                const T &At(const size_t &element) const {
+                const ValueType &At(const size_t &element) const {
                     if (element >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
                     return v[element];
                 }
                 
-                const T &operator[](const size_t &element) const {
+                const ValueType &operator[](const size_t &element) const {
                     return v[element];
                 }
                 
-                T &At(const size_t &element) {
+                ValueType &At(const size_t &element) {
                     if (element >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
                     return v[element];
                 }
                 
-                T &operator[](const size_t &element) {
+                ValueType &operator[](const size_t &element) {
                     return v[element];
                 }
                 
@@ -322,7 +325,7 @@ namespace cda {
                  
                  @return The normalized vector
                  */
-                Vector<T> Unitary() const {
+                Vector<ValueType> Unitary() const {
                     return (* this) / Norm();
                 }
                 
@@ -339,35 +342,35 @@ namespace cda {
                     } while (change);
                 }
                 
-                void Fill(const T &value) {
+                void Fill(const ValueType &value) {
                     std::fill(Begin(), End(), value);
                 }
                 
-                static Vector<T> Zero(const size_t &size) {
-                    return Vector<T>(size, 0);
+                static Vector<ValueType> Zero(const size_t &size) {
+                    return Vector<ValueType>(size, 0);
                 }
                 
                 void Zero() {
                     Fill(0);
                 }
                 
-                static Vector<T> Ones(const size_t &size) {
-                    return Vector<T>(size, 1);
+                static Vector<ValueType> Ones(const size_t &size) {
+                    return Vector<ValueType>(size, 1);
                 }
                 
                 void Ones() {
                     Fill(1);
                 }
                 
-                static Vector<T> Random(const size_t &size) {
-                    Vector<T> random(size);
+                static Vector<ValueType> Random(const size_t &size) {
+                    Vector<ValueType> random(size);
                     random.Random();
                     return random;
                 }
                 
-                void Random(const T &min = 0, const T &max = 1) {
+                void Random(const ValueType &min = 0, const ValueType &max = 1) {
                     for (auto it = Begin(); it != End(); ++it) {
-                        *it = static_cast<T>(drand48() * max + min);
+                        *it = static_cast<ValueType>(drand48() * max + min);
                     }
                 }
                 
@@ -388,8 +391,8 @@ namespace cda {
                     return true;
                 }
                 
-                bool HasDuplicated(const T &precision) const {
-                    T distance;
+                bool HasDuplicated(const ValueType &precision) const {
+                    ValueType distance;
                     for (auto it1 = Begin(); it1 != End(); ++it1) {
                         for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2) {
@@ -421,12 +424,12 @@ namespace cda {
                 }
                 
                 //  --- OPERATORS ---
-                inline Vector<T> operator+(const Vector<T> &vector) const {
+                inline Vector<ValueType> operator+(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
                     
-                    Vector<T> new_vector(this->n);
+                    Vector<ValueType> new_vector(this->n);
                     
                     auto it_new = new_vector.Begin();
                     auto it_vector = vector.Begin();
@@ -437,7 +440,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<T> &operator+=(const Vector<T> &vector) {
+                inline Vector<ValueType> &operator+=(const Vector<ValueType> &vector) {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
@@ -450,12 +453,12 @@ namespace cda {
                     return *this;
                 }
                 
-                inline Vector<T> operator-(const Vector<T> &vector) const {
+                inline Vector<ValueType> operator-(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different sizes");
                     }
                     
-                    Vector<T> new_vector(this->n);
+                    Vector<ValueType> new_vector(this->n);
                     
                     auto it_new = new_vector.Begin();
                     auto it_vector = vector.Begin();
@@ -466,7 +469,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<T> &operator-=(const Vector<T> &vector) {
+                inline Vector<ValueType> &operator-=(const Vector<ValueType> &vector) {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
@@ -479,8 +482,8 @@ namespace cda {
                     return *this;
                 }
                 
-                inline Vector<T> operator*(const T &value) const {
-                    Vector<T> new_vector(this->n);
+                inline Vector<ValueType> operator*(const ValueType &value) const {
+                    Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
                     for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_new) {
@@ -490,15 +493,15 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<T> &operator*=(const T &value) {
+                inline Vector<ValueType> &operator*=(const ValueType &value) {
                     for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it *= value;
                     }
                     return *this;
                 }
                 
-                inline Vector<T> operator/(const T &value) const {
-                    Vector<T> new_vector(this->n);
+                inline Vector<ValueType> operator/(const ValueType &value) const {
+                    Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
                     for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
@@ -508,7 +511,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<T> &operator/=(const T &value) {
+                inline Vector<ValueType> &operator/=(const ValueType &value) {
                     for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it /= value;
                     }
@@ -517,7 +520,7 @@ namespace cda {
                 
                 template<typename Integer,
                          typename = std::enable_if<std::is_integral<Integer>::value>>
-                inline Vector<T> operator%(const Integer &value) const {
+                inline Vector<ValueType> operator%(const Integer &value) const {
                     Vector<Integer> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
@@ -530,15 +533,15 @@ namespace cda {
                 
                 template<typename Integer,
                          typename = std::enable_if<std::is_integral<Integer>::value>>
-                inline Vector<T> &operator%=(const Integer& value) {
+                inline Vector<ValueType> &operator%=(const Integer& value) {
                     for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it = static_cast<Integer>(*it) % value;
                     }
                     return *this;
                 }
                 
-                inline Vector<T> operator-() const {
-                    Vector<T> new_vector(this->n);
+                inline Vector<ValueType> operator-() const {
+                    Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
                     for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
@@ -548,12 +551,12 @@ namespace cda {
                     return new_vector;
                 }
                 
-                Vector<T> CrossProduct3D(const Vector<T> &vector) const {
+                Vector<ValueType> CrossProduct3D(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n || this->n != 3) {
                         throw std::logic_error("Both vectors must be of the same size, and size must be 3");
                     }
                     
-                    Vector<T> new_vector(this->n);
+                    Vector<ValueType> new_vector(this->n);
                     new_vector[0] = this->operator[](1) * vector[2] - this->operator[](2) * vector[1];
                     new_vector[1] = this->operator[](2) * vector[0] - this->operator[](0) * vector[2];
                     new_vector[2] = this->operator[](0) * vector[1] - this->operator[](1) * vector[0];
@@ -561,12 +564,12 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline T operator*(const Vector<T> &vector) const {
+                inline ValueType operator*(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         throw std::logic_error("Both vectors must be of the same size");
                     }
                     
-                    T value(0);
+                    ValueType value(0);
                     auto it_vector = vector.Begin();
                     
                     for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_vector) {
@@ -583,14 +586,14 @@ namespace cda {
 } /* namespace containers */
 
 //  --- MORE OPERATORS ---
-template <typename T, typename T2>
-cda::math::containers::Vector<T> operator*(const T2 &value, const cda::math::containers::Vector<T> &vector) {
+template <typename ValueType, typename T2>
+cda::math::containers::Vector<ValueType> operator*(const T2 &value, const cda::math::containers::Vector<ValueType> &vector) {
     
-    cda::math::containers::Vector<T> new_vector(vector.Size());
+    cda::math::containers::Vector<ValueType> new_vector(vector.Size());
     auto it_new = new_vector.Begin();
     
     for (auto it = vector.Begin(); it != vector.End(); ++it, ++it_new) {
-        *it_new = *it * static_cast<T>(value);
+        *it_new = *it * static_cast<ValueType>(value);
     }
     
     return new_vector;
