@@ -974,4 +974,32 @@ using namespace cda::math::containers;
     XCTAssert(matrix2.HasDuplicate(1E-02), "Matrix double does not have duplicate elements with accuracy 1E-02");
 }
 
+- (void)testDeterminant {
+    const Matrix<double> matrix1({
+        { 21, 18, 15,  4},
+        { 49, 41, 35,  7},
+        { 84, 72, 63, 12},
+        {105, 90, 75, 15}
+    });
+    
+    XCTAssertEqual(matrix1.Determinant(), 315, "Determinant OK");
+    
+    const Matrix<double> matrix2({
+        { 21, 18, 15,  4},
+        { 42, 36, 30,  8},
+        { 84, 72, 63, 12},
+        {105, 90, 75, 15}
+    });
+    
+    XCTAssertEqual(matrix2.Determinant(), 0, "Determinant 0 OK");
+    
+    const Matrix<double> matrix3({
+        { 21, 18, 15,  4},
+        { 42, 36, 30,  8},
+        { 84, 72, 63, 12}
+    });
+    
+    XCTAssertThrows(matrix3.Determinant(), "Unable to compute determinant of a non-squared matrix");
+}
+
 @end

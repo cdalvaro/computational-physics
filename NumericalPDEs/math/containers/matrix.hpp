@@ -17,6 +17,9 @@
 #include <sstream>
 #include <stdlib.h>
 #include <string>
+#include <stdexcept>
+
+#include "../algorithms/factorization/lu.hpp"
 
 
 namespace cda {
@@ -818,9 +821,9 @@ namespace cda {
                     return new_matrix;
                 }
                 
-//                ValueType Determinant() const {
-//                    return algorithms::factorization::LU<Matrix<double>, Matrix<ValueType>>::Determinant(*this);
-//                }
+                ValueType Determinant() const {
+                    return algorithms::factorization::LU<Matrix<double>, Matrix<ValueType>>::Determinant(*this);
+                }
                 
                 Matrix<ValueType> Pow(const ssize_t &power) const {
                     if (!this->IsSquared()) {
@@ -835,8 +838,10 @@ namespace cda {
                             break;
                             
                         case 0:
-                            new_matrix.Resize(this->n, this->m);
-                            new_matrix.Identity();
+                            if (Determinant() == 0) {
+                                throw std::logic_error("Matrix is singular");
+                            }
+                            new_matrix = Identity(this->n);
                             break;
                             
                         default:

@@ -96,6 +96,9 @@ namespace cda {
                         ValueType determinant = u[0][0];
                         for (size_t row = 1; row < rows; ++row) {
                             determinant *= u[row][row];
+                            if (determinant == 0) {
+                                return 0;
+                            }
                         }
                         
                         return determinant;
@@ -107,7 +110,7 @@ namespace cda {
                     
                 private:
                     
-                    const MatrixC original;
+                    const MatrixT original;
                     const size_t rows;
                     
                     MatrixT l, u;
@@ -120,7 +123,7 @@ namespace cda {
                             return;
                         }
                         
-                        MatrixT lu(original);
+                        auto lu(original);
                         
                         auto first_element = lu[0][0];
                         if (first_element == 0) {
