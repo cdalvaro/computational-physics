@@ -137,7 +137,7 @@ using namespace cda::math::containers;
         {0, 0, 0, 1, 0},
         {0, 0, 0, 0, 1}
     });
-    XCTAssertEqual(Matrix<uint>::Identity(5, 5), expected_identity, "Identity static method OK");
+    XCTAssertEqual(Matrix<uint>::Identity(5), expected_identity, "Identity static method OK");
     
     Matrix<uint> result(5, 5, 2);
     result.Identity();
@@ -342,6 +342,25 @@ using namespace cda::math::containers;
     });
     
     XCTAssertEqual(matrix1_copy *= 2, expected3, "Product between matrix and scalar OK");
+}
+
+- (void)testDivisions {
+    Matrix<double> matrix1({
+        { 0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  9, 10, 11},
+        {12, 13, 14, 15}
+    });
+    
+    Matrix<double> expected({
+        {0, 0.5, 1, 1.5},
+        {2, 2.5, 3, 3.5},
+        {4, 4.5, 5, 5.5},
+        {6, 6.5, 7, 7.5}
+    });
+    
+    XCTAssertEqual(matrix1 / 2.0, expected, "Division OK");
+    XCTAssertEqual(matrix1 /= 2.0, expected, "Division OK");
 }
 
 - (void)testAdditionOfMatrices {
