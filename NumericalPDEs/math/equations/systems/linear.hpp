@@ -8,8 +8,7 @@
 
 #pragma once
 
-#include "../../containers/matrix.hpp"
-#include "../../containers/vector.hpp"
+#include "../../containers.hpp"
 #include "../../algorithms/factorization/lu.hpp"
 
 
@@ -24,7 +23,7 @@ namespace cda {
                     template <typename T>
                     containers::Vector<T> SolveLinearSystemLU(const containers::Matrix<T> &system,
                                                               const containers::Vector<T> &b_terms) {
-                        algorithms::factorization::LU<T> lu(system);
+                        algorithms::factorization::LU<containers::Matrix<double>, containers::Matrix<T>> lu(system);
                         return lu.SolveLinearSystem(b_terms);
                     }
                     

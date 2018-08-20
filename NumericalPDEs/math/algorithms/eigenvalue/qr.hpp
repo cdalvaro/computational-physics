@@ -114,7 +114,7 @@ namespace cda {
                         eVa = eigenValue+1.0;
                         k=1;
                         auto Ainv = original - eigenValue * (1.0 + fact) * containers::Matrix<T>::Identity(rows);
-                        Ainv = algorithms::factorization::LU<T>::InverseMatrix(Ainv);
+                        Ainv = algorithms::factorization::LU<containers::Matrix<double>, containers::Matrix<T>>::InverseMatrix(Ainv);
                         
                         while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < max_iterations) {
                             eVe = Ainv * eVe;

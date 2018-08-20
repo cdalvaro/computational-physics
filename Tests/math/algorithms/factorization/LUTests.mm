@@ -10,6 +10,7 @@
 
 #import "../../../TestsTools.h"
 #import "../../../../NumericalPDEs/math/algorithms/factorization/lu.hpp"
+#import "../../../../NumericalPDEs/math/containers/matrix.hpp"
 
 using namespace cda::math::containers;
 using namespace cda::math::algorithms::factorization;
@@ -38,7 +39,7 @@ using namespace cda::math::algorithms::factorization;
         {15, 14, 13, 12}
     });
     
-    LU<double> lu(matrix_test);
+    LU<Matrix<double>> lu(matrix_test);
     
     const auto accuracy = 1E-13;
     
@@ -50,12 +51,7 @@ using namespace cda::math::algorithms::factorization;
         {0.0,     0.0,     0.0,      13.0}
     });
     
-    auto result_u = lu.U();
-    
-    for (auto it_result = result_u.Begin(), it_expected = expected_u.Begin();
-         it_result != result_u.End(); ++it_result, ++it_expected) {
-        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Element of matrix U is equal");
-    }
+    XCTAssert([TestsTools compareMatrix:lu.U() withExpected:expected_u whitAccuracy:accuracy], "Matrix U OK");
     
     // Matrix L
     Matrix<double> expected_l({
@@ -65,13 +61,7 @@ using namespace cda::math::algorithms::factorization;
         {    5.0,     3.0, 0.0, 1.0}
     });
     
-    auto result_l = lu.L();
-    
-    for (auto it_result = result_l.Begin(), it_expected = expected_l.Begin();
-         it_result != result_l.End(); ++it_result, ++it_expected) {
-        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Element of matrix L is equal");
-    }
-    
+    XCTAssert([TestsTools compareMatrix:lu.L() withExpected:expected_l whitAccuracy:accuracy], "Matrix L OK");
 }
 
 @end
