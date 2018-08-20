@@ -113,7 +113,7 @@ namespace cda {
                         
                         eVa = eigenValue+1.0;
                         k=1;
-                        auto Ainv = original - eigenValue * (1.0 + fact) * containers::Matrix<T>::Identity(rows, rows);
+                        auto Ainv = original - eigenValue * (1.0 + fact) * containers::Matrix<T>::Identity(rows);
                         Ainv = algorithms::factorization::LU<T>::InverseMatrix(Ainv);
                         
                         while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < max_iterations) {
@@ -128,7 +128,7 @@ namespace cda {
                                 eVe[0][0] *= 2.0;
                                 eVa = eigenValue+1.0;
                                 k=1;
-//                                Ainv = original - eigenValue*(1.0+fact)*containers::Matrix<T>::Identity(rows, rows);
+//                                Ainv = original - eigenValue*(1.0+fact)*containers::Matrix<T>::Identity(rows);
 //                                Ainv = algorithms::factorization::LU<T>::InverseMatrix(Ainv);
                                 
                                 while (1/eVa != eigenValue && k < max_iterations) {
@@ -157,7 +157,7 @@ namespace cda {
                     
                     void ComputeQR(const containers::Matrix<T> &matrix) {
                         
-                        const auto I = containers::Matrix<T>::Identity(rows, rows);
+                        const auto I = containers::Matrix<T>::Identity(rows);
                         
                         //  First column
                         auto c = matrix.GetColumnAsVector(0);
@@ -177,7 +177,7 @@ namespace cda {
                             c = r.GetColumnAsVector(row, row);
                             
                             if (c.IsNull()) {
-                                h = containers::Matrix<T>::Identity(rows - row, rows - row);
+                                h = containers::Matrix<T>::Identity(rows - row);
                             } else {
                                 vt = c + I.GetRowAsVector(row, row) * (signum(c[0]) * c.Norm());
                                 h = I.GetMatrix(row, row) - (containers::Transpose(vt) * vt) * (2.0 / vt.SquaredNorm());
