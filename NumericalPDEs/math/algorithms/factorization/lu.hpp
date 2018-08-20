@@ -26,7 +26,7 @@ namespace cda {
                     LU(const MatrixC &matrix) :
                     is_factorized(false), original(matrix), rows(matrix.Rows()) {
                         if (!matrix.IsSquared()) {
-                            std::logic_error("LU matrix cannot be computed for a non-squared matrix.");
+                            throw std::logic_error("LU matrix cannot be computed for a non-squared matrix.");
                         }
                     }
                     
