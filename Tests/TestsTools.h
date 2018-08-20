@@ -9,9 +9,16 @@
 #ifndef TestsTools_h
 #define TestsTools_h
 
+#import "../NumericalPDEs/math/containers.hpp"
+
+
 @interface TestsTools : NSObject
 
 + (void)setDefaultWorkingDirectory;
+
++ (BOOL)compareMatrix: (cda::math::containers::Matrix<double>) compare
+         withExpected: (cda::math::containers::Matrix<double>) expected
+         whitAccuracy: (double) accuracy;
 
 @end
 

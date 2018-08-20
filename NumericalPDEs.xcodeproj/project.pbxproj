@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		070BBC6820D43252008DDBDE /* TestsTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6720D43252008DDBDE /* TestsTools.m */; };
+		070BBC6820D43252008DDBDE /* TestsTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6720D43252008DDBDE /* TestsTools.mm */; };
 		070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */ = {isa = PBXBuildFile; fileRef = 070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */; };
 		070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */; };
 		070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */; };
@@ -37,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		070BBC6620D42E9E008DDBDE /* BigMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = BigMatrix.csv; sourceTree = "<group>"; };
-		070BBC6720D43252008DDBDE /* TestsTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestsTools.m; sourceTree = "<group>"; };
+		070BBC6720D43252008DDBDE /* TestsTools.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TestsTools.mm; sourceTree = "<group>"; };
 		070BBC6920D4328E008DDBDE /* TestsTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestsTools.h; sourceTree = "<group>"; };
 		070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmallMatrix.csv; sourceTree = "<group>"; };
 		070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixPerformance.mm; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 				070BBC6320D42E2A008DDBDE /* data */,
 				07B57FCE20CED3F8001DDC78 /* math */,
 				07B57FCA20CED3D0001DDC78 /* Info.plist */,
-				070BBC6720D43252008DDBDE /* TestsTools.m */,
+				070BBC6720D43252008DDBDE /* TestsTools.mm */,
 				070BBC6920D4328E008DDBDE /* TestsTools.h */,
 			);
 			path = Tests;
@@ -406,7 +406,7 @@
 			files = (
 				07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */,
 				072AB5B620D598DE009BAB93 /* LUTests.mm in Sources */,
-				070BBC6820D43252008DDBDE /* TestsTools.m in Sources */,
+				070BBC6820D43252008DDBDE /* TestsTools.mm in Sources */,
 				070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */,
 				07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */,
 				070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */,
@@ -433,7 +433,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -469,7 +468,6 @@
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
