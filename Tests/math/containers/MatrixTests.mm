@@ -452,6 +452,76 @@ using namespace cda::math::containers;
     XCTAssertThrows(matrix1 -= matrix3, "Subtract incompatible dimensions");
 }
 
+- (void)testPowers {
+    const Matrix<int> matrix1({
+        {-1,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  10, 7, 14},
+        {12, 13, 14, 15}
+    });
+    
+    const auto expected1 = Matrix<int>::Identity(4);
+    
+    XCTAssertEqual(matrix1.Pow(0), expected1, "Power 0 OK");
+    
+    const Matrix<int> expected2({
+        { 57,  63,  60,  77},
+        {148, 180, 178, 236},
+        {256, 310, 321, 402},
+        {332, 412, 410, 548}
+    });
+    
+    XCTAssertEqual(matrix1.Pow(2), expected2, "Power 2 OK");
+    
+    const Matrix<int> expected3({
+        { 1599,  1973,  1990,  2607},
+        { 4828,  5896,  5926,  7736},
+        { 8376, 10242, 10247, 13462},
+        {11172, 13616, 13678, 17840}
+    });
+    
+    XCTAssertEqual(matrix1.Pow(3), expected3, "Power 3 OK");
+    
+    const Matrix<int> matrix2({
+        { 3,  2,  4},
+        { 7,  6,  5},
+        {11, 10,  9}
+    });
+    
+    const auto expected4 = Matrix<int>({
+        { 4,  22, -14},
+        {-8, -17,  13},
+        { 4,  -8,   4}
+    }) / 12.0;
+    
+    XCTAssert([TestsTools compareMatrix:matrix2.Pow(-1) withExpected:expected4 whitAccuracy:1E-13], "Power -1 OK");
+    
+    const Matrix<double> matrix3({
+        {0,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  10, 7, 14},
+        {12, 13, 14, 15}
+    });
+    XCTAssertThrows(matrix3.Pow(-1), "Matrix is degenerate");
+    
+    const Matrix<int> matrix4({
+        { -1,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8,  9, 10, 11}
+    });
+    
+    XCTAssertThrows(matrix4.Pow(0), "Matrix must be square");
+    
+    const Matrix<int> matrix5({
+        {-1,  1,  2,  3},
+        { 4,  5,  6,  7},
+        { 8, 10, 12, 14},   // Same row as above multiplied by 2
+        {12, 13, 14, 15}
+    });
+    
+    XCTAssertThrows(matrix5.Pow(0), "Matrix is singular");
+}
+
 - (void)testTransposeOperation {
     const Matrix<int> matrix({
         {0,  1,  2,  3,  4},
@@ -555,28 +625,23 @@ using namespace cda::math::containers;
     // --- GetColumnAsVector ---
     // Get the whole first column
     Vector<int> expected_vector({0, 5, 10, 15});
-    auto result_vector = matrix.GetColumnAsVector(0);
-    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the whole first column OK!");
+    XCTAssertEqual(matrix.GetColumnAsVector(0), expected_vector, "GetColumnAsVector for the whole first column OK!");
     
     // Get the last two elements of the first column
     expected_vector = Vector<int>({10, 15});
-    result_vector = matrix.GetColumnAsVector(0, 2);
-    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the last two elements of the first column OK!");
+    XCTAssertEqual(matrix.GetColumnAsVector(0, 2), expected_vector, "GetColumnAsVector for the last two elements of the first column OK!");
     
     // Get the whole third column
     expected_vector = Vector<int>({2, 7, 12, 17});
-    result_vector = matrix.GetColumnAsVector(2);
-    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the whole third column OK!");
+    XCTAssertEqual(matrix.GetColumnAsVector(2), expected_vector, "GetColumnAsVector for the whole third column OK!");
     
     // Get the last three elements of the fourth column
     expected_vector = Vector<int>({8, 13, 18});
-    result_vector = matrix.GetColumnAsVector(3, 1);
-    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the last three elements of the fourth column OK!");
+    XCTAssertEqual(matrix.GetColumnAsVector(3, 1), expected_vector, "GetColumnAsVector for the last three elements of the fourth column OK!");
     
     // Get the last column
     expected_vector = Vector<int>({4, 9, 14, 19});
-    result_vector = matrix.GetColumnAsVector(4);
-    XCTAssertEqual(result_vector, expected_vector, "GetColumnAsVector for the last column OK!");
+    XCTAssertEqual(matrix.GetColumnAsVector(4), expected_vector, "GetColumnAsVector for the last column OK!");
     
     // Get column out of bounds
     XCTAssertThrows(matrix.GetColumnAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");
@@ -585,23 +650,19 @@ using namespace cda::math::containers;
     // --- GetRowAsVector ---
     // Get the whole first row
     expected_vector = Vector<int>({0,  1,  2,  3,  4});
-    result_vector = matrix.GetRowAsVector(0);
-    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the whole first row OK!");
+    XCTAssertEqual(matrix.GetRowAsVector(0), expected_vector, "GetRowAsVector for the whole first row OK!");
     
     // Get the last two elements of the first column
     expected_vector = Vector<int>({7,  8,  9});
-    result_vector = matrix.GetRowAsVector(1, 2);
-    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the last three elements of the second row OK!");
+    XCTAssertEqual(matrix.GetRowAsVector(1, 2), expected_vector, "GetRowAsVector for the last three elements of the second row OK!");
     
     // Get the whole third row
     expected_vector = Vector<int>({10, 11, 12, 13, 14});
-    result_vector = matrix.GetRowAsVector(2);
-    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the whole third row OK!");
+    XCTAssertEqual(matrix.GetRowAsVector(2), expected_vector, "GetRowAsVector for the whole third row OK!");
     
     // Get the last element of the last row
     expected_vector = Vector<int>({19});
-    result_vector = matrix.GetRowAsVector(3, 4);
-    XCTAssertEqual(result_vector, expected_vector, "GetRowAsVector for the last element of the last row OK!");
+    XCTAssertEqual(matrix.GetRowAsVector(3, 4), expected_vector, "GetRowAsVector for the last element of the last row OK!");
     
     // Get row out of bounds
     XCTAssertThrows(matrix.GetRowAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");

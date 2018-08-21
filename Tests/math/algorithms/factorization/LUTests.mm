@@ -32,14 +32,14 @@ using namespace cda::math::algorithms::factorization;
 }
 
 - (void)testLUMethods {
-    Matrix<double> matrix_test({
+    Matrix<int> matrix_test({
         {3,  2,  1,  2},
         {7,  6,  5,  1},
         {12, 10,  9,  8},
         {15, 14, 13, 12}
     });
     
-    LU<Matrix<double>> lu(matrix_test);
+    LU<Matrix> lu(matrix_test);
     
     const auto accuracy = 1E-13;
     

@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <string>
 #include <stdexcept>
+#include <type_traits>
 
 #include "../algorithms/factorization/lu.hpp"
 
@@ -30,6 +31,9 @@ namespace cda {
             template <typename T>
             class Matrix {
             private:
+                
+                typedef typename std::conditional<std::is_floating_point<T>::value, T, float>::type ValueTypeLU;
+                
                 size_t n, m, size;
                 T *a, *it_end;
                 
@@ -822,7 +826,7 @@ namespace cda {
                 }
                 
                 ValueType Determinant() const {
-                    return algorithms::factorization::LU<Matrix<double>, Matrix<ValueType>>::Determinant(*this);
+                    return algorithms::factorization::LU<Matrix, ValueTypeLU>::Determinant(*this);
                 }
                 
                 Matrix<ValueType> Pow(const ssize_t &power) const {
@@ -834,7 +838,7 @@ namespace cda {
                     
                     switch (power) {
                         case -1:
-                            throw std::logic_error("To compute the inverse matrix consider using LU::InverseMatrix");
+                            new_matrix = algorithms::factorization::LU<Matrix, ValueTypeLU>::InverseMatrix(*this);
                             break;
                             
                         case 0:
