@@ -964,7 +964,7 @@ void operator>>(std::istream &input,
     
     size_t rows = 0, columns = 0;
     
-    bool is_file_first_row = true;
+    bool is_first_row = true;
     char comma;
     std::string line, cell;
     size_t element = 0;
@@ -980,15 +980,15 @@ void operator>>(std::istream &input,
                 matrix.Resize(matrix.Rows() + initial_size, 1);
             }
             
-            if (is_file_first_row) {
+            if (is_first_row) {
                 ++columns;
             }
             
             line_stream >> comma;
         }
         
-        if (is_file_first_row) {
-            is_file_first_row = false;
+        if (is_first_row) {
+            is_first_row = false;
         }
         
         ++rows;
@@ -1006,48 +1006,76 @@ template <typename ValueType>
 std::ostream& operator<<(std::ostream &output,
                          const cda::math::containers::Matrix<ValueType> &matrix) {
     
-    if (output.rdbuf() == std::cout.rdbuf()) {
-    //        out.width();
-    //        out << fixed;
-    //        out.fill(' ');
-    //        out.precision(6);
-    //        if (M.Rows() == 1 && M.Columns() == 1) {
-    //            out << M(0) << endl;
-    //        } else if (M.Rows() == 1) {
-    //            out << "[" << M(0);
-    //            for (int j=1; j<M.Columns(); j++) {
-    //                out << "\t" << M(j);
-    //            }
-    //            out << "]\n";
-    //        } else {
-    //            out << "⎡" << M(0);
-    //            for (int j=1; j<M.Columns(); j++) {
-    //                out << right << "\t" << M(j);
-    //            }
-    //            out.width();
-    //            out << "\t⎤\n";
-    //            for (int i=1; i<M.Rows()-1; i++) {
-    //                out << "⎢" << M(i*M.Columns());
-    //                for (int j=1; j<M.Columns(); j++) {
-    //                    out << "\t" << M(i*M.Columns() + j);
-    //                }
-    //                out << "\t⎥\n";
-    //            }
-    //            out << "⎣" << M((M.Rows()-1)*M.Columns());
-    //            for (int j=1; j<M.Columns(); j++) {
-    //                out << "\t" << M((M.Rows()-1)*M.Columns() + j);
-    //            }
-    //            out << "\t⎦\n";
-    //        }
-    //        out.precision();
-        } else {
-            for (size_t row = 0; row < matrix.Rows(); ++row) {
-                for (size_t column = 0; column < matrix.Columns(); ++column) {
-                    std::cout << matrix[row][column] << ";";
-                }
-                std::cout << std::endl;
-            }
-        }
+    const size_t rows = matrix.Rows();
+    const size_t columns = matrix.Columns();
     
+    if (output.rdbuf() == std::cout.rdbuf()) {
+        
+        const size_t custom_width = 12;
+        const size_t custom_precision = 5;
+        
+        output.width();
+        output << std::fixed;
+        output.fill(' ');
+        output.precision(custom_precision);
+    
+        if (rows == 1 && columns == 1) {
+            output << matrix[0][0] << std::endl;
+        } else if (rows == 1) {
+            output << "[";
+            output.width(custom_width);
+            output << matrix[0][0];
+            for (size_t column = 1; column < columns; ++column) {
+                output << " ";
+                output.width(custom_width);
+                output << matrix[0][column];
+            }
+            output << "]" << std::endl;
+        } else {
+            
+            const size_t last_row = rows - 1;
+            
+            output << "⎡";
+            output.width(custom_width);
+            output << matrix[0][0];
+            for (size_t column = 1; column < columns; ++column) {
+                output << std::right << " ";
+                output.width(custom_width);
+                output << matrix[0][column];
+            }
+            output.width();
+            output << " ⎤" << std::endl;
+            for (size_t row = 1; row < last_row; ++row) {
+                output << "⎢";
+                output.width(custom_width);
+                output << matrix[row][0];
+                for (size_t column = 1; column < columns; ++column) {
+                    output << std::right << " ";
+                    output.width(custom_width);
+                    output << matrix[row][column];
+                }
+                output << " ⎥" << std::endl;
+            }
+            output << "⎣";
+            output.width(custom_width);
+            output << matrix[last_row][0];
+            for (size_t column = 1; column < columns; ++column) {
+                output << std::right << " ";
+                output.width(custom_width);
+                output << matrix[last_row][column];
+            }
+            output << " ⎦" << std::endl;
+        }
+        output.precision();
+    
+    } else {
+        for (size_t row = 0; row < rows; ++row) {
+            for (size_t column = 0; column < columns; ++column) {
+                output << matrix[row][column] << ";";
+            }
+            output << std::endl;
+        }
+    }
+
     return output;
 }

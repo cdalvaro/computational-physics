@@ -12,6 +12,7 @@
 		070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */; };
 		070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */; };
 		072AB5B620D598DE009BAB93 /* LUTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 072AB5B520D598DE009BAB93 /* LUTests.mm */; };
+		073DCF9B212C6F02004A901D /* MatrixTests-testOfstreamOperator.txt in Resources */ = {isa = PBXBuildFile; fileRef = 073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */; };
 		07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */; };
 		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
 		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
@@ -48,6 +49,7 @@
 		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
 		073199B420D6612D003FED85 /* linear.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = linear.hpp; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
+		073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MatrixTests-testOfstreamOperator.txt"; sourceTree = "<group>"; };
 		077949C620D5088200A8347E /* lu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lu.hpp; sourceTree = "<group>"; };
 		07890FBB20D6CA6600784F5C /* containers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = containers.hpp; sourceTree = "<group>"; };
 		07890FBD20D6CC3600784F5C /* qr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = qr.hpp; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		070BBC6520D42E3D008DDBDE /* containers */ = {
 			isa = PBXGroup;
 			children = (
+				073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */,
 				070BBC6620D42E9E008DDBDE /* BigMatrix.csv */,
 				070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */,
 			);
@@ -393,6 +396,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				073DCF9B212C6F02004A901D /* MatrixTests-testOfstreamOperator.txt in Resources */,
 				070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

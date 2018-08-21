@@ -9,6 +9,8 @@
 #ifndef TestsTools_h
 #define TestsTools_h
 
+#define TESTS_TOOLS_DEFAULT_ACCURACY 1E-13
+
 #import "../NumericalPDEs/math/containers.hpp"
 
 
