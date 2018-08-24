@@ -266,7 +266,7 @@ namespace cda {
                 }
                 
                 Vector<ValueType> GetDiagonal() const {
-                    if (!this->IsSquared()) {
+                    if (!this->IsSquare()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     
@@ -614,7 +614,7 @@ namespace cda {
                     return true;
                 }
                 
-                bool IsSquared() const {
+                bool IsSquare() const {
                     return n == m;
                 }
                 
@@ -658,7 +658,7 @@ namespace cda {
                 }
                 
                 void Identity() {
-                    if (!IsSquared()) {
+                    if (!IsSquare()) {
                         throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
                     }
                     
@@ -830,7 +830,7 @@ namespace cda {
                 }
                 
                 Matrix<ValueType> Pow(const ssize_t &power) const {
-                    if (!this->IsSquared()) {
+                    if (!this->IsSquare()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     

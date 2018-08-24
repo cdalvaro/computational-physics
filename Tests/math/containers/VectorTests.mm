@@ -134,10 +134,10 @@ using namespace cda::math::containers;
 - (void)testNorms {
     const Vector<int> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
-    // Squared Norm
-    auto result = vector.SquaredNorm();
+    // Square Norm
+    auto result = vector.SquareNorm();
     double expected = 385;
-    XCTAssertEqual(result, expected, "The squared norm of the vector is OK");
+    XCTAssertEqual(result, expected, "The square norm of the vector is OK");
     
     // Norm
     result = vector.Norm();

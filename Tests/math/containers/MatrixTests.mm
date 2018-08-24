@@ -158,7 +158,7 @@ using namespace cda::math::containers;
     XCTAssertEqual(result, expected_identity, "Identity method OK");
     
     Matrix<double> result2(5, 4, 2);
-    XCTAssertThrows(result2.Identity(), "Identity method is only valid for squared matrices");
+    XCTAssertThrows(result2.Identity(), "Identity method is only valid for square matrices");
 }
 
 - (void)testComparison {
@@ -558,12 +558,12 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix.Transpose(), expected, "Transpose operation OK");
 }
 
-- (void)testSquaredMatrix {
-    const auto squared_matrix = Matrix<double>::Ones(4, 4);
-    XCTAssert(squared_matrix.IsSquared(), "squared_matrix is squared");
+- (void)testSquareMatrix {
+    const auto square_matrix = Matrix<double>::Ones(4, 4);
+    XCTAssert(square_matrix.IsSquare(), "square_matrix is square");
     
     const auto rectangular_matrix = Matrix<double>::Ones(4, 3);
-    XCTAssert(!rectangular_matrix.IsSquared(), "rectangular_matrix is not squared");
+    XCTAssert(!rectangular_matrix.IsSquare(), "rectangular_matrix is not square");
 }
 
 - (void)testGettersMethods {
@@ -618,9 +618,9 @@ using namespace cda::math::containers;
     XCTAssertThrows(matrix.GetColumn(5), "GetColumn out of bounds");
     
     // --- GetDiagonal
-    XCTAssertThrows(matrix.GetDiagonal(), "This method is only available for squared matrices");
+    XCTAssertThrows(matrix.GetDiagonal(), "This method is only available for square matrices");
     
-    const Matrix<double> squared_matrix({
+    const Matrix<double> square_matrix({
         { 0,  1,  2,  3},
         { 5,  6,  7,  8},
         {10, 11, 12, 13},
@@ -628,7 +628,7 @@ using namespace cda::math::containers;
     });
     
     const Vector<double> expected_diagonal({0, 6, 12, 18});
-    XCTAssertEqual(squared_matrix.GetDiagonal(), expected_diagonal, "GetDiagonal method OK");
+    XCTAssertEqual(square_matrix.GetDiagonal(), expected_diagonal, "GetDiagonal method OK");
 }
 
 - (void)testGettersAsVectorMethods {
@@ -1077,7 +1077,7 @@ using namespace cda::math::containers;
         { 84, 72, 63, 12}
     });
     
-    XCTAssertThrows(matrix3.Determinant(), "Unable to compute determinant of a non-squared matrix");
+    XCTAssertThrows(matrix3.Determinant(), "Unable to compute determinant of a non-square matrix");
 }
 
 - (void)testOfstreamOperator {

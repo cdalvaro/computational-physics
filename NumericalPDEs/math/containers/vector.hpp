@@ -313,10 +313,10 @@ namespace cda {
                 }
                 
                 double Norm() const {
-                    return std::sqrt(SquaredNorm());
+                    return std::sqrt(SquareNorm());
                 }
                 
-                double SquaredNorm() const {
+                double SquareNorm() const {
                     return *this * *this;
                 }
                 
