@@ -372,6 +372,34 @@ namespace cda {
                     std::copy(vector.Begin(), vector.End(), it_this);
                 }
                 
+                void SetDiagonal(const Vector<ValueType> &diagonal) {
+                    if (!IsSquare()) {
+                        throw std::logic_error("The matrix must be square to establish its diagonal");
+                    }
+                    
+                    if (diagonal.Size() != this->n) {
+                        throw std::logic_error("Diagonal size does not match with the number of rows of the matrix");
+                    }
+                    
+                    auto it_matrix = this->Begin();
+                    const size_t step = m + 1;
+                    for (auto it_diagonal = diagonal.Begin(); it_diagonal != diagonal.End(); ++it_diagonal, it_matrix += step) {
+                        *it_matrix = *it_diagonal;
+                    }
+                }
+                
+                void SetDiagonal(const ValueType &diagonal) {
+                    if (!IsSquare()) {
+                        throw std::logic_error("The matrix must be square to establish its diagonal");
+                    }
+                    
+                    auto it_end = End() + m;
+                    const size_t step = m + 1;
+                    for (auto it = Begin(); it != it_end; it += step) {
+                        *it = diagonal;
+                    }
+                }
+                
                 void SetMatrix(const size_t &row, const size_t &column, const Matrix<ValueType> &matrix) {
                     if (row >= this->n || column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
@@ -599,12 +627,6 @@ namespace cda {
                     for (auto it = Begin(); it != it_end; it += step) {
                         *it = 1;
                     }
-                }
-                
-                void Write(const std::string &filename, const std::string &path = "/tmp") const {
-                    const std::string file_path(path + "/" + filename);
-                    std::ofstream output(file_path.data());
-                    output << *this;
                 }
                 
                 Matrix<ValueType> operator+(const Matrix<ValueType> &matrix) const {

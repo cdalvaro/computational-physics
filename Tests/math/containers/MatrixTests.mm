@@ -812,6 +812,38 @@ using namespace cda::math::containers;
     XCTAssertThrows(result.SetColumn(1, new_column.GetColumnAsVector(0)), "SetColumn (vector): new column has fewer elements than old one");
 }
 
+- (void)testSetDiagonal {
+    auto result1 = Matrix<double>::Ones(4, 4);
+    result1.SetDiagonal(2);
+    
+    const Matrix<double> expected1({
+        {2, 1, 1, 1},
+        {1, 2, 1, 1},
+        {1, 1, 2, 1},
+        {1, 1, 1, 2}
+    });
+    
+    XCTAssertEqual(result1, expected1, "SetDiagonal scalar value OK");
+    
+    auto result2 = Matrix<double>::Zero(5, 5);
+    result2.SetDiagonal(Vector<double>({1, 2, 3, 4, 5}));
+    
+    const Matrix<double> expected2({
+        {1, 0, 0, 0, 0},
+        {0, 2, 0, 0, 0},
+        {0, 0, 3, 0, 0},
+        {0, 0, 0, 4, 0},
+        {0, 0, 0, 0, 5}
+    });
+    
+    XCTAssertEqual(result2, expected2, "SetDiagonal vector values OK");
+    
+    Matrix<double> result3(4, 5);
+    XCTAssertThrows(result3.SetDiagonal(4), "Matrix must be square");
+    XCTAssertThrows(result3.SetDiagonal(Vector<double>(4)), "Matrix must be square");
+    XCTAssertThrows(result1.SetDiagonal(Vector<double>(5)), "The number of rows of the matrix and the size of the vector does not match");
+}
+
 - (void)testSumRows {
     Matrix<double> matrix_test({
         { 3,  2,  1,  2},
