@@ -40,26 +40,26 @@ using namespace cda::math::containers;
 - (void)testConstructors {
     
     // Default constructor
-    Vector<int> defaultVector;
+    Vector<double> defaultVector;
     XCTAssert(defaultVector.Size() == 0, "Default constructor OK");
     
     // Constructor with size
-    Vector<int> vectorWithSize(10);
+    Vector<double> vectorWithSize(10);
     XCTAssert(vectorWithSize.Size() == 10, "Constructor with size OK");
     
     // Constructor with size filling elements
-    Vector<int> vectorWithElementsFilled(10, 5);
+    Vector<double> vectorWithElementsFilled(10, 5);
     XCTAssert(vectorWithElementsFilled.Size() == 10, "Constructor with size filling elements has size OK");
     for (size_t i = 0; i < vectorWithElementsFilled.Size(); ++i) {
         XCTAssert(vectorWithElementsFilled[i] == 5, "Element has been filled OK");
     }
     
     // Copy constructor from another vector
-    Vector<int> vectorFromCopy(vectorWithElementsFilled);
+    Vector<double> vectorFromCopy(vectorWithElementsFilled);
     XCTAssert(vectorFromCopy == vectorWithElementsFilled, "Copy constructor OK");
     
     // Move constructor
-    Vector<int> vectorFromMove(std::move(vectorWithElementsFilled));
+    Vector<double> vectorFromMove(std::move(vectorWithElementsFilled));
     XCTAssert(vectorFromMove == vectorFromCopy, "Move constructor OK");
     
     // Constructor from array
@@ -132,7 +132,7 @@ using namespace cda::math::containers;
 }
 
 - (void)testNorms {
-    const Vector<int> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     // Square Norm
     auto result = vector.SquareNorm();

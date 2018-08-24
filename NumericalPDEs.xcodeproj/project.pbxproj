@@ -174,9 +174,10 @@
 		077949C320D506D200A8347E /* algorithms */ = {
 			isa = PBXGroup;
 			children = (
+				07C1B099210F8EA700EB8A9B /* algorithms.hpp */,
 				07890FBC20D6CC1500784F5C /* eigenvalue */,
 				077949C420D5083D00A8347E /* factorization */,
-				07C1B099210F8EA700EB8A9B /* algorithms.hpp */,
+				076B0ABC212F4C8200DE9A10 /* find.hpp */,
 			);
 			path = algorithms;
 			sourceTree = "<group>";

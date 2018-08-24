@@ -32,7 +32,7 @@ using namespace cda::math::algorithms::factorization;
 }
 
 - (void)testConstructor {
-    Matrix<int> matrix_test({
+    Matrix<double> matrix_test({
         {3,  2,  1,  2},
         {7,  6,  5,  1},
         {12, 10,  9,  8},
@@ -40,7 +40,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     XCTAssertNoThrow(LU<Matrix>(matrix_test), "LU matrix constructor OK");
-    XCTAssertThrows(LU<Matrix>(Matrix<int>(4, 3)), "LU matrix is not valid for non-square matrices");
+    XCTAssertThrows(LU<Matrix>(Matrix<double>(4, 3)), "LU matrix is not valid for non-square matrices");
 }
 
 - (void)testLUMatrices {
@@ -51,7 +51,7 @@ using namespace cda::math::algorithms::factorization;
         {15, 14, 13, 12}
     });
     
-    LU<Matrix> lu(matrix_test);
+    LU<Matrix, double> lu(matrix_test);
     
     const auto accuracy = 1E-13;
     
@@ -90,7 +90,7 @@ using namespace cda::math::algorithms::factorization;
         {105, 90, 75, 15}
     });
     
-    LU<Matrix> lu1(matrix1);
+    LU<Matrix, double> lu1(matrix1);
     XCTAssertEqual(lu1.Determinant(), 315, "Determinant OK");
     
     const Matrix<double> matrix2({
@@ -100,7 +100,7 @@ using namespace cda::math::algorithms::factorization;
         {105, 90, 75, 15}
     });
     
-    LU<Matrix> lu2(matrix2);
+    LU<Matrix, double> lu2(matrix2);
     XCTAssertEqual(lu2.Determinant(), 0, "Determinant 0 OK");
 }
 
@@ -117,7 +117,7 @@ using namespace cda::math::algorithms::factorization;
         { 4,  -8,   4}
     }) / 12.0;
     
-    LU<Matrix> lu1(matrix1);
+    LU<Matrix, double> lu1(matrix1);
     XCTAssert([TestsTools compareMatrix:lu1.InverseMatrix()
                            withExpected:expected
                            whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
@@ -130,7 +130,7 @@ using namespace cda::math::algorithms::factorization;
         {12, 13, 14, 15}
     });
     
-    LU<Matrix> lu2(matrix2);
+    LU<Matrix, double> lu2(matrix2);
     XCTAssertThrows(lu2.InverseMatrix(), "Matrix is degenerate");
 }
 
