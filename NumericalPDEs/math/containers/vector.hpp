@@ -15,6 +15,8 @@
 #include <string>
 #include <stdexcept>
 
+#include "../algorithms/find.hpp"
+
 
 namespace cda {
     namespace math {
@@ -239,47 +241,27 @@ namespace cda {
                 }
                 
                 ValueType MaximumElement() const {
-                    auto max = *Begin();
-                    for (auto it = Begin() + 1; it != End(); ++it) {
-                        if (*it > max) {
-                            max = *it;
-                        }
-                    }
-                    return max;
+                    return algorithms::find::MaximumElement(Begin(), End());
                 }
                 
                 ValueType AbsoluteMaximumElement() const {
-                    auto max = std::abs(*Begin());
-                    ValueType abs_max;
-                    for (auto it = Begin() + 1; it != End(); ++it) {
-                        abs_max = std::abs(*it);
-                        if (abs_max > max) {
-                            max = abs_max;
-                        }
-                    }
-                    return max;
+                    return algorithms::find::AbsoluteMaximumElement(Begin(), End());
+                }
+                
+                ValueType AbsoluteMaximumElementWithSign() const {
+                    return algorithms::find::AbsoluteMaximumElementWithSign(Begin(), End());
                 }
                 
                 ValueType MinimumElement() const {
-                    auto min = *Begin();
-                    for (auto it = Begin() +1 ; it != End(); ++it) {
-                        if (*it < min) {
-                            min = *it;
-                        }
-                    }
-                    return min;
+                    return algorithms::find::MinimumElement(Begin(), End());
                 }
                 
                 ValueType AbsoluteMinimumElement() const {
-                    auto min = std::abs(*Begin());
-                    ValueType abs_min;
-                    for (auto it = Begin() + 1; it != End(); ++it) {
-                        abs_min = std::abs(*it);
-                        if (abs_min < min) {
-                            min = abs_min;
-                        }
-                    }
-                    return min;
+                    return algorithms::find::AbsoluteMinimumElement(Begin(), End());
+                }
+                
+                ValueType AbsoluteMinimumElementWithSign() const {
+                    return algorithms::find::AbsoluteMinimumElementWithSign(Begin(), End());
                 }
                 
                 ValueType Sum() const {

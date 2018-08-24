@@ -20,6 +20,7 @@
 #include <stdexcept>
 #include <type_traits>
 
+#include "../algorithms/find.hpp"
 #include "../algorithms/factorization/lu.hpp"
 
 
@@ -469,97 +470,27 @@ namespace cda {
                 }
                 
                 ValueType MaximumElement() const {
-                    auto it = this->Begin();
-                    
-                    ValueType max_element = *it;
-                    ++it;
-                    
-                    for (; it != this->End(); ++it) {
-                        if (*it > max_element) {
-                            max_element = *it;
-                        }
-                    }
-                    
-                    return max_element;
+                    return algorithms::find::MaximumElement(Begin(), End());
                 }
                 
                 ValueType AbsoluteMaximumElement() const {
-                    auto it = this->Begin();
-                    
-                    ValueType max_element = std::abs(*it);
-                    ++it;
-                    
-                    ValueType abs_it;
-                    for (; it != this->End(); ++it) {
-                        abs_it = std::abs(*it);
-                        if (abs_it > max_element) {
-                            max_element = abs_it;
-                        }
-                    }
-                    
-                    return max_element;
+                    return algorithms::find::AbsoluteMaximumElement(Begin(), End());
                 }
                 
                 ValueType AbsoluteMaximumElementWithSign() const {
-                    auto it = this->Begin();
-                    
-                    ValueType max_element = *it;
-                    ++it;
-                    
-                    for (; it != this->End(); ++it) {
-                        if (std::abs(*it) > std::abs(max_element)) {
-                            max_element = *it;
-                        }
-                    }
-                    
-                    return max_element;
+                    return algorithms::find::AbsoluteMaximumElementWithSign(Begin(), End());
                 }
                 
                 ValueType MinimumElement() const {
-                    auto it = this->Begin();
-                    
-                    ValueType min_element = *it;
-                    ++it;
-                    
-                    for (; it != this->End(); ++it) {
-                        if (*it < min_element) {
-                            min_element = *it;
-                        }
-                    }
-                    
-                    return min_element;
+                    return algorithms::find::MinimumElement(Begin(), End());
                 }
                 
                 ValueType AbsoluteMinimumElement() const {
-                    auto it = this->Begin();
-                    
-                    ValueType min_element = std::abs(*it);
-                    ++it;
-                    
-                    ValueType abs_it;
-                    for (; it != this->End(); ++it) {
-                        abs_it = std::abs(*it);
-                        if (abs_it < min_element) {
-                            min_element = abs_it;
-                        }
-                    }
-                    
-                    return min_element;
+                    return algorithms::find::AbsoluteMinimumElement(Begin(), End());
                 }
                 
                 ValueType AbsoluteMinimumElementWithSign() const {
-                    auto it = this->Begin();
-                    
-                    ValueType min_element = *it;
-                    ++it;
-                    
-                    for (; it != this->End(); ++it) {
-                        if (std::abs(*it) < std::abs(min_element)) {
-                            min_element = *it;
-                        }
-                    }
-                    
-                    return min_element;
+                    return algorithms::find::AbsoluteMinimumElementWithSign(Begin(), End());
                 }
                 
                 const ValueType &At(const size_t &row, const size_t &column) const {

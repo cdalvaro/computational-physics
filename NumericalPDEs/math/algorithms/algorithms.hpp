@@ -8,5 +8,6 @@
 
 #pragma once
 
+#include "find.hpp"
 #include "eigenvalue/qr.hpp"
 #include "systems/linear.hpp"
