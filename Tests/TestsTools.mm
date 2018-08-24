@@ -42,4 +42,24 @@
     return YES;
 }
 
++ (BOOL)compareVector: (cda::math::containers::Vector<double>) compare
+         withExpected: (cda::math::containers::Vector<double>) expected
+         whitAccuracy: (double) accuracy {
+    
+    if (compare.Size() != expected.Size()) {
+        return NO;
+    }
+    
+    for (auto it_compare = compare.Begin(), it_expected = expected.Begin();
+         it_compare != compare.End(); ++it_compare, ++it_expected) {
+        
+        const double distance = *it_compare - *it_expected;
+        if (std::sqrt(distance * distance) >= accuracy) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 @end

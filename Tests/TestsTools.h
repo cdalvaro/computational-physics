@@ -22,6 +22,10 @@
          withExpected: (cda::math::containers::Matrix<double>) expected
          whitAccuracy: (double) accuracy;
 
++ (BOOL)compareVector: (cda::math::containers::Vector<double>) compare
+         withExpected: (cda::math::containers::Vector<double>) expected
+         whitAccuracy: (double) accuracy;
+
 @end
 
 #endif /* Tools_h */
