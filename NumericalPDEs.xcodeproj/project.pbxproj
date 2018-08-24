@@ -50,6 +50,7 @@
 		073199B420D6612D003FED85 /* linear.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = linear.hpp; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
 		073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MatrixTests-testOfstreamOperator.txt"; sourceTree = "<group>"; };
+		076B0ABC212F4C8200DE9A10 /* find.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = find.hpp; sourceTree = "<group>"; };
 		077949C620D5088200A8347E /* lu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lu.hpp; sourceTree = "<group>"; };
 		07890FBB20D6CA6600784F5C /* containers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = containers.hpp; sourceTree = "<group>"; };
 		07890FBD20D6CC3600784F5C /* qr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = qr.hpp; sourceTree = "<group>"; };

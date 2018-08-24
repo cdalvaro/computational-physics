@@ -8,12 +8,14 @@
 
 #pragma once
 
+#include <map>
+
 #include "../factorization/lu.hpp"
-#include "../../containers.hpp"
+#include "../../containers/vector.hpp"
 #include "../../math.hpp"
 
 
-#define CDA_QR_DEFAULT_ACCURACY 1E-05
+#define CDA_QR_DEFAULT_ACCURACY 1E-06
 #define CDA_QR_DEFAULT_MAX_ITERATIONS 1E+05
 
 
@@ -22,11 +24,12 @@ namespace cda {
         namespace algorithms {
             namespace eigenvalue {
                 
-                template <typename T>
+                template <template<typename T> class Matrix, typename ValueType = double,
+                          class = typename std::enable_if<std::is_floating_point<ValueType>::value>::type>
                 class QR {
                 public:
                     
-                    QR(const containers::Matrix<T> &matrix,
+                    QR(const Matrix<ValueType> &matrix,
                        const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
                     original(matrix), rows(matrix.Rows()),
@@ -38,14 +41,14 @@ namespace cda {
                     
                     virtual ~QR() = default;
                     
-                    const containers::Matrix<T> &Q() {
+                    const Matrix<ValueType> &Q() {
                         if (q.IsNull()) {
                             ComputeQR(original);
                         }
                         return q;
                     }
                     
-                    const containers::Matrix<T> &R() {
+                    const Matrix<ValueType> &R() {
                         if (r.IsNull()) {
                             ComputeQR(original);
                         }
@@ -68,119 +71,117 @@ namespace cda {
                         this->accuracy = accuracy;
                     }
                     
-                    containers::Vector<T> EigenValues() {
-                        
-                        auto matrix(original);
-                        double squared_sum = 0;
-                        T element = 0;
-                        
-                        for (size_t k = 0; k < max_iterations; ++k) {
+                    const containers::Vector<ValueType> &EigenValues() {
+                        if (eigen_values.IsEmpty()) {
+                            auto matrix(original);
+                            const size_t last_row = rows - 1;
+                            ValueType square_sum, element;
                             
-                            ComputeQR(matrix);
-                            matrix = r * q;
-                            
-                            // Convergence test
-                            for (size_t column = 0; column < rows - 1; ++column) {
-                                for (size_t row = column + 1; row < rows; ++row) {
-                                    element = matrix[row][column];
-                                    squared_sum += element * element;
+                            for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
+                                ComputeQR(matrix);
+                                matrix = r * q;
+                                
+                                // Convergence test
+                                square_sum = 0;
+                                for (size_t column = 0; column < last_row; ++column) {
+                                    for (size_t row = column + 1; row < rows; ++row) {
+                                        element = matrix[row][column];
+                                        square_sum += element * element;
+                                    }
+                                }
+                                
+                                if (std::sqrt(square_sum) < accuracy) {
+                                    break;
                                 }
                             }
                             
-                            if (std::sqrt(squared_sum) < accuracy) {
+                            eigen_values = matrix.GetDiagonal();
+                        }
+                        
+                        return eigen_values;
+                    }
+                    
+                    const containers::Vector<ValueType> &EigenVector(const ValueType &eigen_value) {
+                        
+                        auto it_eigen_vector = eigen_vectors.find(eigen_value);
+                        if (it_eigen_vector != eigen_vectors.end() && !it_eigen_vector->second.IsEmpty()) {
+                            return it_eigen_vector->second;
+                        }
+                        
+                        Matrix<ValueType> inverse_matrix(rows, rows, 0);
+                        inverse_matrix.SetDiagonal(eigen_value * (accuracy + 1.0));
+                        
+                        inverse_matrix = (original - inverse_matrix).Pow(-1);
+                        
+                        ValueType normalization_factor = 0.0;
+                        ValueType old_normalization_factor, distance;
+                        Matrix<ValueType> eigenVector(rows, 1, 1);
+                        
+                        for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
+                            old_normalization_factor = normalization_factor;
+                            
+                            eigenVector = inverse_matrix * eigenVector;
+                            normalization_factor = eigenVector.AbsoluteMaximumElementWithSign();
+                            eigenVector /= normalization_factor;
+                            
+                            // Convergence test
+                            distance = normalization_factor - old_normalization_factor;
+                            if (std::sqrt(distance * distance) < accuracy) {
                                 break;
                             }
                         }
                         
-                        return matrix.GetDiagonal();
+                        eigen_vectors.emplace(eigen_value, eigenVector.GetColumnAsVector(0) / eigenVector[0][rows - 1]);
+                        
+                        return eigen_vectors[eigen_value];
                     }
                     
-//                    Matrix<T> eigenVectors(int maxIte, unsigned char opt);                    //  Calcula los autovectores a partir de los autovalores (QR).
-//                    Matrix<T> eigenVectors(unsigned char opt);                                //  Calcula los autovectores a partir de los autovaleres (QR).
-//                    Matrix<T> eigenVectors();                                                 //  Calcula los autovectores a partir de los autovalores (QR).
-//                    Vector<T> eigenVector(T eigenValue, int maxIte, unsigned char opt);       //  Calcula el autovector correspondiente al autovector introducido.
-//                    Vector<T> eigenVector(T eigenValue, unsigned char opt);                   //  Calcula el autovector correspondiente al autovector introducido.
-//                    Vector<T> eigenVector(T eigenValue);                                      //  Calcula el autovector correspondiente al autovector introducido.
-                    
-                    containers::Vector<T> EigenVector(const T &eigenValue) const {
-                        
-                        int k;
-                        T eVa, maxS = 0.0, fact = 1E-07;
-                        
-                        containers::Matrix<T> eVe(rows, 1);
-                        
-                        eVe.Ones();
-                        
-                        eVa = eigenValue+1.0;
-                        k=1;
-                        auto Ainv = original - eigenValue * (1.0 + fact) * containers::Matrix<T>::Identity(rows);
-                        Ainv = algorithms::factorization::LU<containers::Matrix, T>::InverseMatrix(Ainv);
-                        
-                        while ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k < max_iterations) {
-                            eVe = Ainv * eVe;
-                            maxS = eVe.AbsoluteMaximumElementWithSign();
-                            eVa = 1/maxS + eigenValue*(1.0+fact);
-                            eVe /= maxS;
-                            k++;
-                            
-                            if ((eVa < eigenValue*(1.0-fact) || eVa > eigenValue*(1.0+fact)) && k == max_iterations) {
-                                eVe.Ones();
-                                eVe[0][0] *= 2.0;
-                                eVa = eigenValue+1.0;
-                                k=1;
-//                                Ainv = original - eigenValue*(1.0+fact)*containers::Matrix<T>::Identity(rows);
-//                                Ainv = algorithms::factorization::LU<T>::InverseMatrix(Ainv);
-                                
-                                while (1/eVa != eigenValue && k < max_iterations) {
-                                    eVe = Ainv * eVe;
-                                    maxS = eVe.AbsoluteMaximumElementWithSign();
-                                    eVa = 1/maxS + eigenValue*(1.0+fact);
-                                    eVe /= maxS;
-                                    k++;
-                                }
-                            }
+                    const std::map<ValueType, containers::Vector<ValueType>> &EigenVectors() {
+                        auto values = EigenValues();
+                        for (auto it_value = values.Begin(); it_value != values.End(); ++it_value) {
+                            EigenVector(*it_value);
                         }
-                        
-                        return eVe.GetColumnAsVector(0);
+                        return eigen_vectors;
                     }
                     
                 private:
                     
-                    const containers::Matrix<T> original;
+                    const Matrix<ValueType> original;
                     const size_t rows;
                     
                     size_t max_iterations;
                     double accuracy;
                     
-                    containers::Matrix<T> q;
-                    containers::Matrix<T> r;
+                    Matrix<ValueType> q, r;
+                    containers::Vector<ValueType> eigen_values;
+                    std::map<ValueType, containers::Vector<ValueType>> eigen_vectors;
                     
-                    void ComputeQR(const containers::Matrix<T> &matrix) {
+                    void ComputeQR(const Matrix<ValueType> &matrix) {
                         
-                        const auto I = containers::Matrix<T>::Identity(rows);
+                        const auto I = Matrix<ValueType>::Identity(rows);
                         
                         //  First column
                         auto c = matrix.GetColumnAsVector(0);
                         auto vt = c + I.GetRowAsVector(0) * signum(c[0]) * c.Norm();
                         
-                        q = I - 2.0 * (containers::Transpose(vt) * vt) / vt.SquaredNorm();
+                        q = I - 2.0 * (containers::Transpose(vt) * vt) / vt.SquareNorm();
                         r = q * matrix;
                         for (auto it_r = r.Begin() + rows; it_r != r.End(); it_r += rows) {
                             *it_r = 0;
                         }
                         
                         //  Other columns
-                        containers::Matrix<T> h;
+                        Matrix<ValueType> h;
                         const auto last_row = rows - 1;
                         
                         for (size_t row = 1; row < last_row; ++row) {
                             c = r.GetColumnAsVector(row, row);
                             
                             if (c.IsNull()) {
-                                h = containers::Matrix<T>::Identity(rows - row);
+                                h = Matrix<ValueType>::Identity(rows - row);
                             } else {
                                 vt = c + I.GetRowAsVector(row, row) * (signum(c[0]) * c.Norm());
-                                h = I.GetMatrix(row, row) - (containers::Transpose(vt) * vt) * (2.0 / vt.SquaredNorm());
+                                h = I.GetMatrix(row, row) - (containers::Transpose(vt) * vt) * (2.0 / vt.SquareNorm());
                                 
                                 auto A(I);
                                 A.SetMatrix(row, row, h);

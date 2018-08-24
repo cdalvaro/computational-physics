@@ -1086,11 +1086,11 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     }
     
+    algorithms::eigenvalue::QR<Matrix, EDP_T> qrA(A);
+    
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
-        algorithms::eigenvalue::QR<EDP_T> qrA(A);
         eigVal = qrA.EigenValues();
-        eigVal.Sort();
         
         if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
             eigVal[0] = 0.0;
@@ -1131,9 +1131,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     } else {
         std::cout << "\tCalculando autovalores... ";
-        //  FIXME: Call the correct method
-//        eigVal = A.eigenValues(20, opt);
-        eigVal.Sort();
+        eigVal = qrA.EigenValues();
         if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
             eigVal[0] = 0.0;
         }
@@ -1144,8 +1142,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     if ((((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) && eigVal[mode-1] == 0) {
         solV.Ones();
     } else {
-        //  FIXME: Call the correct method
-//        solV = A.eigenVector(eigVal[mode-1], opt);
+        solV = qrA.EigenVector(eigVal[mode-1]);
     }
     
     if (bc & BCL_df || bc & BCB_df) {

@@ -37,8 +37,20 @@ const Matrix<double> test_matrix({
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
+- (void)testConstructor {
+    Matrix<double> matrix_test({
+        {3,  2,  1,  2},
+        {7,  6,  5,  1},
+        {12, 10,  9,  8},
+        {15, 14, 13, 12}
+    });
+    
+    XCTAssertNoThrow(QR<Matrix>(matrix_test), "QR matrix constructor OK");
+    XCTAssertThrows(QR<Matrix>(Matrix<double>(4, 3)), "QR matrix is not valid for non-square matrices");
+}
+
 - (void)testQRDecomposition {
-    QR<double> qr(test_matrix);
+    QR<Matrix> qr(test_matrix);
     
     const auto accuracy = 1E-4;
     
@@ -50,12 +62,10 @@ const Matrix<double> test_matrix({
         {-0.7259,    0.1156,   -0.5493,    0.3974}
     });
     
-    auto result_q = qr.Q();
-    
-    for (auto it_result = result_q.Begin(), it_expected = expected_q.Begin();
-         it_result != result_q.End(); ++it_result, ++it_expected) {
-        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Element of Q matrix is equal");
-    }
+    XCTAssert([TestsTools compareMatrix:qr.Q()
+                           withExpected:expected_q
+                           whitAccuracy:accuracy],
+              "Matrix Q OK");
     
     // Matrix R
     const Matrix<double> expected_r({
@@ -65,56 +75,75 @@ const Matrix<double> test_matrix({
         {0.0000,      0.0000,     0.0000,     0.1223}
     });
     
-    auto result_r = qr.R();
-    
-    for (auto it_result = result_r.Begin(), it_expected = expected_r.Begin();
-         it_result != result_r.End(); ++it_result, ++it_expected) {
-        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Element of R matrix is equal");
-    }
+    XCTAssert([TestsTools compareMatrix:qr.R()
+                           withExpected:expected_r
+                           whitAccuracy:accuracy],
+              "Matrix R OK");
 }
 
 - (void)testQREigenValues {
-    QR<double> qr(test_matrix);
-    auto result_eigenvalues = qr.EigenValues();
+    QR<Matrix> qr(test_matrix);
     
-    Vector<double> expected_eigenvalues({ 27.1593, 4.26358, 0.407643, 0.169475 });
+    const Vector<double> expected_eigenvalues({ 27.1593, 4.26358, 0.407643, 0.169475 });
     const auto accuracy = 1E-4;
     
-    for (auto it_result = result_eigenvalues.Begin(), it_expected = expected_eigenvalues.Begin();
-         it_result != result_eigenvalues.End(); ++it_result, ++it_expected) {
-        XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Eigenvalue is OK");
+    XCTAssert([TestsTools compareVector:qr.EigenValues()
+                           withExpected:expected_eigenvalues
+                           whitAccuracy:accuracy],
+              "Eigenvalues OK");
+    
+    XCTAssert([TestsTools compareVector:qr.EigenValues()
+                           withExpected:expected_eigenvalues
+                           whitAccuracy:accuracy],
+              "Eigenvalues cache OK");
+}
+
+- (void)testQREigenVectorsOneByOne {
+    QR<Matrix> qr(test_matrix);
+    auto eigenvalues = qr.EigenValues();
+    
+    const Matrix<double> expected_eigenvectors({
+        { 0.13547,   0.28509,    0.70276,   1},
+        { 0.17272,  -1.06963,    0.35751,   1},
+        {-2.76475,   3.10788,   -1.04857,   1},
+        {-2.00446,   2.46012,   -1.24656,   1}
+    });
+    
+    const auto accuracy = 1E-5;
+    
+    for (auto it = 0; it < eigenvalues.Size(); ++it) {
+        XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.At(it))
+                               withExpected:expected_eigenvectors.GetRowAsVector(it)
+                               whitAccuracy:accuracy],
+                  @"Eigenvector OK for eigenvalue %f", eigenvalues.At(it));
+        
+        XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.At(it))
+                               withExpected:expected_eigenvectors.GetRowAsVector(it)
+                               whitAccuracy:accuracy],
+                  @"Eigenvector cache OK for eigenvalue %f", eigenvalues.At(it));
     }
 }
 
-//- (void)testQREigenVectors {
-//    QR<double> qr(test_matrix);
-//    auto eigenvalues = qr.EigenValues();
-//    
-//    const Matrix<double> expected_eigenvectors({
-//        {0.135474,   0.28509,   0.702763,   1},
-//        { 0.17272,  -1.06963,   0.357511,   1},
-//        {-2.76475,   3.10788,   -1.04857,   1},
-//        {-2.00446,   2.46012,   -1.24656,   1}
-//    });
-//    
-//    const auto accuracy = 1E-5;
-//    
-//    for (auto it = 0; it < eigenvalues.Size(); ++it) {
-//        auto result = qr.EigenVector(eigenvalues.At(it));
-//        auto expected = expected_eigenvectors.GetRowAsVector(it);
-//        
-//        for (auto it_result = result.Begin(), it_expected = expected.Begin();
-//             it_result != result.End(); ++it_result, ++it_expected) {
-//            XCTAssertEqualWithAccuracy(*it_result, *it_expected, accuracy, "Elements of eigen vector OK");
-//        }
-//    }
-//}
-
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testQREigenVectorsAtOnce {
+    QR<Matrix> qr(test_matrix);
+    auto eigenvalues = qr.EigenValues();
+    auto eigenvectors = qr.EigenVectors();
+    
+    const Matrix<double> expected_eigenvectors({
+        { 0.13547,   0.28509,    0.70276,   1},
+        { 0.17272,  -1.06963,    0.35751,   1},
+        {-2.76475,   3.10788,   -1.04857,   1},
+        {-2.00446,   2.46012,   -1.24656,   1}
+    });
+    
+    const auto accuracy = 1E-5;
+    
+    for (auto it = 0; it < eigenvalues.Size(); ++it) {
+        XCTAssert([TestsTools compareVector:eigenvectors.at(eigenvalues.At(it))
+                               withExpected:expected_eigenvectors.GetRowAsVector(it)
+                               whitAccuracy:accuracy],
+                  @"Eigenvector OK for eigenvalue %f", eigenvalues.At(it));
+    }
 }
 
 @end
