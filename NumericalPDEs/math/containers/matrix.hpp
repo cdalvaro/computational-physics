@@ -705,13 +705,28 @@ namespace cda {
                         throw std::logic_error("Matrices dimensions are not compatible.");
                     }
                     
-                    Matrix<ValueType> new_matrix(this->n, matrix.m, 0);
+                    Matrix<ValueType> new_matrix(this->n, matrix.m);
+                    auto it_new_matrix = new_matrix.Begin();
                     
-                    for (size_t this_row = 0; this_row < this->n; ++this_row) {
-                        for (size_t other_column = 0; other_column < matrix.m; ++other_column) {
-                            for (size_t element = 0; element < this->m; ++element) {
-                                new_matrix[this_row][other_column] += this->operator[](this_row)[element] * static_cast<ValueType>(matrix[element][other_column]);
+                    const ValueType *it_this_row, *it_this_row__, *it_end_this_row;
+                    T2 *it_matrix_column;
+                    
+                    ValueType sum;
+                    size_t this_row, matrix_column;
+                    
+                    for (this_row = 0; this_row < this->n; ++this_row) {
+                        it_this_row = this->operator[](this_row);
+                        it_end_this_row = it_this_row + this->m;
+                        
+                        for (matrix_column = 0; matrix_column < matrix.m; ++matrix_column) {
+                            it_matrix_column = matrix.Begin() + matrix_column;
+                            sum = 0;
+                            for (it_this_row__ = it_this_row; it_this_row__ != it_end_this_row; ++it_this_row__) {
+                                sum += *it_this_row__ * static_cast<ValueType>(*it_matrix_column);
+                                it_matrix_column += matrix.m;
                             }
+                            *it_new_matrix = sum;
+                            ++it_new_matrix;
                         }
                     }
                     

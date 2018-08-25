@@ -36,6 +36,13 @@ using namespace cda::math::containers;
     }];
 }
 
+- (void)testPerformanceMatrixProduct {
+    [self measureBlock:^{
+        Matrix<double> matrix(200, 200, 1);
+        auto new_matrix = matrix * matrix;
+    }];
+}
+
 - (void)testPerformanceLoadMatrixFromFile {
     [self measureBlock:^{
         std::ifstream file("data/math/containers/BigMatrix.csv", std::ios::in);
