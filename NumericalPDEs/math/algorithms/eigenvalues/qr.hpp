@@ -22,7 +22,7 @@
 namespace cda {
     namespace math {
         namespace algorithms {
-            namespace eigenvalue {
+            namespace eigenvalues {
                 
                 template <template<typename T> class Matrix, typename ValueType = double,
                           class = typename std::enable_if<std::is_floating_point<ValueType>::value>::type>
@@ -162,9 +162,14 @@ namespace cda {
                         
                         //  First column
                         auto c = matrix.GetColumnAsVector(0);
-                        auto vt = c + I.GetRowAsVector(0) * signum(c[0]) * c.Norm();
+                        auto vt = I.GetRowAsVector(0);
+                        vt *= signum(c[0]) * c.Norm();
+                        vt += c;
                         
-                        q = I - 2.0 * (containers::Transpose(vt) * vt) / vt.SquareNorm();
+                        q = containers::Transpose(vt) * vt;
+                        q *= -2.0 / vt.SquareNorm();
+                        q += I;
+                        
                         r = q * matrix;
                         for (auto it_r = r.Begin() + rows; it_r != r.End(); it_r += rows) {
                             *it_r = 0;
@@ -173,6 +178,7 @@ namespace cda {
                         //  Other columns
                         Matrix<ValueType> h;
                         const auto last_row = rows - 1;
+                        ValueType *it_r_column, *it_end_r_column;
                         
                         for (size_t row = 1; row < last_row; ++row) {
                             c = r.GetColumnAsVector(row, row);
@@ -180,8 +186,13 @@ namespace cda {
                             if (c.IsNull()) {
                                 h = Matrix<ValueType>::Identity(rows - row);
                             } else {
-                                vt = c + I.GetRowAsVector(row, row) * (signum(c[0]) * c.Norm());
-                                h = I.GetMatrix(row, row) - (containers::Transpose(vt) * vt) * (2.0 / vt.SquareNorm());
+                                vt = I.GetRowAsVector(row, row);
+                                vt *= signum(c[0]) * c.Norm();
+                                vt += c;
+                                
+                                h = containers::Transpose(vt) * vt;
+                                h *= -2.0 / vt.SquareNorm();
+                                h += I.GetMatrix(row, row);
                                 
                                 auto A(I);
                                 A.SetMatrix(row, row, h);
@@ -191,16 +202,20 @@ namespace cda {
                             q = h * q;
                             r = h * r;
                             
-                            for (size_t column = 0; column < row; ++column) {
-                                r[row][column] = 0;
+                            it_r_column = r[row];
+                            it_end_r_column = it_r_column + row;
+                            for ( ; it_r_column != it_end_r_column; ++it_r_column) {
+                                *it_r_column = 0;
                             }
                         }
                         
                         q = std::move(q.Transpose());
                         
                         for (size_t row = 1; row < rows; ++row) {
-                            for (size_t column = 0; column < row; ++column) {
-                                r[row][column] = 0;
+                            it_r_column = r[row];
+                            it_end_r_column = it_r_column + row;
+                            for ( ; it_r_column < it_end_r_column; ++it_r_column) {
+                                *it_r_column = 0;
                             }
                         }
                         
@@ -208,7 +223,7 @@ namespace cda {
                     
                 };
                 
-            } /* namespace eigenvalue */
+            } /* namespace eigenvalues */
         } /* namespace algorithms */
     } /* namespace math */
 } /* namespace cda */

@@ -9,10 +9,10 @@
 #import <XCTest/XCTest.h>
 
 #import "../../../TestsTools.h"
-#import "../../../../NumericalPDEs/math/algorithms/eigenvalue/qr.hpp"
+#import "../../../../NumericalPDEs/math/algorithms/eigenvalues/qr.hpp"
 
 using namespace cda::math::containers;
-using namespace cda::math::algorithms::eigenvalue;
+using namespace cda::math::algorithms::eigenvalues;
 
 
 @interface QRTests : XCTestCase

@@ -879,11 +879,10 @@ using namespace cda::math::containers;
 
 - (void)testLoadMatrixFromFile {
     
-    std::ifstream file;
-    Matrix<double> matrix;
+    std::ifstream file("data/math/containers/BigMatrix.csv", std::ios::in);
     
     // Big Matrix
-    file.open("data/math/containers/BigMatrix.csv", std::ios::in);
+    Matrix<double> matrix;
     file >> matrix;
     file.close();
     

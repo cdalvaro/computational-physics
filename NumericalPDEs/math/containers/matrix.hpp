@@ -1037,9 +1037,14 @@ std::ostream& operator<<(std::ostream &output,
         output.precision();
     
     } else {
+        const char separator = ';';
         for (size_t row = 0; row < rows; ++row) {
-            for (size_t column = 0; column < columns; ++column) {
-                output << matrix[row][column] << ";";
+            auto it_row = matrix[row];
+            auto it_end_row = it_row + columns;
+            
+            output << *it_row;
+            for (it_row = std::next(it_row); it_row != it_end_row; ++it_row) {
+                output << separator << *it_row;
             }
             output << std::endl;
         }

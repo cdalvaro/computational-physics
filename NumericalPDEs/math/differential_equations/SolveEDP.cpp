@@ -10,7 +10,7 @@
 
 #include "../containers.hpp"
 #include "../equations/systems/linear.hpp"
-#include "../algorithms/eigenvalue/qr.hpp"
+#include "../algorithms/eigenvalues/qr.hpp"
 
 #include <sys/stat.h>
 #include <thread>
@@ -1086,7 +1086,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     }
     
-    algorithms::eigenvalue::QR<Matrix, EDP_T> qrA(A);
+    algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A);
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
