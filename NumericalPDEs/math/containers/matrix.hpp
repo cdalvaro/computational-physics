@@ -650,9 +650,9 @@ namespace cda {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
                     
-                    auto it_matrix = matrix.Begin();
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix) {
-                        *it_this += *it_matrix;
+                    auto it_this = this->Begin();
+                    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix) {
+                        *it_this++ += *it_matrix;
                     }
                     
                     return *this;
@@ -679,9 +679,9 @@ namespace cda {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
                     
-                    auto it_matrix = matrix.Begin();
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix) {
-                        *it_this -= *it_matrix;
+                    auto it_this = this->Begin();
+                    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix) {
+                        *it_this++ -= *it_matrix;
                     }
                     
                     return *this;
@@ -692,8 +692,8 @@ namespace cda {
                     Matrix<ValueType> new_matrix(n, m);
                     auto it_new = new_matrix.Begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_new) {
-                        *it_new = *it_this * static_cast<ValueType>(value);
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
+                        *it_new++ = *it_this * static_cast<ValueType>(value);
                     }
                     
                     return new_matrix;
