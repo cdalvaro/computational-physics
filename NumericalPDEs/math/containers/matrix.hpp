@@ -712,21 +712,19 @@ namespace cda {
                     T2 *it_matrix_column;
                     
                     ValueType sum;
-                    size_t this_row, matrix_column;
+                    size_t matrix_column;
                     
-                    for (this_row = 0; this_row < this->n; ++this_row) {
-                        it_this_row = this->operator[](this_row);
+                    for (it_this_row = this->Begin(); it_this_row < this->End(); it_this_row = it_end_this_row) {
                         it_end_this_row = it_this_row + this->m;
                         
                         for (matrix_column = 0; matrix_column < matrix.m; ++matrix_column) {
-                            it_matrix_column = matrix.Begin() + matrix_column;
                             sum = 0;
-                            for (it_this_row__ = it_this_row; it_this_row__ != it_end_this_row; ++it_this_row__) {
+                            for (it_this_row__ = it_this_row, it_matrix_column = matrix.Begin() + matrix_column;
+                                 it_this_row__ != it_end_this_row;
+                                 ++it_this_row__, it_matrix_column += matrix.m) {
                                 sum += *it_this_row__ * static_cast<ValueType>(*it_matrix_column);
-                                it_matrix_column += matrix.m;
                             }
-                            *it_new_matrix = sum;
-                            ++it_new_matrix;
+                            *it_new_matrix++ = sum;
                         }
                     }
                     

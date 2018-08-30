@@ -176,7 +176,7 @@ namespace cda {
                         }
                         
                         //  Other columns
-                        Matrix<ValueType> h;
+                        Matrix<ValueType> h, h__;
                         const auto last_row = rows - 1;
                         ValueType *it_r_column, *it_end_r_column;
                         
@@ -184,7 +184,7 @@ namespace cda {
                             c = r.GetColumnAsVector(row, row);
                             
                             if (c.IsNull()) {
-                                h = Matrix<ValueType>::Identity(rows - row);
+                                h = I;
                             } else {
                                 vt = I.GetRowAsVector(row, row);
                                 vt *= signum(c[0]) * c.Norm();
@@ -192,11 +192,11 @@ namespace cda {
                                 
                                 h = containers::Transpose(vt) * vt;
                                 h *= -2.0 / vt.SquareNorm();
-                                h += I.GetMatrix(row, row);
+                                h += Matrix<ValueType>::Identity(rows - row);
                                 
-                                auto A(I);
-                                A.SetMatrix(row, row, h);
-                                h = std::move(A);
+                                h__ = I;
+                                h__.SetMatrix(row, row, h);
+                                h = std::move(h__);
                             }
                             
                             q = h * q;

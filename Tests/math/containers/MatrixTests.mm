@@ -877,7 +877,7 @@ using namespace cda::math::containers;
     XCTAssertThrows(matrix_test.SumColumn(4), "SumColumn out of range");
 }
 
-- (void)testLoadMatrixFromFile {
+- (void)testIfstreamOperator {
     
     std::ifstream file("data/math/containers/BigMatrix.csv", std::ios::in);
     
@@ -904,6 +904,12 @@ using namespace cda::math::containers;
     });
     
     XCTAssert(matrix == expected_matrix, "Small Matrix has been loaded properly.");
+    
+    std::ifstream unavailable_file("data/unavailable_file", std::ios::in);
+    Matrix<double> matrix1;
+    
+    XCTAssertThrows(unavailable_file >> matrix1, "File does not exist OK");
+    unavailable_file.close();
 }
 
 - (void)testProductBetweenMatrixAndVector {
