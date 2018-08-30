@@ -499,6 +499,36 @@ namespace cda {
                     return *this;
                 }
                 
+                Vector<ValueType> Pow(const size_t &power) const {
+                    Vector<ValueType> new_vector;
+                    
+                    switch (power) {
+                        case 0:
+                            new_vector = Vector<ValueType>::Ones(this->n);
+                            break;
+                        
+                        default:
+                            new_vector = *this;
+                            for (size_t i = 2; i <= power; ++i) {
+                                for (auto it = new_vector.Begin(); it != new_vector.End(); ++it) {
+                                    *it *= *it;
+                                }
+                            }
+                            break;
+                    }
+                    
+                    return new_vector;
+                }
+                
+                Vector<ValueType> Sqrt() const {
+                    Vector<ValueType> new_vector(this->n);
+                    auto it_new_vector = new_vector.Begin();
+                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
+                        *it_new_vector++ = std::sqrt(*it_this);
+                    }
+                    return new_vector;
+                }
+                
                 template<typename Integer,
                          typename = std::enable_if<std::is_integral<Integer>::value>>
                 inline Vector<ValueType> operator%(const Integer &value) const {
