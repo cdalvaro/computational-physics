@@ -1086,7 +1086,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     }
     
-    algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A);
+    algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A, 20);
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
@@ -1099,8 +1099,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         const std::string path = inPath + fileName;
         std::ofstream out(path.data());
         out.precision(15);
-        // TODO: Implement sqrt method for Vector class
-//        out << std::sqrt(eigVal)*length/h;
+        out << eigVal.Sqrt() * length/h;
         std::cout << "Terminado.\n";
         std::cout << "\tLos datos se han guardado en: " << path << std::endl;
     } else if (opt & IMPORT_DATA) {
@@ -1109,23 +1108,16 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         std::ifstream in(path.data());
         if (in.fail()) {
             std::cout << "\n\tEl fichero no existe, se van a calcular los autovalores... ";
-            //  FIXME: Call the correct method
-//            eigVal = A.eigenValues(20, opt);
+            eigVal = qrA.EigenValues();
             eigVal.Sort();
             if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
                 eigVal[0] = 0.0;
             }
             std::cout << "Terminado.\n";
-            std::ofstream out(path.data());
-            out.precision(15);
-            // TODO: Implement sqrt method for Vector class
-//            out << sqrt(eigVal)*length/h;
-            std::cout << "\tLos datos se han guardado en: " << path << std::endl;
         } else {
             // TODO: Implement ifstrem >> operator for Vector class
 //            in >> eigVal;
-            // TODO: Implement pow method for Vector class
-//            eigVal = pow(eigVal*h/length,2);
+            eigVal = (eigVal * h/length).Pow(2);
             std::cout << "Terminado.\n";
             std::cout << "\tLos datos se han importado de: " << path << std::endl;
         }

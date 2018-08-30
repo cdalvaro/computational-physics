@@ -609,3 +609,45 @@ cda::math::containers::Vector<ValueType> operator*(const T2 &value, const cda::m
     
     return new_vector;
 }
+
+template <typename ValueType>
+std::ostream& operator<<(std::ostream &output,
+                         const cda::math::containers::Vector<ValueType> &vector) {
+    
+    if (output.rdbuf() == std::cout.rdbuf()) {
+        
+        const size_t custom_width = 12;
+        const size_t custom_precision = 5;
+        
+        output.width();
+        output << std::fixed;
+        output.fill(' ');
+        output.precision(custom_precision);
+        
+        output << "[";
+        output.width(custom_width);
+        
+        auto it_vector = vector.Begin();
+        output << *it_vector;
+        for (it_vector = std::next(it_vector); it_vector < vector.End(); ++it_vector) {
+            output << std::right << " ";
+            output.width(custom_width);
+            output << *it_vector;
+        }
+        output.width();
+        output << "]" << std::endl;
+        
+        output.precision();
+        
+    } else {
+        const char separator = ';';
+        auto it_vector = vector.Begin();
+        output << *it_vector;
+        for (it_vector = std::next(it_vector); it_vector < vector.End(); ++it_vector) {
+            output << std::right << separator;
+            output << *it_vector;
+        }
+    }
+    
+    return output;
+}
