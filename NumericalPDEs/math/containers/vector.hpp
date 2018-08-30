@@ -11,8 +11,7 @@
 
 #include <cmath>
 #include <fstream>
-#include <stdlib.h>
-#include <string>
+#include <iostream>
 #include <stdexcept>
 
 #include "../algorithms/find.hpp"

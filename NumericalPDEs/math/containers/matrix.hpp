@@ -8,20 +8,16 @@
 
 #pragma once
 
-#include "vector.hpp"
-
 #include <cmath>
 #include <fstream>
 #include <iostream>
-#include <istream>
 #include <sstream>
-#include <stdlib.h>
-#include <string>
 #include <stdexcept>
 #include <type_traits>
 
 #include "../algorithms/find.hpp"
 #include "../algorithms/factorization/lu.hpp"
+#include "vector.hpp"
 
 
 namespace cda {
