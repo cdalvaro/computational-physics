@@ -683,20 +683,18 @@ namespace cda {
                     return *this;
                 }
                 
-                template<typename T2>
-                Matrix<ValueType> operator*(const T2 &value) const {
+                Matrix<ValueType> operator*(const ValueType &value) const {
                     Matrix<ValueType> new_matrix(n, m);
                     auto it_new = new_matrix.Begin();
                     
                     for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
-                        *it_new++ = *it_this * static_cast<ValueType>(value);
+                        *it_new++ = *it_this * value;
                     }
                     
                     return new_matrix;
                 }
                 
-                template<typename T2>
-                Matrix<ValueType> operator*(const Matrix<T2> &matrix) const {
+                Matrix<ValueType> operator*(const Matrix<ValueType> &matrix) const {
                     if (this->m != matrix.n) {
                         throw std::logic_error("Matrices dimensions are not compatible.");
                     }
@@ -705,10 +703,10 @@ namespace cda {
                     auto it_new_matrix = new_matrix.Begin();
                     
                     const ValueType *it_this_row, *it_this_row__, *it_end_this_row;
-                    T2 *it_matrix_column;
                     
                     ValueType sum;
                     size_t matrix_column;
+                    ValueType *it_matrix_column;
                     
                     for (it_this_row = this->Begin(); it_this_row < this->End(); it_this_row = it_end_this_row) {
                         it_end_this_row = it_this_row + this->m;
@@ -718,7 +716,7 @@ namespace cda {
                             for (it_this_row__ = it_this_row, it_matrix_column = matrix.Begin() + matrix_column;
                                  it_this_row__ != it_end_this_row;
                                  ++it_this_row__, it_matrix_column += matrix.m) {
-                                sum += *it_this_row__ * static_cast<ValueType>(*it_matrix_column);
+                                sum += *it_this_row__ * *it_matrix_column;
                             }
                             *it_new_matrix++ = sum;
                         }
@@ -727,14 +725,12 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                template<typename T2>
-                Matrix<ValueType> &operator*=(const Matrix<T2> &matrix) {
+                Matrix<ValueType> &operator*=(const Matrix<ValueType> &matrix) {
                     *this = *this * matrix;
                     return *this;
                 }
                 
-                template<typename T2>
-                Matrix<ValueType> operator*(const Vector<T2> &vector) {
+                Matrix<ValueType> operator*(const Vector<ValueType> &vector) {
                     if (m != 1) {
                         throw std::logic_error("Matrix and Vector are not compatible.");
                     }
