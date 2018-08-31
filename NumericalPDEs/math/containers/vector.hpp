@@ -12,6 +12,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 #include "../algorithms/find.hpp"
@@ -63,7 +64,7 @@ namespace cda {
                 Vector(const size_t &size, const ValueType &value) :
                 n(size), v(nullptr), it_end(nullptr) {
                     AllocateMemory(n);
-                    std::fill(this->Begin(), this->End(), value);
+                    Fill(value);
                 }
                 
                 /**
@@ -311,16 +312,10 @@ namespace cda {
                 }
                 
                 void Sort() {
-                    bool change;
-                    do {
-                        change = false;
-                        for (auto it_prev = Begin(), it = it_prev + 1; it != End(); ++it_prev, ++it) {
-                            if (*it_prev > *it) {
-                                change = true;
-                                std::swap(*it, *it_prev);
-                            }
-                        }
-                    } while (change);
+                    std::sort(this->Begin(), this->End(),
+                              [](const ValueType &value1, const ValueType &value2) {
+                                  return value1 < value2;
+                              });
                 }
                 
                 void Fill(const ValueType &value) {
@@ -608,6 +603,37 @@ cda::math::containers::Vector<ValueType> operator*(const T2 &value, const cda::m
     }
     
     return new_vector;
+}
+
+template <typename ValueType>
+void operator>>(std::istream &input,
+                cda::math::containers::Vector<ValueType> &vector) {
+    
+    if (!input) {
+        throw std::logic_error("Input is not avaiable");
+    }
+    
+    size_t initial_size = 100;
+    vector.Resize(initial_size);
+    
+    char separator;
+    std::string line, cell;
+    size_t element = 0;
+    if (std::getline(input, line)) {
+        std::stringstream line_stream(line);
+        while (line_stream >> vector[element]) {
+            ++element;
+            
+            if (element >= vector.Size()) {
+                initial_size *= 2;
+                vector.Resize(vector.Size() + initial_size);
+            }
+            
+            line_stream >> separator;
+        }
+    }
+    
+    vector.Resize(element);
 }
 
 template <typename ValueType>
