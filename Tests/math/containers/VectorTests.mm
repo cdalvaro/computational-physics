@@ -40,36 +40,77 @@ using namespace cda::math::containers;
 - (void)testConstructors {
     
     // Default constructor
-    Vector<double> defaultVector;
-    XCTAssert(defaultVector.Size() == 0, "Default constructor OK");
+    const Vector<double> defaultVector;
+    XCTAssertEqual(defaultVector.Size(), 0, "Default constructor OK");
+    XCTAssert(defaultVector.IsEmpty(), "defaultVector is empty");
+    XCTAssert(defaultVector.IsNull(), "defaultVector is null");
     
     // Constructor with size
-    Vector<double> vectorWithSize(10);
-    XCTAssert(vectorWithSize.Size() == 10, "Constructor with size OK");
+    const Vector<double> vectorWithSize(10);
+    XCTAssertEqual(vectorWithSize.Size(), 10, "Constructor with size OK");
+    XCTAssert(!vectorWithSize.IsEmpty() && !vectorWithSize.IsNull(), "vectorWithSize is not empty and is not null");
     
     // Constructor with size filling elements
     Vector<double> vectorWithElementsFilled(10, 5);
-    XCTAssert(vectorWithElementsFilled.Size() == 10, "Constructor with size filling elements has size OK");
+    XCTAssertEqual(vectorWithElementsFilled.Size(), 10, "Constructor with size filling elements has size OK");
+    XCTAssert(!vectorWithElementsFilled.IsEmpty() && !vectorWithElementsFilled.IsNull(), "vectorWithSize is not empty and is not null");
     for (size_t i = 0; i < vectorWithElementsFilled.Size(); ++i) {
-        XCTAssert(vectorWithElementsFilled[i] == 5, "Element has been filled OK");
+        XCTAssertEqual(vectorWithElementsFilled[i], 5, "Element has been filled OK");
     }
     
     // Copy constructor from another vector
     Vector<double> vectorFromCopy(vectorWithElementsFilled);
-    XCTAssert(vectorFromCopy == vectorWithElementsFilled, "Copy constructor OK");
+    XCTAssertEqual(vectorFromCopy, vectorWithElementsFilled, "Copy constructor OK");
     
     // Move constructor
     Vector<double> vectorFromMove(std::move(vectorWithElementsFilled));
-    XCTAssert(vectorFromMove == vectorFromCopy, "Move constructor OK");
+    XCTAssertEqual(vectorFromMove, vectorFromCopy, "Move constructor OK");
+    XCTAssert(vectorWithElementsFilled.IsEmpty(), "vectorWithElementsFilled is empty after had been moved");
+    XCTAssert(vectorWithElementsFilled.IsNull(), "vectorWithElementsFilled is null after had been moved");
     
     // Constructor from array
     const double array[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    Vector<double> vectorFromArray(array);
-    XCTAssert(vectorFromArray.Size() == 10, "Constructor from array has right size");
+    const Vector<double> vectorFromArray(array);
+    XCTAssertEqual(vectorFromArray.Size(), 10, "Constructor from array has right size");
     
     for (size_t i = 0; i < 10; ++i) {
-        XCTAssert(vectorFromArray[i] == array[i], "Element has been copied OK");
+        XCTAssertEqual(vectorFromArray[i], array[i], "Element has been copied OK");
     }
+}
+
+- (void)testIterators {
+    Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    XCTAssertEqual(*vector.Begin(), 1, "Begin iterator OK");
+    XCTAssertEqual(*(vector.End() - 1), 10, "End iterator OK");
+}
+
+- (void)testAssign {
+    const Vector<double> vector({ 0,  1,  2,  3 });
+    
+    Vector<double> test;
+    test = vector;
+    
+    XCTAssertEqual(test, vector, "Assignment OK");
+    
+    test = test;
+    XCTAssertEqual(test, vector, "Self assignment OK");
+    
+    Vector<double> test2;
+    test2 = std::move(test);
+    
+    XCTAssertEqual(test2, vector, "Move assignment OK");
+    XCTAssert(test.IsNull(), "test vector is null after had been moved");
+    
+    //Save the diagnostic state
+#pragma clang diagnostic push
+    
+    // Ignore: Explicitly moving variable of type 'Matrix<double>' to itself
+#pragma clang diagnostic ignored "-Wself-move"
+    test2 = std::move(test2);
+    XCTAssertEqual(test2, vector, "Move assignment does not destroy object if self matrix OK");
+    
+    //Restore the disgnostic state
+#pragma clang diagnostic pop
 }
 
 - (void)testResize {
@@ -108,6 +149,24 @@ using namespace cda::math::containers;
     }
     
     XCTAssert(previousElementsEqual, "Firsts elements still equal");
+}
+
+- (void)testOnes {
+    const Vector<double> expected_ones(5, 1);
+    XCTAssertEqual(Vector<double>::Ones(5), expected_ones, "Ones static method OK");
+    
+    Vector<double> result(5, 2);
+    result.Ones();
+    XCTAssertEqual(result, expected_ones, "Ones method OK");
+}
+
+- (void)testZero {
+    const Vector<double> expected_zero(5, 0);
+    XCTAssertEqual(Vector<double>::Zero(5), expected_zero, "Zero static method OK");
+    
+    Vector<double> result(5, 2);
+    result.Zero();
+    XCTAssertEqual(result, expected_zero, "Zero method OK");
 }
 
 - (void)testSumOfTwoVectors {
