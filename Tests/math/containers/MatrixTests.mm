@@ -81,14 +81,6 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix5, matrix3, "matrix3 and matrix4 are equal");
     XCTAssert(matrix4.IsEmpty(), "matrix4 is empty after had been moved");
     XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved");
-    
-    matrix4 = matrix2;
-    XCTAssertEqual(matrix4, matrix2, "matrix4 and matrix2 are equal");
-    
-    matrix5 = std::move(matrix4);
-    XCTAssertEqual(matrix5, matrix2, "matrix5 and matrix2 are equal");
-    XCTAssert(matrix4.IsEmpty(), "matrix4 is empty after had been moved in asignation");
-    XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved in asignation");
 }
 
 - (void)testAssign {
