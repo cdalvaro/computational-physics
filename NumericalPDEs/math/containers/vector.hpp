@@ -268,7 +268,7 @@ namespace cda {
                     return algorithms::find::AbsoluteMinimumElementWithSign(Begin(), End());
                 }
                 
-                ValueType Sum() const {
+                ValueType SumAllEments() const {
                     auto sum = *Begin();
                     for (auto it = Begin() + 1; it != End(); ++it) {
                         sum += *it;
@@ -371,7 +371,7 @@ namespace cda {
                     return true;
                 }
                 
-                bool HasDuplicated(const ValueType &precision) const {
+                bool HasDuplicate(const ValueType &precision) const {
                     ValueType distance;
                     for (auto it1 = Begin(); it1 != End(); ++it1) {
                         for (auto it2 = Begin(); it2 != End(); ++it2) {
@@ -386,7 +386,7 @@ namespace cda {
                     return false;
                 }
                 
-                bool HasDuplicated() const {
+                bool HasDuplicate() const {
                     for (auto it1 = Begin(); it1 != End(); ++it1) {
                         for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2 && *it1 == *it2) {
