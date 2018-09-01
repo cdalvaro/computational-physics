@@ -84,12 +84,69 @@ using namespace cda::math::containers;
     for (size_t i = 0; i < 10; ++i) {
         XCTAssertEqual(vectorFromArray[i], array[i], "Element has been copied OK");
     }
+    
+    const Vector<double> vectorFromArray2(array, array + 10);
+    XCTAssertEqual(vectorFromArray2, vectorFromArray, "Vectro from array with size OK");
+}
+
+- (void)testCopy {
+    const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    
+    Vector<double> vector_copy;
+    vector_copy.Copy(10, vector.Begin());
+    
+    XCTAssertEqual(vector_copy, vector, "Copy of vectors OK");
 }
 
 - (void)testIterators {
     Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     XCTAssertEqual(*vector.Begin(), 1, "Begin iterator OK");
     XCTAssertEqual(*(vector.End() - 1), 10, "End iterator OK");
+}
+
+- (void)testAccessors {
+    const Vector<double> const_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    
+    XCTAssertEqual(const_vector[2], 3, "Const accessor for reading OK");
+    XCTAssertEqual(const_vector.At(5), 6, "Const At accessor for reading OK");
+    XCTAssertThrows(const_vector.At(11), "Index out of bounds exception when accessing for reading OK");
+    
+    Vector<double> var_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    XCTAssertEqual(var_vector[2], 3, "Const accessor for reading OK");
+    XCTAssertEqual((var_vector[6] = 21), 21, "Var accesor after setting OK");
+    XCTAssertEqual((var_vector.At(5) = 34), 34, "Var At accessor after setting OK");
+    XCTAssertThrows(var_vector.At(11), "Index out of bounds exception when accessing for reading OK");
+}
+
+- (void)testGet {
+    const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    const Vector<double> expected1({5, 6, 7, 8, 9, 10});
+    XCTAssertEqual(vector.Get(4), expected1, "Get without length OK");
+    
+    const Vector<double> expected2({2, 3, 4, 5, 6, 7, 8, 9});
+    XCTAssertEqual(vector.Get(1, 8), expected2, "Get with length OK");
+    
+    XCTAssertThrows(vector.Get(0, 11), "Index out of bounds");
+    XCTAssertThrows(vector.Get(3, 8), "Index out of bounds");
+}
+
+- (void)testSet {
+    const Vector<double> original_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    const Vector<double> mod_vector({2, 4, 6, 8});
+    
+    auto vector1 = original_vector;
+    vector1.Set(3, mod_vector);
+    
+    const Vector<double> expected1({1, 2, 3, 2, 4, 6, 8, 8, 9, 10});
+    XCTAssertEqual(vector1, expected1, "Set without length OK");
+    
+    auto vector2 = original_vector;
+    vector2.Set(6, mod_vector, 3);
+    
+    const Vector<double> expected2({1, 2, 3, 4, 5, 6, 2, 4, 6, 10});
+    XCTAssertEqual(vector2, expected2, "Set with length OK");
+    
+    XCTAssertThrows(vector2.Set(8, vector2, 4), "Index out of bounds");
 }
 
 - (void)testAssign {
@@ -138,7 +195,7 @@ using namespace cda::math::containers;
     
     XCTAssert(newElementsFilled, "New elements have been filled");
     
-    // Resize to the main size
+    // Resize to the same size
     auto previousVector(vector);
     vector.Resize(vector.Size());
     
@@ -177,25 +234,71 @@ using namespace cda::math::containers;
     XCTAssertEqual(result, expected_zero, "Zero method OK");
 }
 
-- (void)testSumOfTwoVectors {
-    Vector<double> vector1(10);
-    for (size_t i = 0; i < vector1.Size(); ++i) {
-        vector1[i] = i;
-    }
+- (void)testAdditionofVectors {
+    Vector<double> vector1({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    const Vector<double> vector2({3, 5, 3, 5, 8, 3, 6, 7, 1, 5});
+    const Vector<double> expected({4, 7, 6, 9, 13, 9, 13, 15, 10, 15});
+    XCTAssertEqual(vector1 + vector2, expected, "The addition of two vectors is OK");
     
-    Vector<double> vector2(10);
-    for (size_t i = 0; i < vector2.Size(); ++i) {
-        vector2[i] = 10 + i;
-    }
+    vector1 += vector2;
+    XCTAssertEqual(vector1, expected, "The addition of two vectors into the first one is OK");
     
-    Vector<double> expected(10);
-    for (size_t i = 0; i < expected.Size(); ++i) {
-        expected[i] = vector1[i] + vector2[i];
-    }
+    const Vector<double> vector3({1, 2, 3, 4, 5, 6});
+    XCTAssertThrows(vector1 + vector3, "Vectors size must be equal");
+    XCTAssertThrows(vector1 += vector3, "Vectors size must be equal");
+}
+
+- (void)testSubtractionOfVectors {
+    Vector<double> vector1({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    const Vector<double> vector2({3, 5, 3, 5, 8, 3, 6, 7, 1, 5});
+    const Vector<double> expected({-2, -3, 0, -1, -3, 3, 1, 1, 8, 5});
+    XCTAssertEqual(vector1 - vector2, expected, "The subtraction of two vectors is OK");
     
-    auto result = vector1 + vector2;
+    vector1 -= vector2;
+    XCTAssertEqual(vector1, expected, "The subtraction of two vectors into the first one is OK");
     
-    XCTAssertEqual(result, expected, "The sum of two vectors is OK");
+    const Vector<double> vector3({1, 2, 3, 4, 5, 6});
+    XCTAssertThrows(vector1 - vector3, "Vectors size must be equal");
+    XCTAssertThrows(vector1 -= vector3, "Vectors size must be equal");
+}
+
+- (void)testProducts {
+    Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    
+    XCTAssertEqual(vector * vector, 385, "Product with another vector OK");
+    
+    const Vector<double> expected({2, 4, 6, 8, 10, 12, 14, 16, 18, 20});
+    XCTAssertEqual(vector * 2.0, expected, "Product with scalar from the right OK");
+    XCTAssertEqual(2.0 * vector, expected, "Product with scalar from the left OK");
+    
+    vector *= 2.0;
+    XCTAssertEqual(vector, expected, "Product with scalar into itself OK");
+    
+    vector.Resize(20);
+    XCTAssertThrows(vector * expected, "Vectors must be of the same size");
+}
+
+- (void)testSumAllElements {
+    const Vector<double> vector1({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
+    XCTAssertEqual(vector1.SumAllEments(), 55, "SumAllElments OK");
+}
+
+- (void)testMaximumAndMinimumElements {
+    const Vector<double> vector({
+         1.134,   0.001,   2.523,  -0.231,     0.321, -312353.123,
+         5.213,   6.312,  -7.142,   8.243,     9.234,      21.426,
+        10.123, -11.321,  12.213, -13.213,    14.231,       1.213,
+        -0.024,   0.314,  17.143,  18.143, -1913.136,  523251.316,
+         5.432,  -6.236,   7.342,   8.324,    -9.341,      21.341
+    });
+    
+    XCTAssertEqual(vector.MaximumElement(), 523251.316, "MaximumElement OK");
+    XCTAssertEqual(vector.AbsoluteMaximumElement(), 523251.316, "AbsoluteMaximumElement OK");
+    XCTAssertEqual(vector.AbsoluteMaximumElementWithSign(), 523251.316, "AbsoluteMaximumElementWithSign OK");
+    
+    XCTAssertEqual(vector.MinimumElement(), -312353.123, "MinimumElement OK");
+    XCTAssertEqual(vector.AbsoluteMinimumElement(), 0.001, "AbsoluteMinimumElement OK");
+    XCTAssertEqual(vector.AbsoluteMinimumElementWithSign(), 0.001, "AbsoluteMinimumElementWithSign OK");
 }
 
 - (void)testNorms {

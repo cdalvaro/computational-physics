@@ -398,7 +398,7 @@ namespace cda {
                 }
                 
                 //  --- OPERATORS ---
-                inline Vector<ValueType> operator+(const Vector<ValueType> &vector) const {
+                Vector<ValueType> operator+(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
@@ -414,7 +414,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<ValueType> &operator+=(const Vector<ValueType> &vector) {
+                Vector<ValueType> &operator+=(const Vector<ValueType> &vector) {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
@@ -427,7 +427,7 @@ namespace cda {
                     return *this;
                 }
                 
-                inline Vector<ValueType> operator-(const Vector<ValueType> &vector) const {
+                Vector<ValueType> operator-(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different sizes");
                     }
@@ -443,7 +443,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<ValueType> &operator-=(const Vector<ValueType> &vector) {
+                Vector<ValueType> &operator-=(const Vector<ValueType> &vector) {
                     if (this->n != vector.n) {
                         throw std::logic_error("Unable to sum two vector of different size");
                     }
@@ -456,7 +456,7 @@ namespace cda {
                     return *this;
                 }
                 
-                inline Vector<ValueType> operator*(const ValueType &value) const {
+                Vector<ValueType> operator*(const ValueType &value) const {
                     Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
@@ -467,14 +467,14 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<ValueType> &operator*=(const ValueType &value) {
+                Vector<ValueType> &operator*=(const ValueType &value) {
                     for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it *= value;
                     }
                     return *this;
                 }
                 
-                inline Vector<ValueType> operator/(const ValueType &value) const {
+                Vector<ValueType> operator/(const ValueType &value) const {
                     Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
@@ -485,7 +485,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline Vector<ValueType> &operator/=(const ValueType &value) {
+                Vector<ValueType> &operator/=(const ValueType &value) {
                     for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it /= value;
                     }
@@ -524,7 +524,7 @@ namespace cda {
                 
                 template<typename Integer,
                          typename = std::enable_if<std::is_integral<Integer>::value>>
-                inline Vector<ValueType> operator%(const Integer &value) const {
+                Vector<ValueType> operator%(const Integer &value) const {
                     Vector<Integer> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
@@ -537,14 +537,14 @@ namespace cda {
                 
                 template<typename Integer,
                          typename = std::enable_if<std::is_integral<Integer>::value>>
-                inline Vector<ValueType> &operator%=(const Integer& value) {
+                Vector<ValueType> &operator%=(const Integer& value) {
                     for (auto it = this->Begin(); it != this->End(); ++it) {
                         *it = static_cast<Integer>(*it) % value;
                     }
                     return *this;
                 }
                 
-                inline Vector<ValueType> operator-() const {
+                Vector<ValueType> operator-() const {
                     Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
@@ -568,7 +568,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                inline ValueType operator*(const Vector<ValueType> &vector) const {
+                ValueType operator*(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
                         throw std::logic_error("Both vectors must be of the same size");
                     }
