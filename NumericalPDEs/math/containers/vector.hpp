@@ -397,12 +397,6 @@ namespace cda {
                     return false;
                 }
                 
-                void Write(const std::string &filename, const std::string &path = "/tmp") const {
-                    const std::string file_path(path + "/" + filename);
-                    std::ofstream output(file_path.data());
-                    output << *this;
-                }
-                
                 //  --- OPERATORS ---
                 inline Vector<ValueType> operator+(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
