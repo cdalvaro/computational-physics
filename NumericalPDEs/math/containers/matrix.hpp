@@ -282,10 +282,10 @@ namespace cda {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    Vector<ValueType> vector(this->m - from_column);
-                    vector.Copy(vector.Size(), this->operator[](row) + from_column);
+                    auto it_begin_row = this->operator[](row) + from_column;
+                    auto it_end_row = it_begin_row + this->m - from_column;
                     
-                    return vector;
+                    return Vector<ValueType>(it_begin_row, it_end_row);
                 }
                 
                 Vector<ValueType> GetColumnAsVector(const size_t &column, const size_t &from_row = 0) const {

@@ -30,11 +30,19 @@ using namespace cda::math::containers;
 }
 
 - (void)testComparisonBetweenTwoVectors {
-    Vector<double> vector1(10, 2);
+    const Vector<double> vector1(10, 2);
     Vector<double> vector2(vector1);
     
     XCTAssert(vector1 == vector2, "Equality comparison OK");
     XCTAssert(!(vector1 != vector2), "Inequality comparison OK");
+    
+    const Vector<double> vector3(5, 2);
+    XCTAssert(!(vector3 == vector1), "Equality comparison OK");
+    XCTAssert(vector3 != vector1, "Inequality comparison OK");
+    
+    vector2.Ones();
+    XCTAssert(!(vector2 == vector1), "Equality comparison OK");
+    XCTAssert(vector2 != vector1, "Inequality comparison OK");
 }
 
 - (void)testConstructors {

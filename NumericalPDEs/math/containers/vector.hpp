@@ -96,6 +96,12 @@ namespace cda {
                     std::copy(values, values + size, this->Begin());
                 }
                 
+                Vector(const ValueType* const it_begin, const ValueType* const it_end) :
+                n(std::distance(it_begin, it_end)), v(nullptr), it_end(nullptr) {
+                    AllocateMemory(n);
+                    std::copy(it_begin, it_end, this->Begin());
+                }
+                
                 /**
                  Class destructor
                  */
@@ -156,10 +162,8 @@ namespace cda {
                     return *this;
                 }
                 
-                void Copy(const size_t &size, const ValueType *array) {
-                    if (size > n) {
-                        throw std::out_of_range("Not enough space for the copy");
-                    }
+                void Copy(const size_t &size, const ValueType* const array) {
+                    Resize(size);
                     std::copy(array, array + size, v);
                 }
                 
@@ -190,15 +194,15 @@ namespace cda {
                  
                  @return A vector with size \p elements and the values starting from \p first_element
                  */
-                Vector<ValueType> Get(const size_t &first_element, const size_t &elements) {
+                Vector<ValueType> Get(const size_t &first_element, const size_t &elements) const {
                     if (n - first_element < elements) {
                         throw std::out_of_range("There are not enough elements inside the vector");
                     }
                     
-                    Vector<ValueType> tmp(n - first_element);
-                    std::copy(v + first_element, v + first_element + elements, tmp.v);
+                    auto it_begin = v + first_element;
+                    auto it_end = it_begin + elements;
                     
-                    return tmp;
+                    return Vector<ValueType>(it_begin, it_end);
                 }
                 
                 /**
@@ -208,7 +212,7 @@ namespace cda {
                  
                  @return A vector with all values starting from \p first_element
                  */
-                Vector<ValueType> Get(const size_t &first_element) {
+                Vector<ValueType> Get(const size_t &first_element) const {
                     return Get(first_element, n - first_element);
                 }
                 
