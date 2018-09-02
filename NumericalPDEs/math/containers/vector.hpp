@@ -354,8 +354,9 @@ namespace cda {
                     }
                 }
                 
-                bool Clear() {
-                    AllocateMemory(0);
+                void Clear() {
+                    n = 0;
+                    AllocateMemory(n);
                 }
                 
                 bool IsEmpty() const {
