@@ -342,9 +342,9 @@ namespace cda {
                     Fill(1);
                 }
                 
-                static Vector<ValueType> Random(const size_t &size) {
+                static Vector<ValueType> Random(const size_t &size, const ValueType &min, const ValueType &max) {
                     Vector<ValueType> random(size);
-                    random.Random();
+                    random.Random(min, max);
                     return random;
                 }
                 
