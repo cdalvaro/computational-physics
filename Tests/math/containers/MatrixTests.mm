@@ -880,7 +880,7 @@ using namespace cda::math::containers;
     
     std::pair<size_t, size_t> expected_dimensions {449, 106};
     
-    XCTAssert(matrix.Dimensions() == expected_dimensions, "Big Matrix dimensions are the right ones.");
+    XCTAssertEqual(matrix.Dimensions(), expected_dimensions, "Big Matrix dimensions are the right ones.");
     
     // Small Matrix
     file.open("data/math/containers/SmallMatrix.csv", std::ios::in);
@@ -895,7 +895,7 @@ using namespace cda::math::containers;
         {0.796918578539592,   0.4904564565638245,  0.11938391918190965, 0.9765232400263497,  0.6245631592365628}
     });
     
-    XCTAssert(matrix == expected_matrix, "Small Matrix has been loaded properly.");
+    XCTAssertEqual(matrix, expected_matrix, "Small Matrix has been loaded properly.");
     
     std::ifstream unavailable_file("data/unavailable_file", std::ios::in);
     Matrix<double> matrix1;

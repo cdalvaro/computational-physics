@@ -19,6 +19,7 @@
 		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
 		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
 		07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07C653BA2124993C006F0CC3 /* QRTests.mm */; };
+		07C8D683213BF9B800C2D451 /* BigVector.csv in Resources */ = {isa = PBXBuildFile; fileRef = 07C8D682213BF9B700C2D451 /* BigVector.csv */; };
 		07CD429921284C030096693E /* MathTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07CD429821284C030096693E /* MathTests.mm */; };
 		07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07D8C2FB20CED49A00F194F3 /* VectorTests.mm */; };
 		07DA13491559113E00FCF6F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13481559113E00FCF6F8 /* main.cpp */; };
@@ -72,6 +73,8 @@
 		07B57FCA20CED3D0001DDC78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07C1B099210F8EA700EB8A9B /* algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = algorithms.hpp; sourceTree = "<group>"; };
 		07C653BA2124993C006F0CC3 /* QRTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QRTests.mm; sourceTree = "<group>"; };
+		07C8D682213BF9B700C2D451 /* BigVector.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BigVector.csv; sourceTree = "<group>"; };
+		07C8D684213BFD2300C2D451 /* VectorTests-testOfstreamOperator.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "VectorTests-testOfstreamOperator.txt"; sourceTree = "<group>"; };
 		07CD429821284C030096693E /* MathTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MathTests.mm; sourceTree = "<group>"; };
 		07D8C2FB20CED49A00F194F3 /* VectorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorTests.mm; sourceTree = "<group>"; };
 		07DA13441559113E00FCF6F8 /* NumericalPDEs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NumericalPDEs; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -121,7 +124,9 @@
 			isa = PBXGroup;
 			children = (
 				073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */,
+				07C8D684213BFD2300C2D451 /* VectorTests-testOfstreamOperator.txt */,
 				070BBC6620D42E9E008DDBDE /* BigMatrix.csv */,
+				07C8D682213BF9B700C2D451 /* BigVector.csv */,
 				070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */,
 			);
 			path = containers;
@@ -420,6 +425,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				07C8D683213BF9B800C2D451 /* BigVector.csv in Resources */,
 				073194C12135F0210018BF25 /* Matrix-QRPerformance.csv in Resources */,
 				073DCF9B212C6F02004A901D /* MatrixTests-testOfstreamOperator.txt in Resources */,
 				070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */,
