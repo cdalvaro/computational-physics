@@ -528,7 +528,7 @@ namespace cda {
                 template<typename Integer,
                          typename = std::enable_if<std::is_integral<Integer>::value>>
                 Vector<ValueType> operator%(const Integer &value) const {
-                    Vector<Integer> new_vector(this->n);
+                    Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
                     for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
@@ -674,6 +674,7 @@ std::ostream& operator<<(std::ostream &output,
             output << std::right << separator;
             output << *it_vector;
         }
+        output << std::endl;
     }
     
     return output;
