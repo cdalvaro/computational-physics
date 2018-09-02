@@ -493,7 +493,7 @@ namespace cda {
                     return *this;
                 }
                 
-                Vector<ValueType> Pow(const size_t &power) const {
+                Vector<ValueType> PowElements(const size_t &power) const {
                     Vector<ValueType> new_vector;
                     
                     switch (power) {
@@ -503,9 +503,11 @@ namespace cda {
                         
                         default:
                             new_vector = *this;
+                            ValueType *it_new_vector;
                             for (size_t i = 2; i <= power; ++i) {
-                                for (auto it = new_vector.Begin(); it != new_vector.End(); ++it) {
-                                    *it *= *it;
+                                it_new_vector = new_vector.Begin();
+                                for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
+                                    *it_new_vector++ *= *it_this;
                                 }
                             }
                             break;
@@ -549,8 +551,8 @@ namespace cda {
                     Vector<ValueType> new_vector(this->n);
                     auto it_new = new_vector.Begin();
                     
-                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_new) {
-                        *it_new = -(*it);
+                    for (auto it = this->Begin(); it != this->End(); ++it) {
+                        *it_new++ = -(*it);
                     }
                     
                     return new_vector;

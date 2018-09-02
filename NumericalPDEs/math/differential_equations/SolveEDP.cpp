@@ -1116,7 +1116,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
             std::cout << "Terminado.\n";
         } else {
             in >> eigVal;
-            eigVal = (eigVal * h/length).Pow(2);
+            eigVal = (eigVal * h/length).PowElements(2);
             std::cout << "Terminado.\n";
             std::cout << "\tLos datos se han importado de: " << path << std::endl;
         }
