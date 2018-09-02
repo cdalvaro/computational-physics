@@ -372,13 +372,13 @@ namespace cda {
                     return true;
                 }
                 
-                bool HasDuplicate(const ValueType &precision) const {
+                bool HasDuplicate(const ValueType &accuracy) const {
                     ValueType distance;
                     for (auto it1 = Begin(); it1 != End(); ++it1) {
                         for (auto it2 = Begin(); it2 != End(); ++it2) {
                             if (it1 != it2) {
                                 distance = *it1 - *it2;
-                                if (std::sqrt(distance * distance) < precision) {
+                                if (std::sqrt(distance * distance) < accuracy) {
                                     return true;
                                 }
                             }
