@@ -134,4 +134,25 @@ using namespace cda::math::algorithms::factorization;
     XCTAssertThrows(lu2.InverseMatrix(), "Matrix is degenerate");
 }
 
+- (void)testSolveLinearSystem {
+    const Matrix<double> matrix({
+        { 1,  0, 1},
+        { 0, -3, 1},
+        { 2,  1, 3}
+    });
+    
+    LU<Matrix, double>lu(matrix);
+    
+    const Vector<double> terms({6, 7, 15});
+    
+    const Vector<double> expected({2, -1, 4});
+    XCTAssert([TestsTools compareVector:lu.SolveLinearSystem(terms)
+                           withExpected:expected
+                           whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
+              "SolveLinearSystem OK");
+    
+    XCTAssertThrows(lu.SolveLinearSystem(Vector<double>({1, 2, 3, 4})),
+                    "The number of independent terms does not match the matrix dimension");
+}
+
 @end
