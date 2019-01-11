@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "../../../TestsTools.h"
-#import "../../../../NumericalPDEs/math/algorithms/eigenvalues/qr.hpp"
+#import "../../../../computational-physics/math/algorithms/eigenvalues/qr.hpp"
 
 using namespace cda::math::containers;
 using namespace cda::math::algorithms::eigenvalues;

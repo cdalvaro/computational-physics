@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "../TestsTools.h"
-#import "../../NumericalPDEs/math/math.hpp"
+#import "../../computational-physics/math/math.hpp"
 
 using namespace cda::math;
 

@@ -7,7 +7,7 @@ stages:
 analyze_project:
   stage: analyze
   script:
-    - xcodebuild clean analyze -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug | xcpretty -f `xcpretty-travis-formatter`
+    - xcodebuild clean analyze -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug | xcpretty -f `xcpretty-travis-formatter`
   tags:
     - Xcode
     - macOS
@@ -15,8 +15,8 @@ analyze_project:
 test_project:
   stage: test
   script:
-    - xcodebuild test -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
-    - slather coverage --scheme 'Numerical PDEs' --show NumericalPDEs.xcodeproj
+    - xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
+    - slather coverage --scheme 'Computational Physics' --show ComputationalPhysics.xcodeproj
   tags:
     - Xcode
     - macOS
@@ -24,7 +24,7 @@ test_project:
 build_project:
   stage: build
   script:
-    - xcodebuild clean build -project NumericalPDEs.xcodeproj -scheme 'Numerical PDEs' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+    - xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
   tags:
     - Xcode
     - macOS
@@ -32,12 +32,12 @@ build_project:
 archive_project:
   stage: archive
   script:
-    - xcodebuild archive -archivePath build/NumericalPDEs -scheme 'Numerical PDEs' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+    - xcodebuild archive -archivePath build/ComputationalPhysics -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
   only:
     - master
   artifacts:
     paths:
-    - build/NumericalPDEs.xcarchive
+    - build/ComputationalPhysics.xcarchive
   tags:
     - Xcode
     - macOS

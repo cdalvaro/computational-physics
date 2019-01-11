@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "../../TestsTools.h"
-#import "../../../NumericalPDEs/math/containers/vector.hpp"
+#import "../../../computational-physics/math/containers/vector.hpp"
 
 using namespace cda::math::containers;
 

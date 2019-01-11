@@ -90,7 +90,7 @@ int main(int argc, const char * argv[])
     //  1. normalModes
     //  2. chladni
     //  3. diffraction
-    model = chladni;
+    model = normalModes;
     
     //  ELIGE UN EJEMPLO
     //  1. normalModes: 1 - 5
@@ -249,7 +249,7 @@ void vibration_modes_A()                    //  Bordes fijos
     BConditions = BCT_df | BCB_df | BCL_df | BCR_df;
     
     //  CONDICIÓN INICIAL DE LA VELOCIDAD
-    cI = 0.5*membrane.eigenVAL_VEC(vX, vY, 1, 2, BConditions, IMPORT_DATA);
+    cI = 0.5*membrane.eigenVAL_VEC(vX, vY, 2, 2, BConditions);
 }
 
 void vibration_modes_B()                    //  Bordes libres
@@ -284,7 +284,7 @@ void vibration_modes_B()                    //  Bordes libres
     BConditions = BCT_df | BCB_df | BCL_df | BCR_df;
     
     //  CONDICIÓN INICIAL DE LA VELOCIDAD
-    cI = 0.5*membrane.eigenVAL_VEC(vX, vY, 2, 2, BConditions, IMPORT_DATA);
+    cI = 0.5*membrane.eigenVAL_VEC(vX, vY, 2, 2, BConditions, SAVE_DATA);
 }
 
 void vibration_modes_C()                    //  Composición de modos (bordes fijos)

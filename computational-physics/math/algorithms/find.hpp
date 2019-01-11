@@ -1,6 +1,6 @@
 //
 //  find.hpp
-//  NumericalPDEs
+//  Computational Physics
 //
 //  Created by Carlos David on 23/08/2018.
 //  Copyright © 2018 cdalvaro. All rights reserved.

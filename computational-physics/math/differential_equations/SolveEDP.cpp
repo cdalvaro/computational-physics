@@ -1086,7 +1086,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     }
     
-    algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A, 20);
+    algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A);
+    qrA.MaxIterations(20);
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
@@ -1109,7 +1110,6 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         if (in.fail()) {
             std::cout << "\n\tEl fichero no existe, se van a calcular los autovalores... ";
             eigVal = qrA.EigenValues();
-            eigVal.Sort();
             if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
                 eigVal[0] = 0.0;
             }

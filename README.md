@@ -1,4 +1,4 @@
-# Numerical PDEs
+# Computational Physics
 
 This program contains some examples for solving wave functions numerically.
 

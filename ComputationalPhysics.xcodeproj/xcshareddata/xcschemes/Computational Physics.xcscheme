@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "07DA13431559113E00FCF6F8"
-               BuildableName = "NumericalPDEs"
-               BlueprintName = "NumericalPDEs"
-               ReferencedContainer = "container:NumericalPDEs.xcodeproj">
+               BuildableName = "ComputationalPhysics"
+               BlueprintName = "ComputationalPhysics"
+               ReferencedContainer = "container:ComputationalPhysics.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,9 +35,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07DA13431559113E00FCF6F8"
-            BuildableName = "NumericalPDEs"
-            BlueprintName = "NumericalPDEs"
-            ReferencedContainer = "container:NumericalPDEs.xcodeproj">
+            BuildableName = "ComputationalPhysics"
+            BlueprintName = "ComputationalPhysics"
+            ReferencedContainer = "container:ComputationalPhysics.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
       <Testables>
@@ -50,7 +50,7 @@
                BlueprintIdentifier = "07B57FC520CED3D0001DDC78"
                BuildableName = "Tests.xctest"
                BlueprintName = "Tests"
-               ReferencedContainer = "container:NumericalPDEs.xcodeproj">
+               ReferencedContainer = "container:ComputationalPhysics.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -58,9 +58,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07DA13431559113E00FCF6F8"
-            BuildableName = "NumericalPDEs"
-            BlueprintName = "NumericalPDEs"
-            ReferencedContainer = "container:NumericalPDEs.xcodeproj">
+            BuildableName = "ComputationalPhysics"
+            BlueprintName = "ComputationalPhysics"
+            ReferencedContainer = "container:ComputationalPhysics.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -81,9 +81,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07DA13431559113E00FCF6F8"
-            BuildableName = "NumericalPDEs"
-            BlueprintName = "NumericalPDEs"
-            ReferencedContainer = "container:NumericalPDEs.xcodeproj">
+            BuildableName = "ComputationalPhysics"
+            BlueprintName = "ComputationalPhysics"
+            ReferencedContainer = "container:ComputationalPhysics.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -100,9 +100,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "07DA13431559113E00FCF6F8"
-            BuildableName = "NumericalPDEs"
-            BlueprintName = "NumericalPDEs"
-            ReferencedContainer = "container:NumericalPDEs.xcodeproj">
+            BuildableName = "ComputationalPhysics"
+            BlueprintName = "ComputationalPhysics"
+            ReferencedContainer = "container:ComputationalPhysics.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

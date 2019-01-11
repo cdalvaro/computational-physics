@@ -9,7 +9,7 @@
 #import <XCTest/XCTest.h>
 
 #import "../../TestsTools.h"
-#import "../../../NumericalPDEs/math/containers/matrix.hpp"
+#import "../../../computational-physics/math/containers/matrix.hpp"
 
 using namespace cda::math::containers;
 

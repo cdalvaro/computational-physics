@@ -9,8 +9,8 @@
 #import <XCTest/XCTest.h>
 
 #import "../../../TestsTools.h"
-#import "../../../../NumericalPDEs/math/algorithms/factorization/lu.hpp"
-#import "../../../../NumericalPDEs/math/containers/matrix.hpp"
+#import "../../../../computational-physics/math/algorithms/factorization/lu.hpp"
+#import "../../../../computational-physics/math/containers/matrix.hpp"
 
 using namespace cda::math::containers;
 using namespace cda::math::algorithms::factorization;

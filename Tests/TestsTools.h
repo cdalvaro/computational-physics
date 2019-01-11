@@ -1,6 +1,6 @@
 //
 //  TestsTools.h
-//  NumericalPDEs
+//  Computational Physics
 //
 //  Created by Carlos David on 15/06/2018.
 //  Copyright © 2018 cdalvaro. All rights reserved.
@@ -11,7 +11,7 @@
 
 #define TESTS_TOOLS_DEFAULT_ACCURACY 1E-13
 
-#import "../NumericalPDEs/math/containers.hpp"
+#import "../computational-physics/math/containers.hpp"
 
 
 @interface TestsTools : NSObject

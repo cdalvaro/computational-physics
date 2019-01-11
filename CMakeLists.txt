@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 3.9.0 )
-project( NumericalPDEs )
+project( ComputationalPhysics )
 
 find_package( OpenGL )
 find_package( GLUT )
@@ -8,9 +8,9 @@ set( CMAKE_CXX_STANDARD 17 )
 
 set( EXECUTABLE GraphicalPDEs )
 
-include_directories( NumericalPDEs )
+include_directories( computational-physics )
 
-file( GLOB_RECURSE SOURCE_FILES "NumericalPDEs/*.cpp" )
+file( GLOB_RECURSE SOURCE_FILES "computational-physics/*.cpp" )
 
 add_executable( ${EXECUTABLE} ${SOURCE_FILES} )
 
