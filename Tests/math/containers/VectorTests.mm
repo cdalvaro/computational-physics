@@ -115,7 +115,7 @@ using namespace cda::math::containers;
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     Vector<double> vector_copy;
-    vector_copy.Copy(10, vector.Begin());
+    vector_copy.Copy(10, vector.begin());
     
     XCTAssertEqual(vector_copy, vector, "Copy of vectors OK");
 }
@@ -130,8 +130,8 @@ using namespace cda::math::containers;
 
 - (void)testIterators {
     Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(*vector.Begin(), 1, "Begin iterator OK");
-    XCTAssertEqual(*(vector.End() - 1), 10, "End iterator OK");
+    XCTAssertEqual(*vector.begin(), 1, "Begin iterator OK");
+    XCTAssertEqual(*(vector.end() - 1), 10, "End iterator OK");
 }
 
 - (void)testAccessors {

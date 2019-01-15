@@ -42,7 +42,7 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix1.Size(), 16, "The size of matrix1 is OK");
     
     bool all_elements_are_one = true;
-    for (auto it = matrix1.Begin(); it != matrix1.End(); ++it) {
+    for (auto it = matrix1.begin(); it != matrix1.end(); ++it) {
         if (*it != 1) {
             all_elements_are_one = false;
             break;

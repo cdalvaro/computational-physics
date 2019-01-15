@@ -30,8 +30,8 @@
         return NO;
     }
     
-    for (auto it_compare = compare.Begin(), it_expected = expected.Begin();
-         it_compare != compare.End(); ++it_compare, ++it_expected) {
+    for (auto it_compare = compare.begin(), it_expected = expected.begin();
+         it_compare != compare.end(); ++it_compare, ++it_expected) {
         
         const double distance = *it_compare - *it_expected;
         if (std::sqrt(distance * distance) >= accuracy) {
@@ -50,8 +50,8 @@
         return NO;
     }
     
-    for (auto it_compare = compare.Begin(), it_expected = expected.Begin();
-         it_compare != compare.End(); ++it_compare, ++it_expected) {
+    for (auto it_compare = compare.begin(), it_expected = expected.begin();
+         it_compare != compare.end(); ++it_compare, ++it_expected) {
         
         const double distance = *it_compare - *it_expected;
         if (std::sqrt(distance * distance) >= accuracy) {

@@ -138,7 +138,7 @@ namespace cda {
                     
                     const std::map<ValueType, containers::Vector<ValueType>> &EigenVectors() {
                         auto values = EigenValues();
-                        for (auto it_value = values.Begin(); it_value != values.End(); ++it_value) {
+                        for (auto it_value = values.begin(); it_value != values.end(); ++it_value) {
                             EigenVector(*it_value);
                         }
                         return eigen_vectors;
@@ -171,7 +171,7 @@ namespace cda {
                         q += I;
                         
                         r = q * matrix;
-                        for (auto it_r = r.Begin() + rows; it_r != r.End(); it_r += rows) {
+                        for (auto it_r = r.begin() + rows; it_r != r.end(); it_r += rows) {
                             *it_r = 0;
                         }
                         

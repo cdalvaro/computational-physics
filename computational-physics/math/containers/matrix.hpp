@@ -62,14 +62,14 @@ namespace cda {
                 n(rows), m(columns), size(rows * columns),
                 a(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
-                    std::fill(this->Begin(), this->End(), value);
+                    std::fill(this->begin(), this->end(), value);
                 }
                 
                 Matrix(const Matrix<ValueType> &matrix) :
                 n(matrix.n), m(matrix.m), size(matrix.size),
                 a(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
-                    std::copy(matrix.Begin(), matrix.End(), this->Begin());
+                    std::copy(matrix.begin(), matrix.end(), this->begin());
                 }
                 
                 template<typename ValueType2>
@@ -77,7 +77,7 @@ namespace cda {
                 n(matrix.Rows()), m(matrix.Columns()), size(matrix.Size()),
                 a(nullptr), it_end(nullptr) {
                     AllocateMemory(size);
-                    std::copy(matrix.Begin(), matrix.End(), this->Begin());
+                    std::copy(matrix.begin(), matrix.end(), this->begin());
                 }
                 
                 Matrix(Matrix<ValueType> &&matrix) :
@@ -95,7 +95,7 @@ namespace cda {
                         throw std::logic_error("Sizes do not match");
                     }
                     AllocateMemory(size);
-                    std::copy(values, values + size, this->Begin());
+                    std::copy(values, values + size, this->begin());
                 }
                 
                 template <size_t rows, size_t columns>
@@ -116,11 +116,11 @@ namespace cda {
                     }
                 }
                 
-                ValueType *Begin() const {
+                ValueType *begin() const {
                     return a;
                 }
                 
-                ValueType *End() const {
+                ValueType *end() const {
                     return it_end;
                 }
                 
@@ -173,7 +173,7 @@ namespace cda {
                 Matrix<ValueType> &operator=(const Matrix<ValueType> &matrix) {
                     if (this != &matrix) {
                         Resize(matrix.n, matrix.m);
-                        std::copy(matrix.Begin(), matrix.End(), this->Begin());
+                        std::copy(matrix.begin(), matrix.end(), this->begin());
                     }
                     
                     return *this;
@@ -200,8 +200,8 @@ namespace cda {
                         return false;
                     }
                     
-                    auto it_matrix = matrix.Begin();
-                    for (auto it = this->Begin(); it != this->End(); ++it, ++it_matrix) {
+                    auto it_matrix = matrix.begin();
+                    for (auto it = this->begin(); it != this->end(); ++it, ++it_matrix) {
                         if (*it != *it_matrix) {
                             return false;
                         }
@@ -222,7 +222,7 @@ namespace cda {
                     Matrix<ValueType> tmp(1, m);
                     
                     const auto &it_row = this->operator[](row);
-                    std::copy(it_row, it_row + m, tmp.Begin());
+                    std::copy(it_row, it_row + m, tmp.begin());
                     
                     return tmp;
                 }
@@ -233,7 +233,7 @@ namespace cda {
                     }
                     
                     Matrix<ValueType> tmp(n, 1);
-                    auto it_tmp = tmp.Begin();
+                    auto it_tmp = tmp.begin();
                     
                     for (size_t i = 0; i < n; ++i, ++it_tmp) {
                         *it_tmp = this->operator[](i)[column];
@@ -250,8 +250,8 @@ namespace cda {
                     
                     Matrix<ValueType> tmp(number_of_rows, number_of_columns);
                     
-                    auto it_this = Begin() + row * m + column;
-                    for (auto it_tmp = tmp.Begin(); it_tmp != tmp.End(); it_tmp += number_of_columns, it_this += m) {
+                    auto it_this = begin() + row * m + column;
+                    for (auto it_tmp = tmp.begin(); it_tmp != tmp.end(); it_tmp += number_of_columns, it_this += m) {
                         std::copy(it_this, it_this + number_of_columns, it_tmp);
                     }
                     
@@ -269,8 +269,8 @@ namespace cda {
                     
                     Vector<ValueType> diagonal(n);
                     
-                    auto it_this = Begin();
-                    for (auto it_diagonal = diagonal.Begin(); it_diagonal != diagonal.End(); ++it_diagonal, it_this += m + 1) {
+                    auto it_this = begin();
+                    for (auto it_diagonal = diagonal.begin(); it_diagonal != diagonal.end(); ++it_diagonal, it_this += m + 1) {
                         *it_diagonal = *it_this;
                     }
                     
@@ -295,8 +295,8 @@ namespace cda {
                     
                     Vector<ValueType> vector(this->n - from_row);
                     
-                    auto it_this = this->Begin() + this->m * from_row + column;
-                    for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector, it_this += m) {
+                    auto it_this = this->begin() + this->m * from_row + column;
+                    for (auto it_vector = vector.begin(); it_vector != vector.end(); ++it_vector, it_this += m) {
                         *it_vector = *it_this;
                     }
                     
@@ -317,8 +317,8 @@ namespace cda {
                         throw std::logic_error("Matrices must have the same number of rows");
                     }
                     
-                    auto it_this = this->Begin() + column;
-                    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix, it_this += m) {
+                    auto it_this = this->begin() + column;
+                    for (auto it_matrix = matrix.begin(); it_matrix != matrix.end(); ++it_matrix, it_this += m) {
                         *it_this = *it_matrix;
                     }
                 }
@@ -332,8 +332,8 @@ namespace cda {
                         throw std::logic_error("The vector and the column of the matrix must have the same number of elements");
                     }
                     
-                    auto it_this = this->Begin() + column;
-                    for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector, it_this += m) {
+                    auto it_this = this->begin() + column;
+                    for (auto it_vector = vector.begin(); it_vector != vector.end(); ++it_vector, it_this += m) {
                         *it_this = *it_vector;
                     }
                 }
@@ -352,7 +352,7 @@ namespace cda {
                     }
                     
                     auto it_this = this->operator[](row);
-                    std::copy(matrix.Begin(), matrix.End(), it_this);
+                    std::copy(matrix.begin(), matrix.end(), it_this);
                 }
                 
                 void SetRow(const size_t &row, const Vector<ValueType> &vector) {
@@ -365,7 +365,7 @@ namespace cda {
                     }
                     
                     auto it_this = this->operator[](row);
-                    std::copy(vector.Begin(), vector.End(), it_this);
+                    std::copy(vector.begin(), vector.end(), it_this);
                 }
                 
                 void SetDiagonal(const Vector<ValueType> &diagonal) {
@@ -377,9 +377,9 @@ namespace cda {
                         throw std::logic_error("Diagonal size does not match with the number of rows of the matrix");
                     }
                     
-                    auto it_matrix = this->Begin();
+                    auto it_matrix = this->begin();
                     const size_t step = m + 1;
-                    for (auto it_diagonal = diagonal.Begin(); it_diagonal != diagonal.End(); ++it_diagonal, it_matrix += step) {
+                    for (auto it_diagonal = diagonal.begin(); it_diagonal != diagonal.end(); ++it_diagonal, it_matrix += step) {
                         *it_matrix = *it_diagonal;
                     }
                 }
@@ -389,9 +389,9 @@ namespace cda {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
                     
-                    auto it_end = End() + m;
+                    auto it_end = end() + m;
                     const size_t step = m + 1;
-                    for (auto it = Begin(); it != it_end; it += step) {
+                    for (auto it = begin(); it != it_end; it += step) {
                         *it = diagonal;
                     }
                 }
@@ -404,7 +404,7 @@ namespace cda {
                     const auto number_of_rows = std::min(this->n - row, matrix.Rows());
                     const auto number_of_columns = std::min(this->m - column, matrix.Columns());
                     
-                    auto it_matrix = matrix.Begin();
+                    auto it_matrix = matrix.begin();
                     const auto it_this_end = this->operator[](row + number_of_rows);
                     for (auto it_this = this->operator[](row); it_this != it_this_end; it_this += this->m, it_matrix += matrix.Columns()) {
                         std::copy_n(it_matrix, number_of_columns, it_this + column);
@@ -432,8 +432,8 @@ namespace cda {
                 Matrix<ValueType> SumRows() const {
                     Matrix<ValueType> sum_rows(n, 1, 0);
                     
-                    auto it_this = this->Begin();
-                    for (auto it_sum = sum_rows.Begin(); it_sum != sum_rows.End(); ++it_sum) {
+                    auto it_this = this->begin();
+                    for (auto it_sum = sum_rows.begin(); it_sum != sum_rows.end(); ++it_sum) {
                         auto it_this_row_end = it_this + this->m;
                         for (; it_this != it_this_row_end; ++it_this) {
                             *it_sum += *it_this;
@@ -465,8 +465,8 @@ namespace cda {
                 Matrix<ValueType> SumColumns() const {
                     Matrix<ValueType> sum_columns(1, m, 0);
                     
-                    for (auto it_this = this->Begin(); it_this != this->End();) {
-                        for (auto it_sum = sum_columns.Begin(); it_sum != sum_columns.End(); ++it_sum, ++it_this) {
+                    for (auto it_this = this->begin(); it_this != this->end();) {
+                        for (auto it_sum = sum_columns.begin(); it_sum != sum_columns.end(); ++it_sum, ++it_this) {
                             *it_sum += *it_this;
                         }
                     }
@@ -485,8 +485,8 @@ namespace cda {
                     
                     ValueType sum = 0;
                     
-                    const auto &it_column_end = this->End() + column;
-                    for (auto it_column = this->Begin() + column; it_column != it_column_end; it_column += this->m) {
+                    const auto &it_column_end = this->end() + column;
+                    for (auto it_column = this->begin() + column; it_column != it_column_end; it_column += this->m) {
                         sum += *it_column;
                     }
                     
@@ -494,27 +494,27 @@ namespace cda {
                 }
                 
                 ValueType MaximumElement() const {
-                    return algorithms::find::MaximumElement(Begin(), End());
+                    return algorithms::find::MaximumElement(begin(), end());
                 }
                 
                 ValueType AbsoluteMaximumElement() const {
-                    return algorithms::find::AbsoluteMaximumElement(Begin(), End());
+                    return algorithms::find::AbsoluteMaximumElement(begin(), end());
                 }
                 
                 ValueType AbsoluteMaximumElementWithSign() const {
-                    return algorithms::find::AbsoluteMaximumElementWithSign(Begin(), End());
+                    return algorithms::find::AbsoluteMaximumElementWithSign(begin(), end());
                 }
                 
                 ValueType MinimumElement() const {
-                    return algorithms::find::MinimumElement(Begin(), End());
+                    return algorithms::find::MinimumElement(begin(), end());
                 }
                 
                 ValueType AbsoluteMinimumElement() const {
-                    return algorithms::find::AbsoluteMinimumElement(Begin(), End());
+                    return algorithms::find::AbsoluteMinimumElement(begin(), end());
                 }
                 
                 ValueType AbsoluteMinimumElementWithSign() const {
-                    return algorithms::find::AbsoluteMinimumElementWithSign(Begin(), End());
+                    return algorithms::find::AbsoluteMinimumElementWithSign(begin(), end());
                 }
                 
                 const ValueType &At(const size_t &row, const size_t &column) const {
@@ -561,7 +561,7 @@ namespace cda {
                 }
                 
                 bool IsNull() const {
-                    for (auto it = Begin(); it != End(); ++it) {
+                    for (auto it = begin(); it != end(); ++it) {
                         if (*it != 0) {
                             return false;
                         }
@@ -575,8 +575,8 @@ namespace cda {
                 
                 bool HasDuplicate(const ValueType &accuracy) const {
                     ValueType distance;
-                    for (auto it1 = Begin(); it1 != End(); ++it1) {
-                        for (auto it2 = Begin(); it2 != End(); ++it2) {
+                    for (auto it1 = begin(); it1 != end(); ++it1) {
+                        for (auto it2 = begin(); it2 != end(); ++it2) {
                             if (it1 != it2) {
                                 distance = *it1 - *it2;
                                 if (std::sqrt(distance * distance) < accuracy) {
@@ -589,8 +589,8 @@ namespace cda {
                 }
                 
                 bool HasDuplicate() const {
-                    for (auto it1 = Begin(); it1 != End(); ++it1) {
-                        for (auto it2 = Begin(); it2 != End(); ++it2) {
+                    for (auto it1 = begin(); it1 != end(); ++it1) {
+                        for (auto it2 = begin(); it2 != end(); ++it2) {
                             if (it1 != it2 && *it1 == *it2) {
                                 return true;
                             }
@@ -601,7 +601,7 @@ namespace cda {
                 
                 //  Void functions
                 void Fill(const ValueType &value) {
-                    std::fill(Begin(), End(), value);
+                    std::fill(begin(), end(), value);
                 }
                 
                 void Zero() {
@@ -618,9 +618,9 @@ namespace cda {
                     }
                     
                     Zero();
-                    auto it_end = End() + m;
+                    auto it_end = end() + m;
                     const size_t step = m + 1;
-                    for (auto it = Begin(); it != it_end; it += step) {
+                    for (auto it = begin(); it != it_end; it += step) {
                         *it = 1;
                     }
                 }
@@ -631,10 +631,10 @@ namespace cda {
                     }
                     
                     Matrix<ValueType> new_matrix(n, m);
-                    auto it_new = new_matrix.Begin();
-                    auto it_matrix = matrix.Begin();
+                    auto it_new = new_matrix.begin();
+                    auto it_matrix = matrix.begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix, ++it_new) {
+                    for (auto it_this = this->begin(); it_this != this->end(); ++it_this, ++it_matrix, ++it_new) {
                         *it_new = *it_this + *it_matrix;
                     }
                     
@@ -646,8 +646,8 @@ namespace cda {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
                     
-                    auto it_this = this->Begin();
-                    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix) {
+                    auto it_this = this->begin();
+                    for (auto it_matrix = matrix.begin(); it_matrix != matrix.end(); ++it_matrix) {
                         *it_this++ += *it_matrix;
                     }
                     
@@ -660,10 +660,10 @@ namespace cda {
                     }
                     
                     Matrix<ValueType> new_matrix(n, m);
-                    auto it_new = new_matrix.Begin();
-                    auto it_matrix = matrix.Begin();
+                    auto it_new = new_matrix.begin();
+                    auto it_matrix = matrix.begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_matrix, ++it_new) {
+                    for (auto it_this = this->begin(); it_this != this->end(); ++it_this, ++it_matrix, ++it_new) {
                         *it_new = *it_this - *it_matrix;
                     }
                     
@@ -675,8 +675,8 @@ namespace cda {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
                     
-                    auto it_this = this->Begin();
-                    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix) {
+                    auto it_this = this->begin();
+                    for (auto it_matrix = matrix.begin(); it_matrix != matrix.end(); ++it_matrix) {
                         *it_this++ -= *it_matrix;
                     }
                     
@@ -685,9 +685,9 @@ namespace cda {
                 
                 Matrix<ValueType> operator*(const ValueType &value) const {
                     Matrix<ValueType> new_matrix(n, m);
-                    auto it_new = new_matrix.Begin();
+                    auto it_new = new_matrix.begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
+                    for (auto it_this = this->begin(); it_this != this->end(); ++it_this) {
                         *it_new++ = *it_this * value;
                     }
                     
@@ -700,7 +700,7 @@ namespace cda {
                     }
                     
                     Matrix<ValueType> new_matrix(this->n, matrix.m);
-                    auto it_new_matrix = new_matrix.Begin();
+                    auto it_new_matrix = new_matrix.begin();
                     
                     const ValueType *it_this_row, *it_this_row__, *it_end_this_row;
                     
@@ -708,12 +708,12 @@ namespace cda {
                     size_t matrix_column;
                     ValueType *it_matrix_column;
                     
-                    for (it_this_row = this->Begin(); it_this_row < this->End(); it_this_row = it_end_this_row) {
+                    for (it_this_row = this->begin(); it_this_row < this->end(); it_this_row = it_end_this_row) {
                         it_end_this_row = it_this_row + this->m;
                         
                         for (matrix_column = 0; matrix_column < matrix.m; ++matrix_column) {
                             sum = 0;
-                            for (it_this_row__ = it_this_row, it_matrix_column = matrix.Begin() + matrix_column;
+                            for (it_this_row__ = it_this_row, it_matrix_column = matrix.begin() + matrix_column;
                                  it_this_row__ != it_end_this_row;
                                  ++it_this_row__, it_matrix_column += matrix.m) {
                                 sum += *it_this_row__ * *it_matrix_column;
@@ -736,10 +736,10 @@ namespace cda {
                     }
                     
                     Matrix<ValueType> new_matrix(n, vector.Size());
-                    auto it_new = new_matrix.Begin();
+                    auto it_new = new_matrix.begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this) {
-                        for (auto it_vector = vector.Begin(); it_vector != vector.End(); ++it_vector) {
+                    for (auto it_this = this->begin(); it_this != this->end(); ++it_this) {
+                        for (auto it_vector = vector.begin(); it_vector != vector.end(); ++it_vector) {
                             *it_new = *it_this * *it_vector;
                             ++it_new;
                         }
@@ -749,7 +749,7 @@ namespace cda {
                 }
                 
                 Matrix<ValueType>& operator*=(const ValueType &value) {
-                    for (auto it = Begin(); it != End(); ++it) {
+                    for (auto it = begin(); it != end(); ++it) {
                         *it *= value;
                     }
                     return *this;
@@ -757,9 +757,9 @@ namespace cda {
                 
                 Matrix<ValueType> operator/(const ValueType &value) const {
                     Matrix<ValueType> new_matrix(this->n, this->m);
-                    auto it_new = new_matrix.Begin();
+                    auto it_new = new_matrix.begin();
                     
-                    for (auto it_this = this->Begin(); it_this != this->End(); ++it_this, ++it_new) {
+                    for (auto it_this = this->begin(); it_this != this->end(); ++it_this, ++it_new) {
                         *it_new = *it_this / value;
                     }
                     
@@ -767,7 +767,7 @@ namespace cda {
                 }
                 
                 Matrix<ValueType>& operator/=(const ValueType &value) {
-                    for (auto it = Begin(); it != End(); ++it) {
+                    for (auto it = begin(); it != end(); ++it) {
                         *it /= value;
                     }
                     return *this;
@@ -775,7 +775,7 @@ namespace cda {
                 
                 Matrix<ValueType> operator-() const {
                     Matrix<ValueType> new_matrix(this->n, this->m);
-                    std::transform(this->Begin(), this->End(), new_matrix.Begin(),
+                    std::transform(this->begin(), this->end(), new_matrix.begin(),
                                    [](const ValueType &value) {
                                        return -value;
                                    });
@@ -838,7 +838,7 @@ namespace cda {
             template <typename ValueType>
             Matrix<ValueType> Transpose(const Vector<ValueType> &vector) {
                 Matrix<ValueType> matrix(vector.Size(), 1);
-                std::copy(vector.Begin(), vector.End(), matrix.Begin());
+                std::copy(vector.begin(), vector.end(), matrix.begin());
                 return matrix;
             }
         
@@ -852,9 +852,9 @@ cda::math::containers::Matrix<ValueType> operator*(const ValueType &value,
                                            const cda::math::containers::Matrix<ValueType> &matrix) {
     
     cda::math::containers::Matrix<ValueType> tmp(matrix.Rows(), matrix.Columns());
-    auto it_tmp = tmp.Begin();
+    auto it_tmp = tmp.begin();
     
-    for (auto it_matrix = matrix.Begin(); it_matrix != matrix.End(); ++it_matrix, ++it_tmp) {
+    for (auto it_matrix = matrix.begin(); it_matrix != matrix.end(); ++it_matrix, ++it_tmp) {
         *it_tmp = *it_matrix * value;
     }
     
@@ -873,9 +873,9 @@ cda::math::containers::Vector<ValueType> operator*(const cda::math::containers::
     const auto &columns = matrix.Columns();
     cda::math::containers::Vector<ValueType> new_vector(columns, 0);
     
-    auto it_new = new_vector.Begin();
+    auto it_new = new_vector.begin();
     for (size_t column = 0; column < columns; ++column, ++it_new) {
-        auto it_vector = vector.Begin();
+        auto it_vector = vector.begin();
         for (size_t row = 0; row < rows; ++row, ++it_vector) {
             *it_new += *it_vector * matrix[row][column];
         }
