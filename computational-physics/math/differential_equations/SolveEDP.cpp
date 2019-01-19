@@ -12,6 +12,7 @@
 #include "../equations/systems/linear.hpp"
 #include "../algorithms/eigenvalues/qr.hpp"
 
+#include <list>
 #include <sys/stat.h>
 #include <thread>
 
@@ -530,7 +531,7 @@ Vector<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         }
     }
     
-    old1D = cI;
+    old1D = std::move(cI);
     time += dt;
     
     return sol;
@@ -578,19 +579,19 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
         }
         
         //  Parallel
-        size_t nCores = std::thread::hardware_concurrency();
-        std::thread *workers = new std::thread[nCores];
+        const size_t cores_number = std::thread::hardware_concurrency();
+        std::list<std::thread> workers;
         
         int start = 1;
-        int elements = (n-1) / nCores;
+        int elements = (n-1) / cores_number;
         int end = elements;
         
-        for (int i = 0; i < nCores; i++) {
-            if (i == nCores-1) {
-                end += (n-1) % nCores;
+        for (int i = 0; i < cores_number; i++) {
+            if (i == cores_number-1) {
+                end += (n-1) % cores_number;
             }
             
-            workers[i] = std::thread([start, end, this, n, m, fixed, &sol, cI, cId, x, y, dx, dy]() {
+            workers.emplace_back([start, end, this, n, m, fixed, &sol, cI, cId, x, y, dx, dy]() {
                 for (int i=start; i<end; i++) {
                     for (int j=1; j<m-1; j++) {
                         if (!fixed[i][j]) {
@@ -604,17 +605,9 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
             end = start + elements;
         }
         
-        for (int i=0; i<nCores; i++) {
-            workers[i].join();
+        for (auto &&worker : workers) {
+            worker.join();
         }
-        
-//        //  Linear
-//        for (int i=1; i<n-1; i++) {
-//            for (int j=1; j<m-1; j++) {
-//                if (!fixed[i][j])
-//                    sol[i][j] = cI[i][j] + dt*cId[i][j] + Q2D(x[j],y[i])*dt*dt/2.0*((cI[i+1][j]-2.0*cI[i][j]+cI[i-1][j])/(dy*dy) + (cI[i][j+1]-2.0*cI[i][j]+cI[i][j-1])/(dx*dx));
-//            }
-//        }
         
         if (bc & BCR_df) {  //  Condición en el borde derecho de la membrana
             for (int i=1; i<n-1; i++) {
@@ -666,19 +659,19 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
         }
         
         //  Parallel
-        size_t nCores = std::thread::hardware_concurrency();
-        std::thread *workers = new std::thread[nCores];
-        
+        size_t cores_number = std::thread::hardware_concurrency();
+        std::list<std::thread> workers;
+
         int start = 1;
-        int elements = (n-1) / nCores;
+        int elements = (n-1) / cores_number;
         int end = elements;
-        
-        for (int i = 0; i < nCores; i++) {
-            if (i == nCores-1) {
-                end += (n-1) % nCores;
+
+        for (int i = 0; i < cores_number; i++) {
+            if (i == cores_number-1) {
+                end += (n-1) % cores_number;
             }
-            
-            workers[i] = std::thread([start, end, this, n, m, fixed, &sol, cI, cId, x, y, dx, dy]() {
+
+            workers.emplace_back([start, end, this, &n, &m, &fixed, &sol, &cI, &cId, &x, &y, &dx, &dy]() {
                 for (int i=start; i<end; i++) {
                     for (int j=1; j<m-1; j++) {
                         if (!fixed[i][j]) {
@@ -687,24 +680,14 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
                     }
                 }
             });
-            
+
             start = end;
             end = start + elements;
-            
         }
-        
-        for (int i=0; i<nCores; i++) {
-            workers[i].join();
+
+        for (auto &&worker : workers) {
+            worker.join();
         }
-        
-//        //  Linear
-//        for (int i=1; i<n-1; i++) {
-//            for (int j=1; j<m-1; j++) {
-//                if (!fixed[i][j])
-//                    sol[i][j] = 2.0*cI[i][j] + dt*dt*Q2D(x[j],y[i])*((cI[i+1][j]-2.0*cI[i][j]+cI[i-1][j])/(dy*dy) + (cI[i][j+1]-2.0*cI[i][j]+cI[i][j-1])/(dx*dx)) - old2D[i][j];
-//            }
-//        }
-        
         
         if (bc & BCR_df) {  //  Condición en el borde derecho de la membrana
             for (int i=1; i<n-1; i++) {
@@ -740,7 +723,7 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
         }
     }
     
-    old2D = cI;
+    old2D = std::move(cI);
     time += (EDP_T)dt;
     
     if (opt & SAVE_DATA) {
@@ -856,7 +839,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
     
     if ((bc& BCL_df) != 0 && (bc& BCR_df) != 0) {
         Matrix<EDP_T> diagLU(n,3);
-        Vector<EDP_T> b(n), solV(n);
+        Vector<EDP_T> b(n);
         EDP_T dx = (EDP_T)abs((EDP_T)(x[n-1] - x[0])/(n-1));
         EDP_T dtx = dt/(dx*dx);
         
@@ -881,9 +864,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-1][2] = 0.0;
         b[n-1] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
-        
-        sol = solV;
+        sol = linear::SolveLinearSystem3Diagonal(diagLU, b);
     }
     
     time += dt;
@@ -1092,6 +1073,9 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
         eigVal = qrA.EigenValues();
+        std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
+            return a < b;
+        });
         
         if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
             eigVal[0] = 0.0;
