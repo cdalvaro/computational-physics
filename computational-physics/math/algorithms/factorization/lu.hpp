@@ -132,7 +132,7 @@ namespace cda {
                             return;
                         }
                         
-                        // TODO: Implement LUP method
+                        RemoveSingularities();
                         
                         l.Resize(rows, rows, 0);
                         u.Resize(rows, rows, 0);
@@ -182,6 +182,15 @@ namespace cda {
                         }
                         
                         is_factorized = true;
+                    }
+                    
+                    void RemoveSingularities() {
+                        auto diagonal = lu.GetDiagonal();
+                        if (diagonal.Find(0) == diagonal.end()) {
+                            return;
+                        }
+                        
+                        throw std::logic_error("Matrix is nonsingular");
                     }
                     
                 };
