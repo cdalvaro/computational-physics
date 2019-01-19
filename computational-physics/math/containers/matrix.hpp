@@ -599,6 +599,10 @@ namespace cda {
                     return false;
                 }
                 
+                ValueType * Find(const ValueType &value) const {
+                    return cda::math::algorithms::find::Element(begin(), end(), value);
+                }
+                
                 //  Void functions
                 void Fill(const ValueType &value) {
                     std::fill(begin(), end(), value);

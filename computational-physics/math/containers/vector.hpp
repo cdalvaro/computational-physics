@@ -398,6 +398,10 @@ namespace cda {
                     return false;
                 }
                 
+                ValueType * Find(const ValueType &value) const {
+                    return cda::math::algorithms::find::Element(begin(), end(), value);
+                }
+                
                 //  --- OPERATORS ---
                 Vector<ValueType> operator+(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n) {
