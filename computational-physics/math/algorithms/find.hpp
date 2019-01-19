@@ -13,6 +13,16 @@ namespace cda {
         namespace algorithms {
             namespace find {
                 
+                template <class InputIt, class T>
+                constexpr InputIt Element(InputIt begin, InputIt const end, const T &value) {
+                    for (; begin != end; ++begin) {
+                        if (*begin == value) {
+                            return begin;
+                        }
+                    }
+                    return end;
+                }
+                
                 template <typename T>
                 T MaximumElement(const T* const begin, const T* const end) {
                     auto max_element = *begin;
