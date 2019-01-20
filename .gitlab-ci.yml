@@ -4,7 +4,7 @@ stages:
   - build
   - archive
 
-analyze_project:
+Analyze:
   stage: analyze
   script:
     - xcodebuild clean analyze -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug | xcpretty -f `xcpretty-travis-formatter`
@@ -12,7 +12,7 @@ analyze_project:
     - Xcode
     - macOS
 
-test_project:
+Tests:
   stage: test
   script:
     - xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
@@ -21,7 +21,7 @@ test_project:
     - Xcode
     - macOS
 
-build_project:
+Build:
   stage: build
   script:
     - xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
@@ -29,7 +29,7 @@ build_project:
     - Xcode
     - macOS
 
-archive_project:
+Archive:
   stage: archive
   script:
     - xcodebuild archive -archivePath build/ComputationalPhysics -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`

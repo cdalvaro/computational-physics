@@ -2,3 +2,19 @@ os: osx
 osx_image: xcode10.1
 xcode_project: ComputationalPhysics.xcodeproj
 xcode_scheme: Computational Physics
+language: cpp
+
+stages:
+  - Build
+  - Test
+
+jobs:
+  include:
+    - stage: "Build"
+      name: "Build app"
+      script: xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+    - stage: "Tests"
+      name: "Unit Tests"
+      script: |
+              xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
+              slather coverage --scheme 'Computational Physics' --show ComputationalPhysics.xcodeproj
