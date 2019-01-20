@@ -1,20 +1,20 @@
 version: 2
 jobs:
   build:
-    macos:
-      xcode: "10.0.0"
+    docker:
+      - image: "ubuntu:xenial-20181218"
     steps:
       - checkout
       - run:
-          name: Test Application
-          command: xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug
+          name: Install Dependencies
+          command: apt-get update && apt-get install -y gcc g++ make cmake
       - run:
-          name: Build Application
-          command: xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release
+          name: Create Build Files
+          command: cmake -DCMAKE_BUILD_TYPE=Release .
       - run:
-          name: Archive Application
-          command: xcodebuild archive -archivePath build/ComputationalPhysics -scheme 'Computational Physics' -configuration Release
+          name: Build Executable
+          command: make
       - store_artifacts:
           # store this build output. Read more: https://circleci.com/docs/2.0/artifacts/
-          path: build/ComputationalPhysics.xcarchive
+          path: bin/ComputationalPhysics
           destination: artifacts

@@ -6,7 +6,7 @@ find_package( GLUT )
 
 set( CMAKE_CXX_STANDARD 17 )
 
-set( EXECUTABLE GraphicalPDEs )
+set( EXECUTABLE ComputationalPhysics )
 
 include_directories( computational-physics )
 
