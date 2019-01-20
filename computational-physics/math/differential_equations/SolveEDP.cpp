@@ -1094,6 +1094,10 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         if (in.fail()) {
             std::cout << "\n\tEl fichero no existe, se van a calcular los autovalores... ";
             eigVal = qrA.EigenValues();
+            std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
+                return a < b;
+            });
+            
             if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
                 eigVal[0] = 0.0;
             }
@@ -1107,6 +1111,10 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     } else {
         std::cout << "\tCalculando autovalores... ";
         eigVal = qrA.EigenValues();
+        std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
+            return a < b;
+        });
+        
         if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
             eigVal[0] = 0.0;
         }
