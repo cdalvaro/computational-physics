@@ -1,0 +1,43 @@
+stages:
+  - analyze
+  - test
+  - build
+  - archive
+
+Analyze:
+  stage: analyze
+  script:
+    - xcodebuild clean analyze -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug | xcpretty -f `xcpretty-travis-formatter`
+  tags:
+    - Xcode
+    - macOS
+
+Tests:
+  stage: test
+  script:
+    - xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
+    - slather coverage --scheme 'Computational Physics' --show ComputationalPhysics.xcodeproj
+  tags:
+    - Xcode
+    - macOS
+
+Build:
+  stage: build
+  script:
+    - xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+  tags:
+    - Xcode
+    - macOS
+
+Archive:
+  stage: archive
+  script:
+    - xcodebuild archive -archivePath build/ComputationalPhysics -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+  only:
+    - master
+  artifacts:
+    paths:
+    - build/ComputationalPhysics.xcarchive
+  tags:
+    - Xcode
+    - macOS

@@ -1,0 +1,677 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		070BBC6820D43252008DDBDE /* TestsTools.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6720D43252008DDBDE /* TestsTools.mm */; };
+		070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */ = {isa = PBXBuildFile; fileRef = 070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */; };
+		070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */; };
+		070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */; };
+		072AB5B620D598DE009BAB93 /* LUTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 072AB5B520D598DE009BAB93 /* LUTests.mm */; };
+		073194C12135F0210018BF25 /* Matrix-QRPerformance.csv in Resources */ = {isa = PBXBuildFile; fileRef = 073194C02135F0210018BF25 /* Matrix-QRPerformance.csv */; };
+		073194C52135F0980018BF25 /* QRPerformance.mm in Sources */ = {isa = PBXBuildFile; fileRef = 073194C42135F0980018BF25 /* QRPerformance.mm */; };
+		073DCF9B212C6F02004A901D /* MatrixTests-testOfstreamOperator.txt in Resources */ = {isa = PBXBuildFile; fileRef = 073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */; };
+		07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */; };
+		07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */; };
+		07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */; };
+		07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07C653BA2124993C006F0CC3 /* QRTests.mm */; };
+		07C8D683213BF9B800C2D451 /* BigVector.csv in Resources */ = {isa = PBXBuildFile; fileRef = 07C8D682213BF9B700C2D451 /* BigVector.csv */; };
+		07CD429921284C030096693E /* MathTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07CD429821284C030096693E /* MathTests.mm */; };
+		07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07D8C2FB20CED49A00F194F3 /* VectorTests.mm */; };
+		07DA13491559113E00FCF6F8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 07DA13481559113E00FCF6F8 /* main.cpp */; };
+		07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13511559115100FCF6F8 /* GLUT.framework */; };
+		07DA13541559115A00FCF6F8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07DA13531559115A00FCF6F8 /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		07DA13421559113E00FCF6F8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		070BBC6620D42E9E008DDBDE /* BigMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = BigMatrix.csv; sourceTree = "<group>"; };
+		070BBC6720D43252008DDBDE /* TestsTools.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TestsTools.mm; sourceTree = "<group>"; };
+		070BBC6920D4328E008DDBDE /* TestsTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestsTools.h; sourceTree = "<group>"; };
+		070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = SmallMatrix.csv; sourceTree = "<group>"; };
+		070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixPerformance.mm; sourceTree = "<group>"; };
+		070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorPerformance.mm; sourceTree = "<group>"; };
+		0713449C20D44CB80048FC79 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
+		0713449D20D44CB80048FC79 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		072AB5B520D598DE009BAB93 /* LUTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LUTests.mm; sourceTree = "<group>"; };
+		072D9D5A21F4DDB7000FBFB6 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
+		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
+		073194C02135F0210018BF25 /* Matrix-QRPerformance.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Matrix-QRPerformance.csv"; sourceTree = "<group>"; };
+		073194C42135F0980018BF25 /* QRPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QRPerformance.mm; sourceTree = "<group>"; };
+		073199B420D6612D003FED85 /* linear.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = linear.hpp; sourceTree = "<group>"; };
+		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
+		073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MatrixTests-testOfstreamOperator.txt"; sourceTree = "<group>"; };
+		076B0ABC212F4C8200DE9A10 /* find.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = find.hpp; sourceTree = "<group>"; };
+		077949C620D5088200A8347E /* lu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lu.hpp; sourceTree = "<group>"; };
+		07890FBB20D6CA6600784F5C /* containers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = containers.hpp; sourceTree = "<group>"; };
+		07890FBD20D6CC3600784F5C /* qr.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = qr.hpp; sourceTree = "<group>"; };
+		07890FBE20D6D84D00784F5C /* math.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = math.hpp; sourceTree = "<group>"; };
+		07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MatrixTests.mm; sourceTree = "<group>"; };
+		07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyOpenGL.cpp; sourceTree = "<group>"; };
+		07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyOpenGL.h; sourceTree = "<group>"; };
+		07A351C020C5D5C800DC2DC2 /* SolveEDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SolveEDP.h; sourceTree = "<group>"; };
+		07A351C120C5D5C800DC2DC2 /* vector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = vector.hpp; sourceTree = "<group>"; };
+		07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SolveEDP.cpp; sourceTree = "<group>"; };
+		07A351CA20C5D92400DC2DC2 /* matrix.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = matrix.hpp; sourceTree = "<group>"; };
+		07B3890F20CC2AEA009910B6 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		07B3891020CC2AEB009910B6 /* .gitlab-ci.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".gitlab-ci.yml"; sourceTree = "<group>"; };
+		07B57FC620CED3D0001DDC78 /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		07B57FCA20CED3D0001DDC78 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07C1B099210F8EA700EB8A9B /* algorithms.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = algorithms.hpp; sourceTree = "<group>"; };
+		07C653BA2124993C006F0CC3 /* QRTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QRTests.mm; sourceTree = "<group>"; };
+		07C8D682213BF9B700C2D451 /* BigVector.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BigVector.csv; sourceTree = "<group>"; };
+		07C8D684213BFD2300C2D451 /* VectorTests-testOfstreamOperator.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "VectorTests-testOfstreamOperator.txt"; sourceTree = "<group>"; };
+		07CD429821284C030096693E /* MathTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MathTests.mm; sourceTree = "<group>"; };
+		07D8C2FB20CED49A00F194F3 /* VectorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = VectorTests.mm; sourceTree = "<group>"; };
+		07DA13441559113E00FCF6F8 /* ComputationalPhysics */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ComputationalPhysics; sourceTree = BUILT_PRODUCTS_DIR; };
+		07DA13481559113E00FCF6F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		07DA13511559115100FCF6F8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		07DA13531559115A00FCF6F8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		07B57FC320CED3D0001DDC78 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07DA13411559113E00FCF6F8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07DA13541559115A00FCF6F8 /* OpenGL.framework in Frameworks */,
+				07DA13521559115100FCF6F8 /* GLUT.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		070BBC6320D42E2A008DDBDE /* data */ = {
+			isa = PBXGroup;
+			children = (
+				070BBC6420D42E37008DDBDE /* math */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		070BBC6420D42E37008DDBDE /* math */ = {
+			isa = PBXGroup;
+			children = (
+				073194BE2135EF9F0018BF25 /* algorithms */,
+				070BBC6520D42E3D008DDBDE /* containers */,
+			);
+			path = math;
+			sourceTree = "<group>";
+		};
+		070BBC6520D42E3D008DDBDE /* containers */ = {
+			isa = PBXGroup;
+			children = (
+				073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */,
+				07C8D684213BFD2300C2D451 /* VectorTests-testOfstreamOperator.txt */,
+				070BBC6620D42E9E008DDBDE /* BigMatrix.csv */,
+				07C8D682213BF9B700C2D451 /* BigVector.csv */,
+				070BBC6A20D43C15008DDBDE /* SmallMatrix.csv */,
+			);
+			path = containers;
+			sourceTree = "<group>";
+		};
+		072AB5B320D598B6009BAB93 /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				07C653B92124990C006F0CC3 /* eigenvalues */,
+				072AB5B420D598C4009BAB93 /* factorization */,
+			);
+			path = algorithms;
+			sourceTree = "<group>";
+		};
+		072AB5B420D598C4009BAB93 /* factorization */ = {
+			isa = PBXGroup;
+			children = (
+				072AB5B520D598DE009BAB93 /* LUTests.mm */,
+			);
+			path = factorization;
+			sourceTree = "<group>";
+		};
+		073194BE2135EF9F0018BF25 /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				073194BF2135EFAF0018BF25 /* eigenvalues */,
+			);
+			path = algorithms;
+			sourceTree = "<group>";
+		};
+		073194BF2135EFAF0018BF25 /* eigenvalues */ = {
+			isa = PBXGroup;
+			children = (
+				073194C02135F0210018BF25 /* Matrix-QRPerformance.csv */,
+			);
+			path = eigenvalues;
+			sourceTree = "<group>";
+		};
+		073199AF20D660B8003FED85 /* equations */ = {
+			isa = PBXGroup;
+			children = (
+				073199B220D660D2003FED85 /* differential */,
+				073199B020D660C1003FED85 /* systems */,
+			);
+			path = equations;
+			sourceTree = "<group>";
+		};
+		073199B020D660C1003FED85 /* systems */ = {
+			isa = PBXGroup;
+			children = (
+				073199B420D6612D003FED85 /* linear.hpp */,
+			);
+			path = systems;
+			sourceTree = "<group>";
+		};
+		073199B220D660D2003FED85 /* differential */ = {
+			isa = PBXGroup;
+			children = (
+				073199B320D660DD003FED85 /* partial */,
+			);
+			path = differential;
+			sourceTree = "<group>";
+		};
+		073199B320D660DD003FED85 /* partial */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = partial;
+			sourceTree = "<group>";
+		};
+		077949C320D506D200A8347E /* algorithms */ = {
+			isa = PBXGroup;
+			children = (
+				07C1B099210F8EA700EB8A9B /* algorithms.hpp */,
+				07890FBC20D6CC1500784F5C /* eigenvalues */,
+				077949C420D5083D00A8347E /* factorization */,
+				076B0ABC212F4C8200DE9A10 /* find.hpp */,
+			);
+			path = algorithms;
+			sourceTree = "<group>";
+		};
+		077949C420D5083D00A8347E /* factorization */ = {
+			isa = PBXGroup;
+			children = (
+				077949C620D5088200A8347E /* lu.hpp */,
+			);
+			path = factorization;
+			sourceTree = "<group>";
+		};
+		07890FBC20D6CC1500784F5C /* eigenvalues */ = {
+			isa = PBXGroup;
+			children = (
+				07890FBD20D6CC3600784F5C /* qr.hpp */,
+			);
+			path = eigenvalues;
+			sourceTree = "<group>";
+		};
+		07A351BC20C5D5C800DC2DC2 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				07A351BD20C5D5C800DC2DC2 /* MyOpenGL.cpp */,
+				07A351BE20C5D5C800DC2DC2 /* MyOpenGL.h */,
+			);
+			path = graphics;
+			sourceTree = "<group>";
+		};
+		07A351BF20C5D5C800DC2DC2 /* math */ = {
+			isa = PBXGroup;
+			children = (
+				073199AF20D660B8003FED85 /* equations */,
+				077949C320D506D200A8347E /* algorithms */,
+				07A351C820C5D7FE00DC2DC2 /* differential_equations */,
+				07A351C720C5D7E200DC2DC2 /* containers */,
+				07890FBB20D6CA6600784F5C /* containers.hpp */,
+				07890FBE20D6D84D00784F5C /* math.hpp */,
+			);
+			path = math;
+			sourceTree = "<group>";
+		};
+		07A351C720C5D7E200DC2DC2 /* containers */ = {
+			isa = PBXGroup;
+			children = (
+				07A351C120C5D5C800DC2DC2 /* vector.hpp */,
+				07A351CA20C5D92400DC2DC2 /* matrix.hpp */,
+			);
+			path = containers;
+			sourceTree = "<group>";
+		};
+		07A351C820C5D7FE00DC2DC2 /* differential_equations */ = {
+			isa = PBXGroup;
+			children = (
+				07A351C020C5D5C800DC2DC2 /* SolveEDP.h */,
+				07A351C320C5D5C800DC2DC2 /* SolveEDP.cpp */,
+			);
+			path = differential_equations;
+			sourceTree = "<group>";
+		};
+		07B57FC720CED3D0001DDC78 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				070BBC6320D42E2A008DDBDE /* data */,
+				07B57FCE20CED3F8001DDC78 /* math */,
+				07B57FCA20CED3D0001DDC78 /* Info.plist */,
+				070BBC6720D43252008DDBDE /* TestsTools.mm */,
+				070BBC6920D4328E008DDBDE /* TestsTools.h */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		07B57FCE20CED3F8001DDC78 /* math */ = {
+			isa = PBXGroup;
+			children = (
+				072AB5B320D598B6009BAB93 /* algorithms */,
+				07B57FCF20CED400001DDC78 /* containers */,
+				07CD429821284C030096693E /* MathTests.mm */,
+			);
+			path = math;
+			sourceTree = "<group>";
+		};
+		07B57FCF20CED400001DDC78 /* containers */ = {
+			isa = PBXGroup;
+			children = (
+				070BBC6C20D43E82008DDBDE /* MatrixPerformance.mm */,
+				07A1C38220CF18DE0070E1E8 /* MatrixTests.mm */,
+				070BBC6E20D43E8F008DDBDE /* VectorPerformance.mm */,
+				07D8C2FB20CED49A00F194F3 /* VectorTests.mm */,
+			);
+			path = containers;
+			sourceTree = "<group>";
+		};
+		07C653B92124990C006F0CC3 /* eigenvalues */ = {
+			isa = PBXGroup;
+			children = (
+				07C653BA2124993C006F0CC3 /* QRTests.mm */,
+				073194C42135F0980018BF25 /* QRPerformance.mm */,
+			);
+			path = eigenvalues;
+			sourceTree = "<group>";
+		};
+		07DA13391559113E00FCF6F8 = {
+			isa = PBXGroup;
+			children = (
+				0733CF321F24831800C4F677 /* README.md */,
+				0713449C20D44CB80048FC79 /* CMakeLists.txt */,
+				0713449D20D44CB80048FC79 /* LICENSE */,
+				0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */,
+				07B3890F20CC2AEA009910B6 /* .gitignore */,
+				07B3891020CC2AEB009910B6 /* .gitlab-ci.yml */,
+				072D9D5A21F4DDB7000FBFB6 /* .travis.yml */,
+				07DA13471559113E00FCF6F8 /* computational-physics */,
+				07B57FC720CED3D0001DDC78 /* Tests */,
+				07DA13551559116000FCF6F8 /* Frameworks */,
+				07DA13451559113E00FCF6F8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		07DA13451559113E00FCF6F8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				07DA13441559113E00FCF6F8 /* ComputationalPhysics */,
+				07B57FC620CED3D0001DDC78 /* Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		07DA13471559113E00FCF6F8 /* computational-physics */ = {
+			isa = PBXGroup;
+			children = (
+				07A351BC20C5D5C800DC2DC2 /* graphics */,
+				07A351BF20C5D5C800DC2DC2 /* math */,
+				07DA13481559113E00FCF6F8 /* main.cpp */,
+			);
+			path = "computational-physics";
+			sourceTree = "<group>";
+		};
+		07DA13551559116000FCF6F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				07DA13531559115A00FCF6F8 /* OpenGL.framework */,
+				07DA13511559115100FCF6F8 /* GLUT.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		07B57FC520CED3D0001DDC78 /* Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07B57FCB20CED3D0001DDC78 /* Build configuration list for PBXNativeTarget "Tests" */;
+			buildPhases = (
+				07B57FC220CED3D0001DDC78 /* Sources */,
+				07B57FC320CED3D0001DDC78 /* Frameworks */,
+				07B57FC420CED3D0001DDC78 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tests;
+			productName = Tests;
+			productReference = 07B57FC620CED3D0001DDC78 /* Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		07DA13431559113E00FCF6F8 /* ComputationalPhysics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 07DA134E1559113E00FCF6F8 /* Build configuration list for PBXNativeTarget "ComputationalPhysics" */;
+			buildPhases = (
+				07DA13401559113E00FCF6F8 /* Sources */,
+				07DA13411559113E00FCF6F8 /* Frameworks */,
+				07DA13421559113E00FCF6F8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ComputationalPhysics;
+			productName = "Vibration Normal Modes 2D";
+			productReference = 07DA13441559113E00FCF6F8 /* ComputationalPhysics */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		07DA133B1559113E00FCF6F8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1000;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = cdalvaro;
+				TargetAttributes = {
+					07B57FC520CED3D0001DDC78 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+				};
+			};
+			buildConfigurationList = 07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "ComputationalPhysics" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 07DA13391559113E00FCF6F8;
+			productRefGroup = 07DA13451559113E00FCF6F8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				07DA13431559113E00FCF6F8 /* ComputationalPhysics */,
+				07B57FC520CED3D0001DDC78 /* Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		07B57FC420CED3D0001DDC78 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07C8D683213BF9B800C2D451 /* BigVector.csv in Resources */,
+				073194C12135F0210018BF25 /* Matrix-QRPerformance.csv in Resources */,
+				073DCF9B212C6F02004A901D /* MatrixTests-testOfstreamOperator.txt in Resources */,
+				070BBC6B20D43C15008DDBDE /* SmallMatrix.csv in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		07B57FC220CED3D0001DDC78 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07C653BB2124993C006F0CC3 /* QRTests.mm in Sources */,
+				072AB5B620D598DE009BAB93 /* LUTests.mm in Sources */,
+				070BBC6820D43252008DDBDE /* TestsTools.mm in Sources */,
+				070BBC6D20D43E82008DDBDE /* MatrixPerformance.mm in Sources */,
+				073194C52135F0980018BF25 /* QRPerformance.mm in Sources */,
+				07A1C38320CF18DE0070E1E8 /* MatrixTests.mm in Sources */,
+				070BBC6F20D43E8F008DDBDE /* VectorPerformance.mm in Sources */,
+				07D8C2FC20CED49A00F194F3 /* VectorTests.mm in Sources */,
+				07CD429921284C030096693E /* MathTests.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		07DA13401559113E00FCF6F8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				07A351C420C5D5C800DC2DC2 /* MyOpenGL.cpp in Sources */,
+				07DA13491559113E00FCF6F8 /* main.cpp in Sources */,
+				07A351C620C5D5C800DC2DC2 /* SolveEDP.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		07B57FCC20CED3D0001DDC78 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cdalvaro.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		07B57FCD20CED3D0001DDC78 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.cdalvaro.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		07DA134C1559113E00FCF6F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					GL_SILENCE_DEPRECATION,
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		07DA134D1559113E00FCF6F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = GL_SILENCE_DEPRECATION;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		07DA134F1559113E00FCF6F8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		07DA13501559113E00FCF6F8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		07B57FCB20CED3D0001DDC78 /* Build configuration list for PBXNativeTarget "Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07B57FCC20CED3D0001DDC78 /* Debug */,
+				07B57FCD20CED3D0001DDC78 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07DA133E1559113E00FCF6F8 /* Build configuration list for PBXProject "ComputationalPhysics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07DA134C1559113E00FCF6F8 /* Debug */,
+				07DA134D1559113E00FCF6F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		07DA134E1559113E00FCF6F8 /* Build configuration list for PBXNativeTarget "ComputationalPhysics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				07DA134F1559113E00FCF6F8 /* Debug */,
+				07DA13501559113E00FCF6F8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 07DA133B1559113E00FCF6F8 /* Project object */;
+}
