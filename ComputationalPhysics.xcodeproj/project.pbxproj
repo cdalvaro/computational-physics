@@ -49,13 +49,13 @@
 		0713449C20D44CB80048FC79 /* CMakeLists.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CMakeLists.txt; sourceTree = "<group>"; };
 		0713449D20D44CB80048FC79 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		072AB5B520D598DE009BAB93 /* LUTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = LUTests.mm; sourceTree = "<group>"; };
+		072D9D5A21F4DDB7000FBFB6 /* .travis.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .travis.yml; sourceTree = "<group>"; };
 		0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ProjectLogo.gif; sourceTree = "<group>"; };
 		073194C02135F0210018BF25 /* Matrix-QRPerformance.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Matrix-QRPerformance.csv"; sourceTree = "<group>"; };
 		073194C42135F0980018BF25 /* QRPerformance.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = QRPerformance.mm; sourceTree = "<group>"; };
 		073199B420D6612D003FED85 /* linear.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = linear.hpp; sourceTree = "<group>"; };
 		0733CF321F24831800C4F677 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; lineEnding = 0; path = README.md; sourceTree = "<group>"; };
 		073DCF9A212C6F01004A901D /* MatrixTests-testOfstreamOperator.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "MatrixTests-testOfstreamOperator.txt"; sourceTree = "<group>"; };
-		074D555621F46B810071CD39 /* config.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = config.yml; sourceTree = "<group>"; };
 		076B0ABC212F4C8200DE9A10 /* find.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = find.hpp; sourceTree = "<group>"; };
 		077949C620D5088200A8347E /* lu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = lu.hpp; sourceTree = "<group>"; };
 		07890FBB20D6CA6600784F5C /* containers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = containers.hpp; sourceTree = "<group>"; };
@@ -198,14 +198,6 @@
 			path = partial;
 			sourceTree = "<group>";
 		};
-		074D555521F46B810071CD39 /* .circleci */ = {
-			isa = PBXGroup;
-			children = (
-				074D555621F46B810071CD39 /* config.yml */,
-			);
-			path = .circleci;
-			sourceTree = "<group>";
-		};
 		077949C320D506D200A8347E /* algorithms */ = {
 			isa = PBXGroup;
 			children = (
@@ -318,13 +310,13 @@
 		07DA13391559113E00FCF6F8 = {
 			isa = PBXGroup;
 			children = (
+				072D9D5A21F4DDB7000FBFB6 /* .travis.yml */,
 				0733CF321F24831800C4F677 /* README.md */,
 				0713449C20D44CB80048FC79 /* CMakeLists.txt */,
 				0713449D20D44CB80048FC79 /* LICENSE */,
 				0730698D1CDFE9F30000BA47 /* ProjectLogo.gif */,
 				07B3890F20CC2AEA009910B6 /* .gitignore */,
 				07B3891020CC2AEB009910B6 /* .gitlab-ci.yml */,
-				074D555521F46B810071CD39 /* .circleci */,
 				07DA13471559113E00FCF6F8 /* computational-physics */,
 				07B57FC720CED3D0001DDC78 /* Tests */,
 				07DA13551559116000FCF6F8 /* Frameworks */,
