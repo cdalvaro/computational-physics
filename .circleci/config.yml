@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    macos:
+      xcode: "10.0.0"
+    steps:
+      - checkout
+      - run:
+          name: Test Application
+          command: xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug
+      - run:
+          name: Build Application
+          command: xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release
+      - run:
+          name: Archive Application
+          command: xcodebuild archive -archivePath build/ComputationalPhysics -scheme 'Computational Physics' -configuration Release
+      - store_artifacts:
+          # store this build output. Read more: https://circleci.com/docs/2.0/artifacts/
+          path: build/ComputationalPhysics.xcarchive
+          destination: artifacts
