@@ -397,6 +397,19 @@ using namespace cda::math::containers;
     XCTAssertEqual(vector1.SumAllEments(), 55, "SumAllElments OK");
 }
 
+- (void)testFindMethod {
+    const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 4, 9, 10});
+    
+    auto it_value_4 = vector.Find(4);
+    XCTAssertEqual(*it_value_4, 4, "Value 4 has been found");
+    
+    auto it_first_value_4 = vector.begin() + 3;
+    XCTAssertEqual(it_value_4, it_first_value_4, "Found value 4 is the firstone");
+    
+    auto it_value_12 = vector.Find(12);
+    XCTAssertEqual(it_value_12, vector.end(), "Value 12 is not present");
+}
+
 - (void)testMaximumAndMinimumElements {
     const Vector<double> vector({
          1.134,   0.001,   2.523,  -0.231,     0.321, -312353.123,
