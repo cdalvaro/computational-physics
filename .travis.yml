@@ -10,10 +10,10 @@ matrix:
 addons:
   apt:
     packages:
-      - cmake
-      - gcc
-      - g++
-      - freeglut3-dev
+    - cmake
+    - gcc
+    - g++
+    - freeglut3-dev
     update: true
 
 stages:
