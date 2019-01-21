@@ -24,13 +24,13 @@ jobs:
   include:
     - stage: "Build"
       name: "Build macOS"
-      if: os = osx
+      os = osx
       script: xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
     - stage: "Build"
       name: "Build Xenial"
-      if: os = xenial
+      os = xenial
       script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make
-    - stage: "Tests"
+    - stage: "Test"
       name: "Unit Tests macOS"
-      if: os = osx
+      os = osx
       script: xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
