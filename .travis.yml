@@ -1,7 +1,20 @@
-os: osx
-osx_image: xcode10.1
-xcode_project: ComputationalPhysics.xcodeproj
-xcode_scheme: Computational Physics
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+    - os: osx
+      osx_image: xcode10.1
+      xcode_project: ComputationalPhysics.xcodeproj
+      xcode_scheme: Computational Physics
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - gcc
+      - g++
+      - freeglut3-dev
+    update: true
 
 stages:
   - Build
@@ -10,8 +23,14 @@ stages:
 jobs:
   include:
     - stage: "Build"
-      name: "Build app"
+      name: "Build macOS"
+      if: os = osx
       script: xcodebuild clean build -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Release | xcpretty -f `xcpretty-travis-formatter`
+    - stage: "Build"
+      name: "Build Xenial"
+      if: os = xenial
+      script: mkdir build && cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make
     - stage: "Tests"
-      name: "Unit Tests"
+      name: "Unit Tests macOS"
+      if: os = osx
       script: xcodebuild test -project ComputationalPhysics.xcodeproj -scheme 'Computational Physics' -configuration Debug -enableCodeCoverage YES | xcpretty --test --tap --report html
