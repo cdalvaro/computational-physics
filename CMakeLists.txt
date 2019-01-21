@@ -1,8 +1,9 @@
-cmake_minimum_required( VERSION 3.9.0 )
+cmake_minimum_required( VERSION 3.5 )
 project( ComputationalPhysics )
 
-find_package( OpenGL )
-find_package( GLUT )
+find_package( OpenGL REQUIRED )
+find_package( GLUT REQUIRED )
+include_directories( ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
 
 set( CMAKE_CXX_STANDARD 17 )
 
@@ -16,6 +17,7 @@ add_executable( ${EXECUTABLE} ${SOURCE_FILES} )
 
 target_link_libraries(
     ${EXECUTABLE}
-    ${OPENGL_gl_LIBRARY}
-    ${GLUT_LIBRARIES} )
-
+    ${OPENGL_LIBRARIES}
+    ${GLUT_LIBRARIES}
+    pthread
+)
