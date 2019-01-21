@@ -1182,8 +1182,16 @@ Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, i
         bcY |= BCT_f;
     }
     
-    mx.SetRow(0, eigenVAL_VEC(x, modeX, bcX, opt));
-    my.SetColumn(0, eigenVAL_VEC(y, modeY, bcY, opt));
+    std::list<std::thread> workers;
+    workers.emplace_back([&mx, &x, &modeX, &bcX, &opt, this]() {
+        mx.SetRow(0, eigenVAL_VEC(x, modeX, bcX, opt));
+    });
+    workers.emplace_back([&my, &y, &modeY, &bcY, &opt, this]() {
+        my.SetColumn(0, eigenVAL_VEC(y, modeY, bcY, opt));
+    });
+    for (auto &&worker : workers) {
+        worker.join();
+    }
     
     return my*mx;
 }
