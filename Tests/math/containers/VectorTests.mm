@@ -277,14 +277,14 @@ using namespace cda::math::containers;
     XCTAssert(!vector1.IsEmpty(), "Random vector is not empty");
     XCTAssert(!vector1.IsNull(), "Random vector is not null");
     XCTAssert(vector1.max_element() < 4, "The maximum element is smaller than 1");
-    XCTAssert(vector1.MinimumElement() >= -3, "The minimum element is greater or equal than 0");
+    XCTAssert(vector1.min_element() >= -3, "The minimum element is greater or equal than 0");
     
     Vector<double> vector2(10);
     vector2.Random();
     XCTAssert(!vector2.IsEmpty(), "Random vector is not empty");
     XCTAssert(!vector2.IsNull(), "Random vector is not null");
     XCTAssert(vector2.max_element() < 1, "The maximum element is smaller than 1");
-    XCTAssert(vector2.MinimumElement() >= 0, "The minimum element is greater or equal than 0");
+    XCTAssert(vector2.min_element() >= 0, "The minimum element is greater or equal than 0");
 }
 
 - (void)testHasDuplicate {
@@ -423,7 +423,7 @@ using namespace cda::math::containers;
     XCTAssertEqual(vector.abs_max_element(), 523251.316, "Absolute maximum element OK");
     XCTAssertEqual(vector.abs_max_element_with_sign(), 523251.316, "Absolute maximum element with sign OK");
     
-    XCTAssertEqual(vector.MinimumElement(), -312353.123, "MinimumElement OK");
+    XCTAssertEqual(vector.min_element(), -312353.123, "Minimum element OK");
     XCTAssertEqual(vector.AbsoluteMinimumElement(), 0.001, "AbsoluteMinimumElement OK");
     XCTAssertEqual(vector.AbsoluteMinimumElementWithSign(), 0.001, "AbsoluteMinimumElementWithSign OK");
 }

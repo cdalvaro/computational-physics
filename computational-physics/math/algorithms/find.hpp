@@ -57,7 +57,7 @@ namespace cda {
                 }
                 
                 template <typename T>
-                T MinimumElement(const T* const begin, const T* const end) {
+                T min_element(const T* const begin, const T* const end) {
                     auto min_element = *begin;
                     for (auto it = std::next(begin); it != end; ++it) {
                         if (*it < min_element) {
