@@ -277,7 +277,7 @@ namespace cda {
                     return _sum;
                 }
                 
-                const ValueType &At(const size_t &element) const {
+                const ValueType &at(const size_t &element) const {
                     if (element >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
@@ -288,7 +288,7 @@ namespace cda {
                     return v[element];
                 }
                 
-                ValueType &At(const size_t &element) {
+                ValueType &at(const size_t &element) {
                     if (element >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }

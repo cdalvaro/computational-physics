@@ -1004,15 +1004,15 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    XCTAssertEqual(matrix1.At(0, 0), 21, "Matrix At for first element OK");
-    XCTAssertEqual(matrix1.At(3, 3), 15, "Matrix At for last element OK");
-    XCTAssertEqual(matrix1.At(0, 3), 3, "Matrix At for last element of first row OK");
-    XCTAssertEqual(matrix1.At(3, 0), 105, "Matrix At for first element of last row OK");
+    XCTAssertEqual(matrix1.at(0, 0), 21, "Matrix at for first element OK");
+    XCTAssertEqual(matrix1.at(3, 3), 15, "Matrix at for last element OK");
+    XCTAssertEqual(matrix1.at(0, 3), 3, "Matrix at for last element of first row OK");
+    XCTAssertEqual(matrix1.at(3, 0), 105, "Matrix at for first element of last row OK");
     
-    XCTAssertThrows(matrix1.At(-1, -1), "Matrix At out of range for negative indexes");
-    XCTAssertThrows(matrix1.At(4, 4), "Matrix At out of range for indexes greater than matrix dimensions");
-    XCTAssertThrows(matrix1.At(0, 4), "Matrix At out of range for index that exceeds the limits of the row");
-    XCTAssertThrows(matrix1.At(4, 0), "Matrix At out of range for index that exceeds the limits of the column");
+    XCTAssertThrows(matrix1.at(-1, -1), "Matrix at out of range for negative indexes");
+    XCTAssertThrows(matrix1.at(4, 4), "Matrix at out of range for indexes greater than matrix dimensions");
+    XCTAssertThrows(matrix1.at(0, 4), "Matrix at out of range for index that exceeds the limits of the row");
+    XCTAssertThrows(matrix1.at(4, 0), "Matrix at out of range for index that exceeds the limits of the column");
     
     Matrix<double> matrix2({
         { 21, 18, 15,  3},
@@ -1021,22 +1021,22 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    matrix2.At(0, 0) = 12;
-    XCTAssertEqual(matrix2.At(0, 0), 12, "Matrix At for setting the first element OK");
+    matrix2.at(0, 0) = 12;
+    XCTAssertEqual(matrix2.at(0, 0), 12, "Matrix at for setting the first element OK");
     
-    matrix2.At(3, 3) = 51;
-    XCTAssertEqual(matrix2.At(3, 3), 51, "Matrix At for setting the last element OK");
+    matrix2.at(3, 3) = 51;
+    XCTAssertEqual(matrix2.at(3, 3), 51, "Matrix at for setting the last element OK");
     
-    matrix2.At(0, 3) = -3;
-    XCTAssertEqual(matrix2.At(0, 3), -3, "Matrix At for setting the last element of first row OK");
+    matrix2.at(0, 3) = -3;
+    XCTAssertEqual(matrix2.at(0, 3), -3, "Matrix at for setting the last element of first row OK");
     
-    matrix2.At(3, 0) = 501;
-    XCTAssertEqual(matrix2.At(3, 0), 501, "Matrix At for setting the first element of last row OK");
+    matrix2.at(3, 0) = 501;
+    XCTAssertEqual(matrix2.at(3, 0), 501, "Matrix at for setting the first element of last row OK");
     
-    XCTAssertThrows(matrix2.At(-1, -1) = 21, "Matrix At out of range for setting value at negative indexes");
-    XCTAssertThrows(matrix2.At(4, 4) = 15, "Matrix At out of range for setting value at indexes greater than matrix dimensions");
-    XCTAssertThrows(matrix2.At(0, 4) = 3, "Matrix At out of range for setting value at index that exceeds the limits of the row");
-    XCTAssertThrows(matrix2.At(4, 0) = 105, "Matrix At out of range for setting value at index that exceeds the limits of the column");
+    XCTAssertThrows(matrix2.at(-1, -1) = 21, "Matrix at out of range for setting value at negative indexes");
+    XCTAssertThrows(matrix2.at(4, 4) = 15, "Matrix at out of range for setting value at indexes greater than matrix dimensions");
+    XCTAssertThrows(matrix2.at(0, 4) = 3, "Matrix at out of range for setting value at index that exceeds the limits of the row");
+    XCTAssertThrows(matrix2.at(4, 0) = 105, "Matrix at out of range for setting value at index that exceeds the limits of the column");
 }
 
 - (void)testIsNullAndIsEmptyMethods {

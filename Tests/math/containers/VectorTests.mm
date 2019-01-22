@@ -138,14 +138,14 @@ using namespace cda::math::containers;
     const Vector<double> const_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     XCTAssertEqual(const_vector[2], 3, "Const accessor for reading OK");
-    XCTAssertEqual(const_vector.At(5), 6, "Const At accessor for reading OK");
-    XCTAssertThrows(const_vector.At(11), "Index out of bounds exception when accessing for reading OK");
+    XCTAssertEqual(const_vector.at(5), 6, "Const at accessor for reading OK");
+    XCTAssertThrows(const_vector.at(11), "Index out of bounds exception when accessing for reading OK");
     
     Vector<double> var_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     XCTAssertEqual(var_vector[2], 3, "Const accessor for reading OK");
     XCTAssertEqual((var_vector[6] = 21), 21, "Var accesor after setting OK");
-    XCTAssertEqual((var_vector.At(5) = 34), 34, "Var At accessor after setting OK");
-    XCTAssertThrows(var_vector.At(11), "Index out of bounds exception when accessing for reading OK");
+    XCTAssertEqual((var_vector.at(5) = 34), 34, "Var at accessor after setting OK");
+    XCTAssertThrows(var_vector.at(11), "Index out of bounds exception when accessing for reading OK");
 }
 
 - (void)testGet {

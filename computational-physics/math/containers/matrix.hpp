@@ -518,7 +518,7 @@ namespace cda {
                     return algorithms::find::abs_min_element_with_sign(begin(), end());
                 }
                 
-                const ValueType &At(const size_t &row, const size_t &column) const {
+                const ValueType &at(const size_t &row, const size_t &column) const {
                     if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
                     }
@@ -529,7 +529,7 @@ namespace cda {
                     return &a[row * m];
                 }
                 
-                ValueType &At(const size_t &row, const size_t &column) {
+                ValueType &at(const size_t &row, const size_t &column) {
                     if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
                     }
