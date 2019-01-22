@@ -979,7 +979,7 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix.abs_max_element_with_sign(), 523251.316, "Absolute maximum element with sign OK");
     
     XCTAssertEqual(matrix.min_element(), -312353.123, "Minimum element OK");
-    XCTAssertEqual(matrix.AbsoluteMinimumElement(), 0.001, "AbsoluteMinimumElement OK");
+    XCTAssertEqual(matrix.abs_min_element(), 0.001, "Absolute minimum element OK");
     XCTAssertEqual(matrix.AbsoluteMinimumElementWithSign(), 0.001, "AbsoluteMinimumElementWithSign OK");
 }
     

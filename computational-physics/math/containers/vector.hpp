@@ -261,8 +261,8 @@ namespace cda {
                     return algorithms::find::min_element(begin(), end());
                 }
                 
-                ValueType AbsoluteMinimumElement() const {
-                    return algorithms::find::AbsoluteMinimumElement(begin(), end());
+                ValueType abs_min_element() const {
+                    return algorithms::find::abs_min_element(begin(), end());
                 }
                 
                 ValueType AbsoluteMinimumElementWithSign() const {

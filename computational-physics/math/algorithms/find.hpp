@@ -68,7 +68,7 @@ namespace cda {
                 }
                 
                 template <typename T>
-                T AbsoluteMinimumElement(const T* const begin, const T* const end) {
+                T abs_min_element(const T* const begin, const T* const end) {
                     T abs_it, min_element = std::abs(*begin);
                     for (auto it = std::next(begin); it != end; ++it) {
                         if ((abs_it = std::abs(*it)) < min_element) {
