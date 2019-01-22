@@ -1,7 +1,8 @@
+laguage: cpp
+
 matrix:
   include:
-    - os: linux
-      dist: xenial
+    - dist: xenial
     - os: osx
       osx_image: xcode10.1
       xcode_project: ComputationalPhysics.xcodeproj
