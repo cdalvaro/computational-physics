@@ -420,7 +420,7 @@ using namespace cda::math::containers;
     });
     
     XCTAssertEqual(vector.max_element(), 523251.316, "Maximum element OK");
-    XCTAssertEqual(vector.AbsoluteMaximumElement(), 523251.316, "AbsoluteMaximumElement OK");
+    XCTAssertEqual(vector.abs_max_element(), 523251.316, "Absolute maximum element OK");
     XCTAssertEqual(vector.AbsoluteMaximumElementWithSign(), 523251.316, "AbsoluteMaximumElementWithSign OK");
     
     XCTAssertEqual(vector.MinimumElement(), -312353.123, "MinimumElement OK");
