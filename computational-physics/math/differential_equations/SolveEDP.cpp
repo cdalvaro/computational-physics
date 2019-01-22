@@ -66,7 +66,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         }
         
         sol = y;
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     if ((opt& BCL_df) == BCL_df && (opt& BCR_df) == BCR_df)      //  Ambas condiciones de contorno en la derivada
@@ -128,7 +128,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         }
         
         sol = y;
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     if ((opt& BCL_df) == BCL_df && (opt& BCR_f) == BCR_f)       //  Condición de extremo izquierdo en la derivada y extremo derecho en la función
@@ -160,7 +160,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         }
         
         sol = y;
-        sol.Set(0, solV);
+        sol.set(0, solV);
     }
     
     return sol;
@@ -778,7 +778,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = y;
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     if ((bc& BCL_f) != 0 && (bc& BCR_df) != 0) {
@@ -806,7 +806,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = y;
-        y.Set(1, solV);
+        y.set(1, solV);
     }
     
     if ((bc& BCL_df) != 0 && (bc& BCR_f) != 0) {
@@ -834,7 +834,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
         
         sol = y;
-        sol.Set(0, solV);
+        sol.set(0, solV);
     }
     
     if ((bc& BCL_df) != 0 && (bc& BCR_df) != 0) {
@@ -1129,9 +1129,9 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     }
     
     if (bc & BCL_df || bc & BCB_df) {
-        sol.Set(0, solV);
+        sol.set(0, solV);
     } else {
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     std::cout << "Terminado.\n\n";

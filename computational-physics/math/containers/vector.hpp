@@ -195,7 +195,7 @@ namespace cda {
                  
                  @return A vector with size \p elements and the values starting from \p first_element
                  */
-                Vector<ValueType> Get(const size_t &first_element, const size_t &elements) const {
+                Vector<ValueType> get(const size_t &first_element, const size_t &elements) const {
                     if (n - first_element < elements) {
                         throw std::out_of_range("There are not enough elements inside the vector");
                     }
@@ -213,8 +213,8 @@ namespace cda {
                  
                  @return A vector with all values starting from \p first_element
                  */
-                Vector<ValueType> Get(const size_t &first_element) const {
-                    return Get(first_element, n - first_element);
+                Vector<ValueType> get(const size_t &first_element) const {
+                    return get(first_element, n - first_element);
                 }
                 
                 /**
@@ -224,7 +224,7 @@ namespace cda {
                  @param vector The vector with the elements to be copied
                  @param elements The number of elements to copy
                  */
-                void Set(const size_t &first_element, const Vector<ValueType> &vector, const size_t &elements) {
+                void set(const size_t &first_element, const Vector<ValueType> &vector, const size_t &elements) {
                     if (first_element + elements > n || elements > vector.n) {
                         throw std::out_of_range("Out of bounds");
                     }
@@ -237,8 +237,8 @@ namespace cda {
                  @param first_element The position of the first element to be copied
                  @param vector The vector to copy
                  */
-                void Set(const size_t &first_element, const Vector<ValueType> &vector) {
-                    Set(first_element, vector, vector.n);
+                void set(const size_t &first_element, const Vector<ValueType> &vector) {
+                    set(first_element, vector, vector.n);
                 }
                 
                 size_t Size() const {

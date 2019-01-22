@@ -151,13 +151,13 @@ using namespace cda::math::containers;
 - (void)testGet {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     const Vector<double> expected1({5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector.Get(4), expected1, "Get without length OK");
+    XCTAssertEqual(vector.get(4), expected1, "get without length OK");
     
     const Vector<double> expected2({2, 3, 4, 5, 6, 7, 8, 9});
-    XCTAssertEqual(vector.Get(1, 8), expected2, "Get with length OK");
+    XCTAssertEqual(vector.get(1, 8), expected2, "get with length OK");
     
-    XCTAssertThrows(vector.Get(0, 11), "Index out of bounds");
-    XCTAssertThrows(vector.Get(3, 8), "Index out of bounds");
+    XCTAssertThrows(vector.get(0, 11), "Index out of bounds");
+    XCTAssertThrows(vector.get(3, 8), "Index out of bounds");
 }
 
 - (void)testSet {
@@ -165,18 +165,18 @@ using namespace cda::math::containers;
     const Vector<double> mod_vector({2, 4, 6, 8});
     
     auto vector1 = original_vector;
-    vector1.Set(3, mod_vector);
+    vector1.set(3, mod_vector);
     
     const Vector<double> expected1({1, 2, 3, 2, 4, 6, 8, 8, 9, 10});
     XCTAssertEqual(vector1, expected1, "Set without length OK");
     
     auto vector2 = original_vector;
-    vector2.Set(6, mod_vector, 3);
+    vector2.set(6, mod_vector, 3);
     
     const Vector<double> expected2({1, 2, 3, 4, 5, 6, 2, 4, 6, 10});
     XCTAssertEqual(vector2, expected2, "Set with length OK");
     
-    XCTAssertThrows(vector2.Set(8, vector2, 4), "Index out of bounds");
+    XCTAssertThrows(vector2.set(8, vector2, 4), "Index out of bounds");
 }
 
 - (void)testAssign {
