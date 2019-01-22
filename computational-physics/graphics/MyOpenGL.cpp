@@ -341,7 +341,7 @@ void OpenGL::drawSolution2D()
         glBegin(GL_LINE_STRIP);
     }
     
-    for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+    for (int i=0; i<OpenGL_Plot._vX.size(); i++) {
         ColorMap::setColor(OpenGL_Plot._vY[i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
         glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
         glVertex2f((OpenGL_Plot._vX[i] - adjX)*OpenGL_Plot._zoomX, (OpenGL_Plot._vY[i] - adjY)*OpenGL_Plot._zoomY);
@@ -444,9 +444,9 @@ void OpenGL::drawSolution3D()
     //adjZ = OpenGL_Plot._up_down - OpenGL_Plot._cZ;
     
     if ((OpenGL_Plot._options &Lines) != 0) {
-        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -454,9 +454,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
         
-        for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vX.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vY.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vY.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[j][i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[i] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[j][i] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[j] + adjY));
@@ -464,9 +464,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
     } else if ((OpenGL_Plot._options &Shading) != 0) {
-        for (int i=0; i<OpenGL_Plot._vY.Size()-1; i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size()-1; i++) {
             glBegin(GL_TRIANGLE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -475,10 +475,10 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
     } else if ((OpenGL_Plot._options &Points) != 0) {
-        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size(); i++) {
             glBegin(GL_POINTS);
             glPointSize(5.0f);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -486,9 +486,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
     } else {
-        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -496,9 +496,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
         
-        for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vX.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vY.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vY.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[j][i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[i] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[j][i] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[j] + adjY));
@@ -628,9 +628,9 @@ void OpenGL::handleKeyPress(unsigned char key, int x, int y)
             break;
             
         case 'p':
-            eyePosX = (float)(OpenGL_Plot._vX[OpenGL_Plot._vX.Size()-1]-OpenGL_Plot._vX[0])/2;
+            eyePosX = (float)(OpenGL_Plot._vX[OpenGL_Plot._vX.size()-1]-OpenGL_Plot._vX[0])/2;
             eyePosZ = 1.0f;
-            eyePosY = (float)(OpenGL_Plot._vY[OpenGL_Plot._vX.Size()-1]-OpenGL_Plot._vX[0])/2;
+            eyePosY = (float)(OpenGL_Plot._vY[OpenGL_Plot._vX.size()-1]-OpenGL_Plot._vX[0])/2;
             OpenGL_Plot._rotX = -35;
             OpenGL_Plot._rotY = -45;
             break;

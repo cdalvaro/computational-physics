@@ -51,7 +51,7 @@ using namespace cda::math::containers;
     
     const Vector<double> vector2;
     XCTAssert(vector2.IsEmpty(), "vector2 is empty");
-    XCTAssertEqual(vector2.Size(), 0, "The size of vector2 is 0");
+    XCTAssertEqual(vector2.size(), 0, "The size of vector2 is 0");
 }
 
 - (void)testIsNull {
@@ -77,14 +77,14 @@ using namespace cda::math::containers;
     
     // Constructor with size
     const Vector<double> vectorWithSize(10);
-    XCTAssertEqual(vectorWithSize.Size(), 10, "Constructor with size OK");
+    XCTAssertEqual(vectorWithSize.size(), 10, "Constructor with size OK");
     XCTAssert(!vectorWithSize.IsEmpty() && !vectorWithSize.IsNull(), "vectorWithSize is not empty and is not null");
     
     // Constructor with size filling elements
     Vector<double> vectorWithElementsFilled(10, 5);
-    XCTAssertEqual(vectorWithElementsFilled.Size(), 10, "Constructor with size filling elements has size OK");
+    XCTAssertEqual(vectorWithElementsFilled.size(), 10, "Constructor with size filling elements has size OK");
     XCTAssert(!vectorWithElementsFilled.IsEmpty() && !vectorWithElementsFilled.IsNull(), "vectorWithSize is not empty and is not null");
-    for (size_t i = 0; i < vectorWithElementsFilled.Size(); ++i) {
+    for (size_t i = 0; i < vectorWithElementsFilled.size(); ++i) {
         XCTAssertEqual(vectorWithElementsFilled[i], 5, "Element has been filled OK");
     }
     
@@ -101,7 +101,7 @@ using namespace cda::math::containers;
     // Constructor from array
     const double array[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     const Vector<double> vectorFromArray(array);
-    XCTAssertEqual(vectorFromArray.Size(), 10, "Constructor from array has right size");
+    XCTAssertEqual(vectorFromArray.size(), 10, "Constructor from array has right size");
     
     for (size_t i = 0; i < 10; ++i) {
         XCTAssertEqual(vectorFromArray[i], array[i], "Element has been copied OK");
@@ -213,10 +213,10 @@ using namespace cda::math::containers;
     
     // Increase size
     vector.resize(15, true);
-    XCTAssert(vector.Size() == 15, "Vector size has been increased successfully");
+    XCTAssert(vector.size() == 15, "Vector size has been increased successfully");
     
     Boolean newElementsFilled = true;
-    for (NSInteger i = 10; i < vector.Size(); ++i) {
+    for (NSInteger i = 10; i < vector.size(); ++i) {
         if (vector[i] != 0) {
             newElementsFilled = false;
             break;
@@ -227,16 +227,16 @@ using namespace cda::math::containers;
     
     // Resize to the same size
     auto previousVector(vector);
-    vector.resize(vector.Size());
+    vector.resize(vector.size());
     
     XCTAssert(previousVector == vector, "The vector has not changed");
     
     // Decrease size
     vector.resize(5);
-    XCTAssert(vector.Size() == 5, "Vector size has been decreased successfully");
+    XCTAssert(vector.size() == 5, "Vector size has been decreased successfully");
     
     Boolean previousElementsEqual = true;
-    for (NSInteger i = 0; i < vector.Size(); ++i) {
+    for (NSInteger i = 0; i < vector.size(); ++i) {
         if (vector[i] != previousVector[i]) {
             previousElementsEqual = false;
             break;

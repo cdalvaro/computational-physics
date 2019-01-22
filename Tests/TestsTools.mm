@@ -46,7 +46,7 @@
          withExpected: (cda::math::containers::Vector<double>) expected
          whitAccuracy: (double) accuracy {
     
-    if (compare.Size() != expected.Size()) {
+    if (compare.size() != expected.size()) {
         return NO;
     }
     

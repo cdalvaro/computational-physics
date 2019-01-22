@@ -35,12 +35,12 @@ const std::string EDPwarning = "\n[EDP::";
 
 Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, EDP_T err)
 {
-    int dim = x.Size();
+    int dim = x.size();
     Vector<EDP_T> sol(dim);
     EDP_T h = (x[dim-1] - x[0])/(EDP_T)(dim-1);
     EDP_T tI = x[0];
     
-    x.resize(x.Size());
+    x.resize(x.size());
     
     if ((bc& BCL_f) != 0 && (bc& BCR_f) != 0)        //  Ambas condiciones de contorno en la función
     {
@@ -490,7 +490,7 @@ Matrix<EDP_T> EDP::solvePOISSON_SBC(unsigned char sbc, Vector<EDP_T>& x, Vector<
 //  1 Dimensión
 Vector<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& cI, Vector<EDP_T>& cId)
 {
-    int n = (int)x.Size();
+    int n = (int)x.size();
     Vector<EDP_T> sol(n);
     EDP_T dx = (EDP_T)abs((EDP_T)(x[n-1] - x[0])/(n-1));
     
@@ -545,8 +545,8 @@ Vector<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T>& x, Vector<EDP_T>& 
 //  2 Dimensiones
 Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> &x, Vector<EDP_T> &y, Matrix<EDP_T> &cI, Matrix<EDP_T> &cId, Matrix<bool> &fixed)
 {
-    int n = (int)y.Size();
-    int m = (int)x.Size();
+    int n = (int)y.size();
+    int m = (int)x.size();
     Matrix<EDP_T> sol(n,m);
     EDP_T dx = (EDP_T)abs((EDP_T)(x[m-1] - x[0])/(m-1));
     EDP_T dy = (EDP_T)abs((EDP_T)(y[n-1] - y[0])/(n-1));
@@ -745,7 +745,7 @@ Matrix<EDP_T> EDP::solveWave(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &
 Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &y, Matrix<EDP_T> &cI, Matrix<EDP_T> &cId)
 {
     if (!initEDP)
-        fixedEDP = Matrix<bool>::Zero(y.Size(), x.Size());
+        fixedEDP = Matrix<bool>::Zero(y.size(), x.size());
     
     return solveWAVE(bc, 0, x, y, cI, cId, fixedEDP);
 }
@@ -755,7 +755,7 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &
 //  1 Dimensión
 Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y)
 {
-    int n = (int)x.Size();
+    int n = (int)x.size();
     Vector<EDP_T> sol(n);
     
     if ((bc& BCL_f) != 0 && (bc& BCR_f) != 0) {
@@ -880,8 +880,8 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, Vector<EDP_T>& x, Vector<EDP_T>& 
 //  2 Dimensiones
 Matrix<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& cI)
 {
-    int n = (int)y.Size();
-    int m = (int)x.Size();
+    int n = (int)y.size();
+    int m = (int)x.size();
     Matrix<EDP_T> sol(n,m);
     EDP_T dx = (EDP_T)abs((EDP_T)(x[m-1] - x[0])/(m-1));
     EDP_T dy = (EDP_T)abs((EDP_T)(y[n-1] - y[0])/(n-1));
@@ -963,7 +963,7 @@ Matrix<EDP_T> EDP::solveHEAT(unsigned char bc, Vector<EDP_T>& x, Vector<EDP_T>& 
 //  Calcula los autovalores y autovectores de dicha ecuación.
 Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, unsigned char opt)
 {
-    int dim = x.Size();
+    int dim = x.size();
     EDP_T h = (x[dim-1] - x[0])/(dim-1), length= x[dim-1]-x[0];
     Vector<EDP_T> sol = Vector<EDP_T>::Zero(dim), solV, eigVal;
     Matrix<EDP_T> A;
@@ -1146,8 +1146,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc)
 
 Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, int modeY, unsigned char bc, unsigned char opt)
 {
-    Matrix<EDP_T> mx(Matrix<EDP_T>::Zero(1, x.Size()));
-    Matrix<EDP_T> my(Matrix<EDP_T>::Zero(y.Size(), 1));
+    Matrix<EDP_T> mx(Matrix<EDP_T>::Zero(1, x.size()));
+    Matrix<EDP_T> my(Matrix<EDP_T>::Zero(y.size(), 1));
     
     unsigned char bcX = 0, bcY = 0;
     if (bc & BCL_df) {

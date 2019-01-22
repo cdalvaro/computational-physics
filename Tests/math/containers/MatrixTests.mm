@@ -39,7 +39,7 @@ using namespace cda::math::containers;
     XCTAssert(!matrix1.IsEmpty() && !matrix1.IsNull(), "matrix1 is not empty and is not null");
     XCTAssertEqual(matrix1.Rows(), 4, "The number of rows of matrix1 is OK");
     XCTAssertEqual(matrix1.Columns(), 4, "The number of columns of matrix1 is OK");
-    XCTAssertEqual(matrix1.Size(), 16, "The size of matrix1 is OK");
+    XCTAssertEqual(matrix1.size(), 16, "The size of matrix1 is OK");
     
     bool all_elements_are_one = true;
     for (auto it = matrix1.begin(); it != matrix1.end(); ++it) {
@@ -59,7 +59,7 @@ using namespace cda::math::containers;
     XCTAssert(!matrix2.IsEmpty() && !matrix2.IsNull(), "matrix2 is not empty and is not null");
     XCTAssertEqual(matrix2.Rows(), 4, "The number of rows of matrix2 is OK");
     XCTAssertEqual(matrix2.Columns(), 4, "The number of columns of matrix2 is OK");
-    XCTAssertEqual(matrix2.Size(), 16, "The size of matrix2 is OK");
+    XCTAssertEqual(matrix2.size(), 16, "The size of matrix2 is OK");
     
     XCTAssertThrows(Matrix<double>(2, 2, { 0,  1,  2 }), "The array of values has different size than the matrix");
     
@@ -72,7 +72,7 @@ using namespace cda::math::containers;
     XCTAssert(!matrix3.IsEmpty() && !matrix3.IsNull(), "matrix3 is not empty and is not null");
     XCTAssertEqual(matrix3.Rows(), 4, "The number of rows of matrix3 is OK");
     XCTAssertEqual(matrix3.Columns(), 4, "The number of columns of matrix3 is OK");
-    XCTAssertEqual(matrix3.Size(), 16, "The size of matrix3 is OK");
+    XCTAssertEqual(matrix3.size(), 16, "The size of matrix3 is OK");
     
     Matrix<double> matrix4(matrix3);
     XCTAssertEqual(matrix4, matrix3, "matrix3 and matrix4 are equal");

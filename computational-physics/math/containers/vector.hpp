@@ -241,7 +241,7 @@ namespace cda {
                     set(first_element, vector, vector.n);
                 }
                 
-                size_t Size() const {
+                size_t size() const {
                     return n;
                 }
                 
@@ -601,7 +601,7 @@ namespace cda {
 template <typename ValueType, typename T2>
 cda::math::containers::Vector<ValueType> operator*(const T2 &value, const cda::math::containers::Vector<ValueType> &vector) {
     
-    cda::math::containers::Vector<ValueType> new_vector(vector.Size());
+    cda::math::containers::Vector<ValueType> new_vector(vector.size());
     auto it_new = new_vector.begin();
     
     for (auto it = vector.begin(); it != vector.end(); ++it, ++it_new) {
@@ -630,9 +630,9 @@ void operator>>(std::istream &input,
         while (line_stream >> vector[element]) {
             ++element;
             
-            if (element >= vector.Size()) {
+            if (element >= vector.size()) {
                 initial_size *= 2;
-                vector.resize(vector.Size() + initial_size);
+                vector.resize(vector.size() + initial_size);
             }
             
             line_stream >> separator;

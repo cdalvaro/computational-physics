@@ -37,7 +37,7 @@ namespace cda {
                         
                         auto rows = system.Rows();
                         
-                        if (rows != b_terms.Size()) {
+                        if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the system matrix does not match the number of elements in the b terms vector.");
                         }
                         
@@ -73,7 +73,7 @@ namespace cda {
                         
                         const auto rows = system.Rows();
                         
-                        if (rows != b_terms.Size()) {
+                        if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the system matrix does not match the number of elements in the b terms vector.");
                         }
                         

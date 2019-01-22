@@ -111,7 +111,7 @@ const Matrix<double> test_matrix({
     
     const auto accuracy = 1E-5;
     
-    for (auto it = 0; it < eigenvalues.Size(); ++it) {
+    for (auto it = 0; it < eigenvalues.size(); ++it) {
         XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.At(it))
                                withExpected:expected_eigenvectors.GetRowAsVector(it)
                                whitAccuracy:accuracy],
@@ -138,7 +138,7 @@ const Matrix<double> test_matrix({
     
     const auto accuracy = 1E-5;
     
-    for (auto it = 0; it < eigenvalues.Size(); ++it) {
+    for (auto it = 0; it < eigenvalues.size(); ++it) {
         XCTAssert([TestsTools compareVector:eigenvectors.at(eigenvalues.At(it))
                                withExpected:expected_eigenvectors.GetRowAsVector(it)
                                whitAccuracy:accuracy],

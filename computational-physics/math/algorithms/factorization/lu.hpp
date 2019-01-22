@@ -47,7 +47,7 @@ namespace cda {
                     template <template<typename> class Vector>
                     Vector<ValueType> SolveLinearSystem(const Vector<ValueType> &b_terms) {
                         
-                        if (rows != b_terms.Size()) {
+                        if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the LU matrix does not match the number of elements in the b terms vector.");
                         }
                         

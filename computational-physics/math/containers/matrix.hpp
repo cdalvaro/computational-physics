@@ -32,7 +32,7 @@ namespace cda {
                 
                 typedef typename std::conditional<std::is_floating_point<T>::value, T, float>::type ValueTypeLU;
                 
-                size_t n, m, size;
+                size_t n, m, mat_size;
                 T *a, *it_end;
                 
                 void AllocateMemory(const size_t &size) {
@@ -54,45 +54,45 @@ namespace cda {
                 typedef T ValueType;
                 
                 Matrix(const size_t &rows = 0, const size_t &columns = 0) :
-                n(rows), m(columns), size(rows * columns),
+                n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
-                    AllocateMemory(size);
+                    AllocateMemory(mat_size);
                 }
                 
                 Matrix(const size_t &rows, const size_t &columns, const ValueType &value) :
-                n(rows), m(columns), size(rows * columns),
+                n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
-                    AllocateMemory(size);
+                    AllocateMemory(mat_size);
                     std::fill(this->begin(), this->end(), value);
                 }
                 
                 Matrix(const Matrix<ValueType> &matrix) :
-                n(matrix.n), m(matrix.m), size(matrix.size),
+                n(matrix.n), m(matrix.m), mat_size(matrix.mat_size),
                 a(nullptr), it_end(nullptr) {
-                    AllocateMemory(size);
+                    AllocateMemory(mat_size);
                     std::copy(matrix.begin(), matrix.end(), this->begin());
                 }
                 
                 template<typename ValueType2>
                 Matrix(const Matrix<ValueType2> &matrix) :
-                n(matrix.Rows()), m(matrix.Columns()), size(matrix.Size()),
+                n(matrix.Rows()), m(matrix.Columns()), mat_size(matrix.size()),
                 a(nullptr), it_end(nullptr) {
-                    AllocateMemory(size);
+                    AllocateMemory(mat_size);
                     std::copy(matrix.begin(), matrix.end(), this->begin());
                 }
                 
                 Matrix(Matrix<ValueType> &&matrix) :
-                n(matrix.n), m(matrix.m), size(matrix.size),
+                n(matrix.n), m(matrix.m), mat_size(matrix.mat_size),
                 a(matrix.a), it_end(matrix.it_end) {
-                    matrix.n = matrix.m = matrix.size = 0;
+                    matrix.n = matrix.m = matrix.mat_size = 0;
                     matrix.a = matrix.it_end = nullptr;
                 }
                 
                 template <size_t size>
                 Matrix(const size_t &rows, const size_t &columns, const ValueType (&values)[size]):
-                n(rows), m(columns), size(rows * columns),
+                n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
-                    if (this->size != size) {
+                    if (this->mat_size != size) {
                         throw std::logic_error("Sizes do not match");
                     }
                     AllocateMemory(size);
@@ -101,9 +101,9 @@ namespace cda {
                 
                 template <size_t rows, size_t columns>
                 Matrix(const ValueType (&values)[rows][columns]):
-                n(rows), m(columns), size(rows * columns),
+                n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
-                    AllocateMemory(size);
+                    AllocateMemory(mat_size);
                     for (size_t row = 0; row < rows; ++row) {
                         std::copy(values[row], values[row] + columns, this->operator[](row));
                     }
@@ -113,7 +113,7 @@ namespace cda {
                     if (a) {
                         std::free(a);
                         a = it_end = nullptr;
-                        n = m = size = 0;
+                        n = m = mat_size = 0;
                     }
                 }
                 
@@ -135,11 +135,11 @@ namespace cda {
                         AllocateMemory(new_size);
                         
                         if (fill && rows > n) {
-                            std::fill_n(a + size, new_size - size, static_cast<ValueType>(0));
+                            std::fill_n(a + mat_size, new_size - mat_size, static_cast<ValueType>(0));
                         }
                         
                         n = rows;
-                        size = new_size;
+                        mat_size = new_size;
                     } else {
                         
                         Matrix<ValueType> tmp(rows, columns);
@@ -147,7 +147,7 @@ namespace cda {
                             tmp.Zero();
                         }
                         
-                        if (size != 0) {
+                        if (mat_size != 0) {
                             const auto &rows_to_copy = rows < n ? rows : n;
                             const auto &columns_to_copy = columns < m ? columns : m;
                             for (size_t row = 0; row < rows_to_copy; ++row) {
@@ -163,7 +163,7 @@ namespace cda {
                 }
                 
                 void ChangeDimensions(const size_t &rows, const size_t &columns) {
-                    if (rows * columns != this->size) {
+                    if (rows * columns != this->mat_size) {
                         throw std::out_of_range("This method does not resize the matrix, just change the dimensions");
                     }
                     
@@ -187,10 +187,10 @@ namespace cda {
                         it_end = matrix.it_end;
                         n = matrix.n;
                         m = matrix.m;
-                        size = matrix.size;
+                        mat_size = matrix.mat_size;
                         
                         matrix.a = matrix.it_end = nullptr;
-                        matrix.n = matrix.m = matrix.size = 0;
+                        matrix.n = matrix.m = matrix.mat_size = 0;
                     }
                     
                     return *this;
@@ -329,7 +329,7 @@ namespace cda {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    if (vector.Size() != this->n) {
+                    if (vector.size() != this->n) {
                         throw std::logic_error("The vector and the column of the matrix must have the same number of elements");
                     }
                     
@@ -361,7 +361,7 @@ namespace cda {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    if (vector.Size() != this->m) {
+                    if (vector.size() != this->m) {
                         throw std::logic_error("The vector and the row of the matrix must have the same number of elements");
                     }
                     
@@ -374,7 +374,7 @@ namespace cda {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
                     
-                    if (diagonal.Size() != this->n) {
+                    if (diagonal.size() != this->n) {
                         throw std::logic_error("Diagonal size does not match with the number of rows of the matrix");
                     }
                     
@@ -426,8 +426,8 @@ namespace cda {
                     return m;
                 }
                 
-                size_t Size() const {
-                    return size;
+                size_t size() const {
+                    return mat_size;
                 }
                 
                 Matrix<ValueType> SumRows() const {
@@ -554,11 +554,11 @@ namespace cda {
                 
                 void Clear() {
                     AllocateMemory(0);
-                    n = m = size = 0;
+                    n = m = mat_size = 0;
                 }
                 
                 bool IsEmpty() const {
-                    return size == 0;
+                    return mat_size == 0;
                 }
                 
                 bool IsNull() const {
@@ -740,7 +740,7 @@ namespace cda {
                         throw std::logic_error("Matrix and Vector are not compatible.");
                     }
                     
-                    Matrix<ValueType> new_matrix(n, vector.Size());
+                    Matrix<ValueType> new_matrix(n, vector.size());
                     auto it_new = new_matrix.begin();
                     
                     for (auto it_this = this->begin(); it_this != this->end(); ++it_this) {
@@ -842,7 +842,7 @@ namespace cda {
             //  MARK: - Extra funcions
             template <typename ValueType>
             Matrix<ValueType> Transpose(const Vector<ValueType> &vector) {
-                Matrix<ValueType> matrix(vector.Size(), 1);
+                Matrix<ValueType> matrix(vector.size(), 1);
                 std::copy(vector.begin(), vector.end(), matrix.begin());
                 return matrix;
             }
@@ -871,7 +871,7 @@ cda::math::containers::Vector<ValueType> operator*(const cda::math::containers::
                                            const cda::math::containers::Matrix<ValueType> &matrix) {
     
     const auto &rows = matrix.Rows();
-    if (rows != vector.Size()) {
+    if (rows != vector.size()) {
         throw std::logic_error("The vector and the matrix are incompatible");
     }
     
