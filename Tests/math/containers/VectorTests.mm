@@ -394,7 +394,7 @@ using namespace cda::math::containers;
 
 - (void)testSumAllElements {
     const Vector<double> vector1({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector1.SumAllEments(), 55, "SumAllElments OK");
+    XCTAssertEqual(vector1.sum(), 55, "SumAllElments OK");
 }
 
 - (void)testFindMethod {

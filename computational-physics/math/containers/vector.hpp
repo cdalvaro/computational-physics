@@ -269,12 +269,12 @@ namespace cda {
                     return algorithms::find::abs_min_element_with_sign(begin(), end());
                 }
                 
-                ValueType SumAllEments() const {
-                    auto sum = *begin();
+                ValueType sum() const {
+                    auto _sum = *begin();
                     for (auto it = begin() + 1; it != end(); ++it) {
-                        sum += *it;
+                        _sum += *it;
                     }
-                    return sum;
+                    return _sum;
                 }
                 
                 const ValueType &At(const size_t &element) const {
