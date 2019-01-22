@@ -212,7 +212,7 @@ using namespace cda::math::containers;
     Vector<double> vector({0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     
     // Increase size
-    vector.Resize(15, true);
+    vector.resize(15, true);
     XCTAssert(vector.Size() == 15, "Vector size has been increased successfully");
     
     Boolean newElementsFilled = true;
@@ -227,12 +227,12 @@ using namespace cda::math::containers;
     
     // Resize to the same size
     auto previousVector(vector);
-    vector.Resize(vector.Size());
+    vector.resize(vector.Size());
     
     XCTAssert(previousVector == vector, "The vector has not changed");
     
     // Decrease size
-    vector.Resize(5);
+    vector.resize(5);
     XCTAssert(vector.Size() == 5, "Vector size has been decreased successfully");
     
     Boolean previousElementsEqual = true;
@@ -338,7 +338,7 @@ using namespace cda::math::containers;
     vector *= 2.0;
     XCTAssertEqual(vector, expected, "Product with scalar into itself OK");
     
-    vector.Resize(20);
+    vector.resize(20);
     XCTAssertThrows(vector * expected, "Vectors must be of the same size");
     
     XCTAssertEqual(-vector, -1.0 * vector, "Negative vector OK");

@@ -129,7 +129,7 @@ namespace cda {
                  @param fill If true and size is bigger than the previous size
                  the new extra elements will be set to 0
                  */
-                void Resize(const size_t &size, const bool &fill = true) {
+                void resize(const size_t &size, const bool &fill = true) {
                     if (size == n) {
                         return;
                     }
@@ -144,7 +144,7 @@ namespace cda {
                 
                 Vector<ValueType> &operator=(const Vector<ValueType> &vector) {
                     if (this != &vector) {
-                        Resize(vector.n, false);
+                        resize(vector.n, false);
                         std::copy(vector.begin(), vector.end(), this->begin());
                     }
                     return *this;
@@ -164,7 +164,7 @@ namespace cda {
                 }
                 
                 void Copy(const size_t &size, const ValueType* const array) {
-                    Resize(size);
+                    resize(size);
                     std::copy(array, array + size, v);
                 }
                 
@@ -620,7 +620,7 @@ void operator>>(std::istream &input,
     }
     
     size_t initial_size = 100;
-    vector.Resize(initial_size);
+    vector.resize(initial_size);
     
     char separator;
     std::string line, cell;
@@ -632,14 +632,14 @@ void operator>>(std::istream &input,
             
             if (element >= vector.Size()) {
                 initial_size *= 2;
-                vector.Resize(vector.Size() + initial_size);
+                vector.resize(vector.Size() + initial_size);
             }
             
             line_stream >> separator;
         }
     }
     
-    vector.Resize(element);
+    vector.resize(element);
 }
 
 template <typename ValueType>

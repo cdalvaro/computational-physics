@@ -40,7 +40,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
     EDP_T h = (x[dim-1] - x[0])/(EDP_T)(dim-1);
     EDP_T tI = x[0];
     
-    x.Resize(x.Size());
+    x.resize(x.Size());
     
     if ((bc& BCL_f) != 0 && (bc& BCR_f) != 0)        //  Ambas condiciones de contorno en la función
     {

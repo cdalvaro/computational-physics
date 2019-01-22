@@ -134,8 +134,8 @@ namespace cda {
                         
                         RemoveSingularities();
                         
-                        l.Resize(rows, rows, 0);
-                        u.Resize(rows, rows, 0);
+                        l.resize(rows, rows, 0);
+                        u.resize(rows, rows, 0);
                         
                         for (size_t row = 0; row < rows; ++row) {
                             l[row][row] = 1;

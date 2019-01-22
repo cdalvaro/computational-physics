@@ -125,7 +125,7 @@ namespace cda {
                     return it_end;
                 }
                 
-                void Resize(const size_t &rows, const size_t &columns, const bool &fill = false) {
+                void resize(const size_t &rows, const size_t &columns, const bool &fill = false) {
                     if (rows == n && columns == m) {
                         return;
                     }
@@ -173,7 +173,7 @@ namespace cda {
                 
                 Matrix<ValueType> &operator=(const Matrix<ValueType> &matrix) {
                     if (this != &matrix) {
-                        Resize(matrix.n, matrix.m);
+                        resize(matrix.n, matrix.m);
                         std::copy(matrix.begin(), matrix.end(), this->begin());
                     }
                     
@@ -911,7 +911,7 @@ void operator||(cda::math::containers::Matrix<ValueType> &left_matrix,
     const size_t left_matrix_columns = left_matrix.Columns() / 2;
     
     right_matrix = left_matrix.GetMatrix(0, left_matrix_columns, left_matrix.Rows(), left_matrix.Columns() - left_matrix_columns);
-    left_matrix.Resize(left_matrix.Rows(), left_matrix_columns);
+    left_matrix.resize(left_matrix.Rows(), left_matrix_columns);
 }
 
 template <typename ValueType>
@@ -923,7 +923,7 @@ void operator>>(std::istream &input,
     }
     
     size_t initial_size = 100;
-    matrix.Resize(initial_size, 1);
+    matrix.resize(initial_size, 1);
     
     size_t rows = 0, columns = 0;
     
@@ -940,7 +940,7 @@ void operator>>(std::istream &input,
             
             if (element >= matrix.Rows()) {
                 initial_size *= 2;
-                matrix.Resize(matrix.Rows() + initial_size, 1);
+                matrix.resize(matrix.Rows() + initial_size, 1);
             }
             
             if (is_first_row) {
@@ -961,7 +961,7 @@ void operator>>(std::istream &input,
         throw std::out_of_range("The size of the matrix could not be determined properly.");
     }
     
-    matrix.Resize(element, 1);
+    matrix.resize(element, 1);
     matrix.ChangeDimensions(rows, columns);
 }
 

@@ -204,7 +204,7 @@ using namespace cda::math::containers;
     });
     
     auto result(matrix);
-    result.Resize(matrix.Rows(), matrix.Columns());
+    result.resize(matrix.Rows(), matrix.Columns());
     XCTAssertEqual(result, matrix, "matrix has not been changed");
     
     const Matrix<double> expected1({
@@ -213,7 +213,7 @@ using namespace cda::math::containers;
     });
     
     result = Matrix<double>(matrix);
-    result.Resize(2, 2);
+    result.resize(2, 2);
     XCTAssertEqual(result, expected1, "matrix has been resized OK to a 2x2 matrix");
     
     const Matrix<double> expected2({
@@ -223,7 +223,7 @@ using namespace cda::math::containers;
     });
     
     result = Matrix<double>(matrix);
-    result.Resize(3, 2);
+    result.resize(3, 2);
     XCTAssertEqual(result, expected2, "matrix has been resized OK to a 3x2 matrix");
     
     const Matrix<double> expected3({
@@ -232,7 +232,7 @@ using namespace cda::math::containers;
     });
     
     result = Matrix<double>(matrix);
-    result.Resize(2, 3);
+    result.resize(2, 3);
     XCTAssertEqual(result, expected3, "matrix has been resized OK to a 2x3 matrix");
     
     const Matrix<double> expected4({
@@ -243,7 +243,7 @@ using namespace cda::math::containers;
     });
     
     result = Matrix<double>(matrix);
-    result.Resize(4, 4, true);
+    result.resize(4, 4, true);
     XCTAssertEqual(result, expected4, "matrix has been resized OK to a 4x4 matrix adding zeros to the new elements");
     
     const Matrix<double> expected5({
@@ -254,7 +254,7 @@ using namespace cda::math::containers;
     });
     
     result = Matrix<double>(matrix);
-    result.Resize(4, 3, true);
+    result.resize(4, 3, true);
     XCTAssertEqual(result, expected5, "matrix has been resized OK to a 4x3 matrix adding zeros to the new elements");
 }
 
