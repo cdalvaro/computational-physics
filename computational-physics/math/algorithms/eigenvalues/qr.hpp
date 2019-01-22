@@ -121,7 +121,7 @@ namespace cda {
                             old_normalization_factor = normalization_factor;
                             
                             eigenVector = inverse_matrix * eigenVector;
-                            normalization_factor = eigenVector.AbsoluteMaximumElementWithSign();
+                            normalization_factor = eigenVector.abs_max_element_with_sign();
                             eigenVector /= normalization_factor;
                             
                             // Convergence test

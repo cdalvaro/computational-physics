@@ -46,7 +46,7 @@ namespace cda {
                 }
                 
                 template <typename T>
-                T AbsoluteMaximumElementWithSign(const T* const begin, const T* const end) {
+                T abs_max_element_with_sign(const T* const begin, const T* const end) {
                     auto max_element = *begin;
                     for (auto it = std::next(begin); it != end; ++it) {
                         if (std::abs(*it) > std::abs(max_element)) {

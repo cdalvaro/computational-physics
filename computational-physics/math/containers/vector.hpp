@@ -253,8 +253,8 @@ namespace cda {
                     return algorithms::find::abs_max_element(begin(), end());
                 }
                 
-                ValueType AbsoluteMaximumElementWithSign() const {
-                    return algorithms::find::AbsoluteMaximumElementWithSign(begin(), end());
+                ValueType abs_max_element_with_sign() const {
+                    return algorithms::find::abs_max_element_with_sign(begin(), end());
                 }
                 
                 ValueType MinimumElement() const {
