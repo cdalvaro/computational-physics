@@ -163,7 +163,7 @@ namespace cda {
                     return *this;
                 }
                 
-                void Copy(const size_t &size, const ValueType* const array) {
+                void copy(const size_t &size, const ValueType* const array) {
                     resize(size);
                     std::copy(array, array + size, v);
                 }

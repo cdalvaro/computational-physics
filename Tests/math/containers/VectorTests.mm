@@ -115,7 +115,7 @@ using namespace cda::math::containers;
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     Vector<double> vector_copy;
-    vector_copy.Copy(10, vector.begin());
+    vector_copy.copy(10, vector.begin());
     
     XCTAssertEqual(vector_copy, vector, "Copy of vectors OK");
 }
