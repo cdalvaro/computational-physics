@@ -1,4 +1,4 @@
-laguage: cpp
+language: cpp
 
 stages:
   - Build
