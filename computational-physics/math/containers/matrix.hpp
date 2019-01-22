@@ -494,8 +494,8 @@ namespace cda {
                     return sum;
                 }
                 
-                ValueType MaximumElement() const {
-                    return algorithms::find::MaximumElement(begin(), end());
+                ValueType max_element() const {
+                    return algorithms::find::max_element(begin(), end());
                 }
                 
                 ValueType AbsoluteMaximumElement() const {

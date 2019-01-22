@@ -24,7 +24,7 @@ namespace cda {
                 }
                 
                 template <typename T>
-                T MaximumElement(const T* const begin, const T* const end) {
+                T max_element(const T* const begin, const T* const end) {
                     auto max_element = *begin;
                     for (auto it = std::next(begin); it != end; ++it) {
                         if (*it > max_element) {

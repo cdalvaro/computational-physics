@@ -974,7 +974,7 @@ using namespace cda::math::containers;
         {  5.432,  -6.236,   7.342,   8.324,    -9.341,      21.341}
     });
     
-    XCTAssertEqual(matrix.MaximumElement(), 523251.316, "MaximumElement OK");
+    XCTAssertEqual(matrix.max_element(), 523251.316, "Maximum element OK");
     XCTAssertEqual(matrix.AbsoluteMaximumElement(), 523251.316, "AbsoluteMaximumElement OK");
     XCTAssertEqual(matrix.AbsoluteMaximumElementWithSign(), 523251.316, "AbsoluteMaximumElementWithSign OK");
     

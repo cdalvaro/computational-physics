@@ -277,7 +277,7 @@ Matrix<EDP_T> EDP::solveLAPLACE(unsigned char bc, unsigned char sbc, unsigned ch
             
             sup[i-1] = sum;
             supOld[i-1] = sumOld;
-            relErr = std::abs(sup.MaximumElement()-supOld.MaximumElement());
+            relErr = std::abs(sup.max_element()-supOld.max_element());
         }
         
         ite++;
@@ -431,7 +431,7 @@ Matrix<EDP_T> EDP::solvePOISSON(unsigned char bc, unsigned char sbc, unsigned ch
             
             sup[i-1] = sum;
             supOld[i-1] = sumOld;
-            relErr = std::abs(sup.MaximumElement()-supOld.MaximumElement());
+            relErr = std::abs(sup.max_element()-supOld.max_element());
         }
         
         ite++;
