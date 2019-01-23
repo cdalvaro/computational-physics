@@ -557,7 +557,7 @@ namespace cda {
                     n = m = mat_size = 0;
                 }
                 
-                bool IsEmpty() const {
+                bool is_empty() const {
                     return mat_size == 0;
                 }
                 

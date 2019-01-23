@@ -47,43 +47,43 @@ using namespace cda::math::containers;
 
 - (void)testIsEmpty {
     const Vector<double> vector1(10, 2);
-    XCTAssert(!vector1.IsEmpty(), "vector1 is not empty");
+    XCTAssert(!vector1.is_empty(), "vector1 is not empty");
     
     const Vector<double> vector2;
-    XCTAssert(vector2.IsEmpty(), "vector2 is empty");
+    XCTAssert(vector2.is_empty(), "vector2 is empty");
     XCTAssertEqual(vector2.size(), 0, "The size of vector2 is 0");
 }
 
 - (void)testIsNull {
     const Vector<double> vector1(10, 0);
     XCTAssert(vector1.IsNull(), "vector1 is null");
-    XCTAssert(!vector1.IsEmpty(), "vector1 is not empty");
+    XCTAssert(!vector1.is_empty(), "vector1 is not empty");
     
     const Vector<double> vector2;
     XCTAssert(vector2.IsNull(), "vector2 is null");
-    XCTAssert(vector2.IsEmpty(), "vector2 is empty");
+    XCTAssert(vector2.is_empty(), "vector2 is empty");
     
     const Vector<double> vector3({0, 0, 0, 0, 1, 0, 0, 0, 0});
     XCTAssert(!vector3.IsNull(), "vector3 is not null");
-    XCTAssert(!vector3.IsEmpty(), "vector3 is not empty");
+    XCTAssert(!vector3.is_empty(), "vector3 is not empty");
 }
 
 - (void)testConstructors {
     
     // Default constructor
     const Vector<double> defaultVector;
-    XCTAssert(defaultVector.IsEmpty(), "defaultVector is empty");
+    XCTAssert(defaultVector.is_empty(), "defaultVector is empty");
     XCTAssert(defaultVector.IsNull(), "defaultVector is null");
     
     // Constructor with size
     const Vector<double> vectorWithSize(10);
     XCTAssertEqual(vectorWithSize.size(), 10, "Constructor with size OK");
-    XCTAssert(!vectorWithSize.IsEmpty() && !vectorWithSize.IsNull(), "vectorWithSize is not empty and is not null");
+    XCTAssert(!vectorWithSize.is_empty() && !vectorWithSize.IsNull(), "vectorWithSize is not empty and is not null");
     
     // Constructor with size filling elements
     Vector<double> vectorWithElementsFilled(10, 5);
     XCTAssertEqual(vectorWithElementsFilled.size(), 10, "Constructor with size filling elements has size OK");
-    XCTAssert(!vectorWithElementsFilled.IsEmpty() && !vectorWithElementsFilled.IsNull(), "vectorWithSize is not empty and is not null");
+    XCTAssert(!vectorWithElementsFilled.is_empty() && !vectorWithElementsFilled.IsNull(), "vectorWithSize is not empty and is not null");
     for (size_t i = 0; i < vectorWithElementsFilled.size(); ++i) {
         XCTAssertEqual(vectorWithElementsFilled[i], 5, "Element has been filled OK");
     }
@@ -95,7 +95,7 @@ using namespace cda::math::containers;
     // Move constructor
     Vector<double> vectorFromMove(std::move(vectorWithElementsFilled));
     XCTAssertEqual(vectorFromMove, vectorFromCopy, "Move constructor OK");
-    XCTAssert(vectorWithElementsFilled.IsEmpty(), "vectorWithElementsFilled is empty after had been moved");
+    XCTAssert(vectorWithElementsFilled.is_empty(), "vectorWithElementsFilled is empty after had been moved");
     XCTAssert(vectorWithElementsFilled.IsNull(), "vectorWithElementsFilled is null after had been moved");
     
     // Constructor from array
@@ -124,7 +124,7 @@ using namespace cda::math::containers;
     Vector<double> vector(10, 1);
     
     vector.clear();
-    XCTAssert(vector.IsEmpty(), "Vector is empty");
+    XCTAssert(vector.is_empty(), "Vector is empty");
     XCTAssert(vector.IsNull(), "Vector is null");
 }
 
@@ -274,14 +274,14 @@ using namespace cda::math::containers;
 
 - (void)testRandom {
     auto vector1 = Vector<double>::random(10, -3, 4);
-    XCTAssert(!vector1.IsEmpty(), "Random vector is not empty");
+    XCTAssert(!vector1.is_empty(), "Random vector is not empty");
     XCTAssert(!vector1.IsNull(), "Random vector is not null");
     XCTAssert(vector1.max_element() < 4, "The maximum element is smaller than 1");
     XCTAssert(vector1.min_element() >= -3, "The minimum element is greater or equal than 0");
     
     Vector<double> vector2(10);
     vector2.random();
-    XCTAssert(!vector2.IsEmpty(), "Random vector is not empty");
+    XCTAssert(!vector2.is_empty(), "Random vector is not empty");
     XCTAssert(!vector2.IsNull(), "Random vector is not null");
     XCTAssert(vector2.max_element() < 1, "The maximum element is smaller than 1");
     XCTAssert(vector2.min_element() >= 0, "The minimum element is greater or equal than 0");

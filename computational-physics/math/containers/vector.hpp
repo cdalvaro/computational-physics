@@ -360,7 +360,7 @@ namespace cda {
                     alloc_memory(n);
                 }
                 
-                bool IsEmpty() const {
+                bool is_empty() const {
                     return n == 0;
                 }
                 

@@ -72,7 +72,7 @@ namespace cda {
                     }
                     
                     const containers::Vector<ValueType> &EigenValues() {
-                        if (eigen_values.IsEmpty()) {
+                        if (eigen_values.is_empty()) {
                             auto matrix(original);
                             const size_t last_row = rows - 1;
                             ValueType square_sum, element;
@@ -104,7 +104,7 @@ namespace cda {
                     const containers::Vector<ValueType> &EigenVector(const ValueType &eigen_value) {
                         
                         auto it_eigen_vector = eigen_vectors.find(eigen_value);
-                        if (it_eigen_vector != eigen_vectors.end() && !it_eigen_vector->second.IsEmpty()) {
+                        if (it_eigen_vector != eigen_vectors.end() && !it_eigen_vector->second.is_empty()) {
                             return it_eigen_vector->second;
                         }
                         
