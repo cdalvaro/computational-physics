@@ -450,11 +450,11 @@ using namespace cda::math::containers;
     XCTAssertEqual(result, expected, "The norm of the vector is OK");
 }
 
-- (void)testUnitary {
+- (void)testNormalizedVector {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     const auto expected = vector / std::sqrt(385);
     
-    XCTAssertEqual(vector.Unitary(), expected, "Unitary vector OK");
+    XCTAssertEqual(vector.normalized_vector(), expected, "Normalized vector OK");
 }
 
 - (void)testIfstreamOperator {

@@ -312,7 +312,7 @@ namespace cda {
                  
                  @return The normalized vector
                  */
-                Vector<ValueType> Unitary() const {
+                Vector<ValueType> normalized_vector() const {
                     return (* this) / norm();
                 }
                 
