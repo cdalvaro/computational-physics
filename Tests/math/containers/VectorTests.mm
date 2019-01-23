@@ -432,8 +432,8 @@ using namespace cda::math::containers;
     Vector<double> vector({2, 6, 4, 1, 7, 9, 10, 3, 5, 8});
     const Vector<double> expected({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
-    vector.Sort();
-    XCTAssertEqual(vector, expected, "Sort method OK");
+    vector.sort();
+    XCTAssertEqual(vector, expected, "sort method OK");
 }
 
 - (void)testNorms {

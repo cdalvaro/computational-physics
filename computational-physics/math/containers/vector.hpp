@@ -316,7 +316,7 @@ namespace cda {
                     return (* this) / norm();
                 }
                 
-                void Sort() {
+                void sort() {
                     std::sort(this->begin(), this->end(),
                               [](const ValueType &value1, const ValueType &value2) {
                                   return value1 < value2;
