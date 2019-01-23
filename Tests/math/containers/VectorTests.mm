@@ -289,13 +289,13 @@ using namespace cda::math::containers;
 
 - (void)testHasDuplicate {
     Vector<double> vector({1.5, 2.3, 3.6, 4.68, 5.6, 6.3, 7.34, 8.43, 9.43, 8.4363});
-    XCTAssert(!vector.HasDuplicate(), "vector does not have duplicate elements");
+    XCTAssert(!vector.has_duplicate(), "vector does not have duplicate elements");
     
-    XCTAssert(vector.HasDuplicate(1E-02), "vector has duplicate with accuracy 1E-02");
-    XCTAssert(!vector.HasDuplicate(1E-03), "vector does not have duplicate with accuracy 1E-03");
+    XCTAssert(vector.has_duplicate(1E-02), "vector has duplicate with accuracy 1E-02");
+    XCTAssert(!vector.has_duplicate(1E-03), "vector does not have duplicate with accuracy 1E-03");
     
     vector[4] = 8.43;
-    XCTAssert(vector.HasDuplicate(), "vector has duplicate");
+    XCTAssert(vector.has_duplicate(), "vector has duplicate");
 }
 
 - (void)testAdditionofVectors {

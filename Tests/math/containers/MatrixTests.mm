@@ -1071,7 +1071,7 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    XCTAssert(matrix.HasDuplicate(), "Matrix has duplicate elements");
+    XCTAssert(matrix.has_duplicate(), "Matrix has duplicate elements");
     
     matrix = Matrix<double>({
         { 21, 18, 15,  3},
@@ -1080,7 +1080,7 @@ using namespace cda::math::containers;
         {105, 90, 75, 16}
     });
     
-    XCTAssert(!matrix.HasDuplicate(), "Matrix does not have duplicate elements");
+    XCTAssert(!matrix.has_duplicate(), "Matrix does not have duplicate elements");
     
     Matrix<double> matrix2({
         { 21.1727, 18.1355, 15.5478,  3.5235},
@@ -1089,9 +1089,9 @@ using namespace cda::math::containers;
         {105.2757, 90.3164, 75.7235, 15.5435}
     });
     
-    XCTAssert(!matrix2.HasDuplicate(), "Matrix double does not have duplicate elements with accuracy inf");
-    XCTAssert(!matrix2.HasDuplicate(1E-04), "Matrix double does not have duplicate elements with accuracy 1E-04");
-    XCTAssert(matrix2.HasDuplicate(1E-02), "Matrix double does not have duplicate elements with accuracy 1E-02");
+    XCTAssert(!matrix2.has_duplicate(), "Matrix double does not have duplicate elements with accuracy inf");
+    XCTAssert(!matrix2.has_duplicate(1E-04), "Matrix double does not have duplicate elements with accuracy 1E-04");
+    XCTAssert(matrix2.has_duplicate(1E-02), "Matrix double does not have duplicate elements with accuracy 1E-02");
 }
 
 - (void)testDeterminant {

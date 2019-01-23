@@ -373,7 +373,7 @@ namespace cda {
                     return true;
                 }
                 
-                bool HasDuplicate(const ValueType &accuracy) const {
+                bool has_duplicate(const ValueType &accuracy) const {
                     ValueType distance;
                     for (auto it1 = begin(); it1 != end(); ++it1) {
                         for (auto it2 = begin(); it2 != end(); ++it2) {
@@ -388,7 +388,7 @@ namespace cda {
                     return false;
                 }
                 
-                bool HasDuplicate() const {
+                bool has_duplicate() const {
                     for (auto it1 = begin(); it1 != end(); ++it1) {
                         for (auto it2 = begin(); it2 != end(); ++it2) {
                             if (it1 != it2 && *it1 == *it2) {
