@@ -33,10 +33,10 @@ using namespace cda::math::containers;
     
     const Matrix<double> matrix;
     XCTAssert(matrix.is_empty(), "matrix is empty");
-    XCTAssert(matrix.IsNull(), "matrix is null");
+    XCTAssert(matrix.is_null(), "matrix is null");
     
     const Matrix<double> matrix1(4, 4, 1);
-    XCTAssert(!matrix1.is_empty() && !matrix1.IsNull(), "matrix1 is not empty and is not null");
+    XCTAssert(!matrix1.is_empty() && !matrix1.is_null(), "matrix1 is not empty and is not null");
     XCTAssertEqual(matrix1.Rows(), 4, "The number of rows of matrix1 is OK");
     XCTAssertEqual(matrix1.Columns(), 4, "The number of columns of matrix1 is OK");
     XCTAssertEqual(matrix1.size(), 16, "The size of matrix1 is OK");
@@ -56,7 +56,7 @@ using namespace cda::math::containers;
         8,  9, 10, 11,
         12, 13, 14, 15
     });
-    XCTAssert(!matrix2.is_empty() && !matrix2.IsNull(), "matrix2 is not empty and is not null");
+    XCTAssert(!matrix2.is_empty() && !matrix2.is_null(), "matrix2 is not empty and is not null");
     XCTAssertEqual(matrix2.Rows(), 4, "The number of rows of matrix2 is OK");
     XCTAssertEqual(matrix2.Columns(), 4, "The number of columns of matrix2 is OK");
     XCTAssertEqual(matrix2.size(), 16, "The size of matrix2 is OK");
@@ -69,7 +69,7 @@ using namespace cda::math::containers;
         { 8,  9, 10, 11},
         {12, 13, 14, 15}
     });
-    XCTAssert(!matrix3.is_empty() && !matrix3.IsNull(), "matrix3 is not empty and is not null");
+    XCTAssert(!matrix3.is_empty() && !matrix3.is_null(), "matrix3 is not empty and is not null");
     XCTAssertEqual(matrix3.Rows(), 4, "The number of rows of matrix3 is OK");
     XCTAssertEqual(matrix3.Columns(), 4, "The number of columns of matrix3 is OK");
     XCTAssertEqual(matrix3.size(), 16, "The size of matrix3 is OK");
@@ -80,7 +80,7 @@ using namespace cda::math::containers;
     Matrix<double> matrix5(std::move(matrix4));
     XCTAssertEqual(matrix5, matrix3, "matrix3 and matrix4 are equal");
     XCTAssert(matrix4.is_empty(), "matrix4 is empty after had been moved");
-    XCTAssert(matrix4.IsNull(), "matrix4 is null after had been moved");
+    XCTAssert(matrix4.is_null(), "matrix4 is null after had been moved");
 }
 
 - (void)testAssign {
@@ -103,7 +103,7 @@ using namespace cda::math::containers;
     test2 = std::move(test);
     
     XCTAssertEqual(test2, matrix, "Move assignment OK");
-    XCTAssert(test.IsNull(), "test matrix is null after had been moved");
+    XCTAssert(test.is_null(), "test matrix is null after had been moved");
 
 //Save the diagnostic state
 #pragma clang diagnostic push
@@ -1041,11 +1041,11 @@ using namespace cda::math::containers;
 
 - (void)testIsNullAndIsEmptyMethods {
     Matrix<double> matrix;
-    XCTAssert(matrix.IsNull(), "Matrix is null");
+    XCTAssert(matrix.is_null(), "Matrix is null");
     XCTAssert(matrix.is_empty(), "Matrix is empty");
     
     matrix = Matrix<double>::zero(4, 4);
-    XCTAssert(matrix.IsNull(), "Matrix is null");
+    XCTAssert(matrix.is_null(), "Matrix is null");
     XCTAssert(!matrix.is_empty(), "Matrix is not empty");
 }
 
@@ -1059,7 +1059,7 @@ using namespace cda::math::containers;
     
     matrix.clear();
     
-    XCTAssert(matrix.IsNull(), "Matrix is null");
+    XCTAssert(matrix.is_null(), "Matrix is null");
     XCTAssert(matrix.is_empty(), "Matrix is empty");
 }
 

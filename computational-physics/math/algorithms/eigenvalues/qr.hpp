@@ -42,14 +42,14 @@ namespace cda {
                     virtual ~QR() = default;
                     
                     const Matrix<ValueType> &Q() {
-                        if (q.IsNull()) {
+                        if (q.is_null()) {
                             ComputeQR(original);
                         }
                         return q;
                     }
                     
                     const Matrix<ValueType> &R() {
-                        if (r.IsNull()) {
+                        if (r.is_null()) {
                             ComputeQR(original);
                         }
                         return r;
@@ -183,7 +183,7 @@ namespace cda {
                         for (size_t row = 1; row < last_row; ++row) {
                             c = r.GetColumnAsVector(row, row);
                             
-                            if (c.IsNull()) {
+                            if (c.is_null()) {
                                 h = I;
                             } else {
                                 vt = I.GetRowAsVector(row, row);

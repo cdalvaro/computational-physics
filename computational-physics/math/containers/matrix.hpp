@@ -561,7 +561,7 @@ namespace cda {
                     return mat_size == 0;
                 }
                 
-                bool IsNull() const {
+                bool is_null() const {
                     for (auto it = begin(); it != end(); ++it) {
                         if (*it != 0) {
                             return false;
