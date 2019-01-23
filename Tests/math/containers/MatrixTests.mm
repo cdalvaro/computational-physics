@@ -119,11 +119,11 @@ using namespace cda::math::containers;
 
 - (void)testOnes {
     const Matrix<double> expected_ones(5, 5, 1);
-    XCTAssertEqual(Matrix<double>::Ones(5, 5), expected_ones, "Ones static method OK");
+    XCTAssertEqual(Matrix<double>::ones(5, 5), expected_ones, "ones static method OK");
     
     Matrix<double> result(5, 5, 2);
-    result.Ones();
-    XCTAssertEqual(result, expected_ones, "Ones method OK");
+    result.ones();
+    XCTAssertEqual(result, expected_ones, "ones method OK");
 }
 
 - (void)testZero {
@@ -551,10 +551,10 @@ using namespace cda::math::containers;
 }
 
 - (void)testSquareMatrix {
-    const auto square_matrix = Matrix<double>::Ones(4, 4);
+    const auto square_matrix = Matrix<double>::ones(4, 4);
     XCTAssert(square_matrix.IsSquare(), "square_matrix is square");
     
-    const auto rectangular_matrix = Matrix<double>::Ones(4, 3);
+    const auto rectangular_matrix = Matrix<double>::ones(4, 3);
     XCTAssert(!rectangular_matrix.IsSquare(), "rectangular_matrix is not square");
 }
 
@@ -728,7 +728,7 @@ using namespace cda::math::containers;
 }
 
 - (void)testSetRow {
-    auto result = Matrix<double>::Ones(4, 5);
+    auto result = Matrix<double>::ones(4, 5);
     
     const Matrix<double> expected({
         { 1,  1, 1, 1,  1},
@@ -754,7 +754,7 @@ using namespace cda::math::containers;
     });
     XCTAssertThrows(result.SetRow(1, new_row), "SetRow: new row has more elements than old one");
     
-    result.Ones();
+    result.ones();
     new_row = Matrix<double>({{2, -5, 7, 9, -7}});
     result.SetRow(1, new_row.GetRowAsVector(0));
     XCTAssertEqual(result, expected, "SetRow (vector) complete OK");
@@ -769,7 +769,7 @@ using namespace cda::math::containers;
 }
 
 - (void)testSetColumn {
-    auto result = Matrix<double>::Ones(4, 5);
+    auto result = Matrix<double>::ones(4, 5);
     
     const Matrix<double> expected({
         { 1,  2, 1, 1, 1},
@@ -790,7 +790,7 @@ using namespace cda::math::containers;
     new_column = Matrix<double>(5, 1, {1, 2, 3, 4, 5});
     XCTAssertThrows(result.SetColumn(1, new_column), "SetColumn: new column has more elements than old one");
     
-    result.Ones();
+    result.ones();
     new_column = Matrix<double>(4, 1, {2, -3, 6, -8});
     result.SetColumn(1, new_column.GetColumnAsVector(0));
     XCTAssertEqual(result, expected, "SetColumn (vector) complete OK");
@@ -805,7 +805,7 @@ using namespace cda::math::containers;
 }
 
 - (void)testSetDiagonal {
-    auto result1 = Matrix<double>::Ones(4, 4);
+    auto result1 = Matrix<double>::ones(4, 4);
     result1.SetDiagonal(2);
     
     const Matrix<double> expected1({

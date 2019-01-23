@@ -613,7 +613,7 @@ namespace cda {
                     fill(0);
                 }
                 
-                void Ones() {
+                void ones() {
                     fill(1);
                 }
                 
@@ -827,7 +827,7 @@ namespace cda {
                     return Matrix<ValueType>(rows, columns, 0);
                 }
                 
-                static Matrix<ValueType> Ones(const size_t &rows, const size_t &columns) {
+                static Matrix<ValueType> ones(const size_t &rows, const size_t &columns) {
                     return Matrix<ValueType>(rows, columns, 1);
                 }
                 

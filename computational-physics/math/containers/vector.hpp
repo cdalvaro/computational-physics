@@ -335,11 +335,11 @@ namespace cda {
                     fill(0);
                 }
                 
-                static Vector<ValueType> Ones(const size_t &size) {
+                static Vector<ValueType> ones(const size_t &size) {
                     return Vector<ValueType>(size, 1);
                 }
                 
-                void Ones() {
+                void ones() {
                     fill(1);
                 }
                 
@@ -503,7 +503,7 @@ namespace cda {
                     
                     switch (power) {
                         case 0:
-                            new_vector = Vector<ValueType>::Ones(this->n);
+                            new_vector = Vector<ValueType>::ones(this->n);
                             break;
                         
                         default:

@@ -1123,7 +1123,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     
     std::cout << "\tCalculando autovectores... ";
     if ((((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) && eigVal[mode-1] == 0) {
-        solV.Ones();
+        solV.ones();
     } else {
         solV = qrA.EigenVector(eigVal[mode-1]);
     }

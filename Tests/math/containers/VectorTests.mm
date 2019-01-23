@@ -40,7 +40,7 @@ using namespace cda::math::containers;
     XCTAssert(!(vector3 == vector1), "Equality comparison OK");
     XCTAssert(vector3 != vector1, "Inequality comparison OK");
     
-    vector2.Ones();
+    vector2.ones();
     XCTAssert(!(vector2 == vector1), "Equality comparison OK");
     XCTAssert(vector2 != vector1, "Inequality comparison OK");
 }
@@ -256,11 +256,11 @@ using namespace cda::math::containers;
 
 - (void)testOnes {
     const Vector<double> expected_ones(5, 1);
-    XCTAssertEqual(Vector<double>::Ones(5), expected_ones, "Ones static method OK");
+    XCTAssertEqual(Vector<double>::ones(5), expected_ones, "ones static method OK");
     
     Vector<double> result(5, 2);
-    result.Ones();
-    XCTAssertEqual(result, expected_ones, "Ones method OK");
+    result.ones();
+    XCTAssertEqual(result, expected_ones, "ones method OK");
 }
 
 - (void)testZero {
@@ -377,7 +377,7 @@ using namespace cda::math::containers;
 
 - (void)testPowElements {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector.PowElements(0), Vector<double>::Ones(10), "Power 0 OK");
+    XCTAssertEqual(vector.PowElements(0), Vector<double>::ones(10), "Power 0 OK");
     
     XCTAssertEqual(vector.PowElements(1), vector, "Power 1 OK");
     
