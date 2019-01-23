@@ -51,7 +51,7 @@ namespace cda {
                 
             public:
                 
-                typedef T ValueType;
+                typedef T value_type;
                 
                 Matrix(const size_t &rows = 0, const size_t &columns = 0) :
                 n(rows), m(columns), mat_size(rows * columns),
@@ -59,14 +59,14 @@ namespace cda {
                     alloc_memory(mat_size);
                 }
                 
-                Matrix(const size_t &rows, const size_t &columns, const ValueType &value) :
+                Matrix(const size_t &rows, const size_t &columns, const value_type &value) :
                 n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
                     alloc_memory(mat_size);
                     std::fill(this->begin(), this->end(), value);
                 }
                 
-                Matrix(const Matrix<ValueType> &matrix) :
+                Matrix(const Matrix<value_type> &matrix) :
                 n(matrix.n), m(matrix.m), mat_size(matrix.mat_size),
                 a(nullptr), it_end(nullptr) {
                     alloc_memory(mat_size);
@@ -81,7 +81,7 @@ namespace cda {
                     std::copy(matrix.begin(), matrix.end(), this->begin());
                 }
                 
-                Matrix(Matrix<ValueType> &&matrix) :
+                Matrix(Matrix<value_type> &&matrix) :
                 n(matrix.n), m(matrix.m), mat_size(matrix.mat_size),
                 a(matrix.a), it_end(matrix.it_end) {
                     matrix.n = matrix.m = matrix.mat_size = 0;
@@ -89,7 +89,7 @@ namespace cda {
                 }
                 
                 template <size_t size>
-                Matrix(const size_t &rows, const size_t &columns, const ValueType (&values)[size]):
+                Matrix(const size_t &rows, const size_t &columns, const value_type (&values)[size]):
                 n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
                     if (this->mat_size != size) {
@@ -100,7 +100,7 @@ namespace cda {
                 }
                 
                 template <size_t rows, size_t columns>
-                Matrix(const ValueType (&values)[rows][columns]):
+                Matrix(const value_type (&values)[rows][columns]):
                 n(rows), m(columns), mat_size(rows * columns),
                 a(nullptr), it_end(nullptr) {
                     alloc_memory(mat_size);
@@ -117,11 +117,11 @@ namespace cda {
                     }
                 }
                 
-                ValueType *begin() const {
+                value_type *begin() const {
                     return a;
                 }
                 
-                ValueType *end() const {
+                value_type *end() const {
                     return it_end;
                 }
                 
@@ -135,14 +135,14 @@ namespace cda {
                         alloc_memory(new_size);
                         
                         if (fill && rows > n) {
-                            std::fill_n(a + mat_size, new_size - mat_size, static_cast<ValueType>(0));
+                            std::fill_n(a + mat_size, new_size - mat_size, static_cast<value_type>(0));
                         }
                         
                         n = rows;
                         mat_size = new_size;
                     } else {
                         
-                        Matrix<ValueType> tmp(rows, columns);
+                        Matrix<value_type> tmp(rows, columns);
                         if (fill) {
                             tmp.zero();
                         }
@@ -171,7 +171,7 @@ namespace cda {
                     this->m = columns;
                 }
                 
-                Matrix<ValueType> &operator=(const Matrix<ValueType> &matrix) {
+                Matrix<value_type> &operator=(const Matrix<value_type> &matrix) {
                     if (this != &matrix) {
                         resize(matrix.n, matrix.m);
                         std::copy(matrix.begin(), matrix.end(), this->begin());
@@ -180,7 +180,7 @@ namespace cda {
                     return *this;
                 }
                 
-                Matrix<ValueType> &operator=(Matrix<ValueType> &&matrix) {
+                Matrix<value_type> &operator=(Matrix<value_type> &&matrix) {
                     if (this != &matrix) {
                         std::free(a);
                         a = matrix.a;
@@ -196,7 +196,7 @@ namespace cda {
                     return *this;
                 }
                 
-                bool operator==(const Matrix<ValueType> &matrix) const {
+                bool operator==(const Matrix<value_type> &matrix) const {
                     if (this->n != matrix.n || this->m != matrix.m) {
                         return false;
                     }
@@ -211,16 +211,16 @@ namespace cda {
                     return true;
                 }
                 
-                bool operator!=(const Matrix<ValueType> &matrix) const {
+                bool operator!=(const Matrix<value_type> &matrix) const {
                     return !this->operator==(matrix);
                 }
                 
-                Matrix<ValueType> GetRow(const size_t &row) const {
+                Matrix<value_type> GetRow(const size_t &row) const {
                     if (row >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
                     
-                    Matrix<ValueType> tmp(1, m);
+                    Matrix<value_type> tmp(1, m);
                     
                     const auto &it_row = this->operator[](row);
                     std::copy(it_row, it_row + m, tmp.begin());
@@ -228,12 +228,12 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<ValueType> GetColumn(const size_t &column) const {
+                Matrix<value_type> GetColumn(const size_t &column) const {
                     if (column >= m) {
                         throw std::out_of_range("Index out of bounds");
                     }
                     
-                    Matrix<ValueType> tmp(n, 1);
+                    Matrix<value_type> tmp(n, 1);
                     auto it_tmp = tmp.begin();
                     
                     for (size_t i = 0; i < n; ++i, ++it_tmp) {
@@ -243,13 +243,13 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<ValueType> GetMatrix(const size_t &row, const size_t &column,
+                Matrix<value_type> GetMatrix(const size_t &row, const size_t &column,
                                     const size_t &number_of_rows, const size_t &number_of_columns) const {
                     if (row + number_of_rows > n || column + number_of_columns > m) {
                         throw std::out_of_range("Index out of bounds");
                     }
                     
-                    Matrix<ValueType> tmp(number_of_rows, number_of_columns);
+                    Matrix<value_type> tmp(number_of_rows, number_of_columns);
                     
                     auto it_this = begin() + row * m + column;
                     for (auto it_tmp = tmp.begin(); it_tmp != tmp.end(); it_tmp += number_of_columns, it_this += m) {
@@ -259,16 +259,16 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<ValueType> GetMatrix(const size_t &row, const size_t &column) const {
+                Matrix<value_type> GetMatrix(const size_t &row, const size_t &column) const {
                     return this->GetMatrix(row, column, n - row, m - column);
                 }
                 
-                Vector<ValueType> GetDiagonal() const {
+                Vector<value_type> GetDiagonal() const {
                     if (!this->IsSquare()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     
-                    Vector<ValueType> diagonal(n);
+                    Vector<value_type> diagonal(n);
                     
                     auto it_this = begin();
                     for (auto it_diagonal = diagonal.begin(); it_diagonal != diagonal.end(); ++it_diagonal, it_this += m + 1) {
@@ -278,7 +278,7 @@ namespace cda {
                     return diagonal;
                 }
                 
-                Vector<ValueType> GetRowAsVector(const size_t &row, const size_t &from_column = 0) const {
+                Vector<value_type> GetRowAsVector(const size_t &row, const size_t &from_column = 0) const {
                     if (row >= this->n || from_column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -286,15 +286,15 @@ namespace cda {
                     auto it_begin_row = this->operator[](row) + from_column;
                     auto it_end_row = it_begin_row + this->m - from_column;
                     
-                    return Vector<ValueType>(it_begin_row, it_end_row);
+                    return Vector<value_type>(it_begin_row, it_end_row);
                 }
                 
-                Vector<ValueType> GetColumnAsVector(const size_t &column, const size_t &from_row = 0) const {
+                Vector<value_type> GetColumnAsVector(const size_t &column, const size_t &from_row = 0) const {
                     if (column >= this->m || from_row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    Vector<ValueType> vector(this->n - from_row);
+                    Vector<value_type> vector(this->n - from_row);
                     
                     auto it_this = this->begin() + this->m * from_row + column;
                     for (auto it_vector = vector.begin(); it_vector != vector.end(); ++it_vector, it_this += m) {
@@ -305,7 +305,7 @@ namespace cda {
                 }
                 
                 //  Sets
-                void SetColumn(const size_t &column, const Matrix<ValueType> &matrix) {
+                void SetColumn(const size_t &column, const Matrix<value_type> &matrix) {
                     if (column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -324,7 +324,7 @@ namespace cda {
                     }
                 }
                 
-                void SetColumn(const size_t &column, const Vector<ValueType> &vector) {
+                void SetColumn(const size_t &column, const Vector<value_type> &vector) {
                     if (column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -339,7 +339,7 @@ namespace cda {
                     }
                 }
                 
-                void SetRow(const size_t &row, const Matrix<ValueType> &matrix) {
+                void SetRow(const size_t &row, const Matrix<value_type> &matrix) {
                     if (row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -356,7 +356,7 @@ namespace cda {
                     std::copy(matrix.begin(), matrix.end(), it_this);
                 }
                 
-                void SetRow(const size_t &row, const Vector<ValueType> &vector) {
+                void SetRow(const size_t &row, const Vector<value_type> &vector) {
                     if (row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -369,7 +369,7 @@ namespace cda {
                     std::copy(vector.begin(), vector.end(), it_this);
                 }
                 
-                void SetDiagonal(const Vector<ValueType> &diagonal) {
+                void SetDiagonal(const Vector<value_type> &diagonal) {
                     if (!IsSquare()) {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
@@ -385,7 +385,7 @@ namespace cda {
                     }
                 }
                 
-                void SetDiagonal(const ValueType &diagonal) {
+                void SetDiagonal(const value_type &diagonal) {
                     if (!IsSquare()) {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
@@ -397,7 +397,7 @@ namespace cda {
                     }
                 }
                 
-                void SetMatrix(const size_t &row, const size_t &column, const Matrix<ValueType> &matrix) {
+                void SetMatrix(const size_t &row, const size_t &column, const Matrix<value_type> &matrix) {
                     if (row >= this->n || column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -430,8 +430,8 @@ namespace cda {
                     return mat_size;
                 }
                 
-                Matrix<ValueType> SumRows() const {
-                    Matrix<ValueType> sum_rows(n, 1, 0);
+                Matrix<value_type> SumRows() const {
+                    Matrix<value_type> sum_rows(n, 1, 0);
                     
                     auto it_this = this->begin();
                     for (auto it_sum = sum_rows.begin(); it_sum != sum_rows.end(); ++it_sum) {
@@ -444,16 +444,16 @@ namespace cda {
                     return sum_rows;
                 }
                 
-                Vector<ValueType> SumRowsAsVector() const {
+                Vector<value_type> SumRowsAsVector() const {
                     return SumRows().GetColumnAsVector(0);
                 }
                 
-                ValueType SumRow(const size_t &row) const {
+                value_type SumRow(const size_t &row) const {
                     if (row >= this->n) {
                         throw std::out_of_range("Index out of range");
                     }
                     
-                    ValueType sum = 0;
+                    value_type sum = 0;
                     
                     const auto &it_end = this->operator[](row) + this->m;
                     for (auto it_row = this->operator[](row); it_row != it_end; ++it_row) {
@@ -463,8 +463,8 @@ namespace cda {
                     return sum;
                 }
                 
-                Matrix<ValueType> SumColumns() const {
-                    Matrix<ValueType> sum_columns(1, m, 0);
+                Matrix<value_type> SumColumns() const {
+                    Matrix<value_type> sum_columns(1, m, 0);
                     
                     for (auto it_this = this->begin(); it_this != this->end();) {
                         for (auto it_sum = sum_columns.begin(); it_sum != sum_columns.end(); ++it_sum, ++it_this) {
@@ -475,16 +475,16 @@ namespace cda {
                     return sum_columns;
                 }
                 
-                Vector<ValueType> SumColumnsAsVector() const {
+                Vector<value_type> SumColumnsAsVector() const {
                     return SumColumns().GetRowAsVector(0);
                 }
                 
-                ValueType SumColumn(const size_t &column) const {
+                value_type SumColumn(const size_t &column) const {
                     if (column >= this->m) {
                         throw std::out_of_range("Index out of range");
                     }
                     
-                    ValueType sum = 0;
+                    value_type sum = 0;
                     
                     const auto &it_column_end = this->end() + column;
                     for (auto it_column = this->begin() + column; it_column != it_column_end; it_column += this->m) {
@@ -494,54 +494,54 @@ namespace cda {
                     return sum;
                 }
                 
-                ValueType max_element() const {
+                value_type max_element() const {
                     return algorithms::find::max_element(begin(), end());
                 }
                 
-                ValueType abs_max_element() const {
+                value_type abs_max_element() const {
                     return algorithms::find::abs_max_element(begin(), end());
                 }
                 
-                ValueType abs_max_element_with_sign() const {
+                value_type abs_max_element_with_sign() const {
                     return algorithms::find::abs_max_element_with_sign(begin(), end());
                 }
                 
-                ValueType min_element() const {
+                value_type min_element() const {
                     return algorithms::find::min_element(begin(), end());
                 }
                 
-                ValueType abs_min_element() const {
+                value_type abs_min_element() const {
                     return algorithms::find::abs_min_element(begin(), end());
                 }
                 
-                ValueType abs_min_element_with_sign() const {
+                value_type abs_min_element_with_sign() const {
                     return algorithms::find::abs_min_element_with_sign(begin(), end());
                 }
                 
-                const ValueType &at(const size_t &row, const size_t &column) const {
+                const value_type &at(const size_t &row, const size_t &column) const {
                     if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
                     }
                     return this->operator[](row)[column];
                 }
                 
-                const ValueType *operator[](const size_t &row) const {
+                const value_type *operator[](const size_t &row) const {
                     return &a[row * m];
                 }
                 
-                ValueType &at(const size_t &row, const size_t &column) {
+                value_type &at(const size_t &row, const size_t &column) {
                     if (row >= n || column >= m) {
                         throw std::out_of_range("Indexes out of range");
                     }
                     return this->operator[](row)[column];
                 }
                 
-                ValueType *operator[](const size_t &row) {
+                value_type *operator[](const size_t &row) {
                     return &a[row * m];
                 }
                 
-                Matrix<ValueType> Transpose() const {
-                    Matrix<ValueType> new_matrix(this->m, this->n);
+                Matrix<value_type> Transpose() const {
+                    Matrix<value_type> new_matrix(this->m, this->n);
                     
                     for (size_t row = 0; row < this->n; ++row) {
                         for (size_t column = 0; column < this->m; ++column) {
@@ -574,8 +574,8 @@ namespace cda {
                     return n == m;
                 }
                 
-                bool has_duplicate(const ValueType &accuracy) const {
-                    ValueType distance;
+                bool has_duplicate(const value_type &accuracy) const {
+                    value_type distance;
                     for (auto it1 = begin(); it1 != end(); ++it1) {
                         for (auto it2 = begin(); it2 != end(); ++it2) {
                             if (it1 != it2) {
@@ -600,12 +600,12 @@ namespace cda {
                     return false;
                 }
                 
-                ValueType * find(const ValueType &value) const {
+                value_type * find(const value_type &value) const {
                     return cda::math::algorithms::find::Element(begin(), end(), value);
                 }
                 
                 //  Void functions
-                void fill(const ValueType &value) {
+                void fill(const value_type &value) {
                     std::fill(begin(), end(), value);
                 }
                 
@@ -630,12 +630,12 @@ namespace cda {
                     }
                 }
                 
-                Matrix<ValueType> operator+(const Matrix<ValueType> &matrix) const {
+                Matrix<value_type> operator+(const Matrix<value_type> &matrix) const {
                     if (this->n != matrix.n || this->m != matrix.m) {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
                     
-                    Matrix<ValueType> new_matrix(n, m);
+                    Matrix<value_type> new_matrix(n, m);
                     auto it_new = new_matrix.begin();
                     auto it_matrix = matrix.begin();
                     
@@ -646,7 +646,7 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Matrix<ValueType>& operator+=(const Matrix<ValueType> &matrix) {
+                Matrix<value_type>& operator+=(const Matrix<value_type> &matrix) {
                     if (this->n != matrix.n || this->m != matrix.m) {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
@@ -659,12 +659,12 @@ namespace cda {
                     return *this;
                 }
                 
-                Matrix<ValueType> operator-(const Matrix<ValueType> &matrix) const {
+                Matrix<value_type> operator-(const Matrix<value_type> &matrix) const {
                     if (this->n != matrix.n || this->m != matrix.m) {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
                     
-                    Matrix<ValueType> new_matrix(n, m);
+                    Matrix<value_type> new_matrix(n, m);
                     auto it_new = new_matrix.begin();
                     auto it_matrix = matrix.begin();
                     
@@ -675,7 +675,7 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Matrix<ValueType>& operator-=(const Matrix<ValueType> &matrix) {
+                Matrix<value_type>& operator-=(const Matrix<value_type> &matrix) {
                     if (this->n != matrix.n || this->m != matrix.m) {
                         throw std::logic_error("Matrices must be of the same dimensions.");
                     }
@@ -688,8 +688,8 @@ namespace cda {
                     return *this;
                 }
                 
-                Matrix<ValueType> operator*(const ValueType &value) const {
-                    Matrix<ValueType> new_matrix(n, m);
+                Matrix<value_type> operator*(const value_type &value) const {
+                    Matrix<value_type> new_matrix(n, m);
                     auto it_new = new_matrix.begin();
                     
                     for (auto it_this = this->begin(); it_this != this->end(); ++it_this) {
@@ -699,19 +699,19 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Matrix<ValueType> operator*(const Matrix<ValueType> &matrix) const {
+                Matrix<value_type> operator*(const Matrix<value_type> &matrix) const {
                     if (this->m != matrix.n) {
                         throw std::logic_error("Matrices dimensions are not compatible.");
                     }
                     
-                    Matrix<ValueType> new_matrix(this->n, matrix.m);
+                    Matrix<value_type> new_matrix(this->n, matrix.m);
                     auto it_new_matrix = new_matrix.begin();
                     
-                    const ValueType *it_this_row, *it_this_row__, *it_end_this_row;
+                    const value_type *it_this_row, *it_this_row__, *it_end_this_row;
                     
-                    ValueType sum;
+                    value_type sum;
                     size_t matrix_column;
-                    ValueType *it_matrix_column;
+                    value_type *it_matrix_column;
                     
                     for (it_this_row = this->begin(); it_this_row < this->end(); it_this_row = it_end_this_row) {
                         it_end_this_row = it_this_row + this->m;
@@ -730,17 +730,17 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Matrix<ValueType> &operator*=(const Matrix<ValueType> &matrix) {
+                Matrix<value_type> &operator*=(const Matrix<value_type> &matrix) {
                     *this = *this * matrix;
                     return *this;
                 }
                 
-                Matrix<ValueType> operator*(const Vector<ValueType> &vector) {
+                Matrix<value_type> operator*(const Vector<value_type> &vector) {
                     if (m != 1) {
                         throw std::logic_error("Matrix and Vector are not compatible.");
                     }
                     
-                    Matrix<ValueType> new_matrix(n, vector.size());
+                    Matrix<value_type> new_matrix(n, vector.size());
                     auto it_new = new_matrix.begin();
                     
                     for (auto it_this = this->begin(); it_this != this->end(); ++it_this) {
@@ -753,15 +753,15 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Matrix<ValueType>& operator*=(const ValueType &value) {
+                Matrix<value_type>& operator*=(const value_type &value) {
                     for (auto it = begin(); it != end(); ++it) {
                         *it *= value;
                     }
                     return *this;
                 }
                 
-                Matrix<ValueType> operator/(const ValueType &value) const {
-                    Matrix<ValueType> new_matrix(this->n, this->m);
+                Matrix<value_type> operator/(const value_type &value) const {
+                    Matrix<value_type> new_matrix(this->n, this->m);
                     auto it_new = new_matrix.begin();
                     
                     for (auto it_this = this->begin(); it_this != this->end(); ++it_this, ++it_new) {
@@ -771,33 +771,33 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                Matrix<ValueType>& operator/=(const ValueType &value) {
+                Matrix<value_type>& operator/=(const value_type &value) {
                     for (auto it = begin(); it != end(); ++it) {
                         *it /= value;
                     }
                     return *this;
                 }
                 
-                Matrix<ValueType> operator-() const {
-                    Matrix<ValueType> new_matrix(this->n, this->m);
+                Matrix<value_type> operator-() const {
+                    Matrix<value_type> new_matrix(this->n, this->m);
                     std::transform(this->begin(), this->end(), new_matrix.begin(),
-                                   [](const ValueType &value) {
+                                   [](const value_type &value) {
                                        return -value;
                                    });
                     
                     return new_matrix;
                 }
                 
-                ValueType Determinant() const {
+                value_type Determinant() const {
                     return algorithms::factorization::LU<Matrix, ValueTypeLU>::Determinant(*this);
                 }
                 
-                Matrix<ValueType> Pow(const ssize_t &power) const {
+                Matrix<value_type> Pow(const ssize_t &power) const {
                     if (!this->IsSquare()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     
-                    Matrix<ValueType> new_matrix;
+                    Matrix<value_type> new_matrix;
                     
                     switch (power) {
                         case -1:
@@ -823,16 +823,16 @@ namespace cda {
                 }
                 
                 //  --- STATIC METHODS ---
-                static Matrix<ValueType> zero(const size_t &rows, const size_t &columns) {
-                    return Matrix<ValueType>(rows, columns, 0);
+                static Matrix<value_type> zero(const size_t &rows, const size_t &columns) {
+                    return Matrix<value_type>(rows, columns, 0);
                 }
                 
-                static Matrix<ValueType> ones(const size_t &rows, const size_t &columns) {
-                    return Matrix<ValueType>(rows, columns, 1);
+                static Matrix<value_type> ones(const size_t &rows, const size_t &columns) {
+                    return Matrix<value_type>(rows, columns, 1);
                 }
                 
-                static Matrix<ValueType> Identity(const size_t &rows) {
-                    Matrix<ValueType> identity(rows, rows);
+                static Matrix<value_type> Identity(const size_t &rows) {
+                    Matrix<value_type> identity(rows, rows);
                     identity.Identity();
                     return identity;
                 }
