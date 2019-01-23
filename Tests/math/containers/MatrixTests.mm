@@ -128,11 +128,11 @@ using namespace cda::math::containers;
 
 - (void)testZero {
     const Matrix<double> expected_zero(5, 5, 0);
-    XCTAssertEqual(Matrix<double>::Zero(5, 5), expected_zero, "Zero static method OK");
+    XCTAssertEqual(Matrix<double>::zero(5, 5), expected_zero, "zero static method OK");
     
     Matrix<double> result(5, 5, 2);
-    result.Zero();
-    XCTAssertEqual(result, expected_zero, "Zero method OK");
+    result.zero();
+    XCTAssertEqual(result, expected_zero, "zero method OK");
 }
 
 - (void)testIdentity {
@@ -817,7 +817,7 @@ using namespace cda::math::containers;
     
     XCTAssertEqual(result1, expected1, "SetDiagonal scalar value OK");
     
-    auto result2 = Matrix<double>::Zero(5, 5);
+    auto result2 = Matrix<double>::zero(5, 5);
     result2.SetDiagonal(Vector<double>({1, 2, 3, 4, 5}));
     
     const Matrix<double> expected2({
@@ -1044,7 +1044,7 @@ using namespace cda::math::containers;
     XCTAssert(matrix.IsNull(), "Matrix is null");
     XCTAssert(matrix.IsEmpty(), "Matrix is empty");
     
-    matrix = Matrix<double>::Zero(4, 4);
+    matrix = Matrix<double>::zero(4, 4);
     XCTAssert(matrix.IsNull(), "Matrix is null");
     XCTAssert(!matrix.IsEmpty(), "Matrix is not empty");
 }

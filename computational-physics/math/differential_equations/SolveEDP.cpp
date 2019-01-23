@@ -505,7 +505,7 @@ Vector<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T>&
     if (!initEDP) {
         initEDP = true;
         
-        old1D = Vector<EDP_T>::Zero(n);
+        old1D = Vector<EDP_T>::zero(n);
         if (bc & BCL_df) {
             sol[0] = cId[0]*dt + (1.0 - Q1D(x[0])*dtx)*cI[0] + Q1D(x[0])*dtx*(cI[1] - dx*BCL(x[0], 0.0));
         }
@@ -561,7 +561,7 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
     if (!initEDP) {
         initEDP = true;
         
-        old2D.Zero();
+        old2D.zero();
         if (bc & BCT_df) {  //  Condición en el borde superior de la membrana
             for (int j=1; j<m-1; j++) {
                 if (!fixed[0][j]) {
@@ -745,7 +745,7 @@ Matrix<EDP_T> EDP::solveWave(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &
 Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &y, Matrix<EDP_T> &cI, Matrix<EDP_T> &cId)
 {
     if (!initEDP)
-        fixedEDP = Matrix<bool>::Zero(y.size(), x.size());
+        fixedEDP = Matrix<bool>::zero(y.size(), x.size());
     
     return solveWAVE(bc, 0, x, y, cI, cId, fixedEDP);
 }
@@ -965,7 +965,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
 {
     int dim = x.size();
     EDP_T h = (x[dim-1] - x[0])/(dim-1), length= x[dim-1]-x[0];
-    Vector<EDP_T> sol = Vector<EDP_T>::Zero(dim), solV, eigVal;
+    Vector<EDP_T> sol = Vector<EDP_T>::zero(dim), solV, eigVal;
     Matrix<EDP_T> A;
     
     //  Para guardar y cargar datos
@@ -983,8 +983,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     
     //  Posibles casos que se pueden plantear según las condiciones de contorno
     if (((bc & BCL_df) && (bc & BCR_f)) || ((bc & BCB_df) && (bc & BCT_f))) {
-        solV = Vector<EDP_T>::Zero(dim-1);
-        A = Matrix<EDP_T>::Zero(dim-1,dim-1);
+        solV = Vector<EDP_T>::zero(dim-1);
+        A = Matrix<EDP_T>::zero(dim-1,dim-1);
         
         A[0][0] = 2.0;
         A[0][1] = -2.0;
@@ -995,7 +995,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-2][dim-2] = 2.0;
         A[dim-2][dim-3] = -1.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim-1);
+        eigVal = Vector<EDP_T>::zero(dim-1);
         
         if ((bc & BCL_df) && (bc & BCR_f)) {
             fileName = "EV_BCLdf_BCRf.csv";
@@ -1004,8 +1004,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
         
     } else if (((bc & BCL_f) && (bc & BCR_df)) || ((bc & BCB_f) && (bc & BCT_df))) {
-        solV = Vector<EDP_T>::Zero(dim-1);
-        A = Matrix<EDP_T>::Zero(dim-1,dim-1);
+        solV = Vector<EDP_T>::zero(dim-1);
+        A = Matrix<EDP_T>::zero(dim-1,dim-1);
         
         A[0][0] = 2.0;
         A[0][1] = -1.0;
@@ -1016,7 +1016,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-2][dim-2] = 2.0;
         A[dim-2][dim-3] = -2.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim-1);
+        eigVal = Vector<EDP_T>::zero(dim-1);
         
         if ((bc & BCL_f) && (bc & BCR_df)) {
             fileName = "EV_BCLf_BCRdf.csv";
@@ -1025,8 +1025,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
         
     } else if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
-        solV = Vector<EDP_T>::Zero(dim);
-        A = Matrix<EDP_T>::Zero(dim,dim);
+        solV = Vector<EDP_T>::zero(dim);
+        A = Matrix<EDP_T>::zero(dim,dim);
         
         A[0][0] = 2.0;
         A[0][1] = -2.0;
@@ -1037,7 +1037,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-1][dim-1] = 2.0;
         A[dim-1][dim-2] = -2.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim);
+        eigVal = Vector<EDP_T>::zero(dim);
         
         if ((bc & BCL_df) && (bc & BCR_df)) {
             fileName = "EV_BCLdf_BCRdf.csv";
@@ -1046,8 +1046,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
         
     } else {
-        solV = Vector<EDP_T>::Zero(dim-2);
-        A = Matrix<EDP_T>::Zero(dim-2,dim-2);
+        solV = Vector<EDP_T>::zero(dim-2);
+        A = Matrix<EDP_T>::zero(dim-2,dim-2);
         
         A[0][0] = 2.0;
         A[0][1] = -1.0;
@@ -1058,7 +1058,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-3][dim-3] = 2.0;
         A[dim-3][dim-4] = -1.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim-2);
+        eigVal = Vector<EDP_T>::zero(dim-2);
         
         if ((bc & BCL_f) && (bc & BCR_f)) {
             fileName = "EV_BCLf_BCRf.csv";
@@ -1146,8 +1146,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc)
 
 Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, int modeY, unsigned char bc, unsigned char opt)
 {
-    Matrix<EDP_T> mx(Matrix<EDP_T>::Zero(1, x.size()));
-    Matrix<EDP_T> my(Matrix<EDP_T>::Zero(y.size(), 1));
+    Matrix<EDP_T> mx(Matrix<EDP_T>::zero(1, x.size()));
+    Matrix<EDP_T> my(Matrix<EDP_T>::zero(y.size(), 1));
     
     unsigned char bcX = 0, bcY = 0;
     if (bc & BCL_df) {

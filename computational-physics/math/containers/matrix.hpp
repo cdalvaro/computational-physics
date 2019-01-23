@@ -144,7 +144,7 @@ namespace cda {
                         
                         Matrix<ValueType> tmp(rows, columns);
                         if (fill) {
-                            tmp.Zero();
+                            tmp.zero();
                         }
                         
                         if (mat_size != 0) {
@@ -609,7 +609,7 @@ namespace cda {
                     std::fill(begin(), end(), value);
                 }
                 
-                void Zero() {
+                void zero() {
                     fill(0);
                 }
                 
@@ -622,7 +622,7 @@ namespace cda {
                         throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
                     }
                     
-                    Zero();
+                    zero();
                     auto it_end = end() + m;
                     const size_t step = m + 1;
                     for (auto it = begin(); it != it_end; it += step) {
@@ -823,7 +823,7 @@ namespace cda {
                 }
                 
                 //  --- STATIC METHODS ---
-                static Matrix<ValueType> Zero(const size_t &rows, const size_t &columns) {
+                static Matrix<ValueType> zero(const size_t &rows, const size_t &columns) {
                     return Matrix<ValueType>(rows, columns, 0);
                 }
                 

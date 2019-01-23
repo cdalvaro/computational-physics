@@ -327,11 +327,11 @@ namespace cda {
                     std::fill(begin(), end(), value);
                 }
                 
-                static Vector<ValueType> Zero(const size_t &size) {
+                static Vector<ValueType> zero(const size_t &size) {
                     return Vector<ValueType>(size, 0);
                 }
                 
-                void Zero() {
+                void zero() {
                     fill(0);
                 }
                 

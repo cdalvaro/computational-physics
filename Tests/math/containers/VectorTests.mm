@@ -265,11 +265,11 @@ using namespace cda::math::containers;
 
 - (void)testZero {
     const Vector<double> expected_zero(5, 0);
-    XCTAssertEqual(Vector<double>::Zero(5), expected_zero, "Zero static method OK");
+    XCTAssertEqual(Vector<double>::zero(5), expected_zero, "zero static method OK");
     
     Vector<double> result(5, 2);
-    result.Zero();
-    XCTAssertEqual(result, expected_zero, "Zero method OK");
+    result.zero();
+    XCTAssertEqual(result, expected_zero, "zero method OK");
 }
 
 - (void)testRandom {
