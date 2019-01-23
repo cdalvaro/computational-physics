@@ -605,16 +605,16 @@ namespace cda {
                 }
                 
                 //  Void functions
-                void Fill(const ValueType &value) {
+                void fill(const ValueType &value) {
                     std::fill(begin(), end(), value);
                 }
                 
                 void Zero() {
-                    Fill(0);
+                    fill(0);
                 }
                 
                 void Ones() {
-                    Fill(1);
+                    fill(1);
                 }
                 
                 void Identity() {

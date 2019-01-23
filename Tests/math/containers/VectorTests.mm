@@ -250,7 +250,7 @@ using namespace cda::math::containers;
     Vector<double> vector(10);
     const Vector<double> expected({2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
     
-    vector.Fill(2);
+    vector.fill(2);
     XCTAssertEqual(vector, expected, "Fill vector OK");
 }
 

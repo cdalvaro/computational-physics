@@ -65,7 +65,7 @@ namespace cda {
                 Vector(const size_t &size, const ValueType &value) :
                 n(size), v(nullptr), it_end(nullptr) {
                     alloc_memory(n);
-                    Fill(value);
+                    fill(value);
                 }
                 
                 /**
@@ -323,7 +323,7 @@ namespace cda {
                               });
                 }
                 
-                void Fill(const ValueType &value) {
+                void fill(const ValueType &value) {
                     std::fill(begin(), end(), value);
                 }
                 
@@ -332,7 +332,7 @@ namespace cda {
                 }
                 
                 void Zero() {
-                    Fill(0);
+                    fill(0);
                 }
                 
                 static Vector<ValueType> Ones(const size_t &size) {
@@ -340,7 +340,7 @@ namespace cda {
                 }
                 
                 void Ones() {
-                    Fill(1);
+                    fill(1);
                 }
                 
                 static Vector<ValueType> Random(const size_t &size, const ValueType &min, const ValueType &max) {
