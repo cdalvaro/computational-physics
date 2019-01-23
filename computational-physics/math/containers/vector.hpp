@@ -29,7 +29,7 @@ namespace cda {
                 size_t n;
                 T *v, *it_end;
                 
-                void AllocateMemory(const size_t &size) {
+                void alloc_memory(const size_t &size) {
                     if (size == 0) {
                         std::free(v);
                         v = it_end = nullptr;
@@ -54,7 +54,7 @@ namespace cda {
                  */
                 Vector(const size_t &size = 0) :
                 n(size), v(nullptr), it_end(nullptr) {
-                    AllocateMemory(n);
+                    alloc_memory(n);
                 }
                 
                 /**
@@ -64,7 +64,7 @@ namespace cda {
                  */
                 Vector(const size_t &size, const ValueType &value) :
                 n(size), v(nullptr), it_end(nullptr) {
-                    AllocateMemory(n);
+                    alloc_memory(n);
                     Fill(value);
                 }
                 
@@ -75,7 +75,7 @@ namespace cda {
                  */
                 Vector(const Vector<ValueType> &vector) :
                 n(vector.n), v(nullptr), it_end(nullptr) {
-                    AllocateMemory(n);
+                    alloc_memory(n);
                     std::copy(vector.begin(), vector.end(), this->begin());
                 }
                 
@@ -93,13 +93,13 @@ namespace cda {
                 template <size_t size>
                 Vector(const ValueType (& values)[size]) :
                 n(size), v(nullptr), it_end(nullptr) {
-                    AllocateMemory(size);
+                    alloc_memory(size);
                     std::copy(values, values + size, this->begin());
                 }
                 
                 Vector(const ValueType* const it_begin, const ValueType* const it_end) :
                 n(std::distance(it_begin, it_end)), v(nullptr), it_end(nullptr) {
-                    AllocateMemory(n);
+                    alloc_memory(n);
                     std::copy(it_begin, it_end, this->begin());
                 }
                 
@@ -134,7 +134,7 @@ namespace cda {
                         return;
                     }
                     
-                    AllocateMemory(size);
+                    alloc_memory(size);
                     if (fill && size > n) {
                         std::fill_n(v + n, size - n, static_cast<ValueType>(0));
                     }
@@ -357,7 +357,7 @@ namespace cda {
                 
                 void Clear() {
                     n = 0;
-                    AllocateMemory(n);
+                    alloc_memory(n);
                 }
                 
                 bool IsEmpty() const {
