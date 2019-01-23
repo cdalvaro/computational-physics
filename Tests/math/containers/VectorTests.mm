@@ -377,12 +377,12 @@ using namespace cda::math::containers;
 
 - (void)testPowElements {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector.PowElements(0), Vector<double>::ones(10), "Power 0 OK");
+    XCTAssertEqual(vector.pow(0), Vector<double>::ones(10), "Power 0 OK");
     
-    XCTAssertEqual(vector.PowElements(1), vector, "Power 1 OK");
+    XCTAssertEqual(vector.pow(1), vector, "Power 1 OK");
     
     const Vector<double> expected({1, 8, 27, 64, 125, 216, 343, 512, 729, 1000});
-    XCTAssertEqual(vector.PowElements(3), expected, "Power 3 OK");
+    XCTAssertEqual(vector.pow(3), expected, "Power 3 OK");
 }
 
 - (void)testSqrt {

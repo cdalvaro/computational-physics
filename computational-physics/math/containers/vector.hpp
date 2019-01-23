@@ -498,7 +498,7 @@ namespace cda {
                     return *this;
                 }
                 
-                Vector<ValueType> PowElements(const size_t &power) const {
+                Vector<ValueType> pow(const size_t &power) const {
                     Vector<ValueType> new_vector;
                     
                     switch (power) {
