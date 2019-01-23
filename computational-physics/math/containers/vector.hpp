@@ -343,13 +343,13 @@ namespace cda {
                     fill(1);
                 }
                 
-                static Vector<ValueType> Random(const size_t &size, const ValueType &min, const ValueType &max) {
-                    Vector<ValueType> random(size);
-                    random.Random(min, max);
-                    return random;
+                static Vector<ValueType> random(const size_t &size, const ValueType &min, const ValueType &max) {
+                    Vector<ValueType> _random(size);
+                    _random.random(min, max);
+                    return _random;
                 }
                 
-                void Random(const ValueType &min = 0, const ValueType &max = 1) {
+                void random(const ValueType &min = 0, const ValueType &max = 1) {
                     for (auto it = begin(); it != end(); ++it) {
                         *it = static_cast<ValueType>(drand48() * max + min);
                     }
