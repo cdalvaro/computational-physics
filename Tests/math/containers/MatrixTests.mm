@@ -1057,7 +1057,7 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    matrix.Clear();
+    matrix.clear();
     
     XCTAssert(matrix.IsNull(), "Matrix is null");
     XCTAssert(matrix.IsEmpty(), "Matrix is empty");

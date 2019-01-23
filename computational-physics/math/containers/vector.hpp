@@ -355,7 +355,7 @@ namespace cda {
                     }
                 }
                 
-                void Clear() {
+                void clear() {
                     n = 0;
                     alloc_memory(n);
                 }

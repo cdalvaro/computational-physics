@@ -123,7 +123,7 @@ using namespace cda::math::containers;
 - (void)testClear {
     Vector<double> vector(10, 1);
     
-    vector.Clear();
+    vector.clear();
     XCTAssert(vector.IsEmpty(), "Vector is empty");
     XCTAssert(vector.IsNull(), "Vector is null");
 }

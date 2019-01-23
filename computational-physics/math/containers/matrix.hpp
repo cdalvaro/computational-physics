@@ -552,7 +552,7 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                void Clear() {
+                void clear() {
                     alloc_memory(0);
                     n = m = mat_size = 0;
                 }
