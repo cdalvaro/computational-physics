@@ -600,7 +600,7 @@ namespace cda {
                     return false;
                 }
                 
-                ValueType * Find(const ValueType &value) const {
+                ValueType * find(const ValueType &value) const {
                     return cda::math::algorithms::find::Element(begin(), end(), value);
                 }
                 

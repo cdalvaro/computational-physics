@@ -986,13 +986,13 @@ using namespace cda::math::containers;
 - (void)testFindMethod {
     const Matrix<double> matrix({{1, 2, 3}, {4, 5, 6}, {7, 4, 9}});
     
-    auto it_value_4 = matrix.Find(4);
+    auto it_value_4 = matrix.find(4);
     XCTAssertEqual(*it_value_4, 4, "Value 4 has been found");
     
     auto it_first_value_4 = matrix.begin() + 3;
     XCTAssertEqual(it_value_4, it_first_value_4, "Found value 4 is the firstone");
     
-    auto it_value_12 = matrix.Find(12);
+    auto it_value_12 = matrix.find(12);
     XCTAssertEqual(it_value_12, matrix.end(), "Value 12 is not present");
 }
 

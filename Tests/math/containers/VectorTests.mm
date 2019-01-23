@@ -400,13 +400,13 @@ using namespace cda::math::containers;
 - (void)testFindMethod {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 4, 9, 10});
     
-    auto it_value_4 = vector.Find(4);
+    auto it_value_4 = vector.find(4);
     XCTAssertEqual(*it_value_4, 4, "Value 4 has been found");
     
     auto it_first_value_4 = vector.begin() + 3;
     XCTAssertEqual(it_value_4, it_first_value_4, "Found value 4 is the firstone");
     
-    auto it_value_12 = vector.Find(12);
+    auto it_value_12 = vector.find(12);
     XCTAssertEqual(it_value_12, vector.end(), "Value 12 is not present");
 }
 
