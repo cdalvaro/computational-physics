@@ -299,7 +299,7 @@ namespace cda {
                     return v[element];
                 }
                 
-                double Norm() const {
+                double norm() const {
                     return std::sqrt(SquareNorm());
                 }
                 
@@ -313,7 +313,7 @@ namespace cda {
                  @return The normalized vector
                  */
                 Vector<ValueType> Unitary() const {
-                    return (* this) / Norm();
+                    return (* this) / norm();
                 }
                 
                 void Sort() {

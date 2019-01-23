@@ -445,7 +445,7 @@ using namespace cda::math::containers;
     XCTAssertEqual(result, expected, "The square norm of the vector is OK");
     
     // Norm
-    result = vector.Norm();
+    result = vector.norm();
     expected = std::sqrt(expected);
     XCTAssertEqual(result, expected, "The norm of the vector is OK");
 }

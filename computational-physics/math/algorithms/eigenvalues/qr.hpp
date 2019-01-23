@@ -163,7 +163,7 @@ namespace cda {
                         //  First column
                         auto c = matrix.GetColumnAsVector(0);
                         auto vt = I.GetRowAsVector(0);
-                        vt *= signum(c[0]) * c.Norm();
+                        vt *= signum(c[0]) * c.norm();
                         vt += c;
                         
                         q = containers::Transpose(vt) * vt;
@@ -187,7 +187,7 @@ namespace cda {
                                 h = I;
                             } else {
                                 vt = I.GetRowAsVector(row, row);
-                                vt *= signum(c[0]) * c.Norm();
+                                vt *= signum(c[0]) * c.norm();
                                 vt += c;
                                 
                                 h = containers::Transpose(vt) * vt;
