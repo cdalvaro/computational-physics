@@ -167,7 +167,7 @@ namespace cda {
                         vt += c;
                         
                         q = containers::Transpose(vt) * vt;
-                        q *= -2.0 / vt.SquareNorm();
+                        q *= -2.0 / vt.square_norm();
                         q += I;
                         
                         r = q * matrix;
@@ -191,7 +191,7 @@ namespace cda {
                                 vt += c;
                                 
                                 h = containers::Transpose(vt) * vt;
-                                h *= -2.0 / vt.SquareNorm();
+                                h *= -2.0 / vt.square_norm();
                                 h += Matrix<ValueType>::Identity(rows - row);
                                 
                                 h__ = I;

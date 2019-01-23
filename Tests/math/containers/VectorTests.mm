@@ -440,7 +440,7 @@ using namespace cda::math::containers;
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     // Square Norm
-    auto result = vector.SquareNorm();
+    auto result = vector.square_norm();
     double expected = 385;
     XCTAssertEqual(result, expected, "The square norm of the vector is OK");
     
