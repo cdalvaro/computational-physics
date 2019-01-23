@@ -1084,7 +1084,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         const std::string path = inPath + fileName;
         std::ofstream out(path.data());
         out.precision(15);
-        out << eigVal.Sqrt() * length/h;
+        out << eigVal.sqrt() * length/h;
         std::cout << "Terminado.\n";
         std::cout << "\tLos datos se han guardado en: " << path << std::endl;
     } else if (opt & IMPORT_DATA) {

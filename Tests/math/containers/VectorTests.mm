@@ -389,7 +389,7 @@ using namespace cda::math::containers;
     const Vector<double> vector({1, 4, 9, 16, 25, 36, 49, 64, 81, 100});
     const Vector<double> expected({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
-    XCTAssertEqual(vector.Sqrt(), expected, "Sqrt method OK");
+    XCTAssertEqual(vector.sqrt(), expected, "sqrt method OK");
 }
 
 - (void)testSumAllElements {

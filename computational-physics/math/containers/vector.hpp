@@ -521,7 +521,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                Vector<ValueType> Sqrt() const {
+                Vector<ValueType> sqrt() const {
                     Vector<ValueType> new_vector(this->n);
                     auto it_new_vector = new_vector.begin();
                     for (auto it_this = this->begin(); it_this != this->end(); ++it_this) {
