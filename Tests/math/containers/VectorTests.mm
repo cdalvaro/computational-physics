@@ -349,11 +349,11 @@ using namespace cda::math::containers;
     const Vector<double> yAxis({0, 1, 0});
     const Vector<double> zAxis({0, 0, 1});
     
-    XCTAssertEqual(xAxis.CrossProduct3D(yAxis), zAxis, "Cross product OK");
+    XCTAssertEqual(xAxis.cross_product(yAxis), zAxis, "Cross product OK");
     
     const Vector<double> another_vector(4, 1);
-    XCTAssertThrows(xAxis.CrossProduct3D(another_vector), "Vectors must be of the same size");
-    XCTAssertThrows(another_vector.CrossProduct3D(another_vector), "Vector must be of size 3");
+    XCTAssertThrows(xAxis.cross_product(another_vector), "Vectors must be of the same size");
+    XCTAssertThrows(another_vector.cross_product(another_vector), "Vector must be of size 3");
 }
 
 - (void)testDivisions {

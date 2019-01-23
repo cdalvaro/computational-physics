@@ -563,7 +563,7 @@ namespace cda {
                     return new_vector;
                 }
                 
-                Vector<ValueType> CrossProduct3D(const Vector<ValueType> &vector) const {
+                Vector<ValueType> cross_product(const Vector<ValueType> &vector) const {
                     if (this->n != vector.n || this->n != 3) {
                         throw std::logic_error("Both vectors must be of the same size, and size must be 3");
                     }
