@@ -585,27 +585,27 @@ using namespace cda::math::containers;
     
     XCTAssertThrows(matrix.GetMatrix(1, 1, 6, 6), "Unable to get submatrix. Elements out of bounds");
     
-    // --- GetRow
+    // --- get_row
     const Matrix<double> expected_first_row({{0,  1,  2,  3,  4}});
-    XCTAssertEqual(matrix.GetRow(0), expected_first_row, "GetRow first OK");
+    XCTAssertEqual(matrix.get_row(0), expected_first_row, "get_row first OK");
     
     const Matrix<double> expected_last_row({{15, 16, 17, 18, 19}});
-    XCTAssertEqual(matrix.GetRow(3), expected_last_row, "GetRow last OK");
+    XCTAssertEqual(matrix.get_row(3), expected_last_row, "get_row last OK");
     
     const Matrix<double> expected_in_between_row({{10, 11, 12, 13, 14}});
-    XCTAssertEqual(matrix.GetRow(2), expected_in_between_row, "GetRow last OK");
+    XCTAssertEqual(matrix.get_row(2), expected_in_between_row, "get_row last OK");
     
-    XCTAssertThrows(matrix.GetRow(4), "GetRow out of bounds");
+    XCTAssertThrows(matrix.get_row(4), "get_row out of bounds");
     
     // --- GetColumn
     const Matrix<double> expected_first_column(4, 1, {0, 5, 10, 15});
-    XCTAssertEqual(matrix.GetColumn(0), expected_first_column, "GetRow first OK");
+    XCTAssertEqual(matrix.GetColumn(0), expected_first_column, "get_row first OK");
     
     const Matrix<double> expected_last_column(4, 1, {4, 9, 14, 19});
-    XCTAssertEqual(matrix.GetColumn(4), expected_last_column, "GetRow last OK");
+    XCTAssertEqual(matrix.GetColumn(4), expected_last_column, "get_row last OK");
     
     const Matrix<double> expected_in_between_column(4, 1, {2, 7, 12, 17});
-    XCTAssertEqual(matrix.GetColumn(2), expected_in_between_column, "GetRow last OK");
+    XCTAssertEqual(matrix.GetColumn(2), expected_in_between_column, "get_row last OK");
     
     XCTAssertThrows(matrix.GetColumn(5), "GetColumn out of bounds");
     

@@ -215,7 +215,7 @@ namespace cda {
                     return !this->operator==(matrix);
                 }
                 
-                Matrix<value_type> GetRow(const size_t &row) const {
+                Matrix<value_type> get_row(const size_t &row) const {
                     if (row >= n) {
                         throw std::out_of_range("Index out of bounds");
                     }
