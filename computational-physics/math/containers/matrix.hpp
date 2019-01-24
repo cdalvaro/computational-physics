@@ -289,7 +289,7 @@ namespace cda {
                     return Vector<value_type>(it_begin_row, it_end_row);
                 }
                 
-                Vector<value_type> GetColumnAsVector(const size_t &column, const size_t &from_row = 0) const {
+                Vector<value_type> get_column_as_vector(const size_t &column, const size_t &from_row = 0) const {
                     if (column >= this->m || from_row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -445,7 +445,7 @@ namespace cda {
                 }
                 
                 Vector<value_type> SumRowsAsVector() const {
-                    return SumRows().GetColumnAsVector(0);
+                    return SumRows().get_column_as_vector(0);
                 }
                 
                 value_type SumRow(const size_t &row) const {

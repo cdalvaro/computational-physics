@@ -131,7 +131,7 @@ namespace cda {
                             }
                         }
                         
-                        eigen_vectors.emplace(eigen_value, eigenVector.GetColumnAsVector(0) / eigenVector[0][rows - 1]);
+                        eigen_vectors.emplace(eigen_value, eigenVector.get_column_as_vector(0) / eigenVector[0][rows - 1]);
                         
                         return eigen_vectors[eigen_value];
                     }
@@ -161,7 +161,7 @@ namespace cda {
                         const auto I = Matrix<ValueType>::Identity(rows);
                         
                         //  First column
-                        auto c = matrix.GetColumnAsVector(0);
+                        auto c = matrix.get_column_as_vector(0);
                         auto vt = I.get_row_as_vector(0);
                         vt *= signum(c[0]) * c.norm();
                         vt += c;
@@ -181,7 +181,7 @@ namespace cda {
                         ValueType *it_r_column, *it_end_r_column;
                         
                         for (size_t row = 1; row < last_row; ++row) {
-                            c = r.GetColumnAsVector(row, row);
+                            c = r.get_column_as_vector(row, row);
                             
                             if (c.is_null()) {
                                 h = I;

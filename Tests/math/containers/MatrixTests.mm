@@ -631,30 +631,30 @@ using namespace cda::math::containers;
         {15, 16, 17, 18, 19}
     });
     
-    // --- GetColumnAsVector ---
+    // --- get_column_as_vector ---
     // Get the whole first column
     Vector<double> expected_vector({0, 5, 10, 15});
-    XCTAssertEqual(matrix.GetColumnAsVector(0), expected_vector, "GetColumnAsVector for the whole first column OK!");
+    XCTAssertEqual(matrix.get_column_as_vector(0), expected_vector, "get_column_as_vector for the whole first column OK!");
     
     // Get the last two elements of the first column
     expected_vector = Vector<double>({10, 15});
-    XCTAssertEqual(matrix.GetColumnAsVector(0, 2), expected_vector, "GetColumnAsVector for the last two elements of the first column OK!");
+    XCTAssertEqual(matrix.get_column_as_vector(0, 2), expected_vector, "get_column_as_vector for the last two elements of the first column OK!");
     
     // Get the whole third column
     expected_vector = Vector<double>({2, 7, 12, 17});
-    XCTAssertEqual(matrix.GetColumnAsVector(2), expected_vector, "GetColumnAsVector for the whole third column OK!");
+    XCTAssertEqual(matrix.get_column_as_vector(2), expected_vector, "get_column_as_vector for the whole third column OK!");
     
     // Get the last three elements of the fourth column
     expected_vector = Vector<double>({8, 13, 18});
-    XCTAssertEqual(matrix.GetColumnAsVector(3, 1), expected_vector, "GetColumnAsVector for the last three elements of the fourth column OK!");
+    XCTAssertEqual(matrix.get_column_as_vector(3, 1), expected_vector, "get_column_as_vector for the last three elements of the fourth column OK!");
     
     // Get the last column
     expected_vector = Vector<double>({4, 9, 14, 19});
-    XCTAssertEqual(matrix.GetColumnAsVector(4), expected_vector, "GetColumnAsVector for the last column OK!");
+    XCTAssertEqual(matrix.get_column_as_vector(4), expected_vector, "get_column_as_vector for the last column OK!");
     
     // Get column out of bounds
-    XCTAssertThrows(matrix.GetColumnAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");
-    XCTAssertThrows(matrix.GetColumnAsVector(6), "GetColumnAsVector out of bounds by number of column");
+    XCTAssertThrows(matrix.get_column_as_vector(3, 6), "get_column_as_vector out of bounds by number of elements");
+    XCTAssertThrows(matrix.get_column_as_vector(6), "get_column_as_vector out of bounds by number of column");
     
     // --- get_row_as_vector ---
     // Get the whole first row
@@ -674,8 +674,8 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix.get_row_as_vector(3, 4), expected_vector, "get_row_as_vector for the last element of the last row OK!");
     
     // Get row out of bounds
-    XCTAssertThrows(matrix.get_row_as_vector(3, 6), "GetColumnAsVector out of bounds by number of elements");
-    XCTAssertThrows(matrix.get_row_as_vector(6), "GetColumnAsVector out of bounds by number of column");
+    XCTAssertThrows(matrix.get_row_as_vector(3, 6), "get_column_as_vector out of bounds by number of elements");
+    XCTAssertThrows(matrix.get_row_as_vector(6), "get_column_as_vector out of bounds by number of column");
 }
 
 - (void)testSetMatrixMethods {
@@ -792,16 +792,16 @@ using namespace cda::math::containers;
     
     result.ones();
     new_column = Matrix<double>(4, 1, {2, -3, 6, -8});
-    result.SetColumn(1, new_column.GetColumnAsVector(0));
+    result.SetColumn(1, new_column.get_column_as_vector(0));
     XCTAssertEqual(result, expected, "SetColumn (vector) complete OK");
     
-    XCTAssertThrows(result.SetColumn(5, new_column.GetColumnAsVector(0)), "SetColumn (vector): column out of bounds");
+    XCTAssertThrows(result.SetColumn(5, new_column.get_column_as_vector(0)), "SetColumn (vector): column out of bounds");
     
     new_column = Matrix<double>(5, 1, {1, 2, 3, 4, 5});
-    XCTAssertThrows(result.SetColumn(1, new_column.GetColumnAsVector(0)), "SetColumn (vector): new column has more elements than old one");
+    XCTAssertThrows(result.SetColumn(1, new_column.get_column_as_vector(0)), "SetColumn (vector): new column has more elements than old one");
     
     new_column = Matrix<double>(3, 1, {1, 2, 3});
-    XCTAssertThrows(result.SetColumn(1, new_column.GetColumnAsVector(0)), "SetColumn (vector): new column has fewer elements than old one");
+    XCTAssertThrows(result.SetColumn(1, new_column.get_column_as_vector(0)), "SetColumn (vector): new column has fewer elements than old one");
 }
 
 - (void)testSetDiagonal {
@@ -846,7 +846,7 @@ using namespace cda::math::containers;
     
     Matrix<double> expected1(4, 1, {8, 19, 39, 54});
     XCTAssertEqual(matrix_test.SumRows(), expected1, "SumRows OK");
-    XCTAssertEqual(matrix_test.SumRowsAsVector(), expected1.GetColumnAsVector(0), "SumRowsAsVector OK");
+    XCTAssertEqual(matrix_test.SumRowsAsVector(), expected1.get_column_as_vector(0), "SumRowsAsVector OK");
     
     
     XCTAssertEqual(matrix_test.SumRow(1), expected1[0][1], "SumRow OK");
