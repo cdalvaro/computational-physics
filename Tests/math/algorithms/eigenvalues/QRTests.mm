@@ -113,12 +113,12 @@ const Matrix<double> test_matrix({
     
     for (auto it = 0; it < eigenvalues.size(); ++it) {
         XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.at(it))
-                               withExpected:expected_eigenvectors.GetRowAsVector(it)
+                               withExpected:expected_eigenvectors.get_row_as_vector(it)
                                whitAccuracy:accuracy],
                   @"Eigenvector OK for eigenvalue %f", eigenvalues.at(it));
         
         XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.at(it))
-                               withExpected:expected_eigenvectors.GetRowAsVector(it)
+                               withExpected:expected_eigenvectors.get_row_as_vector(it)
                                whitAccuracy:accuracy],
                   @"Eigenvector cache OK for eigenvalue %f", eigenvalues.at(it));
     }
@@ -140,7 +140,7 @@ const Matrix<double> test_matrix({
     
     for (auto it = 0; it < eigenvalues.size(); ++it) {
         XCTAssert([TestsTools compareVector:eigenvectors.at(eigenvalues.at(it))
-                               withExpected:expected_eigenvectors.GetRowAsVector(it)
+                               withExpected:expected_eigenvectors.get_row_as_vector(it)
                                whitAccuracy:accuracy],
                   @"Eigenvector OK for eigenvalue %f", eigenvalues.at(it));
     }

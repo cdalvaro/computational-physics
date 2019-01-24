@@ -656,26 +656,26 @@ using namespace cda::math::containers;
     XCTAssertThrows(matrix.GetColumnAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");
     XCTAssertThrows(matrix.GetColumnAsVector(6), "GetColumnAsVector out of bounds by number of column");
     
-    // --- GetRowAsVector ---
+    // --- get_row_as_vector ---
     // Get the whole first row
     expected_vector = Vector<double>({0,  1,  2,  3,  4});
-    XCTAssertEqual(matrix.GetRowAsVector(0), expected_vector, "GetRowAsVector for the whole first row OK!");
+    XCTAssertEqual(matrix.get_row_as_vector(0), expected_vector, "get_row_as_vector for the whole first row OK!");
     
     // Get the last two elements of the first column
     expected_vector = Vector<double>({7,  8,  9});
-    XCTAssertEqual(matrix.GetRowAsVector(1, 2), expected_vector, "GetRowAsVector for the last three elements of the second row OK!");
+    XCTAssertEqual(matrix.get_row_as_vector(1, 2), expected_vector, "get_row_as_vector for the last three elements of the second row OK!");
     
     // Get the whole third row
     expected_vector = Vector<double>({10, 11, 12, 13, 14});
-    XCTAssertEqual(matrix.GetRowAsVector(2), expected_vector, "GetRowAsVector for the whole third row OK!");
+    XCTAssertEqual(matrix.get_row_as_vector(2), expected_vector, "get_row_as_vector for the whole third row OK!");
     
     // Get the last element of the last row
     expected_vector = Vector<double>({19});
-    XCTAssertEqual(matrix.GetRowAsVector(3, 4), expected_vector, "GetRowAsVector for the last element of the last row OK!");
+    XCTAssertEqual(matrix.get_row_as_vector(3, 4), expected_vector, "get_row_as_vector for the last element of the last row OK!");
     
     // Get row out of bounds
-    XCTAssertThrows(matrix.GetRowAsVector(3, 6), "GetColumnAsVector out of bounds by number of elements");
-    XCTAssertThrows(matrix.GetRowAsVector(6), "GetColumnAsVector out of bounds by number of column");
+    XCTAssertThrows(matrix.get_row_as_vector(3, 6), "GetColumnAsVector out of bounds by number of elements");
+    XCTAssertThrows(matrix.get_row_as_vector(6), "GetColumnAsVector out of bounds by number of column");
 }
 
 - (void)testSetMatrixMethods {
@@ -756,16 +756,16 @@ using namespace cda::math::containers;
     
     result.ones();
     new_row = Matrix<double>({{2, -5, 7, 9, -7}});
-    result.SetRow(1, new_row.GetRowAsVector(0));
+    result.SetRow(1, new_row.get_row_as_vector(0));
     XCTAssertEqual(result, expected, "SetRow (vector) complete OK");
     
-    XCTAssertThrows(result.SetRow(4, new_row.GetRowAsVector(0)), "SetRow (vector): row out of bounds");
+    XCTAssertThrows(result.SetRow(4, new_row.get_row_as_vector(0)), "SetRow (vector): row out of bounds");
     
     new_row = Matrix<double>({{1, 2, 3, 4, 5, 6}});
-    XCTAssertThrows(result.SetRow(1, new_row.GetRowAsVector(0)), "SetRow (vector): new row has more elements than old one");
+    XCTAssertThrows(result.SetRow(1, new_row.get_row_as_vector(0)), "SetRow (vector): new row has more elements than old one");
     
     new_row = Matrix<double>({{1, 2, 3}});
-    XCTAssertThrows(result.SetRow(1, new_row.GetRowAsVector(0)), "SetRow (vector): new row has fewer elements than old one");
+    XCTAssertThrows(result.SetRow(1, new_row.get_row_as_vector(0)), "SetRow (vector): new row has fewer elements than old one");
 }
 
 - (void)testSetColumn {
@@ -863,7 +863,7 @@ using namespace cda::math::containers;
     
     const Matrix<double> expected1(1, 4, {37, 32, 28, 23});
     XCTAssertEqual(matrix_test.SumColumns(), expected1, "CumColumns OK");
-    XCTAssertEqual(matrix_test.SumColumnsAsVector(), expected1.GetRowAsVector(0), "SumColumnsAsVector OK");
+    XCTAssertEqual(matrix_test.SumColumnsAsVector(), expected1.get_row_as_vector(0), "SumColumnsAsVector OK");
     
     XCTAssertEqual(matrix_test.SumColumn(1), expected1[0][1], "SumColumn OK");
     XCTAssertThrows(matrix_test.SumColumn(4), "SumColumn out of range");

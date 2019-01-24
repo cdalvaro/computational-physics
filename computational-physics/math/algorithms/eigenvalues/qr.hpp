@@ -162,7 +162,7 @@ namespace cda {
                         
                         //  First column
                         auto c = matrix.GetColumnAsVector(0);
-                        auto vt = I.GetRowAsVector(0);
+                        auto vt = I.get_row_as_vector(0);
                         vt *= signum(c[0]) * c.norm();
                         vt += c;
                         
@@ -186,7 +186,7 @@ namespace cda {
                             if (c.is_null()) {
                                 h = I;
                             } else {
-                                vt = I.GetRowAsVector(row, row);
+                                vt = I.get_row_as_vector(row, row);
                                 vt *= signum(c[0]) * c.norm();
                                 vt += c;
                                 

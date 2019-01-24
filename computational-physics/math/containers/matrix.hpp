@@ -278,7 +278,7 @@ namespace cda {
                     return diagonal;
                 }
                 
-                Vector<value_type> GetRowAsVector(const size_t &row, const size_t &from_column = 0) const {
+                Vector<value_type> get_row_as_vector(const size_t &row, const size_t &from_column = 0) const {
                     if (row >= this->n || from_column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -476,7 +476,7 @@ namespace cda {
                 }
                 
                 Vector<value_type> SumColumnsAsVector() const {
-                    return SumColumns().GetRowAsVector(0);
+                    return SumColumns().get_row_as_vector(0);
                 }
                 
                 value_type SumColumn(const size_t &column) const {

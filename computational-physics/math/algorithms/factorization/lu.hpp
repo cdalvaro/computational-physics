@@ -88,7 +88,7 @@ namespace cda {
                         const auto I = Matrix<ValueType>::Identity(rows);
                         
                         for (size_t k = 0; k < rows; ++k) {
-                            inverse.SetColumn(k, SolveLinearSystem(I.GetRowAsVector(k)));
+                            inverse.SetColumn(k, SolveLinearSystem(I.get_row_as_vector(k)));
                         }
                         
                         return inverse;
