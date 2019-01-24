@@ -37,7 +37,7 @@ using namespace cda::math::containers;
     
     const Matrix<double> matrix1(4, 4, 1);
     XCTAssert(!matrix1.is_empty() && !matrix1.is_null(), "matrix1 is not empty and is not null");
-    XCTAssertEqual(matrix1.Rows(), 4, "The number of rows of matrix1 is OK");
+    XCTAssertEqual(matrix1.rows(), 4, "The number of rows of matrix1 is OK");
     XCTAssertEqual(matrix1.Columns(), 4, "The number of columns of matrix1 is OK");
     XCTAssertEqual(matrix1.size(), 16, "The size of matrix1 is OK");
     
@@ -57,7 +57,7 @@ using namespace cda::math::containers;
         12, 13, 14, 15
     });
     XCTAssert(!matrix2.is_empty() && !matrix2.is_null(), "matrix2 is not empty and is not null");
-    XCTAssertEqual(matrix2.Rows(), 4, "The number of rows of matrix2 is OK");
+    XCTAssertEqual(matrix2.rows(), 4, "The number of rows of matrix2 is OK");
     XCTAssertEqual(matrix2.Columns(), 4, "The number of columns of matrix2 is OK");
     XCTAssertEqual(matrix2.size(), 16, "The size of matrix2 is OK");
     
@@ -70,7 +70,7 @@ using namespace cda::math::containers;
         {12, 13, 14, 15}
     });
     XCTAssert(!matrix3.is_empty() && !matrix3.is_null(), "matrix3 is not empty and is not null");
-    XCTAssertEqual(matrix3.Rows(), 4, "The number of rows of matrix3 is OK");
+    XCTAssertEqual(matrix3.rows(), 4, "The number of rows of matrix3 is OK");
     XCTAssertEqual(matrix3.Columns(), 4, "The number of columns of matrix3 is OK");
     XCTAssertEqual(matrix3.size(), 16, "The size of matrix3 is OK");
     
@@ -204,7 +204,7 @@ using namespace cda::math::containers;
     });
     
     auto result(matrix);
-    result.resize(matrix.Rows(), matrix.Columns());
+    result.resize(matrix.rows(), matrix.Columns());
     XCTAssertEqual(result, matrix, "matrix has not been changed");
     
     const Matrix<double> expected1({

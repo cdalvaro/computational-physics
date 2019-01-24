@@ -35,7 +35,7 @@ namespace cda {
                             throw std::logic_error("The system is matrix is not square");
                         }
                         
-                        auto rows = system.Rows();
+                        auto rows = system.rows();
                         
                         if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the system matrix does not match the number of elements in the b terms vector.");
@@ -71,7 +71,7 @@ namespace cda {
                             throw std::logic_error("The system is matrix is not square");
                         }
                         
-                        const auto rows = system.Rows();
+                        const auto rows = system.rows();
                         
                         if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the system matrix does not match the number of elements in the b terms vector.");

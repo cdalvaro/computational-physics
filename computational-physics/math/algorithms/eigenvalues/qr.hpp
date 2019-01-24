@@ -32,7 +32,7 @@ namespace cda {
                     QR(const Matrix<ValueType> &matrix,
                        const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
-                    original(matrix), rows(matrix.Rows()),
+                    original(matrix), rows(matrix.rows()),
                     max_iterations(max_iterations), accuracy(accuracy) {
                         if (!matrix.IsSquare()) {
                             throw std::logic_error("Matrix must be square to compute its eigenvalues.");

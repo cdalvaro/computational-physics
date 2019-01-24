@@ -75,7 +75,7 @@ namespace cda {
                 
                 template<typename ValueType2>
                 Matrix(const Matrix<ValueType2> &matrix) :
-                n(matrix.Rows()), m(matrix.Columns()), mat_size(matrix.size()),
+                n(matrix.rows()), m(matrix.Columns()), mat_size(matrix.size()),
                 a(nullptr), it_end(nullptr) {
                     alloc_memory(mat_size);
                     std::copy(matrix.begin(), matrix.end(), this->begin());
@@ -402,7 +402,7 @@ namespace cda {
                         throw std::out_of_range("Index out of bounds.");
                     }
                     
-                    const auto number_of_rows = std::min(this->n - row, matrix.Rows());
+                    const auto number_of_rows = std::min(this->n - row, matrix.rows());
                     const auto number_of_columns = std::min(this->m - column, matrix.Columns());
                     
                     auto it_matrix = matrix.begin();
@@ -418,7 +418,7 @@ namespace cda {
                     return std::pair<size_t, size_t>{ n, m };
                 }
                 
-                size_t Rows() const {
+                size_t rows() const {
                     return n;
                 }
                 
@@ -856,7 +856,7 @@ template <typename ValueType>
 cda::math::containers::Matrix<ValueType> operator*(const ValueType &value,
                                            const cda::math::containers::Matrix<ValueType> &matrix) {
     
-    cda::math::containers::Matrix<ValueType> tmp(matrix.Rows(), matrix.Columns());
+    cda::math::containers::Matrix<ValueType> tmp(matrix.rows(), matrix.Columns());
     auto it_tmp = tmp.begin();
     
     for (auto it_matrix = matrix.begin(); it_matrix != matrix.end(); ++it_matrix, ++it_tmp) {
@@ -870,7 +870,7 @@ template <typename ValueType>
 cda::math::containers::Vector<ValueType> operator*(const cda::math::containers::Vector<ValueType> &vector,
                                            const cda::math::containers::Matrix<ValueType> &matrix) {
     
-    const auto &rows = matrix.Rows();
+    const auto &rows = matrix.rows();
     if (rows != vector.size()) {
         throw std::logic_error("The vector and the matrix are incompatible");
     }
@@ -893,11 +893,11 @@ template <typename ValueType>
 cda::math::containers::Matrix<ValueType> operator&&(const cda::math::containers::Matrix<ValueType> &left_matrix,
                                             const cda::math::containers::Matrix<ValueType> &right_matrix) {
     
-    if (left_matrix.Rows() != right_matrix.Rows()) {
+    if (left_matrix.rows() != right_matrix.rows()) {
         throw std::logic_error("Both matrices must have the same number of rows");
     }
     
-    cda::math::containers::Matrix<ValueType> new_matrix(left_matrix.Rows(), left_matrix.Columns() + right_matrix.Columns());
+    cda::math::containers::Matrix<ValueType> new_matrix(left_matrix.rows(), left_matrix.Columns() + right_matrix.Columns());
     new_matrix.set_matrix(0, 0, left_matrix);
     new_matrix.set_matrix(0, left_matrix.Columns(), right_matrix);
     
@@ -910,8 +910,8 @@ void operator||(cda::math::containers::Matrix<ValueType> &left_matrix,
     
     const size_t left_matrix_columns = left_matrix.Columns() / 2;
     
-    right_matrix = left_matrix.get_matrix(0, left_matrix_columns, left_matrix.Rows(), left_matrix.Columns() - left_matrix_columns);
-    left_matrix.resize(left_matrix.Rows(), left_matrix_columns);
+    right_matrix = left_matrix.get_matrix(0, left_matrix_columns, left_matrix.rows(), left_matrix.Columns() - left_matrix_columns);
+    left_matrix.resize(left_matrix.rows(), left_matrix_columns);
 }
 
 template <typename ValueType>
@@ -938,9 +938,9 @@ void operator>>(std::istream &input,
             
             ++element;
             
-            if (element >= matrix.Rows()) {
+            if (element >= matrix.rows()) {
                 initial_size *= 2;
-                matrix.resize(matrix.Rows() + initial_size, 1);
+                matrix.resize(matrix.rows() + initial_size, 1);
             }
             
             if (is_first_row) {
@@ -969,7 +969,7 @@ template <typename ValueType>
 std::ostream& operator<<(std::ostream &output,
                          const cda::math::containers::Matrix<ValueType> &matrix) {
     
-    const size_t rows = matrix.Rows();
+    const size_t rows = matrix.rows();
     const size_t columns = matrix.Columns();
     
     if (output.rdbuf() == std::cout.rdbuf()) {

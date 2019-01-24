@@ -26,7 +26,7 @@
          withExpected: (cda::math::containers::Matrix<double>) expected
          whitAccuracy: (double) accuracy {
     
-    if (compare.Rows() != expected.Rows() || compare.Columns() != expected.Columns()) {
+    if (compare.rows() != expected.rows() || compare.Columns() != expected.Columns()) {
         return NO;
     }
     

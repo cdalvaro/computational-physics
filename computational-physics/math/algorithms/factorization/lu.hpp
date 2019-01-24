@@ -22,7 +22,7 @@ namespace cda {
                 public:
                     
                     LU(const Matrix<ValueType> &matrix) :
-                    lu(matrix), rows(matrix.Rows()), is_factorized(false), is_degenerate(false) {
+                    lu(matrix), rows(matrix.rows()), is_factorized(false), is_degenerate(false) {
                         if (!matrix.IsSquare()) {
                             throw std::logic_error("LU matrix cannot be computed for a non-square matrix.");
                         }
