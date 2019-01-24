@@ -109,7 +109,7 @@ namespace cda {
                         }
                         
                         Matrix<ValueType> inverse_matrix(rows, rows, 0);
-                        inverse_matrix.SetDiagonal(eigen_value * (accuracy + 1.0));
+                        inverse_matrix.set_diagonal(eigen_value * (accuracy + 1.0));
                         
                         inverse_matrix = (original - inverse_matrix).Pow(-1);
                         

@@ -806,7 +806,7 @@ using namespace cda::math::containers;
 
 - (void)testSetDiagonal {
     auto result1 = Matrix<double>::ones(4, 4);
-    result1.SetDiagonal(2);
+    result1.set_diagonal(2);
     
     const Matrix<double> expected1({
         {2, 1, 1, 1},
@@ -815,10 +815,10 @@ using namespace cda::math::containers;
         {1, 1, 1, 2}
     });
     
-    XCTAssertEqual(result1, expected1, "SetDiagonal scalar value OK");
+    XCTAssertEqual(result1, expected1, "set_diagonal scalar value OK");
     
     auto result2 = Matrix<double>::zero(5, 5);
-    result2.SetDiagonal(Vector<double>({1, 2, 3, 4, 5}));
+    result2.set_diagonal(Vector<double>({1, 2, 3, 4, 5}));
     
     const Matrix<double> expected2({
         {1, 0, 0, 0, 0},
@@ -828,12 +828,12 @@ using namespace cda::math::containers;
         {0, 0, 0, 0, 5}
     });
     
-    XCTAssertEqual(result2, expected2, "SetDiagonal vector values OK");
+    XCTAssertEqual(result2, expected2, "set_diagonal vector values OK");
     
     Matrix<double> result3(4, 5);
-    XCTAssertThrows(result3.SetDiagonal(4), "Matrix must be square");
-    XCTAssertThrows(result3.SetDiagonal(Vector<double>(4)), "Matrix must be square");
-    XCTAssertThrows(result1.SetDiagonal(Vector<double>(5)), "The number of rows of the matrix and the size of the vector does not match");
+    XCTAssertThrows(result3.set_diagonal(4), "Matrix must be square");
+    XCTAssertThrows(result3.set_diagonal(Vector<double>(4)), "Matrix must be square");
+    XCTAssertThrows(result1.set_diagonal(Vector<double>(5)), "The number of rows of the matrix and the size of the vector does not match");
 }
 
 - (void)testSumRows {

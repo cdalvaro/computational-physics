@@ -369,7 +369,7 @@ namespace cda {
                     std::copy(vector.begin(), vector.end(), it_this);
                 }
                 
-                void SetDiagonal(const Vector<value_type> &diagonal) {
+                void set_diagonal(const Vector<value_type> &diagonal) {
                     if (!IsSquare()) {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
@@ -385,7 +385,7 @@ namespace cda {
                     }
                 }
                 
-                void SetDiagonal(const value_type &diagonal) {
+                void set_diagonal(const value_type &diagonal) {
                     if (!IsSquare()) {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
