@@ -273,10 +273,10 @@ using namespace cda::math::containers;
     });
     
     auto result(matrix);
-    result.change_dimensions(4, 3);
+    result.dimensions(4, 3);
     
     XCTAssertEqual(result, expected, "dimensions have been changed OK");
-    XCTAssertThrows(result.change_dimensions(3, 3), "The total size of the matrix cannot be changed");
+    XCTAssertThrows(result.dimensions(3, 3), "The total size of the matrix cannot be changed");
 }
 
 - (void)testProducts {

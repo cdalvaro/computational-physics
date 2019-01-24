@@ -162,7 +162,7 @@ namespace cda {
                     
                 }
                 
-                void change_dimensions(const size_t &rows, const size_t &columns) {
+                void dimensions(const size_t &rows, const size_t &columns) {
                     if (rows * columns != this->mat_size) {
                         throw std::out_of_range("This method does not resize the matrix, just change the dimensions");
                     }
@@ -962,7 +962,7 @@ void operator>>(std::istream &input,
     }
     
     matrix.resize(element, 1);
-    matrix.change_dimensions(rows, columns);
+    matrix.dimensions(rows, columns);
 }
 
 template <typename ValueType>
