@@ -30,7 +30,7 @@ namespace cda {
             class Matrix {
             private:
                 
-                typedef typename std::conditional<std::is_floating_point<T>::value, T, float>::type ValueTypeLU;
+                typedef typename std::conditional<std::is_floating_point<T>::value, T, float>::type lu_value_type;
                 
                 size_t n, m, mat_size;
                 T *a, *it_end;
@@ -789,7 +789,7 @@ namespace cda {
                 }
                 
                 value_type Determinant() const {
-                    return algorithms::factorization::LU<Matrix, ValueTypeLU>::Determinant(*this);
+                    return algorithms::factorization::LU<Matrix, lu_value_type>::Determinant(*this);
                 }
                 
                 Matrix<value_type> Pow(const ssize_t &power) const {
@@ -801,7 +801,7 @@ namespace cda {
                     
                     switch (power) {
                         case -1:
-                            new_matrix = algorithms::factorization::LU<Matrix, ValueTypeLU>::InverseMatrix(*this);
+                            new_matrix = algorithms::factorization::LU<Matrix, lu_value_type>::InverseMatrix(*this);
                             break;
                             
                         case 0:
