@@ -738,34 +738,34 @@ using namespace cda::math::containers;
     });
     
     Matrix<double> new_row({{2, -5, 7, 9, -7}});
-    result.SetRow(1, new_row);
-    XCTAssertEqual(result, expected, "SetRow complete OK");
+    result.set_row(1, new_row);
+    XCTAssertEqual(result, expected, "set_row complete OK");
     
-    XCTAssertThrows(result.SetRow(4, new_row), "SetRow: row out of bounds");
+    XCTAssertThrows(result.set_row(4, new_row), "set_row: row out of bounds");
     
     new_row = Matrix<double>({
         {1, 2, 3, 4, 5, 6},
         {1, 2, 3, 4, 5, 6}
     });
-    XCTAssertThrows(result.SetRow(1, new_row), "SetRow: new row has more than one row");
+    XCTAssertThrows(result.set_row(1, new_row), "set_row: new row has more than one row");
     
     new_row = Matrix<double>({
         {1, 2, 3, 4, 5, 6}
     });
-    XCTAssertThrows(result.SetRow(1, new_row), "SetRow: new row has more elements than old one");
+    XCTAssertThrows(result.set_row(1, new_row), "set_row: new row has more elements than old one");
     
     result.ones();
     new_row = Matrix<double>({{2, -5, 7, 9, -7}});
-    result.SetRow(1, new_row.get_row_as_vector(0));
-    XCTAssertEqual(result, expected, "SetRow (vector) complete OK");
+    result.set_row(1, new_row.get_row_as_vector(0));
+    XCTAssertEqual(result, expected, "set_row (vector) complete OK");
     
-    XCTAssertThrows(result.SetRow(4, new_row.get_row_as_vector(0)), "SetRow (vector): row out of bounds");
+    XCTAssertThrows(result.set_row(4, new_row.get_row_as_vector(0)), "set_row (vector): row out of bounds");
     
     new_row = Matrix<double>({{1, 2, 3, 4, 5, 6}});
-    XCTAssertThrows(result.SetRow(1, new_row.get_row_as_vector(0)), "SetRow (vector): new row has more elements than old one");
+    XCTAssertThrows(result.set_row(1, new_row.get_row_as_vector(0)), "set_row (vector): new row has more elements than old one");
     
     new_row = Matrix<double>({{1, 2, 3}});
-    XCTAssertThrows(result.SetRow(1, new_row.get_row_as_vector(0)), "SetRow (vector): new row has fewer elements than old one");
+    XCTAssertThrows(result.set_row(1, new_row.get_row_as_vector(0)), "set_row (vector): new row has fewer elements than old one");
 }
 
 - (void)testSetColumn {

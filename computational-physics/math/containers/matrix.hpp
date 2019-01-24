@@ -339,7 +339,7 @@ namespace cda {
                     }
                 }
                 
-                void SetRow(const size_t &row, const Matrix<value_type> &matrix) {
+                void set_row(const size_t &row, const Matrix<value_type> &matrix) {
                     if (row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -356,7 +356,7 @@ namespace cda {
                     std::copy(matrix.begin(), matrix.end(), it_this);
                 }
                 
-                void SetRow(const size_t &row, const Vector<value_type> &vector) {
+                void set_row(const size_t &row, const Vector<value_type> &vector) {
                     if (row >= this->n) {
                         throw std::out_of_range("Index out of bounds.");
                     }
