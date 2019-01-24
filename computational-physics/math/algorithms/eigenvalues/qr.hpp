@@ -195,7 +195,7 @@ namespace cda {
                                 h += Matrix<ValueType>::Identity(rows - row);
                                 
                                 h__ = I;
-                                h__.SetMatrix(row, row, h);
+                                h__.set_matrix(row, row, h);
                                 h = std::move(h__);
                             }
                             

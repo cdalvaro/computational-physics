@@ -680,7 +680,7 @@ using namespace cda::math::containers;
 
 - (void)testSetMatrixMethods {
     Matrix<double> result(4, 5, 0);
-    result.SetMatrix(1, 2,
+    result.set_matrix(1, 2,
                      Matrix<double>({
         {7,  8,  9},
         {12, 13, 14},
@@ -694,9 +694,9 @@ using namespace cda::math::containers;
         {0, 0, 17, 18, 19}
     });
     
-    XCTAssertEqual(result, expected1, "SetMatrix without lengths OK");
+    XCTAssertEqual(result, expected1, "set_matrix without lengths OK");
     
-    result.SetMatrix(0, 0,
+    result.set_matrix(0, 0,
                      Matrix<double>({
         { 0,  1,  2},
         { 5,  6,  7},
@@ -710,9 +710,9 @@ using namespace cda::math::containers;
         { 0,  0, 17, 18, 19}
     });
     
-    XCTAssertEqual(result, expected2, "SetMatrix with lengths OK");
+    XCTAssertEqual(result, expected2, "set_matrix with lengths OK");
     
-    result.SetMatrix(0, 0,
+    result.set_matrix(0, 0,
                      Matrix<double>({
         { 0,  1,  2,  0,  0, 346},
         { 5,  6,  7,  8,  9,  21},
@@ -721,10 +721,10 @@ using namespace cda::math::containers;
         { 5,  6,  7,  8,  9,  21}
     }));
     
-    XCTAssertEqual(result, expected2, "SetMatrix with greater lengths OK");
+    XCTAssertEqual(result, expected2, "set_matrix with greater lengths OK");
     
-    XCTAssertThrows(result.SetMatrix(5, 4, expected2), "SetMatrix out of bounds by row");
-    XCTAssertThrows(result.SetMatrix(3, 6, expected2), "SetMatrix out of bounds by column");
+    XCTAssertThrows(result.set_matrix(5, 4, expected2), "set_matrix out of bounds by row");
+    XCTAssertThrows(result.set_matrix(3, 6, expected2), "set_matrix out of bounds by column");
 }
 
 - (void)testSetRow {

@@ -397,7 +397,7 @@ namespace cda {
                     }
                 }
                 
-                void SetMatrix(const size_t &row, const size_t &column, const Matrix<value_type> &matrix) {
+                void set_matrix(const size_t &row, const size_t &column, const Matrix<value_type> &matrix) {
                     if (row >= this->n || column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -898,8 +898,8 @@ cda::math::containers::Matrix<ValueType> operator&&(const cda::math::containers:
     }
     
     cda::math::containers::Matrix<ValueType> new_matrix(left_matrix.Rows(), left_matrix.Columns() + right_matrix.Columns());
-    new_matrix.SetMatrix(0, 0, left_matrix);
-    new_matrix.SetMatrix(0, left_matrix.Columns(), right_matrix);
+    new_matrix.set_matrix(0, 0, left_matrix);
+    new_matrix.set_matrix(0, left_matrix.Columns(), right_matrix);
     
     return new_matrix;
 }
