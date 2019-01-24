@@ -1187,7 +1187,7 @@ Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, i
         mx.SetRow(0, eigenVAL_VEC(x, modeX, bcX, opt));
     });
     workers.emplace_back([&my, &y, &modeY, &bcY, &opt, this]() {
-        my.SetColumn(0, eigenVAL_VEC(y, modeY, bcY, opt));
+        my.set_column(0, eigenVAL_VEC(y, modeY, bcY, opt));
     });
     for (auto &&worker : workers) {
         worker.join();

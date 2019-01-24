@@ -779,29 +779,29 @@ using namespace cda::math::containers;
     });
     
     Matrix<double> new_column(4, 1, {2, -3, 6, -8});
-    result.SetColumn(1, new_column);
-    XCTAssertEqual(result, expected, "SetColumn complete OK");
+    result.set_column(1, new_column);
+    XCTAssertEqual(result, expected, "set_column complete OK");
     
-    XCTAssertThrows(result.SetColumn(5, new_column), "SetColumn: column out of bounds");
+    XCTAssertThrows(result.set_column(5, new_column), "set_column: column out of bounds");
     
     new_column = Matrix<double>(4, 2, {1, 2, 3, 4, 5, 6, 7, 8});
-    XCTAssertThrows(result.SetColumn(1, new_column), "SetColumn: new column has more than one column");
+    XCTAssertThrows(result.set_column(1, new_column), "set_column: new column has more than one column");
     
     new_column = Matrix<double>(5, 1, {1, 2, 3, 4, 5});
-    XCTAssertThrows(result.SetColumn(1, new_column), "SetColumn: new column has more elements than old one");
+    XCTAssertThrows(result.set_column(1, new_column), "set_column: new column has more elements than old one");
     
     result.ones();
     new_column = Matrix<double>(4, 1, {2, -3, 6, -8});
-    result.SetColumn(1, new_column.get_column_as_vector(0));
-    XCTAssertEqual(result, expected, "SetColumn (vector) complete OK");
+    result.set_column(1, new_column.get_column_as_vector(0));
+    XCTAssertEqual(result, expected, "set_column (vector) complete OK");
     
-    XCTAssertThrows(result.SetColumn(5, new_column.get_column_as_vector(0)), "SetColumn (vector): column out of bounds");
+    XCTAssertThrows(result.set_column(5, new_column.get_column_as_vector(0)), "set_column (vector): column out of bounds");
     
     new_column = Matrix<double>(5, 1, {1, 2, 3, 4, 5});
-    XCTAssertThrows(result.SetColumn(1, new_column.get_column_as_vector(0)), "SetColumn (vector): new column has more elements than old one");
+    XCTAssertThrows(result.set_column(1, new_column.get_column_as_vector(0)), "set_column (vector): new column has more elements than old one");
     
     new_column = Matrix<double>(3, 1, {1, 2, 3});
-    XCTAssertThrows(result.SetColumn(1, new_column.get_column_as_vector(0)), "SetColumn (vector): new column has fewer elements than old one");
+    XCTAssertThrows(result.set_column(1, new_column.get_column_as_vector(0)), "set_column (vector): new column has fewer elements than old one");
 }
 
 - (void)testSetDiagonal {

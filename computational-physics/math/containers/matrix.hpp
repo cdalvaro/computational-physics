@@ -305,7 +305,7 @@ namespace cda {
                 }
                 
                 //  Sets
-                void SetColumn(const size_t &column, const Matrix<value_type> &matrix) {
+                void set_column(const size_t &column, const Matrix<value_type> &matrix) {
                     if (column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
@@ -324,7 +324,7 @@ namespace cda {
                     }
                 }
                 
-                void SetColumn(const size_t &column, const Vector<value_type> &vector) {
+                void set_column(const size_t &column, const Vector<value_type> &vector) {
                     if (column >= this->m) {
                         throw std::out_of_range("Index out of bounds.");
                     }
