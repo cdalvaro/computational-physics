@@ -263,7 +263,7 @@ namespace cda {
                     return this->get_matrix(row, column, n - row, m - column);
                 }
                 
-                Vector<value_type> GetDiagonal() const {
+                Vector<value_type> get_diagonal() const {
                     if (!this->IsSquare()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }

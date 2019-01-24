@@ -609,8 +609,8 @@ using namespace cda::math::containers;
     
     XCTAssertThrows(matrix.get_column(5), "get_column out of bounds");
     
-    // --- GetDiagonal
-    XCTAssertThrows(matrix.GetDiagonal(), "This method is only available for square matrices");
+    // --- get_diagonal
+    XCTAssertThrows(matrix.get_diagonal(), "This method is only available for square matrices");
     
     const Matrix<double> square_matrix({
         { 0,  1,  2,  3},
@@ -620,7 +620,7 @@ using namespace cda::math::containers;
     });
     
     const Vector<double> expected_diagonal({0, 6, 12, 18});
-    XCTAssertEqual(square_matrix.GetDiagonal(), expected_diagonal, "GetDiagonal method OK");
+    XCTAssertEqual(square_matrix.get_diagonal(), expected_diagonal, "get_diagonal method OK");
 }
 
 - (void)testGettersAsVectorMethods {

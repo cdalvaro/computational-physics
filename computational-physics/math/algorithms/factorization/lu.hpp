@@ -185,7 +185,7 @@ namespace cda {
                     }
                     
                     void RemoveSingularities() {
-                        auto diagonal = lu.GetDiagonal();
+                        auto diagonal = lu.get_diagonal();
                         if (diagonal.find(0) == diagonal.end()) {
                             return;
                         }

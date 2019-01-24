@@ -95,7 +95,7 @@ namespace cda {
                                 }
                             }
                             
-                            eigen_values = matrix.GetDiagonal();
+                            eigen_values = matrix.get_diagonal();
                         }
                         
                         return eigen_values;
