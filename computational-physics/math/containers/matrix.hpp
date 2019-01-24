@@ -228,7 +228,7 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<value_type> GetColumn(const size_t &column) const {
+                Matrix<value_type> get_column(const size_t &column) const {
                     if (column >= m) {
                         throw std::out_of_range("Index out of bounds");
                     }

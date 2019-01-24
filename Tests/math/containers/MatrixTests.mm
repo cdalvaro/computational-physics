@@ -597,17 +597,17 @@ using namespace cda::math::containers;
     
     XCTAssertThrows(matrix.get_row(4), "get_row out of bounds");
     
-    // --- GetColumn
+    // --- get_column
     const Matrix<double> expected_first_column(4, 1, {0, 5, 10, 15});
-    XCTAssertEqual(matrix.GetColumn(0), expected_first_column, "get_row first OK");
+    XCTAssertEqual(matrix.get_column(0), expected_first_column, "get_row first OK");
     
     const Matrix<double> expected_last_column(4, 1, {4, 9, 14, 19});
-    XCTAssertEqual(matrix.GetColumn(4), expected_last_column, "get_row last OK");
+    XCTAssertEqual(matrix.get_column(4), expected_last_column, "get_row last OK");
     
     const Matrix<double> expected_in_between_column(4, 1, {2, 7, 12, 17});
-    XCTAssertEqual(matrix.GetColumn(2), expected_in_between_column, "get_row last OK");
+    XCTAssertEqual(matrix.get_column(2), expected_in_between_column, "get_row last OK");
     
-    XCTAssertThrows(matrix.GetColumn(5), "GetColumn out of bounds");
+    XCTAssertThrows(matrix.get_column(5), "get_column out of bounds");
     
     // --- GetDiagonal
     XCTAssertThrows(matrix.GetDiagonal(), "This method is only available for square matrices");
