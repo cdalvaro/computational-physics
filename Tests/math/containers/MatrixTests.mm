@@ -275,7 +275,7 @@ using namespace cda::math::containers;
     auto result(matrix);
     result.change_dimensions(4, 3);
     
-    XCTAssertEqual(result, expected, "Dimensions have been changed OK");
+    XCTAssertEqual(result, expected, "dimensions have been changed OK");
     XCTAssertThrows(result.change_dimensions(3, 3), "The total size of the matrix cannot be changed");
 }
 
@@ -880,7 +880,7 @@ using namespace cda::math::containers;
     
     std::pair<size_t, size_t> expected_dimensions {449, 106};
     
-    XCTAssertEqual(matrix.Dimensions(), expected_dimensions, "Big Matrix dimensions are the right ones.");
+    XCTAssertEqual(matrix.dimensions(), expected_dimensions, "Big Matrix dimensions are the right ones.");
     
     // Small Matrix
     file.open("data/math/containers/SmallMatrix.csv", std::ios::in);
@@ -930,7 +930,7 @@ using namespace cda::math::containers;
         {15, 6}
     });
     
-    XCTAssertThrows(matrix_2columns * vector, "Dimensions are not compatible");
+    XCTAssertThrows(matrix_2columns * vector, "dimensions are not compatible");
 }
 
 - (void)testProductBetweenVectorAndMatrix {
@@ -944,7 +944,7 @@ using namespace cda::math::containers;
     
     XCTAssertEqual(vector * matrix, Vector<double>({138, 179}), "Product between vector and matrix OK");
     
-    XCTAssertThrows(Vector<double>({1, 35, 362, 4362, 34}) * matrix, "Dimensions are not compatible");
+    XCTAssertThrows(Vector<double>({1, 35, 362, 4362, 34}) * matrix, "dimensions are not compatible");
 }
 
 - (void)testTransposeVectorToMatrix {

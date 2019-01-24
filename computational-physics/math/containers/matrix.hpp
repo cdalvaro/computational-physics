@@ -414,7 +414,7 @@ namespace cda {
                 
                 //  --- FUNCTIONS ---
                 //  Returns an integer / a double / a float
-                std::pair<size_t, size_t> Dimensions() const {
+                std::pair<size_t, size_t> dimensions() const {
                     return std::pair<size_t, size_t>{ n, m };
                 }
                 
