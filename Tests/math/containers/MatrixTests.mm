@@ -566,14 +566,14 @@ using namespace cda::math::containers;
         {15, 16, 17, 18, 19}
     });
     
-    // --- GetMatrix
+    // --- get_matrix
     const Matrix<double> expected_matrix1({
         {7,  8,  9},
         {12, 13, 14},
         {17, 18, 19}
     });
     
-    XCTAssertEqual(matrix.GetMatrix(1, 2), expected_matrix1, "GetMatrix without lengths OK");
+    XCTAssertEqual(matrix.get_matrix(1, 2), expected_matrix1, "get_matrix without lengths OK");
     
     const Matrix<double> expected_matrix2({
         {0,  1,  2},
@@ -581,9 +581,9 @@ using namespace cda::math::containers;
         {10, 11, 12}
     });
     
-    XCTAssertEqual(matrix.GetMatrix(0, 0, 3, 3), expected_matrix2, "GetMatrix with lengths OK");
+    XCTAssertEqual(matrix.get_matrix(0, 0, 3, 3), expected_matrix2, "get_matrix with lengths OK");
     
-    XCTAssertThrows(matrix.GetMatrix(1, 1, 6, 6), "Unable to get submatrix. Elements out of bounds");
+    XCTAssertThrows(matrix.get_matrix(1, 1, 6, 6), "Unable to get submatrix. Elements out of bounds");
     
     // --- get_row
     const Matrix<double> expected_first_row({{0,  1,  2,  3,  4}});

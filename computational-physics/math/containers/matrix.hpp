@@ -243,8 +243,8 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<value_type> GetMatrix(const size_t &row, const size_t &column,
-                                    const size_t &number_of_rows, const size_t &number_of_columns) const {
+                Matrix<value_type> get_matrix(const size_t &row, const size_t &column,
+                                              const size_t &number_of_rows, const size_t &number_of_columns) const {
                     if (row + number_of_rows > n || column + number_of_columns > m) {
                         throw std::out_of_range("Index out of bounds");
                     }
@@ -259,8 +259,8 @@ namespace cda {
                     return tmp;
                 }
                 
-                Matrix<value_type> GetMatrix(const size_t &row, const size_t &column) const {
-                    return this->GetMatrix(row, column, n - row, m - column);
+                Matrix<value_type> get_matrix(const size_t &row, const size_t &column) const {
+                    return this->get_matrix(row, column, n - row, m - column);
                 }
                 
                 Vector<value_type> GetDiagonal() const {
@@ -910,7 +910,7 @@ void operator||(cda::math::containers::Matrix<ValueType> &left_matrix,
     
     const size_t left_matrix_columns = left_matrix.Columns() / 2;
     
-    right_matrix = left_matrix.GetMatrix(0, left_matrix_columns, left_matrix.Rows(), left_matrix.Columns() - left_matrix_columns);
+    right_matrix = left_matrix.get_matrix(0, left_matrix_columns, left_matrix.Rows(), left_matrix.Columns() - left_matrix_columns);
     left_matrix.resize(left_matrix.Rows(), left_matrix_columns);
 }
 
