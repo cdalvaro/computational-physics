@@ -75,7 +75,7 @@ namespace cda {
                 
                 template<typename ValueType2>
                 Matrix(const Matrix<ValueType2> &matrix) :
-                n(matrix.rows()), m(matrix.Columns()), mat_size(matrix.size()),
+                n(matrix.rows()), m(matrix.columns()), mat_size(matrix.size()),
                 a(nullptr), it_end(nullptr) {
                     alloc_memory(mat_size);
                     std::copy(matrix.begin(), matrix.end(), this->begin());
@@ -403,11 +403,11 @@ namespace cda {
                     }
                     
                     const auto number_of_rows = std::min(this->n - row, matrix.rows());
-                    const auto number_of_columns = std::min(this->m - column, matrix.Columns());
+                    const auto number_of_columns = std::min(this->m - column, matrix.columns());
                     
                     auto it_matrix = matrix.begin();
                     const auto it_this_end = this->operator[](row + number_of_rows);
-                    for (auto it_this = this->operator[](row); it_this != it_this_end; it_this += this->m, it_matrix += matrix.Columns()) {
+                    for (auto it_this = this->operator[](row); it_this != it_this_end; it_this += this->m, it_matrix += matrix.columns()) {
                         std::copy_n(it_matrix, number_of_columns, it_this + column);
                     }
                 }
@@ -422,7 +422,7 @@ namespace cda {
                     return n;
                 }
                 
-                size_t Columns() const {
+                size_t columns() const {
                     return m;
                 }
                 
@@ -856,7 +856,7 @@ template <typename ValueType>
 cda::math::containers::Matrix<ValueType> operator*(const ValueType &value,
                                            const cda::math::containers::Matrix<ValueType> &matrix) {
     
-    cda::math::containers::Matrix<ValueType> tmp(matrix.rows(), matrix.Columns());
+    cda::math::containers::Matrix<ValueType> tmp(matrix.rows(), matrix.columns());
     auto it_tmp = tmp.begin();
     
     for (auto it_matrix = matrix.begin(); it_matrix != matrix.end(); ++it_matrix, ++it_tmp) {
@@ -875,7 +875,7 @@ cda::math::containers::Vector<ValueType> operator*(const cda::math::containers::
         throw std::logic_error("The vector and the matrix are incompatible");
     }
     
-    const auto &columns = matrix.Columns();
+    const auto &columns = matrix.columns();
     cda::math::containers::Vector<ValueType> new_vector(columns, 0);
     
     auto it_new = new_vector.begin();
@@ -897,9 +897,9 @@ cda::math::containers::Matrix<ValueType> operator&&(const cda::math::containers:
         throw std::logic_error("Both matrices must have the same number of rows");
     }
     
-    cda::math::containers::Matrix<ValueType> new_matrix(left_matrix.rows(), left_matrix.Columns() + right_matrix.Columns());
+    cda::math::containers::Matrix<ValueType> new_matrix(left_matrix.rows(), left_matrix.columns() + right_matrix.columns());
     new_matrix.set_matrix(0, 0, left_matrix);
-    new_matrix.set_matrix(0, left_matrix.Columns(), right_matrix);
+    new_matrix.set_matrix(0, left_matrix.columns(), right_matrix);
     
     return new_matrix;
 }
@@ -908,9 +908,9 @@ template <typename ValueType>
 void operator||(cda::math::containers::Matrix<ValueType> &left_matrix,
                 cda::math::containers::Matrix<ValueType> &right_matrix) {
     
-    const size_t left_matrix_columns = left_matrix.Columns() / 2;
+    const size_t left_matrix_columns = left_matrix.columns() / 2;
     
-    right_matrix = left_matrix.get_matrix(0, left_matrix_columns, left_matrix.rows(), left_matrix.Columns() - left_matrix_columns);
+    right_matrix = left_matrix.get_matrix(0, left_matrix_columns, left_matrix.rows(), left_matrix.columns() - left_matrix_columns);
     left_matrix.resize(left_matrix.rows(), left_matrix_columns);
 }
 
@@ -970,7 +970,7 @@ std::ostream& operator<<(std::ostream &output,
                          const cda::math::containers::Matrix<ValueType> &matrix) {
     
     const size_t rows = matrix.rows();
-    const size_t columns = matrix.Columns();
+    const size_t columns = matrix.columns();
     
     if (output.rdbuf() == std::cout.rdbuf()) {
         
