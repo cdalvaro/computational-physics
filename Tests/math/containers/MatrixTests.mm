@@ -862,7 +862,7 @@ using namespace cda::math::containers;
     });
     
     const Matrix<double> expected1(1, 4, {37, 32, 28, 23});
-    XCTAssertEqual(matrix_test.SumColumns(), expected1, "CumColumns OK");
+    XCTAssertEqual(matrix_test.sum_columns(), expected1, "CumColumns OK");
     XCTAssertEqual(matrix_test.SumColumnsAsVector(), expected1.get_row_as_vector(0), "SumColumnsAsVector OK");
     
     XCTAssertEqual(matrix_test.SumColumn(1), expected1[0][1], "SumColumn OK");

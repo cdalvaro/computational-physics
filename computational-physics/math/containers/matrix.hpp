@@ -463,7 +463,7 @@ namespace cda {
                     return sum;
                 }
                 
-                Matrix<value_type> SumColumns() const {
+                Matrix<value_type> sum_columns() const {
                     Matrix<value_type> sum_columns(1, m, 0);
                     
                     for (auto it_this = this->begin(); it_this != this->end();) {
@@ -476,7 +476,7 @@ namespace cda {
                 }
                 
                 Vector<value_type> SumColumnsAsVector() const {
-                    return SumColumns().get_row_as_vector(0);
+                    return sum_columns().get_row_as_vector(0);
                 }
                 
                 value_type SumColumn(const size_t &column) const {
