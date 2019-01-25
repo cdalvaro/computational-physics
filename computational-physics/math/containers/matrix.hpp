@@ -479,7 +479,7 @@ namespace cda {
                     return sum_columns().get_row_as_vector(0);
                 }
                 
-                value_type SumColumn(const size_t &column) const {
+                value_type sum_column(const size_t &column) const {
                     if (column >= this->m) {
                         throw std::out_of_range("Index out of range");
                     }

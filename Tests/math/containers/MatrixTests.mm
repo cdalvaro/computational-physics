@@ -865,8 +865,8 @@ using namespace cda::math::containers;
     XCTAssertEqual(matrix_test.sum_columns(), expected1, "CumColumns OK");
     XCTAssertEqual(matrix_test.sum_columns_as_vector(), expected1.get_row_as_vector(0), "sum_columns_as_vector OK");
     
-    XCTAssertEqual(matrix_test.SumColumn(1), expected1[0][1], "SumColumn OK");
-    XCTAssertThrows(matrix_test.SumColumn(4), "SumColumn out of range");
+    XCTAssertEqual(matrix_test.sum_column(1), expected1[0][1], "sum_column OK");
+    XCTAssertThrows(matrix_test.sum_column(4), "sum_column out of range");
 }
 
 - (void)testIfstreamOperator {
