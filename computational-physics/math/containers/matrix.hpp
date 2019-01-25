@@ -475,7 +475,7 @@ namespace cda {
                     return sum_columns;
                 }
                 
-                Vector<value_type> SumColumnsAsVector() const {
+                Vector<value_type> sum_columns_as_vector() const {
                     return sum_columns().get_row_as_vector(0);
                 }
                 
