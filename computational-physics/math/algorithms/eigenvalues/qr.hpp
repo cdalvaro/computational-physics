@@ -34,7 +34,7 @@ namespace cda {
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
                     original(matrix), rows(matrix.rows()),
                     max_iterations(max_iterations), accuracy(accuracy) {
-                        if (!matrix.IsSquare()) {
+                        if (!matrix.is_square()) {
                             throw std::logic_error("Matrix must be square to compute its eigenvalues.");
                         }
                     }

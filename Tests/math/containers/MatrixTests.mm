@@ -552,10 +552,10 @@ using namespace cda::math::containers;
 
 - (void)testSquareMatrix {
     const auto square_matrix = Matrix<double>::ones(4, 4);
-    XCTAssert(square_matrix.IsSquare(), "square_matrix is square");
+    XCTAssert(square_matrix.is_square(), "square_matrix is square");
     
     const auto rectangular_matrix = Matrix<double>::ones(4, 3);
-    XCTAssert(!rectangular_matrix.IsSquare(), "rectangular_matrix is not square");
+    XCTAssert(!rectangular_matrix.is_square(), "rectangular_matrix is not square");
 }
 
 - (void)testGettersMethods {

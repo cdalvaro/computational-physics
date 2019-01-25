@@ -31,7 +31,7 @@ namespace cda {
                     containers::Vector<T> SolveLinearSystem3Diagonal(const containers::Matrix<T> &system,
                                                                      const containers::Vector<T> &b_terms) {
                         
-                        if (!system.IsSquare()) {
+                        if (!system.is_square()) {
                             throw std::logic_error("The system is matrix is not square");
                         }
                         
@@ -67,7 +67,7 @@ namespace cda {
                                                                                 const containers::Vector<T> &b_terms,
                                                                                 const double &accuracy = CDA_LINEAR_DEFAULT_ACCURACY) {
                         
-                        if (!system.IsSquare()) {
+                        if (!system.is_square()) {
                             throw std::logic_error("The system is matrix is not square");
                         }
                         

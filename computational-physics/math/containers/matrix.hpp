@@ -264,7 +264,7 @@ namespace cda {
                 }
                 
                 Vector<value_type> get_diagonal() const {
-                    if (!this->IsSquare()) {
+                    if (!this->is_square()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     
@@ -370,7 +370,7 @@ namespace cda {
                 }
                 
                 void set_diagonal(const Vector<value_type> &diagonal) {
-                    if (!IsSquare()) {
+                    if (!is_square()) {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
                     
@@ -386,7 +386,7 @@ namespace cda {
                 }
                 
                 void set_diagonal(const value_type &diagonal) {
-                    if (!IsSquare()) {
+                    if (!is_square()) {
                         throw std::logic_error("The matrix must be square to establish its diagonal");
                     }
                     
@@ -570,7 +570,7 @@ namespace cda {
                     return true;
                 }
                 
-                bool IsSquare() const {
+                bool is_square() const {
                     return n == m;
                 }
                 
@@ -618,7 +618,7 @@ namespace cda {
                 }
                 
                 void Identity() {
-                    if (!IsSquare()) {
+                    if (!is_square()) {
                         throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
                     }
                     
@@ -793,7 +793,7 @@ namespace cda {
                 }
                 
                 Matrix<value_type> Pow(const ssize_t &power) const {
-                    if (!this->IsSquare()) {
+                    if (!this->is_square()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
                     
