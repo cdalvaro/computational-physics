@@ -158,7 +158,7 @@ namespace cda {
                     
                     void ComputeQR(const Matrix<ValueType> &matrix) {
                         
-                        const auto I = Matrix<ValueType>::Identity(rows);
+                        const auto I = Matrix<ValueType>::identity(rows);
                         
                         //  First column
                         auto c = matrix.get_column_as_vector(0);
@@ -192,7 +192,7 @@ namespace cda {
                                 
                                 h = containers::transpose(vt) * vt;
                                 h *= -2.0 / vt.square_norm();
-                                h += Matrix<ValueType>::Identity(rows - row);
+                                h += Matrix<ValueType>::identity(rows - row);
                                 
                                 h__ = I;
                                 h__.set_matrix(row, row, h);

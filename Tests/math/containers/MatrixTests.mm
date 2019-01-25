@@ -143,14 +143,14 @@ using namespace cda::math::containers;
         {0, 0, 0, 1, 0},
         {0, 0, 0, 0, 1}
     });
-    XCTAssertEqual(Matrix<double>::Identity(5), expected_identity, "Identity static method OK");
+    XCTAssertEqual(Matrix<double>::identity(5), expected_identity, "identity static method OK");
     
     Matrix<double> result(5, 5, 2);
-    result.Identity();
-    XCTAssertEqual(result, expected_identity, "Identity method OK");
+    result.identity();
+    XCTAssertEqual(result, expected_identity, "identity method OK");
     
     Matrix<double> result2(5, 4, 2);
-    XCTAssertThrows(result2.Identity(), "Identity method is only valid for square matrices");
+    XCTAssertThrows(result2.identity(), "identity method is only valid for square matrices");
 }
 
 - (void)testComparison {
@@ -466,7 +466,7 @@ using namespace cda::math::containers;
         {12, 13, 14, 15}
     });
     
-    const auto expected1 = Matrix<double>::Identity(4);
+    const auto expected1 = Matrix<double>::identity(4);
     
     XCTAssertEqual(matrix1.Pow(0), expected1, "Power 0 OK");
     

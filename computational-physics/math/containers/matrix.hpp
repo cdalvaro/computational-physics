@@ -617,7 +617,7 @@ namespace cda {
                     fill(1);
                 }
                 
-                void Identity() {
+                void identity() {
                     if (!is_square()) {
                         throw std::logic_error("Unable to create an identity matrix in a non squere matrix.");
                     }
@@ -808,7 +808,7 @@ namespace cda {
                             if (Determinant() == 0) {
                                 throw std::logic_error("Matrix is singular");
                             }
-                            new_matrix = Identity(this->n);
+                            new_matrix = identity(this->n);
                             break;
                             
                         default:
@@ -831,9 +831,9 @@ namespace cda {
                     return Matrix<value_type>(rows, columns, 1);
                 }
                 
-                static Matrix<value_type> Identity(const size_t &rows) {
+                static Matrix<value_type> identity(const size_t &rows) {
                     Matrix<value_type> identity(rows, rows);
-                    identity.Identity();
+                    identity.identity();
                     return identity;
                 }
                 

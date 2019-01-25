@@ -85,7 +85,7 @@ namespace cda {
                         }
                         
                         Matrix<ValueType> inverse(rows, rows);
-                        const auto I = Matrix<ValueType>::Identity(rows);
+                        const auto I = Matrix<ValueType>::identity(rows);
                         
                         for (size_t k = 0; k < rows; ++k) {
                             inverse.set_column(k, SolveLinearSystem(I.get_row_as_vector(k)));
