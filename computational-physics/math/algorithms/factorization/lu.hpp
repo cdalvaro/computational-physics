@@ -99,7 +99,7 @@ namespace cda {
                         return LU<Matrix, ValueType>(matrix).InverseMatrix();
                     }
                     
-                    ValueType Determinant() {
+                    ValueType determinant() {
                         
                         FactorizeLU();
                         if (is_degenerate) {
@@ -115,8 +115,8 @@ namespace cda {
                     }
                     
                     template<typename OtherType>
-                    static ValueType Determinant(const Matrix<OtherType> &matrix) {
-                         return LU<Matrix, ValueType>(matrix).Determinant();
+                    static ValueType determinant(const Matrix<OtherType> &matrix) {
+                         return LU<Matrix, ValueType>(matrix).determinant();
                     }
                     
                 private:

@@ -788,8 +788,8 @@ namespace cda {
                     return new_matrix;
                 }
                 
-                value_type Determinant() const {
-                    return algorithms::factorization::LU<Matrix, lu_value_type>::Determinant(*this);
+                value_type determinant() const {
+                    return algorithms::factorization::LU<Matrix, lu_value_type>::determinant(*this);
                 }
                 
                 Matrix<value_type> Pow(const ssize_t &power) const {
@@ -805,7 +805,7 @@ namespace cda {
                             break;
                             
                         case 0:
-                            if (Determinant() == 0) {
+                            if (determinant() == 0) {
                                 throw std::logic_error("Matrix is singular");
                             }
                             new_matrix = identity(this->n);

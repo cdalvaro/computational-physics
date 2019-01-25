@@ -91,7 +91,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     LU<Matrix, double> lu1(matrix1);
-    XCTAssertEqual(lu1.Determinant(), 315, "Determinant OK");
+    XCTAssertEqual(lu1.determinant(), 315, "determinant OK");
     
     const Matrix<double> matrix2({
         { 21, 18, 15,  4},
@@ -101,7 +101,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     LU<Matrix, double> lu2(matrix2);
-    XCTAssertEqual(lu2.Determinant(), 0, "Determinant 0 OK");
+    XCTAssertEqual(lu2.determinant(), 0, "determinant 0 OK");
 }
 
 - (void)testInverseMatrix {

@@ -1102,7 +1102,7 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    XCTAssertEqual(matrix1.Determinant(), 315, "Determinant OK");
+    XCTAssertEqual(matrix1.determinant(), 315, "determinant OK");
     
     const Matrix<double> matrix2({
         { 21, 18, 15,  4},
@@ -1111,7 +1111,7 @@ using namespace cda::math::containers;
         {105, 90, 75, 15}
     });
     
-    XCTAssertEqual(matrix2.Determinant(), 0, "Determinant 0 OK");
+    XCTAssertEqual(matrix2.determinant(), 0, "determinant 0 OK");
     
     const Matrix<double> matrix3({
         { 21, 18, 15,  4},
@@ -1119,7 +1119,7 @@ using namespace cda::math::containers;
         { 84, 72, 63, 12}
     });
     
-    XCTAssertThrows(matrix3.Determinant(), "Unable to compute determinant of a non-square matrix");
+    XCTAssertThrows(matrix3.determinant(), "Unable to compute determinant of a non-square matrix");
 }
 
 - (void)testOfstreamOperator {
