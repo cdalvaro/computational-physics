@@ -448,7 +448,7 @@ namespace cda {
                     return sum_rows().get_column_as_vector(0);
                 }
                 
-                value_type SumRow(const size_t &row) const {
+                value_type sum_row(const size_t &row) const {
                     if (row >= this->n) {
                         throw std::out_of_range("Index out of range");
                     }
