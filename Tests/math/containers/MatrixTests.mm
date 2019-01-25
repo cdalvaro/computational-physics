@@ -845,7 +845,7 @@ using namespace cda::math::containers;
     });
     
     Matrix<double> expected1(4, 1, {8, 19, 39, 54});
-    XCTAssertEqual(matrix_test.SumRows(), expected1, "SumRows OK");
+    XCTAssertEqual(matrix_test.sum_rows(), expected1, "sum_rows OK");
     XCTAssertEqual(matrix_test.SumRowsAsVector(), expected1.get_column_as_vector(0), "SumRowsAsVector OK");
     
     

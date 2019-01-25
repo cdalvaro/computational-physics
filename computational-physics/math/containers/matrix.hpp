@@ -430,7 +430,7 @@ namespace cda {
                     return mat_size;
                 }
                 
-                Matrix<value_type> SumRows() const {
+                Matrix<value_type> sum_rows() const {
                     Matrix<value_type> sum_rows(n, 1, 0);
                     
                     auto it_this = this->begin();
@@ -445,7 +445,7 @@ namespace cda {
                 }
                 
                 Vector<value_type> SumRowsAsVector() const {
-                    return SumRows().get_column_as_vector(0);
+                    return sum_rows().get_column_as_vector(0);
                 }
                 
                 value_type SumRow(const size_t &row) const {
