@@ -468,7 +468,7 @@ using namespace cda::math::containers;
     
     const auto expected1 = Matrix<double>::identity(4);
     
-    XCTAssertEqual(matrix1.Pow(0), expected1, "Power 0 OK");
+    XCTAssertEqual(matrix1.pow(0), expected1, "Power 0 OK");
     
     const Matrix<double> expected2({
         { 57,  63,  60,  77},
@@ -477,7 +477,7 @@ using namespace cda::math::containers;
         {332, 412, 410, 548}
     });
     
-    XCTAssertEqual(matrix1.Pow(2), expected2, "Power 2 OK");
+    XCTAssertEqual(matrix1.pow(2), expected2, "Power 2 OK");
     
     const Matrix<double> expected3({
         { 1599,  1973,  1990,  2607},
@@ -486,7 +486,7 @@ using namespace cda::math::containers;
         {11172, 13616, 13678, 17840}
     });
     
-    XCTAssertEqual(matrix1.Pow(3), expected3, "Power 3 OK");
+    XCTAssertEqual(matrix1.pow(3), expected3, "Power 3 OK");
     
     const Matrix<double> matrix2({
         { 3,  2,  4},
@@ -500,7 +500,7 @@ using namespace cda::math::containers;
         { 4,  -8,   4}
     }) / 12.0;
     
-    XCTAssert([TestsTools compareMatrix:matrix2.Pow(-1)
+    XCTAssert([TestsTools compareMatrix:matrix2.pow(-1)
                            withExpected:expected4
                            whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
               "Power -1 OK");
@@ -511,7 +511,7 @@ using namespace cda::math::containers;
         { 8,  10, 7, 14},
         {12, 13, 14, 15}
     });
-    XCTAssertThrows(matrix3.Pow(-1), "Matrix is degenerate");
+    XCTAssertThrows(matrix3.pow(-1), "Matrix is degenerate");
     
     const Matrix<double> matrix4({
         { -1,  1,  2,  3},
@@ -519,7 +519,7 @@ using namespace cda::math::containers;
         { 8,  9, 10, 11}
     });
     
-    XCTAssertThrows(matrix4.Pow(0), "Matrix must be square");
+    XCTAssertThrows(matrix4.pow(0), "Matrix must be square");
     
     const Matrix<double> matrix5({
         {-1,  1,  2,  3},
@@ -528,7 +528,7 @@ using namespace cda::math::containers;
         {12, 13, 14, 15}
     });
     
-    XCTAssertThrows(matrix5.Pow(0), "Matrix is singular");
+    XCTAssertThrows(matrix5.pow(0), "Matrix is singular");
 }
 
 - (void)testTransposeOperation {

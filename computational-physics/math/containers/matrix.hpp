@@ -792,7 +792,7 @@ namespace cda {
                     return algorithms::factorization::LU<Matrix, lu_value_type>::determinant(*this);
                 }
                 
-                Matrix<value_type> Pow(const ssize_t &power) const {
+                Matrix<value_type> pow(const ssize_t &power) const {
                     if (!this->is_square()) {
                         throw std::logic_error("Matrix must be an square matrix");
                     }
