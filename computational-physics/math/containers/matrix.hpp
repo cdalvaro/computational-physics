@@ -540,7 +540,7 @@ namespace cda {
                     return &a[row * m];
                 }
                 
-                Matrix<value_type> Transpose() const {
+                Matrix<value_type> transpose() const {
                     Matrix<value_type> new_matrix(this->m, this->n);
                     
                     for (size_t row = 0; row < this->n; ++row) {
@@ -841,7 +841,7 @@ namespace cda {
             
             //  MARK: - Extra funcions
             template <typename ValueType>
-            Matrix<ValueType> Transpose(const Vector<ValueType> &vector) {
+            Matrix<ValueType> transpose(const Vector<ValueType> &vector) {
                 Matrix<ValueType> matrix(vector.size(), 1);
                 std::copy(vector.begin(), vector.end(), matrix.begin());
                 return matrix;

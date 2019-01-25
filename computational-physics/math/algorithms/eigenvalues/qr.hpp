@@ -166,7 +166,7 @@ namespace cda {
                         vt *= signum(c[0]) * c.norm();
                         vt += c;
                         
-                        q = containers::Transpose(vt) * vt;
+                        q = containers::transpose(vt) * vt;
                         q *= -2.0 / vt.square_norm();
                         q += I;
                         
@@ -190,7 +190,7 @@ namespace cda {
                                 vt *= signum(c[0]) * c.norm();
                                 vt += c;
                                 
-                                h = containers::Transpose(vt) * vt;
+                                h = containers::transpose(vt) * vt;
                                 h *= -2.0 / vt.square_norm();
                                 h += Matrix<ValueType>::Identity(rows - row);
                                 
@@ -209,7 +209,7 @@ namespace cda {
                             }
                         }
                         
-                        q = std::move(q.Transpose());
+                        q = std::move(q.transpose());
                         
                         for (size_t row = 1; row < rows; ++row) {
                             it_r_column = r[row];

@@ -547,7 +547,7 @@ using namespace cda::math::containers;
         {4, 9, 14, 19}
     });
     
-    XCTAssertEqual(matrix.Transpose(), expected, "Transpose operation OK");
+    XCTAssertEqual(matrix.transpose(), expected, "transpose operation OK");
 }
 
 - (void)testSquareMatrix {
@@ -962,7 +962,7 @@ using namespace cda::math::containers;
         {9}
     });
     
-    XCTAssertEqual(Transpose(vector), expected, "Transpose vector is the expected matrix");
+    XCTAssertEqual(transpose(vector), expected, "transpose vector is the expected matrix");
 }
 
 - (void)testMaximumAndMinimumElements {
