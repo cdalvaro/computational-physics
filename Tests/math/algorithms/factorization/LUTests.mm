@@ -55,7 +55,7 @@ using namespace cda::math::algorithms::factorization;
     
     const auto accuracy = 1E-13;
     
-    // Matrix U
+    // U Matrix
     Matrix<double> expected_u({
         {3.0,     2.0,     1.0,       2.0},
         {0.0, 4.0/3.0, 8.0/3.0, -11.0/3.0},
@@ -63,10 +63,10 @@ using namespace cda::math::algorithms::factorization;
         {0.0,     0.0,     0.0,      13.0}
     });
     
-    XCTAssert([TestsTools compareMatrix:lu.U()
+    XCTAssert([TestsTools compareMatrix:lu.u()
                            withExpected:expected_u
                            whitAccuracy:accuracy],
-              "Matrix U OK");
+              "U matrix OK");
     
     // L Matrix
     Matrix<double> expected_l({

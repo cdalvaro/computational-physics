@@ -35,9 +35,9 @@ namespace cda {
                         return _l;
                     }
                     
-                    const Matrix<ValueType> &U() {
+                    const Matrix<ValueType> &u() {
                         FactorizeLU();
-                        return u;
+                        return _u;
                     }
                     
                     const bool &IsDegenerate() const {
@@ -106,9 +106,9 @@ namespace cda {
                             return 0;
                         }
                         
-                        ValueType determinant = u[0][0];
+                        ValueType determinant = _u[0][0];
                         for (size_t row = 1; row < rows; ++row) {
-                            determinant *= u[row][row];
+                            determinant *= _u[row][row];
                         }
                         
                         return determinant;
@@ -121,7 +121,7 @@ namespace cda {
                     
                 private:
                     
-                    Matrix<ValueType> _l, u, lu;
+                    Matrix<ValueType> _l, _u, lu;
                     const size_t rows;
                     
                     bool is_factorized;
@@ -135,7 +135,7 @@ namespace cda {
                         RemoveSingularities();
                         
                         _l.resize(rows, rows, 0);
-                        u.resize(rows, rows, 0);
+                        _u.resize(rows, rows, 0);
                         
                         for (size_t row = 0; row < rows; ++row) {
                             _l[row][row] = 1;
@@ -147,17 +147,17 @@ namespace cda {
                                 if (column <= row) {
                                     sum = 0;
                                     for (size_t k = 0; k < column; ++k) {
-                                        sum += _l[column][k] * u[k][row];
+                                        sum += _l[column][k] * _u[k][row];
                                     }
-                                    u[column][row] = lu[column][row] - sum;
+                                    _u[column][row] = lu[column][row] - sum;
                                 }
                                 
                                 if (column >= row) {
                                     sum = 0;
                                     for (size_t k = 0; k < row; ++k) {
-                                        sum += _l[column][k] * u[k][row];
+                                        sum += _l[column][k] * _u[k][row];
                                     }
-                                    _l[column][row] = (lu[column][row] - sum) / u[row][row];
+                                    _l[column][row] = (lu[column][row] - sum) / _u[row][row];
                                 }
                             }
                         }
@@ -165,17 +165,17 @@ namespace cda {
                         for (size_t row = 0; row < rows; ++row) {
                             for (size_t column = 0; column < rows; ++column) {
                                 if (column > row) {
-                                    lu[row][column] = u[row][column];
+                                    lu[row][column] = _u[row][column];
                                     _l[row][column]  = 0;
                                 } else if (column == row) {
-                                    lu[row][column] = u[row][column];
+                                    lu[row][column] = _u[row][column];
                                     _l[row][column]  = 1;
                                     
-                                    if (!is_degenerate && u[row][column] == 0) {
+                                    if (!is_degenerate && _u[row][column] == 0) {
                                         is_degenerate = true;
                                     }
                                 } else {
-                                    u[row][column]  = 0;
+                                    _u[row][column]  = 0;
                                     lu[row][column] = _l[row][column];
                                 }
                             }
