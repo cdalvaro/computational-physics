@@ -43,14 +43,14 @@ namespace cda {
                     
                     const Matrix<ValueType> &q() {
                         if (_q.is_null()) {
-                            ComputeQR(original);
+                            compute_qr_matrices(original);
                         }
                         return _q;
                     }
                     
                     const Matrix<ValueType> &r() {
                         if (_r.is_null()) {
-                            ComputeQR(original);
+                            compute_qr_matrices(original);
                         }
                         return _r;
                     }
@@ -78,7 +78,7 @@ namespace cda {
                             ValueType square_sum, element;
                             
                             for (size_t iteration = 0; iteration < _max_iterations; ++iteration) {
-                                ComputeQR(matrix);
+                                compute_qr_matrices(matrix);
                                 matrix = _r * _q;
                                 
                                 // Convergence test
@@ -156,7 +156,7 @@ namespace cda {
                     containers::Vector<ValueType> _eigen_values;
                     std::map<ValueType, containers::Vector<ValueType>> _eigen_vectors;
                     
-                    void ComputeQR(const Matrix<ValueType> &matrix) {
+                    void compute_qr_matrices(const Matrix<ValueType> &matrix) {
                         
                         const auto I = Matrix<ValueType>::identity(rows);
                         
