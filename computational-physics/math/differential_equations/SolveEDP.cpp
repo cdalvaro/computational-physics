@@ -1072,7 +1072,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
-        eigVal = qrA.EigenValues();
+        eigVal = qrA.eigen_values();
         std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
             return a < b;
         });
@@ -1093,7 +1093,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         std::ifstream in(path.data());
         if (in.fail()) {
             std::cout << "\n\tEl fichero no existe, se van a calcular los autovalores... ";
-            eigVal = qrA.EigenValues();
+            eigVal = qrA.eigen_values();
             std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
                 return a < b;
             });
@@ -1110,7 +1110,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
     } else {
         std::cout << "\tCalculando autovalores... ";
-        eigVal = qrA.EigenValues();
+        eigVal = qrA.eigen_values();
         std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
             return a < b;
         });

@@ -87,12 +87,12 @@ const Matrix<double> test_matrix({
     const Vector<double> expected_eigenvalues({ 27.1593, 4.26358, 0.407643, 0.169475 });
     const auto accuracy = 1E-4;
     
-    XCTAssert([TestsTools compareVector:qr.EigenValues()
+    XCTAssert([TestsTools compareVector:qr.eigen_values()
                            withExpected:expected_eigenvalues
                            whitAccuracy:accuracy],
               "Eigenvalues OK");
     
-    XCTAssert([TestsTools compareVector:qr.EigenValues()
+    XCTAssert([TestsTools compareVector:qr.eigen_values()
                            withExpected:expected_eigenvalues
                            whitAccuracy:accuracy],
               "Eigenvalues cache OK");
@@ -100,7 +100,7 @@ const Matrix<double> test_matrix({
 
 - (void)testQREigenVectorsOneByOne {
     QR<Matrix> qr(test_matrix);
-    auto eigenvalues = qr.EigenValues();
+    auto eigenvalues = qr.eigen_values();
     
     const Matrix<double> expected_eigenvectors({
         { 0.13547,   0.28509,    0.70276,   1},
@@ -126,7 +126,7 @@ const Matrix<double> test_matrix({
 
 - (void)testQREigenVectorsAtOnce {
     QR<Matrix> qr(test_matrix);
-    auto eigenvalues = qr.EigenValues();
+    auto eigenvalues = qr.eigen_values();
     auto eigenvectors = qr.EigenVectors();
     
     const Matrix<double> expected_eigenvectors({

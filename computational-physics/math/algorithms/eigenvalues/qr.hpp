@@ -71,8 +71,8 @@ namespace cda {
                         this->_accuracy = accuracy;
                     }
                     
-                    const containers::Vector<ValueType> &EigenValues() {
-                        if (eigen_values.is_empty()) {
+                    const containers::Vector<ValueType> &eigen_values() {
+                        if (_eigen_values.is_empty()) {
                             auto matrix(original);
                             const size_t last_row = rows - 1;
                             ValueType square_sum, element;
@@ -95,10 +95,10 @@ namespace cda {
                                 }
                             }
                             
-                            eigen_values = matrix.get_diagonal();
+                            _eigen_values = matrix.get_diagonal();
                         }
                         
-                        return eigen_values;
+                        return _eigen_values;
                     }
                     
                     const containers::Vector<ValueType> &EigenVector(const ValueType &eigen_value) {
@@ -137,7 +137,7 @@ namespace cda {
                     }
                     
                     const std::map<ValueType, containers::Vector<ValueType>> &EigenVectors() {
-                        auto values = EigenValues();
+                        auto values = eigen_values();
                         for (auto it_value = values.begin(); it_value != values.end(); ++it_value) {
                             EigenVector(*it_value);
                         }
@@ -153,7 +153,7 @@ namespace cda {
                     double _accuracy;
                     
                     Matrix<ValueType> _q, _r;
-                    containers::Vector<ValueType> eigen_values;
+                    containers::Vector<ValueType> _eigen_values;
                     std::map<ValueType, containers::Vector<ValueType>> eigen_vectors;
                     
                     void ComputeQR(const Matrix<ValueType> &matrix) {
