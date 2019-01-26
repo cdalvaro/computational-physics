@@ -28,7 +28,7 @@ namespace cda {
                     }
                     
                     template <typename T>
-                    containers::Vector<T> SolveLinearSystem3Diagonal(const containers::Matrix<T> &system,
+                    containers::Vector<T> solve_3diagonal(const containers::Matrix<T> &system,
                                                                      const containers::Vector<T> &b_terms) {
                         
                         if (!system.is_square()) {

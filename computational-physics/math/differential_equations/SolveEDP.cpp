@@ -58,11 +58,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-3] += (1.0 - (A(x[dim-1]-h)*h)/2.0)*BCR(x[dim-1],0.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
             solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = y;
@@ -91,11 +91,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-1] = -h*h*C(x[dim-1]) + 2.0*h*BCR(x[dim-1],0.0)*(h*A(x[dim-1])/2.0 + 1.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
             solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = solV;
@@ -120,11 +120,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-2] = -h*h*C(x[dim-1]) + 2.0*h*BCR(x[dim-1],0.0)*(h*A(x[dim-1])/2.0 + 1.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
             solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = y;
@@ -152,11 +152,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-2] += (1.0 - (A(x[dim-1]-h)*h)/2.0)*BCR(x[dim-1],0.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
             solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = y;
@@ -775,7 +775,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
             b[i] = Q1D(x[i])*dtx*(1.0-theta)*y[i+2] + (1.0 - 2.0*Q1D(x[i])*dtx*(1.0-theta))*y[i+1] + Q1D(x[i])*dtx*(1.0-theta)*y[i];
         }
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        solV = linear::solve_3diagonal(diagLU, b);
         
         sol = y;
         sol.set(1, solV);
@@ -803,7 +803,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-2][2] = 0.0;
         b[n-2] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        solV = linear::solve_3diagonal(diagLU, b);
         
         sol = y;
         y.set(1, solV);
@@ -831,7 +831,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
             b[i] = Q1D(x[i])*dtx*(1.0-theta)*y[i+1] + (1.0 - 2.0*Q1D(x[i])*dtx*(1.0-theta))*y[i] + Q1D(x[i])*dtx*(1.0-theta)*y[i-1];
         }
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        solV = linear::solve_3diagonal(diagLU, b);
         
         sol = y;
         sol.set(0, solV);
@@ -864,7 +864,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-1][2] = 0.0;
         b[n-1] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        sol = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        sol = linear::solve_3diagonal(diagLU, b);
     }
     
     time += dt;
