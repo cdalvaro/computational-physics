@@ -67,7 +67,7 @@ const Matrix<double> test_matrix({
                            whitAccuracy:accuracy],
               "Q matrix OK");
     
-    // Matrix R
+    // R Matrix
     const Matrix<double> expected_r({
         {-20.6640,  -19.5509,   -16.5021,   -13.9857},
         {0.0000,     -1.6617,    -0.2213,     3.2698},
@@ -75,10 +75,10 @@ const Matrix<double> test_matrix({
         {0.0000,      0.0000,     0.0000,     0.1223}
     });
     
-    XCTAssert([TestsTools compareMatrix:qr.R()
+    XCTAssert([TestsTools compareMatrix:qr.r()
                            withExpected:expected_r
                            whitAccuracy:accuracy],
-              "Matrix R OK");
+              "R matrix OK");
 }
 
 - (void)testQREigenValues {
