@@ -33,7 +33,7 @@ namespace cda {
                        const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
                     original(matrix), rows(matrix.rows()),
-                    _max_iterations(max_iterations), accuracy(accuracy) {
+                    _max_iterations(max_iterations), _accuracy(accuracy) {
                         if (!matrix.is_square()) {
                             throw std::logic_error("Matrix must be square to compute its eigenvalues.");
                         }
@@ -63,12 +63,12 @@ namespace cda {
                         this->_max_iterations = iterations;
                     }
                     
-                    const double &Accuracy() const {
-                        return accuracy;
+                    const double &accuracy() const {
+                        return _accuracy;
                     }
                     
-                    void Accuracy(const double &accuracy) {
-                        this->accuracy = accuracy;
+                    void accuracy(const double &accuracy) {
+                        this->_accuracy = accuracy;
                     }
                     
                     const containers::Vector<ValueType> &EigenValues() {
@@ -90,7 +90,7 @@ namespace cda {
                                     }
                                 }
                                 
-                                if (std::sqrt(square_sum) < accuracy) {
+                                if (std::sqrt(square_sum) < _accuracy) {
                                     break;
                                 }
                             }
@@ -109,7 +109,7 @@ namespace cda {
                         }
                         
                         Matrix<ValueType> inverse_matrix(rows, rows, 0);
-                        inverse_matrix.set_diagonal(eigen_value * (accuracy + 1.0));
+                        inverse_matrix.set_diagonal(eigen_value * (_accuracy + 1.0));
                         
                         inverse_matrix = (original - inverse_matrix).pow(-1);
                         
@@ -126,7 +126,7 @@ namespace cda {
                             
                             // Convergence test
                             distance = normalization_factor - old_normalization_factor;
-                            if (std::sqrt(distance * distance) < accuracy) {
+                            if (std::sqrt(distance * distance) < _accuracy) {
                                 break;
                             }
                         }
@@ -150,7 +150,7 @@ namespace cda {
                     const size_t rows;
                     
                     size_t _max_iterations;
-                    double accuracy;
+                    double _accuracy;
                     
                     Matrix<ValueType> _q, _r;
                     containers::Vector<ValueType> eigen_values;
