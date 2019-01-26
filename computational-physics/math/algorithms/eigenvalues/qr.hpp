@@ -41,11 +41,11 @@ namespace cda {
                     
                     virtual ~QR() = default;
                     
-                    const Matrix<ValueType> &Q() {
-                        if (q.is_null()) {
+                    const Matrix<ValueType> &q() {
+                        if (_q.is_null()) {
                             ComputeQR(original);
                         }
-                        return q;
+                        return _q;
                     }
                     
                     const Matrix<ValueType> &R() {
@@ -79,7 +79,7 @@ namespace cda {
                             
                             for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
                                 ComputeQR(matrix);
-                                matrix = r * q;
+                                matrix = r * _q;
                                 
                                 // Convergence test
                                 square_sum = 0;
@@ -152,7 +152,7 @@ namespace cda {
                     size_t max_iterations;
                     double accuracy;
                     
-                    Matrix<ValueType> q, r;
+                    Matrix<ValueType> _q, r;
                     containers::Vector<ValueType> eigen_values;
                     std::map<ValueType, containers::Vector<ValueType>> eigen_vectors;
                     
@@ -166,11 +166,11 @@ namespace cda {
                         vt *= signum(c[0]) * c.norm();
                         vt += c;
                         
-                        q = containers::transpose(vt) * vt;
-                        q *= -2.0 / vt.square_norm();
-                        q += I;
+                        _q = containers::transpose(vt) * vt;
+                        _q *= -2.0 / vt.square_norm();
+                        _q += I;
                         
-                        r = q * matrix;
+                        r = _q * matrix;
                         for (auto it_r = r.begin() + rows; it_r != r.end(); it_r += rows) {
                             *it_r = 0;
                         }
@@ -199,7 +199,7 @@ namespace cda {
                                 h = std::move(h__);
                             }
                             
-                            q = h * q;
+                            _q = h * _q;
                             r = h * r;
                             
                             it_r_column = r[row];
@@ -209,7 +209,7 @@ namespace cda {
                             }
                         }
                         
-                        q = std::move(q.transpose());
+                        _q = std::move(_q.transpose());
                         
                         for (size_t row = 1; row < rows; ++row) {
                             it_r_column = r[row];

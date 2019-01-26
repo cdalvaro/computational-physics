@@ -54,7 +54,7 @@ const Matrix<double> test_matrix({
     
     const auto accuracy = 1E-4;
     
-    // Matrix Q
+    // Q Matrix
     const Matrix<double> expected_q({
         {-0.1452,    0.5046,    0.6740,    0.5197},
         {-0.3388,   -0.8287,    0.4060,    0.1834},
@@ -62,10 +62,10 @@ const Matrix<double> test_matrix({
         {-0.7259,    0.1156,   -0.5493,    0.3974}
     });
     
-    XCTAssert([TestsTools compareMatrix:qr.Q()
+    XCTAssert([TestsTools compareMatrix:qr.q()
                            withExpected:expected_q
                            whitAccuracy:accuracy],
-              "Matrix Q OK");
+              "Q matrix OK");
     
     // Matrix R
     const Matrix<double> expected_r({
