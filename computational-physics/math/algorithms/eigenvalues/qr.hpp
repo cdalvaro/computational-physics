@@ -33,7 +33,7 @@ namespace cda {
                        const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
                     original(matrix), rows(matrix.rows()),
-                    max_iterations(max_iterations), accuracy(accuracy) {
+                    _max_iterations(max_iterations), accuracy(accuracy) {
                         if (!matrix.is_square()) {
                             throw std::logic_error("Matrix must be square to compute its eigenvalues.");
                         }
@@ -55,12 +55,12 @@ namespace cda {
                         return _r;
                     }
                     
-                    const size_t &MaxIterations() const {
-                        return max_iterations;
+                    const size_t &max_iterations() const {
+                        return _max_iterations;
                     }
                     
-                    void MaxIterations(const size_t &max_iterations) {
-                        this->max_iterations = max_iterations;
+                    void max_iterations(const size_t &iterations) {
+                        this->_max_iterations = iterations;
                     }
                     
                     const double &Accuracy() const {
@@ -77,7 +77,7 @@ namespace cda {
                             const size_t last_row = rows - 1;
                             ValueType square_sum, element;
                             
-                            for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
+                            for (size_t iteration = 0; iteration < _max_iterations; ++iteration) {
                                 ComputeQR(matrix);
                                 matrix = _r * _q;
                                 
@@ -117,7 +117,7 @@ namespace cda {
                         ValueType old_normalization_factor, distance;
                         Matrix<ValueType> eigenVector(rows, 1, 1);
                         
-                        for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
+                        for (size_t iteration = 0; iteration < _max_iterations; ++iteration) {
                             old_normalization_factor = normalization_factor;
                             
                             eigenVector = inverse_matrix * eigenVector;
@@ -149,7 +149,7 @@ namespace cda {
                     const Matrix<ValueType> original;
                     const size_t rows;
                     
-                    size_t max_iterations;
+                    size_t _max_iterations;
                     double accuracy;
                     
                     Matrix<ValueType> _q, _r;

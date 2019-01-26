@@ -1068,7 +1068,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     }
     
     algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A);
-    qrA.MaxIterations(20);
+    qrA.max_iterations(20);
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
