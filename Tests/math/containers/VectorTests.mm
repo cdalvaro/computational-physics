@@ -40,51 +40,51 @@ using namespace cda::math::containers;
     XCTAssert(!(vector3 == vector1), "Equality comparison OK");
     XCTAssert(vector3 != vector1, "Inequality comparison OK");
     
-    vector2.Ones();
+    vector2.ones();
     XCTAssert(!(vector2 == vector1), "Equality comparison OK");
     XCTAssert(vector2 != vector1, "Inequality comparison OK");
 }
 
 - (void)testIsEmpty {
     const Vector<double> vector1(10, 2);
-    XCTAssert(!vector1.IsEmpty(), "vector1 is not empty");
+    XCTAssert(!vector1.is_empty(), "vector1 is not empty");
     
     const Vector<double> vector2;
-    XCTAssert(vector2.IsEmpty(), "vector2 is empty");
-    XCTAssertEqual(vector2.Size(), 0, "The size of vector2 is 0");
+    XCTAssert(vector2.is_empty(), "vector2 is empty");
+    XCTAssertEqual(vector2.size(), 0, "The size of vector2 is 0");
 }
 
 - (void)testIsNull {
     const Vector<double> vector1(10, 0);
-    XCTAssert(vector1.IsNull(), "vector1 is null");
-    XCTAssert(!vector1.IsEmpty(), "vector1 is not empty");
+    XCTAssert(vector1.is_null(), "vector1 is null");
+    XCTAssert(!vector1.is_empty(), "vector1 is not empty");
     
     const Vector<double> vector2;
-    XCTAssert(vector2.IsNull(), "vector2 is null");
-    XCTAssert(vector2.IsEmpty(), "vector2 is empty");
+    XCTAssert(vector2.is_null(), "vector2 is null");
+    XCTAssert(vector2.is_empty(), "vector2 is empty");
     
     const Vector<double> vector3({0, 0, 0, 0, 1, 0, 0, 0, 0});
-    XCTAssert(!vector3.IsNull(), "vector3 is not null");
-    XCTAssert(!vector3.IsEmpty(), "vector3 is not empty");
+    XCTAssert(!vector3.is_null(), "vector3 is not null");
+    XCTAssert(!vector3.is_empty(), "vector3 is not empty");
 }
 
 - (void)testConstructors {
     
     // Default constructor
     const Vector<double> defaultVector;
-    XCTAssert(defaultVector.IsEmpty(), "defaultVector is empty");
-    XCTAssert(defaultVector.IsNull(), "defaultVector is null");
+    XCTAssert(defaultVector.is_empty(), "defaultVector is empty");
+    XCTAssert(defaultVector.is_null(), "defaultVector is null");
     
     // Constructor with size
     const Vector<double> vectorWithSize(10);
-    XCTAssertEqual(vectorWithSize.Size(), 10, "Constructor with size OK");
-    XCTAssert(!vectorWithSize.IsEmpty() && !vectorWithSize.IsNull(), "vectorWithSize is not empty and is not null");
+    XCTAssertEqual(vectorWithSize.size(), 10, "Constructor with size OK");
+    XCTAssert(!vectorWithSize.is_empty() && !vectorWithSize.is_null(), "vectorWithSize is not empty and is not null");
     
     // Constructor with size filling elements
     Vector<double> vectorWithElementsFilled(10, 5);
-    XCTAssertEqual(vectorWithElementsFilled.Size(), 10, "Constructor with size filling elements has size OK");
-    XCTAssert(!vectorWithElementsFilled.IsEmpty() && !vectorWithElementsFilled.IsNull(), "vectorWithSize is not empty and is not null");
-    for (size_t i = 0; i < vectorWithElementsFilled.Size(); ++i) {
+    XCTAssertEqual(vectorWithElementsFilled.size(), 10, "Constructor with size filling elements has size OK");
+    XCTAssert(!vectorWithElementsFilled.is_empty() && !vectorWithElementsFilled.is_null(), "vectorWithSize is not empty and is not null");
+    for (size_t i = 0; i < vectorWithElementsFilled.size(); ++i) {
         XCTAssertEqual(vectorWithElementsFilled[i], 5, "Element has been filled OK");
     }
     
@@ -95,13 +95,13 @@ using namespace cda::math::containers;
     // Move constructor
     Vector<double> vectorFromMove(std::move(vectorWithElementsFilled));
     XCTAssertEqual(vectorFromMove, vectorFromCopy, "Move constructor OK");
-    XCTAssert(vectorWithElementsFilled.IsEmpty(), "vectorWithElementsFilled is empty after had been moved");
-    XCTAssert(vectorWithElementsFilled.IsNull(), "vectorWithElementsFilled is null after had been moved");
+    XCTAssert(vectorWithElementsFilled.is_empty(), "vectorWithElementsFilled is empty after had been moved");
+    XCTAssert(vectorWithElementsFilled.is_null(), "vectorWithElementsFilled is null after had been moved");
     
     // Constructor from array
     const double array[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     const Vector<double> vectorFromArray(array);
-    XCTAssertEqual(vectorFromArray.Size(), 10, "Constructor from array has right size");
+    XCTAssertEqual(vectorFromArray.size(), 10, "Constructor from array has right size");
     
     for (size_t i = 0; i < 10; ++i) {
         XCTAssertEqual(vectorFromArray[i], array[i], "Element has been copied OK");
@@ -115,7 +115,7 @@ using namespace cda::math::containers;
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     Vector<double> vector_copy;
-    vector_copy.Copy(10, vector.begin());
+    vector_copy.copy(10, vector.begin());
     
     XCTAssertEqual(vector_copy, vector, "Copy of vectors OK");
 }
@@ -123,9 +123,9 @@ using namespace cda::math::containers;
 - (void)testClear {
     Vector<double> vector(10, 1);
     
-    vector.Clear();
-    XCTAssert(vector.IsEmpty(), "Vector is empty");
-    XCTAssert(vector.IsNull(), "Vector is null");
+    vector.clear();
+    XCTAssert(vector.is_empty(), "Vector is empty");
+    XCTAssert(vector.is_null(), "Vector is null");
 }
 
 - (void)testIterators {
@@ -138,26 +138,26 @@ using namespace cda::math::containers;
     const Vector<double> const_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     XCTAssertEqual(const_vector[2], 3, "Const accessor for reading OK");
-    XCTAssertEqual(const_vector.At(5), 6, "Const At accessor for reading OK");
-    XCTAssertThrows(const_vector.At(11), "Index out of bounds exception when accessing for reading OK");
+    XCTAssertEqual(const_vector.at(5), 6, "Const at accessor for reading OK");
+    XCTAssertThrows(const_vector.at(11), "Index out of bounds exception when accessing for reading OK");
     
     Vector<double> var_vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     XCTAssertEqual(var_vector[2], 3, "Const accessor for reading OK");
     XCTAssertEqual((var_vector[6] = 21), 21, "Var accesor after setting OK");
-    XCTAssertEqual((var_vector.At(5) = 34), 34, "Var At accessor after setting OK");
-    XCTAssertThrows(var_vector.At(11), "Index out of bounds exception when accessing for reading OK");
+    XCTAssertEqual((var_vector.at(5) = 34), 34, "Var at accessor after setting OK");
+    XCTAssertThrows(var_vector.at(11), "Index out of bounds exception when accessing for reading OK");
 }
 
 - (void)testGet {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     const Vector<double> expected1({5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector.Get(4), expected1, "Get without length OK");
+    XCTAssertEqual(vector.get(4), expected1, "get without length OK");
     
     const Vector<double> expected2({2, 3, 4, 5, 6, 7, 8, 9});
-    XCTAssertEqual(vector.Get(1, 8), expected2, "Get with length OK");
+    XCTAssertEqual(vector.get(1, 8), expected2, "get with length OK");
     
-    XCTAssertThrows(vector.Get(0, 11), "Index out of bounds");
-    XCTAssertThrows(vector.Get(3, 8), "Index out of bounds");
+    XCTAssertThrows(vector.get(0, 11), "Index out of bounds");
+    XCTAssertThrows(vector.get(3, 8), "Index out of bounds");
 }
 
 - (void)testSet {
@@ -165,18 +165,18 @@ using namespace cda::math::containers;
     const Vector<double> mod_vector({2, 4, 6, 8});
     
     auto vector1 = original_vector;
-    vector1.Set(3, mod_vector);
+    vector1.set(3, mod_vector);
     
     const Vector<double> expected1({1, 2, 3, 2, 4, 6, 8, 8, 9, 10});
     XCTAssertEqual(vector1, expected1, "Set without length OK");
     
     auto vector2 = original_vector;
-    vector2.Set(6, mod_vector, 3);
+    vector2.set(6, mod_vector, 3);
     
     const Vector<double> expected2({1, 2, 3, 4, 5, 6, 2, 4, 6, 10});
     XCTAssertEqual(vector2, expected2, "Set with length OK");
     
-    XCTAssertThrows(vector2.Set(8, vector2, 4), "Index out of bounds");
+    XCTAssertThrows(vector2.set(8, vector2, 4), "Index out of bounds");
 }
 
 - (void)testAssign {
@@ -194,7 +194,7 @@ using namespace cda::math::containers;
     test2 = std::move(test);
     
     XCTAssertEqual(test2, vector, "Move assignment OK");
-    XCTAssert(test.IsNull(), "test vector is null after had been moved");
+    XCTAssert(test.is_null(), "test vector is null after had been moved");
     
     //Save the diagnostic state
 #pragma clang diagnostic push
@@ -212,11 +212,11 @@ using namespace cda::math::containers;
     Vector<double> vector({0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
     
     // Increase size
-    vector.Resize(15, true);
-    XCTAssert(vector.Size() == 15, "Vector size has been increased successfully");
+    vector.resize(15, true);
+    XCTAssert(vector.size() == 15, "Vector size has been increased successfully");
     
     Boolean newElementsFilled = true;
-    for (NSInteger i = 10; i < vector.Size(); ++i) {
+    for (NSInteger i = 10; i < vector.size(); ++i) {
         if (vector[i] != 0) {
             newElementsFilled = false;
             break;
@@ -227,16 +227,16 @@ using namespace cda::math::containers;
     
     // Resize to the same size
     auto previousVector(vector);
-    vector.Resize(vector.Size());
+    vector.resize(vector.size());
     
     XCTAssert(previousVector == vector, "The vector has not changed");
     
     // Decrease size
-    vector.Resize(5);
-    XCTAssert(vector.Size() == 5, "Vector size has been decreased successfully");
+    vector.resize(5);
+    XCTAssert(vector.size() == 5, "Vector size has been decreased successfully");
     
     Boolean previousElementsEqual = true;
-    for (NSInteger i = 0; i < vector.Size(); ++i) {
+    for (NSInteger i = 0; i < vector.size(); ++i) {
         if (vector[i] != previousVector[i]) {
             previousElementsEqual = false;
             break;
@@ -250,52 +250,52 @@ using namespace cda::math::containers;
     Vector<double> vector(10);
     const Vector<double> expected({2, 2, 2, 2, 2, 2, 2, 2, 2, 2});
     
-    vector.Fill(2);
+    vector.fill(2);
     XCTAssertEqual(vector, expected, "Fill vector OK");
 }
 
 - (void)testOnes {
     const Vector<double> expected_ones(5, 1);
-    XCTAssertEqual(Vector<double>::Ones(5), expected_ones, "Ones static method OK");
+    XCTAssertEqual(Vector<double>::ones(5), expected_ones, "ones static method OK");
     
     Vector<double> result(5, 2);
-    result.Ones();
-    XCTAssertEqual(result, expected_ones, "Ones method OK");
+    result.ones();
+    XCTAssertEqual(result, expected_ones, "ones method OK");
 }
 
 - (void)testZero {
     const Vector<double> expected_zero(5, 0);
-    XCTAssertEqual(Vector<double>::Zero(5), expected_zero, "Zero static method OK");
+    XCTAssertEqual(Vector<double>::zero(5), expected_zero, "zero static method OK");
     
     Vector<double> result(5, 2);
-    result.Zero();
-    XCTAssertEqual(result, expected_zero, "Zero method OK");
+    result.zero();
+    XCTAssertEqual(result, expected_zero, "zero method OK");
 }
 
 - (void)testRandom {
-    auto vector1 = Vector<double>::Random(10, -3, 4);
-    XCTAssert(!vector1.IsEmpty(), "Random vector is not empty");
-    XCTAssert(!vector1.IsNull(), "Random vector is not null");
-    XCTAssert(vector1.MaximumElement() < 4, "The maximum element is smaller than 1");
-    XCTAssert(vector1.MinimumElement() >= -3, "The minimum element is greater or equal than 0");
+    auto vector1 = Vector<double>::random(10, -3, 4);
+    XCTAssert(!vector1.is_empty(), "Random vector is not empty");
+    XCTAssert(!vector1.is_null(), "Random vector is not null");
+    XCTAssert(vector1.max_element() < 4, "The maximum element is smaller than 1");
+    XCTAssert(vector1.min_element() >= -3, "The minimum element is greater or equal than 0");
     
     Vector<double> vector2(10);
-    vector2.Random();
-    XCTAssert(!vector2.IsEmpty(), "Random vector is not empty");
-    XCTAssert(!vector2.IsNull(), "Random vector is not null");
-    XCTAssert(vector2.MaximumElement() < 1, "The maximum element is smaller than 1");
-    XCTAssert(vector2.MinimumElement() >= 0, "The minimum element is greater or equal than 0");
+    vector2.random();
+    XCTAssert(!vector2.is_empty(), "Random vector is not empty");
+    XCTAssert(!vector2.is_null(), "Random vector is not null");
+    XCTAssert(vector2.max_element() < 1, "The maximum element is smaller than 1");
+    XCTAssert(vector2.min_element() >= 0, "The minimum element is greater or equal than 0");
 }
 
 - (void)testHasDuplicate {
     Vector<double> vector({1.5, 2.3, 3.6, 4.68, 5.6, 6.3, 7.34, 8.43, 9.43, 8.4363});
-    XCTAssert(!vector.HasDuplicate(), "vector does not have duplicate elements");
+    XCTAssert(!vector.has_duplicate(), "vector does not have duplicate elements");
     
-    XCTAssert(vector.HasDuplicate(1E-02), "vector has duplicate with accuracy 1E-02");
-    XCTAssert(!vector.HasDuplicate(1E-03), "vector does not have duplicate with accuracy 1E-03");
+    XCTAssert(vector.has_duplicate(1E-02), "vector has duplicate with accuracy 1E-02");
+    XCTAssert(!vector.has_duplicate(1E-03), "vector does not have duplicate with accuracy 1E-03");
     
     vector[4] = 8.43;
-    XCTAssert(vector.HasDuplicate(), "vector has duplicate");
+    XCTAssert(vector.has_duplicate(), "vector has duplicate");
 }
 
 - (void)testAdditionofVectors {
@@ -338,7 +338,7 @@ using namespace cda::math::containers;
     vector *= 2.0;
     XCTAssertEqual(vector, expected, "Product with scalar into itself OK");
     
-    vector.Resize(20);
+    vector.resize(20);
     XCTAssertThrows(vector * expected, "Vectors must be of the same size");
     
     XCTAssertEqual(-vector, -1.0 * vector, "Negative vector OK");
@@ -349,11 +349,11 @@ using namespace cda::math::containers;
     const Vector<double> yAxis({0, 1, 0});
     const Vector<double> zAxis({0, 0, 1});
     
-    XCTAssertEqual(xAxis.CrossProduct3D(yAxis), zAxis, "Cross product OK");
+    XCTAssertEqual(xAxis.cross_product(yAxis), zAxis, "Cross product OK");
     
     const Vector<double> another_vector(4, 1);
-    XCTAssertThrows(xAxis.CrossProduct3D(another_vector), "Vectors must be of the same size");
-    XCTAssertThrows(another_vector.CrossProduct3D(another_vector), "Vector must be of size 3");
+    XCTAssertThrows(xAxis.cross_product(another_vector), "Vectors must be of the same size");
+    XCTAssertThrows(another_vector.cross_product(another_vector), "Vector must be of size 3");
 }
 
 - (void)testDivisions {
@@ -377,36 +377,36 @@ using namespace cda::math::containers;
 
 - (void)testPowElements {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector.PowElements(0), Vector<double>::Ones(10), "Power 0 OK");
+    XCTAssertEqual(vector.pow(0), Vector<double>::ones(10), "Power 0 OK");
     
-    XCTAssertEqual(vector.PowElements(1), vector, "Power 1 OK");
+    XCTAssertEqual(vector.pow(1), vector, "Power 1 OK");
     
     const Vector<double> expected({1, 8, 27, 64, 125, 216, 343, 512, 729, 1000});
-    XCTAssertEqual(vector.PowElements(3), expected, "Power 3 OK");
+    XCTAssertEqual(vector.pow(3), expected, "Power 3 OK");
 }
 
 - (void)testSqrt {
     const Vector<double> vector({1, 4, 9, 16, 25, 36, 49, 64, 81, 100});
     const Vector<double> expected({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
-    XCTAssertEqual(vector.Sqrt(), expected, "Sqrt method OK");
+    XCTAssertEqual(vector.sqrt(), expected, "sqrt method OK");
 }
 
 - (void)testSumAllElements {
     const Vector<double> vector1({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-    XCTAssertEqual(vector1.SumAllEments(), 55, "SumAllElments OK");
+    XCTAssertEqual(vector1.sum(), 55, "SumAllElments OK");
 }
 
 - (void)testFindMethod {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 4, 9, 10});
     
-    auto it_value_4 = vector.Find(4);
+    auto it_value_4 = vector.find(4);
     XCTAssertEqual(*it_value_4, 4, "Value 4 has been found");
     
     auto it_first_value_4 = vector.begin() + 3;
     XCTAssertEqual(it_value_4, it_first_value_4, "Found value 4 is the firstone");
     
-    auto it_value_12 = vector.Find(12);
+    auto it_value_12 = vector.find(12);
     XCTAssertEqual(it_value_12, vector.end(), "Value 12 is not present");
 }
 
@@ -419,42 +419,42 @@ using namespace cda::math::containers;
          5.432,  -6.236,   7.342,   8.324,    -9.341,      21.341
     });
     
-    XCTAssertEqual(vector.MaximumElement(), 523251.316, "MaximumElement OK");
-    XCTAssertEqual(vector.AbsoluteMaximumElement(), 523251.316, "AbsoluteMaximumElement OK");
-    XCTAssertEqual(vector.AbsoluteMaximumElementWithSign(), 523251.316, "AbsoluteMaximumElementWithSign OK");
+    XCTAssertEqual(vector.max_element(), 523251.316, "Maximum element OK");
+    XCTAssertEqual(vector.abs_max_element(), 523251.316, "Absolute maximum element OK");
+    XCTAssertEqual(vector.abs_max_element_with_sign(), 523251.316, "Absolute maximum element with sign OK");
     
-    XCTAssertEqual(vector.MinimumElement(), -312353.123, "MinimumElement OK");
-    XCTAssertEqual(vector.AbsoluteMinimumElement(), 0.001, "AbsoluteMinimumElement OK");
-    XCTAssertEqual(vector.AbsoluteMinimumElementWithSign(), 0.001, "AbsoluteMinimumElementWithSign OK");
+    XCTAssertEqual(vector.min_element(), -312353.123, "Minimum element OK");
+    XCTAssertEqual(vector.abs_min_element(), 0.001, "Absolute minimum element OK");
+    XCTAssertEqual(vector.abs_min_element_with_sign(), 0.001, "Absolute minimum element with sign OK");
 }
 
 - (void)testSort {
     Vector<double> vector({2, 6, 4, 1, 7, 9, 10, 3, 5, 8});
     const Vector<double> expected({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
-    vector.Sort();
-    XCTAssertEqual(vector, expected, "Sort method OK");
+    vector.sort();
+    XCTAssertEqual(vector, expected, "sort method OK");
 }
 
 - (void)testNorms {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     
     // Square Norm
-    auto result = vector.SquareNorm();
+    auto result = vector.square_norm();
     double expected = 385;
     XCTAssertEqual(result, expected, "The square norm of the vector is OK");
     
     // Norm
-    result = vector.Norm();
+    result = vector.norm();
     expected = std::sqrt(expected);
     XCTAssertEqual(result, expected, "The norm of the vector is OK");
 }
 
-- (void)testUnitary {
+- (void)testNormalizedVector {
     const Vector<double> vector({1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
     const auto expected = vector / std::sqrt(385);
     
-    XCTAssertEqual(vector.Unitary(), expected, "Unitary vector OK");
+    XCTAssertEqual(vector.normalized_vector(), expected, "Normalized vector OK");
 }
 
 - (void)testIfstreamOperator {

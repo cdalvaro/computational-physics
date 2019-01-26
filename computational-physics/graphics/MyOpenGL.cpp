@@ -323,8 +323,8 @@ void OpenGL::display2D()
 
 void OpenGL::drawSolution2D()
 {
-    OpenGL_Plot._vMax = OpenGL_Plot._vY.MaximumElement();
-    OpenGL_Plot._vMin = OpenGL_Plot._vY.MinimumElement();
+    OpenGL_Plot._vMax = OpenGL_Plot._vY.max_element();
+    OpenGL_Plot._vMin = OpenGL_Plot._vY.min_element();
     
     float adjX, adjY;
     adjX = OpenGL_Plot._cX - OpenGL_Plot._left_right;
@@ -341,7 +341,7 @@ void OpenGL::drawSolution2D()
         glBegin(GL_LINE_STRIP);
     }
     
-    for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+    for (int i=0; i<OpenGL_Plot._vX.size(); i++) {
         ColorMap::setColor(OpenGL_Plot._vY[i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
         glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
         glVertex2f((OpenGL_Plot._vX[i] - adjX)*OpenGL_Plot._zoomX, (OpenGL_Plot._vY[i] - adjY)*OpenGL_Plot._zoomY);
@@ -368,10 +368,10 @@ void OpenGL::timerFunction2D(int value)
 
 void OpenGL::plotAxes2D()
 {
-    const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement();
+    const float tmpXmax = OpenGL_Plot._vX.max_element(), tmpYmax = OpenGL_Plot._vY.max_element();
     const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax;
     
-    const float tmpXmin = OpenGL_Plot._vX.MinimumElement(), tmpYmin = OpenGL_Plot._vY.MinimumElement();
+    const float tmpXmin = OpenGL_Plot._vX.min_element(), tmpYmin = OpenGL_Plot._vY.min_element();
     const float tmpLimXmin = OpenGL_Plot._limXmin, tmpLimYmin = OpenGL_Plot._limYmin;
     
     OpenGL_Plot._limXmax = std::max(tmpXmax, tmpLimXmax);
@@ -397,8 +397,8 @@ void OpenGL::plotAxes2D()
 
 void OpenGL::center2D()
 {
-    OpenGL_Plot._cX = (OpenGL_Plot._vX.MaximumElement() - OpenGL_Plot._vX.MinimumElement())/2.0;
-    OpenGL_Plot._cY = (OpenGL_Plot._vY.MaximumElement() - OpenGL_Plot._vY.MinimumElement())/2.0;
+    OpenGL_Plot._cX = (OpenGL_Plot._vX.max_element() - OpenGL_Plot._vX.min_element())/2.0;
+    OpenGL_Plot._cY = (OpenGL_Plot._vY.max_element() - OpenGL_Plot._vY.min_element())/2.0;
 }
 
 
@@ -434,8 +434,8 @@ void OpenGL::display3D()
 
 void OpenGL::drawSolution3D()
 {
-    OpenGL_Plot._vMax = OpenGL_Plot._mZ.MaximumElement();
-    OpenGL_Plot._vMin = OpenGL_Plot._mZ.MinimumElement();
+    OpenGL_Plot._vMax = OpenGL_Plot._mZ.max_element();
+    OpenGL_Plot._vMin = OpenGL_Plot._mZ.min_element();
     
     float adjX, adjY, adjZ;
     adjX = -OpenGL_Plot._cX;
@@ -444,9 +444,9 @@ void OpenGL::drawSolution3D()
     //adjZ = OpenGL_Plot._up_down - OpenGL_Plot._cZ;
     
     if ((OpenGL_Plot._options &Lines) != 0) {
-        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -454,9 +454,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
         
-        for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vX.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vY.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vY.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[j][i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[i] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[j][i] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[j] + adjY));
@@ -464,9 +464,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
     } else if ((OpenGL_Plot._options &Shading) != 0) {
-        for (int i=0; i<OpenGL_Plot._vY.Size()-1; i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size()-1; i++) {
             glBegin(GL_TRIANGLE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -475,10 +475,10 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
     } else if ((OpenGL_Plot._options &Points) != 0) {
-        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size(); i++) {
             glBegin(GL_POINTS);
             glPointSize(5.0f);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -486,9 +486,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
     } else {
-        for (int i=0; i<OpenGL_Plot._vY.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vY.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vX.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vX.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[i][j], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[j] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[i][j] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[i] + adjY));
@@ -496,9 +496,9 @@ void OpenGL::drawSolution3D()
             glEnd();
         }
         
-        for (int i=0; i<OpenGL_Plot._vX.Size(); i++) {
+        for (int i=0; i<OpenGL_Plot._vX.size(); i++) {
             glBegin(GL_LINE_STRIP);
-            for (int j=0; j<OpenGL_Plot._vY.Size(); j++) {
+            for (int j=0; j<OpenGL_Plot._vY.size(); j++) {
                 ColorMap::setColor(OpenGL_Plot._mZ[j][i], OpenGL_Plot._vMin, OpenGL_Plot._vMax);
                 glColor3f(OpenGL_Plot._red, OpenGL_Plot._green, OpenGL_Plot._blue);
                 glVertex3f(OpenGL_Plot._zoomX*(OpenGL_Plot._vX[i] + adjX), OpenGL_Plot._zoomZ*(OpenGL_Plot._mZ[j][i] + adjZ), OpenGL_Plot._zoomY*(OpenGL_Plot._vY[j] + adjY));
@@ -528,10 +528,10 @@ void OpenGL::timerFunction3D(int value)
 
 void OpenGL::plotAxes3D()
 {
-    const float tmpXmax = OpenGL_Plot._vX.MaximumElement(), tmpYmax = OpenGL_Plot._vY.MaximumElement(), tmpZmax = OpenGL_Plot._mZ.MaximumElement();
+    const float tmpXmax = OpenGL_Plot._vX.max_element(), tmpYmax = OpenGL_Plot._vY.max_element(), tmpZmax = OpenGL_Plot._mZ.max_element();
     const float tmpLimXmax = OpenGL_Plot._limXmax, tmpLimYmax = OpenGL_Plot._limYmax, tmpLimZmax = OpenGL_Plot._limZmax;
     
-    const float tmpXmin = OpenGL_Plot._vX.MinimumElement(), tmpYmin = OpenGL_Plot._vY.MinimumElement(), tmpZmin = OpenGL_Plot._mZ.MinimumElement();
+    const float tmpXmin = OpenGL_Plot._vX.min_element(), tmpYmin = OpenGL_Plot._vY.min_element(), tmpZmin = OpenGL_Plot._mZ.min_element();
     const float tmpLimXmin = OpenGL_Plot._limXmin, tmpLimYmin = OpenGL_Plot._limYmin, tmpLimZmin = OpenGL_Plot._limZmin;
     
     OpenGL_Plot._limXmax = std::max(tmpXmax, tmpLimXmax);
@@ -562,16 +562,16 @@ void OpenGL::plotAxes3D()
 
 void OpenGL::center3D() {
     
-    auto max_vX = OpenGL_Plot._vX.MaximumElement();
-    auto min_vX = OpenGL_Plot._vX.MinimumElement();
+    auto max_vX = OpenGL_Plot._vX.max_element();
+    auto min_vX = OpenGL_Plot._vX.min_element();
     OpenGL_Plot._cX = (max_vX >= -min_vX ? 0.5 : -0.5) * (max_vX - min_vX);
     
-    auto max_vY = OpenGL_Plot._vY.MaximumElement();
-    auto min_vY = OpenGL_Plot._vY.MinimumElement();
+    auto max_vY = OpenGL_Plot._vY.max_element();
+    auto min_vY = OpenGL_Plot._vY.min_element();
     OpenGL_Plot._cY = (max_vY >= -min_vY ? 0.5 : -0.5) * (max_vY - min_vY);
     
-    auto max_mZ = OpenGL_Plot._mZ.MaximumElement();
-    auto min_mZ = OpenGL_Plot._mZ.MinimumElement();
+    auto max_mZ = OpenGL_Plot._mZ.max_element();
+    auto min_mZ = OpenGL_Plot._mZ.min_element();
     OpenGL_Plot._cZ = (max_mZ >= -min_mZ ? 0.5 : -0.5) * (max_mZ - min_mZ);
 }
 
@@ -628,9 +628,9 @@ void OpenGL::handleKeyPress(unsigned char key, int x, int y)
             break;
             
         case 'p':
-            eyePosX = (float)(OpenGL_Plot._vX[OpenGL_Plot._vX.Size()-1]-OpenGL_Plot._vX[0])/2;
+            eyePosX = (float)(OpenGL_Plot._vX[OpenGL_Plot._vX.size()-1]-OpenGL_Plot._vX[0])/2;
             eyePosZ = 1.0f;
-            eyePosY = (float)(OpenGL_Plot._vY[OpenGL_Plot._vX.Size()-1]-OpenGL_Plot._vX[0])/2;
+            eyePosY = (float)(OpenGL_Plot._vY[OpenGL_Plot._vX.size()-1]-OpenGL_Plot._vX[0])/2;
             OpenGL_Plot._rotX = -35;
             OpenGL_Plot._rotY = -45;
             break;

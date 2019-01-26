@@ -32,54 +32,54 @@ namespace cda {
                     QR(const Matrix<ValueType> &matrix,
                        const double &accuracy = CDA_QR_DEFAULT_ACCURACY,
                        const size_t &max_iterations = CDA_QR_DEFAULT_MAX_ITERATIONS) :
-                    original(matrix), rows(matrix.Rows()),
-                    max_iterations(max_iterations), accuracy(accuracy) {
-                        if (!matrix.IsSquare()) {
+                    original(matrix), rows(matrix.rows()),
+                    _max_iterations(max_iterations), _accuracy(accuracy) {
+                        if (!matrix.is_square()) {
                             throw std::logic_error("Matrix must be square to compute its eigenvalues.");
                         }
                     }
                     
                     virtual ~QR() = default;
                     
-                    const Matrix<ValueType> &Q() {
-                        if (q.IsNull()) {
-                            ComputeQR(original);
+                    const Matrix<ValueType> &q() {
+                        if (_q.is_null()) {
+                            compute_qr_matrices(original);
                         }
-                        return q;
+                        return _q;
                     }
                     
-                    const Matrix<ValueType> &R() {
-                        if (r.IsNull()) {
-                            ComputeQR(original);
+                    const Matrix<ValueType> &r() {
+                        if (_r.is_null()) {
+                            compute_qr_matrices(original);
                         }
-                        return r;
+                        return _r;
                     }
                     
-                    const size_t &MaxIterations() const {
-                        return max_iterations;
+                    const size_t &max_iterations() const {
+                        return _max_iterations;
                     }
                     
-                    void MaxIterations(const size_t &max_iterations) {
-                        this->max_iterations = max_iterations;
+                    void max_iterations(const size_t &iterations) {
+                        this->_max_iterations = iterations;
                     }
                     
-                    const double &Accuracy() const {
-                        return accuracy;
+                    const double &accuracy() const {
+                        return _accuracy;
                     }
                     
-                    void Accuracy(const double &accuracy) {
-                        this->accuracy = accuracy;
+                    void accuracy(const double &accuracy) {
+                        this->_accuracy = accuracy;
                     }
                     
-                    const containers::Vector<ValueType> &EigenValues() {
-                        if (eigen_values.IsEmpty()) {
+                    const containers::Vector<ValueType> &eigen_values() {
+                        if (_eigen_values.is_empty()) {
                             auto matrix(original);
                             const size_t last_row = rows - 1;
                             ValueType square_sum, element;
                             
-                            for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
-                                ComputeQR(matrix);
-                                matrix = r * q;
+                            for (size_t iteration = 0; iteration < _max_iterations; ++iteration) {
+                                compute_qr_matrices(matrix);
+                                matrix = _r * _q;
                                 
                                 // Convergence test
                                 square_sum = 0;
@@ -90,58 +90,58 @@ namespace cda {
                                     }
                                 }
                                 
-                                if (std::sqrt(square_sum) < accuracy) {
+                                if (std::sqrt(square_sum) < _accuracy) {
                                     break;
                                 }
                             }
                             
-                            eigen_values = matrix.GetDiagonal();
+                            _eigen_values = matrix.get_diagonal();
                         }
                         
-                        return eigen_values;
+                        return _eigen_values;
                     }
                     
-                    const containers::Vector<ValueType> &EigenVector(const ValueType &eigen_value) {
+                    const containers::Vector<ValueType> &eigen_vector(const ValueType &eigen_value) {
                         
-                        auto it_eigen_vector = eigen_vectors.find(eigen_value);
-                        if (it_eigen_vector != eigen_vectors.end() && !it_eigen_vector->second.IsEmpty()) {
+                        auto it_eigen_vector = _eigen_vectors.find(eigen_value);
+                        if (it_eigen_vector != _eigen_vectors.end() && !it_eigen_vector->second.is_empty()) {
                             return it_eigen_vector->second;
                         }
                         
                         Matrix<ValueType> inverse_matrix(rows, rows, 0);
-                        inverse_matrix.SetDiagonal(eigen_value * (accuracy + 1.0));
+                        inverse_matrix.set_diagonal(eigen_value * (_accuracy + 1.0));
                         
-                        inverse_matrix = (original - inverse_matrix).Pow(-1);
+                        inverse_matrix = (original - inverse_matrix).pow(-1);
                         
                         ValueType normalization_factor = 0.0;
                         ValueType old_normalization_factor, distance;
                         Matrix<ValueType> eigenVector(rows, 1, 1);
                         
-                        for (size_t iteration = 0; iteration < max_iterations; ++iteration) {
+                        for (size_t iteration = 0; iteration < _max_iterations; ++iteration) {
                             old_normalization_factor = normalization_factor;
                             
                             eigenVector = inverse_matrix * eigenVector;
-                            normalization_factor = eigenVector.AbsoluteMaximumElementWithSign();
+                            normalization_factor = eigenVector.abs_max_element_with_sign();
                             eigenVector /= normalization_factor;
                             
                             // Convergence test
                             distance = normalization_factor - old_normalization_factor;
-                            if (std::sqrt(distance * distance) < accuracy) {
+                            if (std::sqrt(distance * distance) < _accuracy) {
                                 break;
                             }
                         }
                         
-                        eigen_vectors.emplace(eigen_value, eigenVector.GetColumnAsVector(0) / eigenVector[0][rows - 1]);
+                        _eigen_vectors.emplace(eigen_value, eigenVector.get_column_as_vector(0) / eigenVector[0][rows - 1]);
                         
-                        return eigen_vectors[eigen_value];
+                        return _eigen_vectors[eigen_value];
                     }
                     
-                    const std::map<ValueType, containers::Vector<ValueType>> &EigenVectors() {
-                        auto values = EigenValues();
+                    const std::map<ValueType, containers::Vector<ValueType>> &eigen_vectors() {
+                        auto values = eigen_values();
                         for (auto it_value = values.begin(); it_value != values.end(); ++it_value) {
-                            EigenVector(*it_value);
+                            eigen_vector(*it_value);
                         }
-                        return eigen_vectors;
+                        return _eigen_vectors;
                     }
                     
                 private:
@@ -149,29 +149,29 @@ namespace cda {
                     const Matrix<ValueType> original;
                     const size_t rows;
                     
-                    size_t max_iterations;
-                    double accuracy;
+                    size_t _max_iterations;
+                    double _accuracy;
                     
-                    Matrix<ValueType> q, r;
-                    containers::Vector<ValueType> eigen_values;
-                    std::map<ValueType, containers::Vector<ValueType>> eigen_vectors;
+                    Matrix<ValueType> _q, _r;
+                    containers::Vector<ValueType> _eigen_values;
+                    std::map<ValueType, containers::Vector<ValueType>> _eigen_vectors;
                     
-                    void ComputeQR(const Matrix<ValueType> &matrix) {
+                    void compute_qr_matrices(const Matrix<ValueType> &matrix) {
                         
-                        const auto I = Matrix<ValueType>::Identity(rows);
+                        const auto I = Matrix<ValueType>::identity(rows);
                         
                         //  First column
-                        auto c = matrix.GetColumnAsVector(0);
-                        auto vt = I.GetRowAsVector(0);
-                        vt *= signum(c[0]) * c.Norm();
+                        auto c = matrix.get_column_as_vector(0);
+                        auto vt = I.get_row_as_vector(0);
+                        vt *= signum(c[0]) * c.norm();
                         vt += c;
                         
-                        q = containers::Transpose(vt) * vt;
-                        q *= -2.0 / vt.SquareNorm();
-                        q += I;
+                        _q = containers::transpose(vt) * vt;
+                        _q *= -2.0 / vt.square_norm();
+                        _q += I;
                         
-                        r = q * matrix;
-                        for (auto it_r = r.begin() + rows; it_r != r.end(); it_r += rows) {
+                        _r = _q * matrix;
+                        for (auto it_r = _r.begin() + rows; it_r != _r.end(); it_r += rows) {
                             *it_r = 0;
                         }
                         
@@ -181,38 +181,38 @@ namespace cda {
                         ValueType *it_r_column, *it_end_r_column;
                         
                         for (size_t row = 1; row < last_row; ++row) {
-                            c = r.GetColumnAsVector(row, row);
+                            c = _r.get_column_as_vector(row, row);
                             
-                            if (c.IsNull()) {
+                            if (c.is_null()) {
                                 h = I;
                             } else {
-                                vt = I.GetRowAsVector(row, row);
-                                vt *= signum(c[0]) * c.Norm();
+                                vt = I.get_row_as_vector(row, row);
+                                vt *= signum(c[0]) * c.norm();
                                 vt += c;
                                 
-                                h = containers::Transpose(vt) * vt;
-                                h *= -2.0 / vt.SquareNorm();
-                                h += Matrix<ValueType>::Identity(rows - row);
+                                h = containers::transpose(vt) * vt;
+                                h *= -2.0 / vt.square_norm();
+                                h += Matrix<ValueType>::identity(rows - row);
                                 
                                 h__ = I;
-                                h__.SetMatrix(row, row, h);
+                                h__.set_matrix(row, row, h);
                                 h = std::move(h__);
                             }
                             
-                            q = h * q;
-                            r = h * r;
+                            _q = h * _q;
+                            _r = h * _r;
                             
-                            it_r_column = r[row];
+                            it_r_column = _r[row];
                             it_end_r_column = it_r_column + row;
                             for ( ; it_r_column != it_end_r_column; ++it_r_column) {
                                 *it_r_column = 0;
                             }
                         }
                         
-                        q = std::move(q.Transpose());
+                        _q = std::move(_q.transpose());
                         
                         for (size_t row = 1; row < rows; ++row) {
-                            it_r_column = r[row];
+                            it_r_column = _r[row];
                             it_end_r_column = it_r_column + row;
                             for ( ; it_r_column < it_end_r_column; ++it_r_column) {
                                 *it_r_column = 0;

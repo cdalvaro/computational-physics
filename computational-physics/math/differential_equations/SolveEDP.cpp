@@ -35,12 +35,12 @@ const std::string EDPwarning = "\n[EDP::";
 
 Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, EDP_T err)
 {
-    int dim = x.Size();
+    int dim = x.size();
     Vector<EDP_T> sol(dim);
     EDP_T h = (x[dim-1] - x[0])/(EDP_T)(dim-1);
     EDP_T tI = x[0];
     
-    x.Resize(x.Size());
+    x.resize(x.size());
     
     if ((bc& BCL_f) != 0 && (bc& BCR_f) != 0)        //  Ambas condiciones de contorno en la función
     {
@@ -58,15 +58,15 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-3] += (1.0 - (A(x[dim-1]-h)*h)/2.0)*BCR(x[dim-1],0.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = y;
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     if ((opt& BCL_df) == BCL_df && (opt& BCR_df) == BCR_df)      //  Ambas condiciones de contorno en la derivada
@@ -91,11 +91,11 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-1] = -h*h*C(x[dim-1]) + 2.0*h*BCR(x[dim-1],0.0)*(h*A(x[dim-1])/2.0 + 1.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = solV;
@@ -120,15 +120,15 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-2] = -h*h*C(x[dim-1]) + 2.0*h*BCR(x[dim-1],0.0)*(h*A(x[dim-1])/2.0 + 1.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = y;
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     if ((opt& BCL_df) == BCL_df && (opt& BCR_f) == BCR_f)       //  Condición de extremo izquierdo en la derivada y extremo derecho en la función
@@ -152,15 +152,15 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         b[dim-2] += (1.0 - (A(x[dim-1]-h)*h)/2.0)*BCR(x[dim-1],0.0);
         
         if ((opt& LUmethod) != 0) {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
-            solV = linear::SolveLinearSystem3Diagonal(diagMA, b);
+            solV = linear::solve_3diagonal(diagMA, b);
         }
         
         sol = y;
-        sol.Set(0, solV);
+        sol.set(0, solV);
     }
     
     return sol;
@@ -175,7 +175,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
 //  Función principal / Método de resolución
 Matrix<EDP_T> EDP::solveLAPLACE(unsigned char bc, unsigned char sbc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& cI, EDP_T err, int tol)
 {
-    int n = cI.Rows(), m = cI.Columns();
+    int n = cI.rows(), m = cI.columns();
     EDP_T hx = (EDP_T)(x[m-1]-x[0])/(m-1), hy = (EDP_T)(y[n-1]-y[0])/(n-1);
     Matrix<EDP_T> sol(n,m), solOld(n,m);
     
@@ -277,7 +277,7 @@ Matrix<EDP_T> EDP::solveLAPLACE(unsigned char bc, unsigned char sbc, unsigned ch
             
             sup[i-1] = sum;
             supOld[i-1] = sumOld;
-            relErr = std::abs(sup.MaximumElement()-supOld.MaximumElement());
+            relErr = std::abs(sup.max_element()-supOld.max_element());
         }
         
         ite++;
@@ -329,7 +329,7 @@ Matrix<EDP_T> EDP::solveLAPLACE_SBC(unsigned char sbc, Vector<EDP_T>& x, Vector<
 //  Función principal / Método de resolución
 Matrix<EDP_T> EDP::solvePOISSON(unsigned char bc, unsigned char sbc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& cI, EDP_T err, int tol)
 {
-    int n = cI.Rows(), m = cI.Columns();
+    int n = cI.rows(), m = cI.columns();
     EDP_T hx = (EDP_T)(x[m-1]-x[0])/(m-1), hy = (EDP_T)(y[n-1]-y[0])/(n-1);
     Matrix<EDP_T> sol(n,m), solOld(n,m);
     
@@ -431,7 +431,7 @@ Matrix<EDP_T> EDP::solvePOISSON(unsigned char bc, unsigned char sbc, unsigned ch
             
             sup[i-1] = sum;
             supOld[i-1] = sumOld;
-            relErr = std::abs(sup.MaximumElement()-supOld.MaximumElement());
+            relErr = std::abs(sup.max_element()-supOld.max_element());
         }
         
         ite++;
@@ -490,7 +490,7 @@ Matrix<EDP_T> EDP::solvePOISSON_SBC(unsigned char sbc, Vector<EDP_T>& x, Vector<
 //  1 Dimensión
 Vector<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& cI, Vector<EDP_T>& cId)
 {
-    int n = (int)x.Size();
+    int n = (int)x.size();
     Vector<EDP_T> sol(n);
     EDP_T dx = (EDP_T)abs((EDP_T)(x[n-1] - x[0])/(n-1));
     
@@ -505,7 +505,7 @@ Vector<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T>&
     if (!initEDP) {
         initEDP = true;
         
-        old1D = Vector<EDP_T>::Zero(n);
+        old1D = Vector<EDP_T>::zero(n);
         if (bc & BCL_df) {
             sol[0] = cId[0]*dt + (1.0 - Q1D(x[0])*dtx)*cI[0] + Q1D(x[0])*dtx*(cI[1] - dx*BCL(x[0], 0.0));
         }
@@ -545,8 +545,8 @@ Vector<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T>& x, Vector<EDP_T>& 
 //  2 Dimensiones
 Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> &x, Vector<EDP_T> &y, Matrix<EDP_T> &cI, Matrix<EDP_T> &cId, Matrix<bool> &fixed)
 {
-    int n = (int)y.Size();
-    int m = (int)x.Size();
+    int n = (int)y.size();
+    int m = (int)x.size();
     Matrix<EDP_T> sol(n,m);
     EDP_T dx = (EDP_T)abs((EDP_T)(x[m-1] - x[0])/(m-1));
     EDP_T dy = (EDP_T)abs((EDP_T)(y[n-1] - y[0])/(n-1));
@@ -561,7 +561,7 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, unsigned char opt, Vector<EDP_T> 
     if (!initEDP) {
         initEDP = true;
         
-        old2D.Zero();
+        old2D.zero();
         if (bc & BCT_df) {  //  Condición en el borde superior de la membrana
             for (int j=1; j<m-1; j++) {
                 if (!fixed[0][j]) {
@@ -745,7 +745,7 @@ Matrix<EDP_T> EDP::solveWave(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &
 Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &y, Matrix<EDP_T> &cI, Matrix<EDP_T> &cId)
 {
     if (!initEDP)
-        fixedEDP = Matrix<bool>::Zero(y.Size(), x.Size());
+        fixedEDP = Matrix<bool>::zero(y.size(), x.size());
     
     return solveWAVE(bc, 0, x, y, cI, cId, fixedEDP);
 }
@@ -755,7 +755,7 @@ Matrix<EDP_T> EDP::solveWAVE(unsigned char bc, Vector<EDP_T> &x, Vector<EDP_T> &
 //  1 Dimensión
 Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y)
 {
-    int n = (int)x.Size();
+    int n = (int)x.size();
     Vector<EDP_T> sol(n);
     
     if ((bc& BCL_f) != 0 && (bc& BCR_f) != 0) {
@@ -775,10 +775,10 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
             b[i] = Q1D(x[i])*dtx*(1.0-theta)*y[i+2] + (1.0 - 2.0*Q1D(x[i])*dtx*(1.0-theta))*y[i+1] + Q1D(x[i])*dtx*(1.0-theta)*y[i];
         }
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        solV = linear::solve_3diagonal(diagLU, b);
         
         sol = y;
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     if ((bc& BCL_f) != 0 && (bc& BCR_df) != 0) {
@@ -803,10 +803,10 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-2][2] = 0.0;
         b[n-2] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        solV = linear::solve_3diagonal(diagLU, b);
         
         sol = y;
-        y.Set(1, solV);
+        y.set(1, solV);
     }
     
     if ((bc& BCL_df) != 0 && (bc& BCR_f) != 0) {
@@ -831,10 +831,10 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
             b[i] = Q1D(x[i])*dtx*(1.0-theta)*y[i+1] + (1.0 - 2.0*Q1D(x[i])*dtx*(1.0-theta))*y[i] + Q1D(x[i])*dtx*(1.0-theta)*y[i-1];
         }
         
-        solV = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        solV = linear::solve_3diagonal(diagLU, b);
         
         sol = y;
-        sol.Set(0, solV);
+        sol.set(0, solV);
     }
     
     if ((bc& BCL_df) != 0 && (bc& BCR_df) != 0) {
@@ -864,7 +864,7 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>&
         diagLU[n-1][2] = 0.0;
         b[n-1] = 2.0*Q1D(x[n-1])*dtx*(1.0-theta)*y[n-2] + (1.0 - 2.0*Q1D(x[n-1])*dtx*(1.0-theta))*y[n-1] + 2.0*Q1D(x[n-1])*dtx*(1.0-2.0*theta)*dx*BCR(x[n-1],0.0);
         
-        sol = linear::SolveLinearSystem3Diagonal(diagLU, b);
+        sol = linear::solve_3diagonal(diagLU, b);
     }
     
     time += dt;
@@ -880,8 +880,8 @@ Vector<EDP_T> EDP::solveHEAT(unsigned char bc, Vector<EDP_T>& x, Vector<EDP_T>& 
 //  2 Dimensiones
 Matrix<EDP_T> EDP::solveHEAT(unsigned char bc, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& cI)
 {
-    int n = (int)y.Size();
-    int m = (int)x.Size();
+    int n = (int)y.size();
+    int m = (int)x.size();
     Matrix<EDP_T> sol(n,m);
     EDP_T dx = (EDP_T)abs((EDP_T)(x[m-1] - x[0])/(m-1));
     EDP_T dy = (EDP_T)abs((EDP_T)(y[n-1] - y[0])/(n-1));
@@ -963,9 +963,9 @@ Matrix<EDP_T> EDP::solveHEAT(unsigned char bc, Vector<EDP_T>& x, Vector<EDP_T>& 
 //  Calcula los autovalores y autovectores de dicha ecuación.
 Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, unsigned char opt)
 {
-    int dim = x.Size();
+    int dim = x.size();
     EDP_T h = (x[dim-1] - x[0])/(dim-1), length= x[dim-1]-x[0];
-    Vector<EDP_T> sol = Vector<EDP_T>::Zero(dim), solV, eigVal;
+    Vector<EDP_T> sol = Vector<EDP_T>::zero(dim), solV, eigVal;
     Matrix<EDP_T> A;
     
     //  Para guardar y cargar datos
@@ -983,8 +983,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     
     //  Posibles casos que se pueden plantear según las condiciones de contorno
     if (((bc & BCL_df) && (bc & BCR_f)) || ((bc & BCB_df) && (bc & BCT_f))) {
-        solV = Vector<EDP_T>::Zero(dim-1);
-        A = Matrix<EDP_T>::Zero(dim-1,dim-1);
+        solV = Vector<EDP_T>::zero(dim-1);
+        A = Matrix<EDP_T>::zero(dim-1,dim-1);
         
         A[0][0] = 2.0;
         A[0][1] = -2.0;
@@ -995,7 +995,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-2][dim-2] = 2.0;
         A[dim-2][dim-3] = -1.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim-1);
+        eigVal = Vector<EDP_T>::zero(dim-1);
         
         if ((bc & BCL_df) && (bc & BCR_f)) {
             fileName = "EV_BCLdf_BCRf.csv";
@@ -1004,8 +1004,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
         
     } else if (((bc & BCL_f) && (bc & BCR_df)) || ((bc & BCB_f) && (bc & BCT_df))) {
-        solV = Vector<EDP_T>::Zero(dim-1);
-        A = Matrix<EDP_T>::Zero(dim-1,dim-1);
+        solV = Vector<EDP_T>::zero(dim-1);
+        A = Matrix<EDP_T>::zero(dim-1,dim-1);
         
         A[0][0] = 2.0;
         A[0][1] = -1.0;
@@ -1016,7 +1016,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-2][dim-2] = 2.0;
         A[dim-2][dim-3] = -2.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim-1);
+        eigVal = Vector<EDP_T>::zero(dim-1);
         
         if ((bc & BCL_f) && (bc & BCR_df)) {
             fileName = "EV_BCLf_BCRdf.csv";
@@ -1025,8 +1025,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
         
     } else if (((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) {
-        solV = Vector<EDP_T>::Zero(dim);
-        A = Matrix<EDP_T>::Zero(dim,dim);
+        solV = Vector<EDP_T>::zero(dim);
+        A = Matrix<EDP_T>::zero(dim,dim);
         
         A[0][0] = 2.0;
         A[0][1] = -2.0;
@@ -1037,7 +1037,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-1][dim-1] = 2.0;
         A[dim-1][dim-2] = -2.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim);
+        eigVal = Vector<EDP_T>::zero(dim);
         
         if ((bc & BCL_df) && (bc & BCR_df)) {
             fileName = "EV_BCLdf_BCRdf.csv";
@@ -1046,8 +1046,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         }
         
     } else {
-        solV = Vector<EDP_T>::Zero(dim-2);
-        A = Matrix<EDP_T>::Zero(dim-2,dim-2);
+        solV = Vector<EDP_T>::zero(dim-2);
+        A = Matrix<EDP_T>::zero(dim-2,dim-2);
         
         A[0][0] = 2.0;
         A[0][1] = -1.0;
@@ -1058,7 +1058,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         A[dim-3][dim-3] = 2.0;
         A[dim-3][dim-4] = -1.0;
         
-        eigVal = Vector<EDP_T>::Zero(dim-2);
+        eigVal = Vector<EDP_T>::zero(dim-2);
         
         if ((bc & BCL_f) && (bc & BCR_f)) {
             fileName = "EV_BCLf_BCRf.csv";
@@ -1068,11 +1068,11 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     }
     
     algorithms::eigenvalues::QR<Matrix, EDP_T> qrA(A);
-    qrA.MaxIterations(20);
+    qrA.max_iterations(20);
     
     if (opt & SAVE_DATA) {
         std::cout << "\tCalculando y guardando autovalores... ";
-        eigVal = qrA.EigenValues();
+        eigVal = qrA.eigen_values();
         std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
             return a < b;
         });
@@ -1084,7 +1084,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         const std::string path = inPath + fileName;
         std::ofstream out(path.data());
         out.precision(15);
-        out << eigVal.Sqrt() * length/h;
+        out << eigVal.sqrt() * length/h;
         std::cout << "Terminado.\n";
         std::cout << "\tLos datos se han guardado en: " << path << std::endl;
     } else if (opt & IMPORT_DATA) {
@@ -1093,7 +1093,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
         std::ifstream in(path.data());
         if (in.fail()) {
             std::cout << "\n\tEl fichero no existe, se van a calcular los autovalores... ";
-            eigVal = qrA.EigenValues();
+            eigVal = qrA.eigen_values();
             std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
                 return a < b;
             });
@@ -1104,13 +1104,13 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
             std::cout << "Terminado.\n";
         } else {
             in >> eigVal;
-            eigVal = (eigVal * h/length).PowElements(2);
+            eigVal = (eigVal * h/length).pow(2);
             std::cout << "Terminado.\n";
             std::cout << "\tLos datos se han importado de: " << path << std::endl;
         }
     } else {
         std::cout << "\tCalculando autovalores... ";
-        eigVal = qrA.EigenValues();
+        eigVal = qrA.eigen_values();
         std::sort(eigVal.begin(), eigVal.end(), [](const EDP_T &a, const EDP_T &b){
             return a < b;
         });
@@ -1123,15 +1123,15 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     
     std::cout << "\tCalculando autovectores... ";
     if ((((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) && eigVal[mode-1] == 0) {
-        solV.Ones();
+        solV.ones();
     } else {
-        solV = qrA.EigenVector(eigVal[mode-1]);
+        solV = qrA.eigen_vector(eigVal[mode-1]);
     }
     
     if (bc & BCL_df || bc & BCB_df) {
-        sol.Set(0, solV);
+        sol.set(0, solV);
     } else {
-        sol.Set(1, solV);
+        sol.set(1, solV);
     }
     
     std::cout << "Terminado.\n\n";
@@ -1146,8 +1146,8 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc)
 
 Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, int modeY, unsigned char bc, unsigned char opt)
 {
-    Matrix<EDP_T> mx(Matrix<EDP_T>::Zero(1, x.Size()));
-    Matrix<EDP_T> my(Matrix<EDP_T>::Zero(y.Size(), 1));
+    Matrix<EDP_T> mx(Matrix<EDP_T>::zero(1, x.size()));
+    Matrix<EDP_T> my(Matrix<EDP_T>::zero(y.size(), 1));
     
     unsigned char bcX = 0, bcY = 0;
     if (bc & BCL_df) {
@@ -1184,10 +1184,10 @@ Matrix<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T> &x, Vector<EDP_T> &y, int modeX, i
     
     std::list<std::thread> workers;
     workers.emplace_back([&mx, &x, &modeX, &bcX, &opt, this]() {
-        mx.SetRow(0, eigenVAL_VEC(x, modeX, bcX, opt));
+        mx.set_row(0, eigenVAL_VEC(x, modeX, bcX, opt));
     });
     workers.emplace_back([&my, &y, &modeY, &bcY, &opt, this]() {
-        my.SetColumn(0, eigenVAL_VEC(y, modeY, bcY, opt));
+        my.set_column(0, eigenVAL_VEC(y, modeY, bcY, opt));
     });
     for (auto &&worker : workers) {
         worker.join();
@@ -1247,7 +1247,7 @@ void EDP::saveDATA(const std::string fileName, unsigned char opt, Vector<EDP_T>&
 
 void EDP::printMATLAB(const std::string path, const std::string fileName, unsigned char opt, Vector<EDP_T>& x, Vector<EDP_T>& y, Matrix<EDP_T>& forPrint)
 {
-    int n = forPrint.Rows(), m = forPrint.Columns();
+    int n = forPrint.rows(), m = forPrint.columns();
     EDP_T hx = (EDP_T)(x[m-1]-x[0])/(m-1), hy = (EDP_T)(y[n-1]-y[0])/(n-1);
     
     std::string inPath;

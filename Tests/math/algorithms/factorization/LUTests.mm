@@ -55,7 +55,7 @@ using namespace cda::math::algorithms::factorization;
     
     const auto accuracy = 1E-13;
     
-    // Matrix U
+    // U Matrix
     Matrix<double> expected_u({
         {3.0,     2.0,     1.0,       2.0},
         {0.0, 4.0/3.0, 8.0/3.0, -11.0/3.0},
@@ -63,12 +63,12 @@ using namespace cda::math::algorithms::factorization;
         {0.0,     0.0,     0.0,      13.0}
     });
     
-    XCTAssert([TestsTools compareMatrix:lu.U()
+    XCTAssert([TestsTools compareMatrix:lu.u()
                            withExpected:expected_u
                            whitAccuracy:accuracy],
-              "Matrix U OK");
+              "U matrix OK");
     
-    // Matrix L
+    // L Matrix
     Matrix<double> expected_l({
         {    1.0,     0.0, 0.0, 0.0},
         {7.0/3.0,     1.0, 0.0, 0.0},
@@ -76,10 +76,10 @@ using namespace cda::math::algorithms::factorization;
         {    5.0,     3.0, 0.0, 1.0}
     });
     
-    XCTAssert([TestsTools compareMatrix:lu.L()
+    XCTAssert([TestsTools compareMatrix:lu.l()
                            withExpected:expected_l
                            whitAccuracy:accuracy],
-              "Matrix L OK");
+              "L matrix OK");
 }
 
 - (void)testDeterminant {
@@ -91,7 +91,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     LU<Matrix, double> lu1(matrix1);
-    XCTAssertEqual(lu1.Determinant(), 315, "Determinant OK");
+    XCTAssertEqual(lu1.determinant(), 315, "determinant OK");
     
     const Matrix<double> matrix2({
         { 21, 18, 15,  4},
@@ -101,7 +101,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     LU<Matrix, double> lu2(matrix2);
-    XCTAssertEqual(lu2.Determinant(), 0, "Determinant 0 OK");
+    XCTAssertEqual(lu2.determinant(), 0, "determinant 0 OK");
 }
 
 - (void)testInverseMatrix {
@@ -118,10 +118,10 @@ using namespace cda::math::algorithms::factorization;
     }) / 12.0;
     
     LU<Matrix, double> lu1(matrix1);
-    XCTAssert([TestsTools compareMatrix:lu1.InverseMatrix()
+    XCTAssert([TestsTools compareMatrix:lu1.inverse_matrix()
                            withExpected:expected
                            whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
-              "InverseMatrix OK");
+              "inverse_matrix OK");
     
     const Matrix<double> matrix2({
         {0,  1,  2,  3},
@@ -131,7 +131,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     LU<Matrix, double> lu2(matrix2);
-    XCTAssertThrows(lu2.InverseMatrix(), "Matrix is degenerate");
+    XCTAssertThrows(lu2.inverse_matrix(), "Matrix is degenerate");
 }
 
 - (void)testSolveLinearSystem {
@@ -146,12 +146,12 @@ using namespace cda::math::algorithms::factorization;
     const Vector<double> terms({6, 7, 15});
     
     const Vector<double> expected({2, -1, 4});
-    XCTAssert([TestsTools compareVector:lu.SolveLinearSystem(terms)
+    XCTAssert([TestsTools compareVector:lu.solve_linear_system(terms)
                            withExpected:expected
                            whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
-              "SolveLinearSystem OK");
+              "solve_linear_system OK");
     
-    XCTAssertThrows(lu.SolveLinearSystem(Vector<double>({1, 2, 3, 4})),
+    XCTAssertThrows(lu.solve_linear_system(Vector<double>({1, 2, 3, 4})),
                     "The number of independent terms does not match the matrix dimension");
 }
 

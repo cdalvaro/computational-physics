@@ -21,23 +21,23 @@ namespace cda {
                 namespace linear {
                     
                     template <typename T>
-                    containers::Vector<T> SolveLinearSystemLU(const containers::Matrix<T> &system,
-                                                              const containers::Vector<T> &b_terms) {
+                    containers::Vector<T> solve_lu(const containers::Matrix<T> &system,
+                                                   const containers::Vector<T> &b_terms) {
                         algorithms::factorization::LU<containers::Matrix, T> lu(system);
-                        return lu.SolveLinearSystem(b_terms);
+                        return lu.solve_linear_system(b_terms);
                     }
                     
                     template <typename T>
-                    containers::Vector<T> SolveLinearSystem3Diagonal(const containers::Matrix<T> &system,
-                                                                     const containers::Vector<T> &b_terms) {
+                    containers::Vector<T> solve_3diagonal(const containers::Matrix<T> &system,
+                                                          const containers::Vector<T> &b_terms) {
                         
-                        if (!system.IsSquare()) {
+                        if (!system.is_square()) {
                             throw std::logic_error("The system is matrix is not square");
                         }
                         
-                        auto rows = system.Rows();
+                        auto rows = system.rows();
                         
-                        if (rows != b_terms.Size()) {
+                        if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the system matrix does not match the number of elements in the b terms vector.");
                         }
                         
@@ -63,17 +63,17 @@ namespace cda {
                     }
                     
                     template<typename T>
-                    containers::Vector<T> SolveLinearSystemGaussSeidel3Diagonal(const containers::Matrix<T> &system,
-                                                                                const containers::Vector<T> &b_terms,
-                                                                                const double &accuracy = CDA_LINEAR_DEFAULT_ACCURACY) {
+                    containers::Vector<T> solve_gauss_seidel_3diagonal(const containers::Matrix<T> &system,
+                                                                       const containers::Vector<T> &b_terms,
+                                                                       const double &accuracy = CDA_LINEAR_DEFAULT_ACCURACY) {
                         
-                        if (!system.IsSquare()) {
+                        if (!system.is_square()) {
                             throw std::logic_error("The system is matrix is not square");
                         }
                         
-                        const auto rows = system.Rows();
+                        const auto rows = system.rows();
                         
-                        if (rows != b_terms.Size()) {
+                        if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the system matrix does not match the number of elements in the b terms vector.");
                         }
                         

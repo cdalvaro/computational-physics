@@ -22,36 +22,36 @@ namespace cda {
                 public:
                     
                     LU(const Matrix<ValueType> &matrix) :
-                    lu(matrix), rows(matrix.Rows()), is_factorized(false), is_degenerate(false) {
-                        if (!matrix.IsSquare()) {
+                    lu(matrix), rows(matrix.rows()), is_factorized(false), _is_degenerate(false) {
+                        if (!matrix.is_square()) {
                             throw std::logic_error("LU matrix cannot be computed for a non-square matrix.");
                         }
                     }
                     
                     virtual ~LU() = default;
                     
-                    const Matrix<ValueType> &L() {
-                        FactorizeLU();
-                        return l;
+                    const Matrix<ValueType> &l() {
+                        factorize_lu();
+                        return _l;
                     }
                     
-                    const Matrix<ValueType> &U() {
-                        FactorizeLU();
-                        return u;
+                    const Matrix<ValueType> &u() {
+                        factorize_lu();
+                        return _u;
                     }
                     
-                    const bool &IsDegenerate() const {
-                        return is_degenerate;
+                    const bool &is_degenerate() const {
+                        return _is_degenerate;
                     }
                     
                     template <template<typename> class Vector>
-                    Vector<ValueType> SolveLinearSystem(const Vector<ValueType> &b_terms) {
+                    Vector<ValueType> solve_linear_system(const Vector<ValueType> &b_terms) {
                         
-                        if (rows != b_terms.Size()) {
+                        if (rows != b_terms.size()) {
                             throw std::logic_error("The number of rows of the LU matrix does not match the number of elements in the b terms vector.");
                         }
                         
-                        FactorizeLU();
+                        factorize_lu();
                         
                         Vector<ValueType> tmp(rows, 0), x(rows, 0);
                         
@@ -77,68 +77,68 @@ namespace cda {
                         return x;
                     }
                     
-                    Matrix<ValueType> InverseMatrix() {
+                    Matrix<ValueType> inverse_matrix() {
                         
-                        FactorizeLU();
-                        if (is_degenerate) {
+                        factorize_lu();
+                        if (_is_degenerate) {
                             throw std::logic_error("Matrix is degenerate, so does not have inverse");
                         }
                         
                         Matrix<ValueType> inverse(rows, rows);
-                        const auto I = Matrix<ValueType>::Identity(rows);
+                        const auto I = Matrix<ValueType>::identity(rows);
                         
                         for (size_t k = 0; k < rows; ++k) {
-                            inverse.SetColumn(k, SolveLinearSystem(I.GetRowAsVector(k)));
+                            inverse.set_column(k, solve_linear_system(I.get_row_as_vector(k)));
                         }
                         
                         return inverse;
                     }
                     
                     template<typename OtherType>
-                    static Matrix<ValueType> InverseMatrix(const Matrix<OtherType> &matrix) {
-                        return LU<Matrix, ValueType>(matrix).InverseMatrix();
+                    static Matrix<ValueType> inverse_matrix(const Matrix<OtherType> &matrix) {
+                        return LU<Matrix, ValueType>(matrix).inverse_matrix();
                     }
                     
-                    ValueType Determinant() {
+                    ValueType determinant() {
                         
-                        FactorizeLU();
-                        if (is_degenerate) {
+                        factorize_lu();
+                        if (_is_degenerate) {
                             return 0;
                         }
                         
-                        ValueType determinant = u[0][0];
+                        ValueType determinant = _u[0][0];
                         for (size_t row = 1; row < rows; ++row) {
-                            determinant *= u[row][row];
+                            determinant *= _u[row][row];
                         }
                         
                         return determinant;
                     }
                     
                     template<typename OtherType>
-                    static ValueType Determinant(const Matrix<OtherType> &matrix) {
-                         return LU<Matrix, ValueType>(matrix).Determinant();
+                    static ValueType determinant(const Matrix<OtherType> &matrix) {
+                         return LU<Matrix, ValueType>(matrix).determinant();
                     }
                     
                 private:
                     
-                    Matrix<ValueType> l, u, lu;
+                    Matrix<ValueType> _l, _u, lu;
                     const size_t rows;
                     
                     bool is_factorized;
-                    bool is_degenerate;
+                    bool _is_degenerate;
                     
-                    void FactorizeLU() {
+                    void factorize_lu() {
                         if (is_factorized) {
                             return;
                         }
                         
-                        RemoveSingularities();
+                        check_singularities();
                         
-                        l.Resize(rows, rows, 0);
-                        u.Resize(rows, rows, 0);
+                        _l.resize(rows, rows, 0);
+                        _u.resize(rows, rows, 0);
                         
                         for (size_t row = 0; row < rows; ++row) {
-                            l[row][row] = 1;
+                            _l[row][row] = 1;
                         }
                         
                         for (size_t row = 0; row < rows; ++row) {
@@ -147,17 +147,17 @@ namespace cda {
                                 if (column <= row) {
                                     sum = 0;
                                     for (size_t k = 0; k < column; ++k) {
-                                        sum += l[column][k] * u[k][row];
+                                        sum += _l[column][k] * _u[k][row];
                                     }
-                                    u[column][row] = lu[column][row] - sum;
+                                    _u[column][row] = lu[column][row] - sum;
                                 }
                                 
                                 if (column >= row) {
                                     sum = 0;
                                     for (size_t k = 0; k < row; ++k) {
-                                        sum += l[column][k] * u[k][row];
+                                        sum += _l[column][k] * _u[k][row];
                                     }
-                                    l[column][row] = (lu[column][row] - sum) / u[row][row];
+                                    _l[column][row] = (lu[column][row] - sum) / _u[row][row];
                                 }
                             }
                         }
@@ -165,18 +165,18 @@ namespace cda {
                         for (size_t row = 0; row < rows; ++row) {
                             for (size_t column = 0; column < rows; ++column) {
                                 if (column > row) {
-                                    lu[row][column] = u[row][column];
-                                    l[row][column]  = 0;
+                                    lu[row][column] = _u[row][column];
+                                    _l[row][column]  = 0;
                                 } else if (column == row) {
-                                    lu[row][column] = u[row][column];
-                                    l[row][column]  = 1;
+                                    lu[row][column] = _u[row][column];
+                                    _l[row][column]  = 1;
                                     
-                                    if (!is_degenerate && u[row][column] == 0) {
-                                        is_degenerate = true;
+                                    if (!_is_degenerate && _u[row][column] == 0) {
+                                        _is_degenerate = true;
                                     }
                                 } else {
-                                    u[row][column]  = 0;
-                                    lu[row][column] = l[row][column];
+                                    _u[row][column]  = 0;
+                                    lu[row][column] = _l[row][column];
                                 }
                             }
                         }
@@ -184,9 +184,9 @@ namespace cda {
                         is_factorized = true;
                     }
                     
-                    void RemoveSingularities() {
-                        auto diagonal = lu.GetDiagonal();
-                        if (diagonal.Find(0) == diagonal.end()) {
+                    void check_singularities() {
+                        auto diagonal = lu.get_diagonal();
+                        if (diagonal.find(0) == diagonal.end()) {
                             return;
                         }
                         

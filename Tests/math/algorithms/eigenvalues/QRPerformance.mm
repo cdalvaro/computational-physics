@@ -40,7 +40,7 @@ using namespace cda::math::algorithms::eigenvalues;
     
     [self measureBlock:^{
         QR<Matrix, double> qr(matrix, 1E-05, 1E+05);
-        qr.EigenValues();
+        qr.eigen_values();
     }];
 }
 

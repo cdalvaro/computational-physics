@@ -32,7 +32,7 @@ using namespace cda::math;
 - (void)testSignum {
     XCTAssertEqual(signum(-3), -1, "Number is negative");
     XCTAssertEqual(signum(4), 1, "Number is positive");
-    XCTAssertEqual(signum(0), 0, "Zero is 0");
+    XCTAssertEqual(signum(0), 0, "zero is 0");
     
     XCTAssertEqual(signum(static_cast<unsigned int>(4)), 1, "Unsigned number is positive");
 }

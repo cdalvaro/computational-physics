@@ -26,7 +26,7 @@
          withExpected: (cda::math::containers::Matrix<double>) expected
          whitAccuracy: (double) accuracy {
     
-    if (compare.Rows() != expected.Rows() || compare.Columns() != expected.Columns()) {
+    if (compare.rows() != expected.rows() || compare.columns() != expected.columns()) {
         return NO;
     }
     
@@ -46,7 +46,7 @@
          withExpected: (cda::math::containers::Vector<double>) expected
          whitAccuracy: (double) accuracy {
     
-    if (compare.Size() != expected.Size()) {
+    if (compare.size() != expected.size()) {
         return NO;
     }
     
