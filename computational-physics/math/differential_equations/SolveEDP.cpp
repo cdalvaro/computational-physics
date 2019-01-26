@@ -60,7 +60,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         if ((opt& LUmethod) != 0) {
             solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
             solV = linear::solve_3diagonal(diagMA, b);
         }
@@ -93,7 +93,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         if ((opt& LUmethod) != 0) {
             solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
             solV = linear::solve_3diagonal(diagMA, b);
         }
@@ -122,7 +122,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         if ((opt& LUmethod) != 0) {
             solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
             solV = linear::solve_3diagonal(diagMA, b);
         }
@@ -154,7 +154,7 @@ Vector<EDP_T> EDP::solveDIF_FIN(unsigned char bc, unsigned char opt, Vector<EDP_
         if ((opt& LUmethod) != 0) {
             solV = linear::solve_3diagonal(diagMA, b);
         } else if ((opt& GSmethod) != 0) {
-            solV = linear::SolveLinearSystemGaussSeidel3Diagonal(diagMA, b, err);
+            solV = linear::solve_gauss_seidel_3diagonal(diagMA, b, err);
         } else {
             solV = linear::solve_3diagonal(diagMA, b);
         }

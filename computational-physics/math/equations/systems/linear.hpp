@@ -22,14 +22,14 @@ namespace cda {
                     
                     template <typename T>
                     containers::Vector<T> solve_lu(const containers::Matrix<T> &system,
-                                                              const containers::Vector<T> &b_terms) {
+                                                   const containers::Vector<T> &b_terms) {
                         algorithms::factorization::LU<containers::Matrix, T> lu(system);
                         return lu.SolveLinearSystem(b_terms);
                     }
                     
                     template <typename T>
                     containers::Vector<T> solve_3diagonal(const containers::Matrix<T> &system,
-                                                                     const containers::Vector<T> &b_terms) {
+                                                          const containers::Vector<T> &b_terms) {
                         
                         if (!system.is_square()) {
                             throw std::logic_error("The system is matrix is not square");
@@ -63,9 +63,9 @@ namespace cda {
                     }
                     
                     template<typename T>
-                    containers::Vector<T> SolveLinearSystemGaussSeidel3Diagonal(const containers::Matrix<T> &system,
-                                                                                const containers::Vector<T> &b_terms,
-                                                                                const double &accuracy = CDA_LINEAR_DEFAULT_ACCURACY) {
+                    containers::Vector<T> solve_gauss_seidel_3diagonal(const containers::Matrix<T> &system,
+                                                                       const containers::Vector<T> &b_terms,
+                                                                       const double &accuracy = CDA_LINEAR_DEFAULT_ACCURACY) {
                         
                         if (!system.is_square()) {
                             throw std::logic_error("The system is matrix is not square");
