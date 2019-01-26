@@ -127,7 +127,7 @@ const Matrix<double> test_matrix({
 - (void)testQREigenVectorsAtOnce {
     QR<Matrix> qr(test_matrix);
     auto eigenvalues = qr.eigen_values();
-    auto eigenvectors = qr.EigenVectors();
+    auto eigenvectors = qr.eigen_vectors();
     
     const Matrix<double> expected_eigenvectors({
         { 0.13547,   0.28509,    0.70276,   1},

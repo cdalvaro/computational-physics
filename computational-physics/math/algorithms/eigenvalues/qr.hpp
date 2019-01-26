@@ -136,7 +136,7 @@ namespace cda {
                         return _eigen_vectors[eigen_value];
                     }
                     
-                    const std::map<ValueType, containers::Vector<ValueType>> &EigenVectors() {
+                    const std::map<ValueType, containers::Vector<ValueType>> &eigen_vectors() {
                         auto values = eigen_values();
                         for (auto it_value = values.begin(); it_value != values.end(); ++it_value) {
                             eigen_vector(*it_value);
