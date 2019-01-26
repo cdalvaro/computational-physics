@@ -400,7 +400,7 @@ namespace cda {
                 }
                 
                 value_type * find(const value_type &value) const {
-                    return cda::math::algorithms::find::Element(begin(), end(), value);
+                    return cda::math::algorithms::find::element(begin(), end(), value);
                 }
                 
                 //  --- OPERATORS ---
