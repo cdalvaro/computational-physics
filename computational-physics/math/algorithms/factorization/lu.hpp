@@ -22,7 +22,7 @@ namespace cda {
                 public:
                     
                     LU(const Matrix<ValueType> &matrix) :
-                    lu(matrix), rows(matrix.rows()), is_factorized(false), is_degenerate(false) {
+                    lu(matrix), rows(matrix.rows()), is_factorized(false), _is_degenerate(false) {
                         if (!matrix.is_square()) {
                             throw std::logic_error("LU matrix cannot be computed for a non-square matrix.");
                         }
@@ -40,8 +40,8 @@ namespace cda {
                         return _u;
                     }
                     
-                    const bool &IsDegenerate() const {
-                        return is_degenerate;
+                    const bool &is_degenerate() const {
+                        return _is_degenerate;
                     }
                     
                     template <template<typename> class Vector>
@@ -80,7 +80,7 @@ namespace cda {
                     Matrix<ValueType> InverseMatrix() {
                         
                         FactorizeLU();
-                        if (is_degenerate) {
+                        if (_is_degenerate) {
                             throw std::logic_error("Matrix is degenerate, so does not have inverse");
                         }
                         
@@ -102,7 +102,7 @@ namespace cda {
                     ValueType determinant() {
                         
                         FactorizeLU();
-                        if (is_degenerate) {
+                        if (_is_degenerate) {
                             return 0;
                         }
                         
@@ -125,7 +125,7 @@ namespace cda {
                     const size_t rows;
                     
                     bool is_factorized;
-                    bool is_degenerate;
+                    bool _is_degenerate;
                     
                     void FactorizeLU() {
                         if (is_factorized) {
@@ -171,8 +171,8 @@ namespace cda {
                                     lu[row][column] = _u[row][column];
                                     _l[row][column]  = 1;
                                     
-                                    if (!is_degenerate && _u[row][column] == 0) {
-                                        is_degenerate = true;
+                                    if (!_is_degenerate && _u[row][column] == 0) {
+                                        _is_degenerate = true;
                                     }
                                 } else {
                                     _u[row][column]  = 0;
