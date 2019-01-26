@@ -68,7 +68,7 @@ using namespace cda::math::algorithms::factorization;
                            whitAccuracy:accuracy],
               "Matrix U OK");
     
-    // Matrix L
+    // L Matrix
     Matrix<double> expected_l({
         {    1.0,     0.0, 0.0, 0.0},
         {7.0/3.0,     1.0, 0.0, 0.0},
@@ -76,10 +76,10 @@ using namespace cda::math::algorithms::factorization;
         {    5.0,     3.0, 0.0, 1.0}
     });
     
-    XCTAssert([TestsTools compareMatrix:lu.L()
+    XCTAssert([TestsTools compareMatrix:lu.l()
                            withExpected:expected_l
                            whitAccuracy:accuracy],
-              "Matrix L OK");
+              "L matrix OK");
 }
 
 - (void)testDeterminant {

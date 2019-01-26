@@ -30,9 +30,9 @@ namespace cda {
                     
                     virtual ~LU() = default;
                     
-                    const Matrix<ValueType> &L() {
+                    const Matrix<ValueType> &l() {
                         FactorizeLU();
-                        return l;
+                        return _l;
                     }
                     
                     const Matrix<ValueType> &U() {
@@ -121,7 +121,7 @@ namespace cda {
                     
                 private:
                     
-                    Matrix<ValueType> l, u, lu;
+                    Matrix<ValueType> _l, u, lu;
                     const size_t rows;
                     
                     bool is_factorized;
@@ -134,11 +134,11 @@ namespace cda {
                         
                         RemoveSingularities();
                         
-                        l.resize(rows, rows, 0);
+                        _l.resize(rows, rows, 0);
                         u.resize(rows, rows, 0);
                         
                         for (size_t row = 0; row < rows; ++row) {
-                            l[row][row] = 1;
+                            _l[row][row] = 1;
                         }
                         
                         for (size_t row = 0; row < rows; ++row) {
@@ -147,7 +147,7 @@ namespace cda {
                                 if (column <= row) {
                                     sum = 0;
                                     for (size_t k = 0; k < column; ++k) {
-                                        sum += l[column][k] * u[k][row];
+                                        sum += _l[column][k] * u[k][row];
                                     }
                                     u[column][row] = lu[column][row] - sum;
                                 }
@@ -155,9 +155,9 @@ namespace cda {
                                 if (column >= row) {
                                     sum = 0;
                                     for (size_t k = 0; k < row; ++k) {
-                                        sum += l[column][k] * u[k][row];
+                                        sum += _l[column][k] * u[k][row];
                                     }
-                                    l[column][row] = (lu[column][row] - sum) / u[row][row];
+                                    _l[column][row] = (lu[column][row] - sum) / u[row][row];
                                 }
                             }
                         }
@@ -166,17 +166,17 @@ namespace cda {
                             for (size_t column = 0; column < rows; ++column) {
                                 if (column > row) {
                                     lu[row][column] = u[row][column];
-                                    l[row][column]  = 0;
+                                    _l[row][column]  = 0;
                                 } else if (column == row) {
                                     lu[row][column] = u[row][column];
-                                    l[row][column]  = 1;
+                                    _l[row][column]  = 1;
                                     
                                     if (!is_degenerate && u[row][column] == 0) {
                                         is_degenerate = true;
                                     }
                                 } else {
                                     u[row][column]  = 0;
-                                    lu[row][column] = l[row][column];
+                                    lu[row][column] = _l[row][column];
                                 }
                             }
                         }
