@@ -801,7 +801,7 @@ namespace cda {
                     
                     switch (power) {
                         case -1:
-                            new_matrix = algorithms::factorization::LU<Matrix, lu_value_type>::InverseMatrix(*this);
+                            new_matrix = algorithms::factorization::LU<Matrix, lu_value_type>::inverse_matrix(*this);
                             break;
                             
                         case 0:

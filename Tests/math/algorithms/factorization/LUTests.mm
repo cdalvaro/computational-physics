@@ -118,10 +118,10 @@ using namespace cda::math::algorithms::factorization;
     }) / 12.0;
     
     LU<Matrix, double> lu1(matrix1);
-    XCTAssert([TestsTools compareMatrix:lu1.InverseMatrix()
+    XCTAssert([TestsTools compareMatrix:lu1.inverse_matrix()
                            withExpected:expected
                            whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
-              "InverseMatrix OK");
+              "inverse_matrix OK");
     
     const Matrix<double> matrix2({
         {0,  1,  2,  3},
@@ -131,7 +131,7 @@ using namespace cda::math::algorithms::factorization;
     });
     
     LU<Matrix, double> lu2(matrix2);
-    XCTAssertThrows(lu2.InverseMatrix(), "Matrix is degenerate");
+    XCTAssertThrows(lu2.inverse_matrix(), "Matrix is degenerate");
 }
 
 - (void)testSolveLinearSystem {
