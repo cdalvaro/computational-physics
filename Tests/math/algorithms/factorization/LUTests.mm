@@ -146,12 +146,12 @@ using namespace cda::math::algorithms::factorization;
     const Vector<double> terms({6, 7, 15});
     
     const Vector<double> expected({2, -1, 4});
-    XCTAssert([TestsTools compareVector:lu.SolveLinearSystem(terms)
+    XCTAssert([TestsTools compareVector:lu.solve_linear_system(terms)
                            withExpected:expected
                            whitAccuracy:TESTS_TOOLS_DEFAULT_ACCURACY],
-              "SolveLinearSystem OK");
+              "solve_linear_system OK");
     
-    XCTAssertThrows(lu.SolveLinearSystem(Vector<double>({1, 2, 3, 4})),
+    XCTAssertThrows(lu.solve_linear_system(Vector<double>({1, 2, 3, 4})),
                     "The number of independent terms does not match the matrix dimension");
 }
 
