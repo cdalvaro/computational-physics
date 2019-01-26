@@ -31,12 +31,12 @@ namespace cda {
                     virtual ~LU() = default;
                     
                     const Matrix<ValueType> &l() {
-                        FactorizeLU();
+                        factorize_lu();
                         return _l;
                     }
                     
                     const Matrix<ValueType> &u() {
-                        FactorizeLU();
+                        factorize_lu();
                         return _u;
                     }
                     
@@ -51,7 +51,7 @@ namespace cda {
                             throw std::logic_error("The number of rows of the LU matrix does not match the number of elements in the b terms vector.");
                         }
                         
-                        FactorizeLU();
+                        factorize_lu();
                         
                         Vector<ValueType> tmp(rows, 0), x(rows, 0);
                         
@@ -79,7 +79,7 @@ namespace cda {
                     
                     Matrix<ValueType> InverseMatrix() {
                         
-                        FactorizeLU();
+                        factorize_lu();
                         if (_is_degenerate) {
                             throw std::logic_error("Matrix is degenerate, so does not have inverse");
                         }
@@ -101,7 +101,7 @@ namespace cda {
                     
                     ValueType determinant() {
                         
-                        FactorizeLU();
+                        factorize_lu();
                         if (_is_degenerate) {
                             return 0;
                         }
@@ -127,12 +127,12 @@ namespace cda {
                     bool is_factorized;
                     bool _is_degenerate;
                     
-                    void FactorizeLU() {
+                    void factorize_lu() {
                         if (is_factorized) {
                             return;
                         }
                         
-                        RemoveSingularities();
+                        check_singularities();
                         
                         _l.resize(rows, rows, 0);
                         _u.resize(rows, rows, 0);
@@ -184,7 +184,7 @@ namespace cda {
                         is_factorized = true;
                     }
                     
-                    void RemoveSingularities() {
+                    void check_singularities() {
                         auto diagonal = lu.get_diagonal();
                         if (diagonal.find(0) == diagonal.end()) {
                             return;
