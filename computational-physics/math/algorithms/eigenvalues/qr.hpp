@@ -101,10 +101,10 @@ namespace cda {
                         return _eigen_values;
                     }
                     
-                    const containers::Vector<ValueType> &EigenVector(const ValueType &eigen_value) {
+                    const containers::Vector<ValueType> &eigen_vector(const ValueType &eigen_value) {
                         
-                        auto it_eigen_vector = eigen_vectors.find(eigen_value);
-                        if (it_eigen_vector != eigen_vectors.end() && !it_eigen_vector->second.is_empty()) {
+                        auto it_eigen_vector = _eigen_vectors.find(eigen_value);
+                        if (it_eigen_vector != _eigen_vectors.end() && !it_eigen_vector->second.is_empty()) {
                             return it_eigen_vector->second;
                         }
                         
@@ -131,17 +131,17 @@ namespace cda {
                             }
                         }
                         
-                        eigen_vectors.emplace(eigen_value, eigenVector.get_column_as_vector(0) / eigenVector[0][rows - 1]);
+                        _eigen_vectors.emplace(eigen_value, eigenVector.get_column_as_vector(0) / eigenVector[0][rows - 1]);
                         
-                        return eigen_vectors[eigen_value];
+                        return _eigen_vectors[eigen_value];
                     }
                     
                     const std::map<ValueType, containers::Vector<ValueType>> &EigenVectors() {
                         auto values = eigen_values();
                         for (auto it_value = values.begin(); it_value != values.end(); ++it_value) {
-                            EigenVector(*it_value);
+                            eigen_vector(*it_value);
                         }
-                        return eigen_vectors;
+                        return _eigen_vectors;
                     }
                     
                 private:
@@ -154,7 +154,7 @@ namespace cda {
                     
                     Matrix<ValueType> _q, _r;
                     containers::Vector<ValueType> _eigen_values;
-                    std::map<ValueType, containers::Vector<ValueType>> eigen_vectors;
+                    std::map<ValueType, containers::Vector<ValueType>> _eigen_vectors;
                     
                     void ComputeQR(const Matrix<ValueType> &matrix) {
                         

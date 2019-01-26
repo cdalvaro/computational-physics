@@ -112,12 +112,12 @@ const Matrix<double> test_matrix({
     const auto accuracy = 1E-5;
     
     for (auto it = 0; it < eigenvalues.size(); ++it) {
-        XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.at(it))
+        XCTAssert([TestsTools compareVector:qr.eigen_vector(eigenvalues.at(it))
                                withExpected:expected_eigenvectors.get_row_as_vector(it)
                                whitAccuracy:accuracy],
                   @"Eigenvector OK for eigenvalue %f", eigenvalues.at(it));
         
-        XCTAssert([TestsTools compareVector:qr.EigenVector(eigenvalues.at(it))
+        XCTAssert([TestsTools compareVector:qr.eigen_vector(eigenvalues.at(it))
                                withExpected:expected_eigenvectors.get_row_as_vector(it)
                                whitAccuracy:accuracy],
                   @"Eigenvector cache OK for eigenvalue %f", eigenvalues.at(it));

@@ -1125,7 +1125,7 @@ Vector<EDP_T> EDP::eigenVAL_VEC(Vector<EDP_T>& x, int mode, unsigned char bc, un
     if ((((bc & BCL_df) && (bc & BCR_df)) || ((bc & BCB_df) && (bc & BCT_df))) && eigVal[mode-1] == 0) {
         solV.ones();
     } else {
-        solV = qrA.EigenVector(eigVal[mode-1]);
+        solV = qrA.eigen_vector(eigVal[mode-1]);
     }
     
     if (bc & BCL_df || bc & BCB_df) {
