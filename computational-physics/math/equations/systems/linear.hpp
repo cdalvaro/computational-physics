@@ -21,7 +21,7 @@ namespace cda {
                 namespace linear {
                     
                     template <typename T>
-                    containers::Vector<T> SolveLinearSystemLU(const containers::Matrix<T> &system,
+                    containers::Vector<T> solve_lu(const containers::Matrix<T> &system,
                                                               const containers::Vector<T> &b_terms) {
                         algorithms::factorization::LU<containers::Matrix, T> lu(system);
                         return lu.SolveLinearSystem(b_terms);
